@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: lgpd-assistant-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: lgpd_assistant
+      POSTGRES_USER: lgpd_admin
+      POSTGRES_PASSWORD: lgpd_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - lgpd_pgdata:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lgpd_admin -d lgpd_assistant"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  lgpd_pgdata:
