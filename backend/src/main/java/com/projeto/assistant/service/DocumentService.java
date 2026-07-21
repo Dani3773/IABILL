@@ -12,6 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.projeto.assistant.model.AuditAction;
+import com.projeto.assistant.model.AuditEntityType;
+import java.util.Map;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -22,6 +26,7 @@ public class DocumentService {
     private final DocumentRepository documentRepository;
     private final WorkspaceRepository workspaceRepository;
     private final UserRepository userRepository;
+    private final AuditLogService auditLogService;
 
     @Transactional
     public DocumentResponseDTO create(DocumentRequestDTO request) {
@@ -38,6 +43,16 @@ public class DocumentService {
         document.setTitle(request.title());
 
         Document saved = documentRepository.save(document);
+
+        auditLogService.record(
+                workspace.getTenant().getId(),
+                createdBy.getId(),
+                AuditAction.CREATE,
+                AuditEntityType.DOCUMENT,
+                saved.getId(),
+                Map.of("title", saved.getTitle(), "type", saved.getType().name())
+        );
+
         return DocumentResponseDTO.fromEntity(saved);
     }
 
@@ -48,4 +63,5 @@ public class DocumentService {
                 .map(DocumentResponseDTO::fromEntity)
                 .toList();
     }
+
 }
