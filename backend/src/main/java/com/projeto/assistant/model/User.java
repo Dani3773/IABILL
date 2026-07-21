@@ -8,6 +8,9 @@ import lombok.Setter;
 import java.time.Instant;
 import java.util.UUID;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -56,4 +59,13 @@ public class User {
     void onUpdate() {
         this.updatedAt = Instant.now();
     }
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_workspaces",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "workspace_id")
+    )
+    private Set<Workspace> workspaces = new HashSet<>();
+
 }
