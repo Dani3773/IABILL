@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import com.projeto.assistant.dto.WorkspaceMembershipResponseDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,5 +33,16 @@ public class UserController {
     @GetMapping("/{id}")
     public UserResponseDTO findById(@PathVariable UUID id) {
         return userService.findById(id);
+    }
+
+    @PostMapping("/{userId}/workspaces/{workspaceId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void addToWorkspace(@PathVariable UUID userId, @PathVariable UUID workspaceId) {
+        userService.addUserToWorkspace(userId, workspaceId);
+    }
+
+    @GetMapping("/{userId}/workspaces")
+    public List<WorkspaceMembershipResponseDTO> findWorkspaces(@PathVariable UUID userId) {
+        return userService.findWorkspacesOfUser(userId);
     }
 }

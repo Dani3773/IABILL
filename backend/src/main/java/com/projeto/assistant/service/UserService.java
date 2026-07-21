@@ -9,6 +9,11 @@ import com.projeto.assistant.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.projeto.assistant.dto.WorkspaceMembershipResponseDTO;
+import com.projeto.assistant.model.Workspace;
+import com.projeto.assistant.repository.WorkspaceRepository;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +25,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final TenantRepository tenantRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private final WorkspaceRepository workspaceRepository;
 
     public UserResponseDTO create(UserRequestDTO request) {
         Tenant tenant = tenantRepository.findById(request.tenantId())
@@ -47,5 +54,28 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + id));
         return UserResponseDTO.fromEntity(user);
+    }
+
+    @Transactional
+    public void addUserToWorkspace(UUID userId, UUID workspaceId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + userId));
+
+        Workspace workspace = workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new IllegalArgumentException("Workspace não encontrado: " + workspaceId));
+
+        user.getWorkspaces().add(workspace);
+        userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    public List<WorkspaceMembershipResponseDTO> findWorkspacesOfUser(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + userId));
+
+        return user.getWorkspaces()
+                .stream()
+                .map(WorkspaceMembershipResponseDTO::fromEntity)
+                .toList();
     }
 }
