@@ -5,8 +5,13 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import com.projeto.assistant.dto.UserRequestDTO;
 import com.projeto.assistant.dto.UserResponseDTO;
 import com.projeto.assistant.service.UserService;
+import com.projeto.assistant.config.JwtAuthenticationFilter;
+import org.springframework.web.bind.annotation.RequestAttribute;
+
 import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.projeto.assistant.dto.WorkspaceMembershipResponseDTO;
@@ -25,8 +30,10 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
-    public UserResponseDTO create(@Valid @RequestBody UserRequestDTO request) {
-        return userService.create(request);
+    public UserResponseDTO create(
+            @Valid @RequestBody UserRequestDTO request,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return userService.create(request, authUserId);
     }
 
     @GetMapping
@@ -43,8 +50,11 @@ public class UserController {
     @PostMapping("/{userId}/workspaces/{workspaceId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
-    public void addToWorkspace(@PathVariable UUID userId, @PathVariable UUID workspaceId) {
-        userService.addUserToWorkspace(userId, workspaceId);
+    public void addToWorkspace(
+            @PathVariable UUID userId,
+            @PathVariable UUID workspaceId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        userService.addUserToWorkspace(userId, workspaceId, authUserId);
     }
 
     @GetMapping("/{userId}/workspaces")

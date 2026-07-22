@@ -6,17 +6,21 @@ import com.projeto.assistant.model.Tenant;
 import com.projeto.assistant.model.User;
 import com.projeto.assistant.repository.TenantRepository;
 import com.projeto.assistant.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import com.projeto.assistant.dto.WorkspaceMembershipResponseDTO;
 import com.projeto.assistant.model.Workspace;
 import com.projeto.assistant.repository.WorkspaceRepository;
+import com.projeto.assistant.model.AuditAction;
+import com.projeto.assistant.model.AuditEntityType;
 
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -25,10 +29,10 @@ public class UserService {
     private final UserRepository userRepository;
     private final TenantRepository tenantRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final WorkspaceRepository workspaceRepository;
+    private final AuditLogService auditLogService;
 
-    public UserResponseDTO create(UserRequestDTO request) {
+    public UserResponseDTO create(UserRequestDTO request, UUID authUserId) {
         Tenant tenant = tenantRepository.findById(request.tenantId())
                 .orElseThrow(() -> new IllegalArgumentException("Tenant não encontrado: " + request.tenantId()));
 
@@ -40,6 +44,16 @@ public class UserService {
         user.setRole(request.role());
 
         User saved = userRepository.save(user);
+
+        auditLogService.record(
+                tenant.getId(),
+                authUserId, // TODO: ajustado no 27.3
+                AuditAction.CREATE,
+                AuditEntityType.USER,
+                saved.getId(),
+                Map.of("username", saved.getUsername(), "role", saved.getRole().name())
+        );
+
         return UserResponseDTO.fromEntity(saved);
     }
 
@@ -58,7 +72,7 @@ public class UserService {
     }
 
     @Transactional
-    public void addUserToWorkspace(UUID userId, UUID workspaceId) {
+    public void addUserToWorkspace(UUID userId, UUID workspaceId, UUID authUserId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + userId));
 
@@ -66,6 +80,16 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("Workspace não encontrado: " + workspaceId));
 
         user.getWorkspaces().add(workspace);
+
+        auditLogService.record(
+                user.getTenant().getId(),
+                authUserId,
+                AuditAction.UPDATE,
+                AuditEntityType.USER,
+                userId,
+                Map.of("action", "vinculado ao workspace", "workspaceId", workspaceId.toString())
+        );
+
         userRepository.save(user);
     }
 

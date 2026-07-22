@@ -5,8 +5,13 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import com.projeto.assistant.dto.WorkspaceRequestDTO;
 import com.projeto.assistant.dto.WorkspaceResponseDTO;
 import com.projeto.assistant.service.WorkspaceService;
+import com.projeto.assistant.config.JwtAuthenticationFilter;
+import org.springframework.web.bind.annotation.RequestAttribute;
+
 import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,8 +29,10 @@ public class WorkspaceController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
-    public WorkspaceResponseDTO create(@Valid @RequestBody WorkspaceRequestDTO request) {
-        return workspaceService.create(request);
+    public WorkspaceResponseDTO create(
+            @Valid @RequestBody WorkspaceRequestDTO request,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return workspaceService.create(request, authUserId);
     }
 
     @GetMapping
