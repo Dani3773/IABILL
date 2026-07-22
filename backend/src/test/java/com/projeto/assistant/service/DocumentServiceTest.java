@@ -8,6 +8,8 @@ import com.projeto.assistant.repository.DocumentRepository;
 import com.projeto.assistant.repository.TenantRepository;
 import com.projeto.assistant.repository.UserRepository;
 import com.projeto.assistant.repository.WorkspaceRepository;
+import com.projeto.assistant.model.User;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,9 +54,13 @@ class DocumentServiceTest {
         Workspace workspace = new Workspace();
         workspace.setTenant(tenant);
 
+        User createdBy = new User();
+        createdBy.setId(UUID.randomUUID());
+
         document = new Document();
         document.setId(UUID.randomUUID());
         document.setWorkspace(workspace);
+        document.setCreatedBy(createdBy);
         document.setStatus(DocumentStatus.GENERATED);
     }
 
