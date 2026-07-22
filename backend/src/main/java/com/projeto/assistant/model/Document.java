@@ -49,6 +49,9 @@ public class Document {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    @Column(name = "generated_content", columnDefinition = "TEXT")
+    private String generatedContent;
+
     @PrePersist
     void onCreate() {
         Instant now = Instant.now();

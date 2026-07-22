@@ -34,4 +34,5 @@ gemini:
   api-key: ${AIzaSyA3A08IFK4jj_cqDIn0kjjVR7HeGHGJAWg}
   embedding-model: gemini-embedding-001
   embedding-dimension: 768
+  generation-model: gemini-2.5-flash
   base-url: https://generativelanguage.googleapis.com/v1beta

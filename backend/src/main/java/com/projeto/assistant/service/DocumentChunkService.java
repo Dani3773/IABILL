@@ -11,8 +11,13 @@ import com.projeto.assistant.dto.SemanticSearchResultDTO;
 import com.projeto.assistant.model.Workspace;
 import com.projeto.assistant.repository.WorkspaceRepository;
 import org.springframework.security.access.AccessDeniedException;
+import com.projeto.assistant.dto.DocumentGenerationResponseDTO;
+import com.projeto.assistant.model.DocumentStatus;
+import com.projeto.assistant.model.AuditAction;
+import com.projeto.assistant.model.AuditEntityType;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -24,6 +29,8 @@ public class DocumentChunkService {
     private final TextChunker textChunker;
     private final GeminiEmbeddingService geminiEmbeddingService;
     private final WorkspaceRepository workspaceRepository;
+    private final AuditLogService auditLogService;
+    private final GeminiGenerationService geminiGenerationService;
 
     // Recebe o texto bruto de um documento, quebra em pedacos, gera embedding
     // de cada um via Gemini, e salva tudo vinculado ao Document.
@@ -85,5 +92,56 @@ public class DocumentChunkService {
         }
         sb.append("]");
         return sb.toString();
+    }
+
+    @Transactional
+    public DocumentGenerationResponseDTO generateAssistedContent(UUID documentId, String instruction, UUID authTenantId, UUID authUserId) {
+        Document document = documentRepository.findById(documentId)
+                .orElseThrow(() -> new IllegalArgumentException("Documento não encontrado: " + documentId));
+
+        UUID workspaceId = document.getWorkspace().getId();
+
+        if (!document.getWorkspace().getTenant().getId().equals(authTenantId)) {
+            throw new AccessDeniedException("Você não tem acesso a este documento");
+        }
+
+        // Passo 1 (Retrieval): busca os trechos mais relevantes do proprio workspace
+        List<SemanticSearchResultDTO> relevantChunks = semanticSearch(workspaceId, instruction, 5, authTenantId);
+
+        String context = relevantChunks.stream()
+                .map(SemanticSearchResultDTO::content)
+                .reduce("", (a, b) -> a + "\n\n---\n\n" + b);
+
+        // Passo 2 (Augmented): monta o prompt com o contexto recuperado
+        String prompt = """
+            Você é um assistente que ajuda a redigir documentos de conformidade com a LGPD/RGPD.
+            Use SOMENTE as informações de contexto abaixo para responder.
+            Se a informação necessária não estiver no contexto, diga claramente que não há dados suficientes - NUNCA invente informações.
+
+            Contexto:
+            %s
+
+            Instrução: %s
+
+            Redija o conteúdo solicitado de forma clara e objetiva:
+            """.formatted(context, instruction);
+
+        // Passo 3 (Generation): chama o Gemini
+        String generatedText = geminiGenerationService.generate(prompt);
+
+        document.setGeneratedContent(generatedText);
+        document.setStatus(DocumentStatus.GENERATED);
+        documentRepository.save(document);
+
+        auditLogService.record(
+                authTenantId,
+                authUserId,
+                AuditAction.AI_GENERATE,
+                AuditEntityType.DOCUMENT,
+                documentId,
+                Map.of("instruction", instruction, "chunksUsed", relevantChunks.size())
+        );
+
+        return new DocumentGenerationResponseDTO(documentId, generatedText, DocumentStatus.GENERATED);
     }
 }

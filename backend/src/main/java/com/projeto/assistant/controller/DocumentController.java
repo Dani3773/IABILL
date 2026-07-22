@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import com.projeto.assistant.service.DocumentChunkService;
 import com.projeto.assistant.dto.SemanticSearchRequestDTO;
 import com.projeto.assistant.dto.SemanticSearchResultDTO;
-import jakarta.validation.Valid;
+import com.projeto.assistant.dto.DocumentGenerationRequestDTO;
+import com.projeto.assistant.dto.DocumentGenerationResponseDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -55,5 +56,14 @@ public class DocumentController {
                 request.limitOrDefault(),
                 authTenantId
         );
+    }
+
+    @PostMapping("/{documentId}/generate")
+    public DocumentGenerationResponseDTO generate(
+            @PathVariable UUID documentId,
+            @Valid @RequestBody DocumentGenerationRequestDTO request,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return documentChunkService.generateAssistedContent(documentId, request.instruction(), authTenantId, authUserId);
     }
 }
