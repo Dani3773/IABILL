@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { fetchDocumentsByWorkspace } from '../api/documentService'
+import { CreateDocumentModal } from '../components/CreateDocumentModal'
 import type { Document, DocumentStatus } from '../types/document'
 
 const STATUS_STYLES: Record<DocumentStatus, string> = {
@@ -22,6 +23,7 @@ export function DocumentsPage() {
   const [documents, setDocuments] = useState<Document[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [showCreateModal, setShowCreateModal] = useState(false)
 
   useEffect(() => {
     if (!workspaceId) return
@@ -32,12 +34,12 @@ export function DocumentsPage() {
       .finally(() => setIsLoading(false))
   }, [workspaceId])
 
-  if (isLoading) {
-    return <p className="text-slate-400">Carregando...</p>
+  function handleCreated(newDocument: Document) {
+    setDocuments((prev) => [...prev, newDocument])
   }
 
-  if (error) {
-    return <p className="text-red-400">{error}</p>
+  if (isLoading) {
+    return <p className="text-slate-400">Carregando...</p>
   }
 
   return (
@@ -46,14 +48,20 @@ export function DocumentsPage() {
         ← Voltar aos Workspaces
       </Link>
 
-      <h2 className="text-xl font-semibold text-white mb-4">
-        Documentos
-      </h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-semibold text-white">Documentos</h2>
+        <button
+          onClick={() => setShowCreateModal(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+        >
+          + Novo Documento
+        </button>
+      </div>
+
+      {error && <p className="text-red-400 mb-4">{error}</p>}
 
       {documents.length === 0 ? (
-        <p className="text-slate-400">
-          Nenhum documento cadastrado ainda neste workspace.
-        </p>
+        <p className="text-slate-400">Nenhum documento cadastrado ainda neste workspace.</p>
       ) : (
         <div className="space-y-2">
           {documents.map((doc) => (
@@ -72,6 +80,14 @@ export function DocumentsPage() {
             </Link>
           ))}
         </div>
+      )}
+
+      {showCreateModal && workspaceId && (
+        <CreateDocumentModal
+          workspaceId={workspaceId}
+          onClose={() => setShowCreateModal(false)}
+          onCreated={handleCreated}
+        />
       )}
     </div>
   )

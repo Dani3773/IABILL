@@ -19,6 +19,7 @@ export interface Document {
 
 export interface DocumentRequest {
   workspaceId: string
+  createdByUserId: string
   type: DocumentType
   title: string
 }
