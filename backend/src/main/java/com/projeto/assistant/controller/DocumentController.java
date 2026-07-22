@@ -11,6 +11,7 @@ import com.projeto.assistant.dto.SemanticSearchResultDTO;
 import com.projeto.assistant.dto.DocumentGenerationRequestDTO;
 import com.projeto.assistant.dto.DocumentGenerationResponseDTO;
 import com.projeto.assistant.dto.DocumentContentUpdateRequestDTO;
+import com.projeto.assistant.dto.DocumentRejectionRequestDTO;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -104,4 +105,14 @@ public class DocumentController {
             @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
         return documentService.approve(documentId, authTenantId, authUserId);
     }
+
+    @PutMapping("/{documentId}/reject")
+    public DocumentResponseDTO reject(
+            @PathVariable UUID documentId,
+            @Valid @RequestBody DocumentRejectionRequestDTO request,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return documentService.reject(documentId, request.reason(), authTenantId, authUserId);
+    }
+
 }

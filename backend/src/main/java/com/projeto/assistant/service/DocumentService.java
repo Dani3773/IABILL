@@ -144,4 +144,23 @@ public class DocumentService {
         return document;
     }
 
+    @Transactional
+    public DocumentResponseDTO reject(UUID documentId, String reason, UUID authTenantId, UUID authUserId) {
+        Document document = getValidatedDocument(documentId, authTenantId);
+
+        if (document.getStatus() != DocumentStatus.GENERATED && document.getStatus() != DocumentStatus.REVIEWED) {
+            throw new IllegalArgumentException(
+                    "Só é possível rejeitar documentos com status GENERATED ou REVIEWED (atual: " + document.getStatus() + ")");
+        }
+
+        DocumentStatus previousStatus = document.getStatus();
+        document.setStatus(DocumentStatus.DRAFT);
+        Document saved = documentRepository.save(document);
+
+        auditLogService.record(authTenantId, authUserId, AuditAction.REJECT, AuditEntityType.DOCUMENT, documentId,
+                Map.of("reason", reason, "statusChange", previousStatus + " -> DRAFT"));
+
+        return DocumentResponseDTO.fromEntity(saved);
+    }
+
 }

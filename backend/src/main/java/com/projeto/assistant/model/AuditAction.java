@@ -8,5 +8,6 @@ public enum AuditAction {
     AI_GENERATE,
     AI_REVIEW,
     APPROVE,
-    EXPORT
+    EXPORT,
+    REJECT
 }
