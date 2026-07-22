@@ -1,38 +1,55 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { fetchWorkspaces } from '../api/workspaceService'
+import { CreateWorkspaceModal } from '../components/CreateWorkspaceModal'
+import { useAuth } from '../contexts/AuthContext'
 import type { Workspace } from '../types/workspace'
 
 export function DashboardPage() {
+  const { role } = useAuth()
   const [workspaces, setWorkspaces] = useState<Workspace[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [showCreateModal, setShowCreateModal] = useState(false)
 
   useEffect(() => {
+    loadWorkspaces()
+  }, [])
+
+  function loadWorkspaces() {
+    setIsLoading(true)
     fetchWorkspaces()
       .then(setWorkspaces)
       .catch(() => setError('Não foi possível carregar os workspaces.'))
       .finally(() => setIsLoading(false))
-  }, [])
+  }
+
+  function handleCreated(newWorkspace: Workspace) {
+    setWorkspaces((prev) => [...prev, newWorkspace])
+  }
 
   if (isLoading) {
     return <p className="text-slate-400">Carregando...</p>
   }
 
-  if (error) {
-    return <p className="text-red-400">{error}</p>
-  }
-
   return (
     <div>
-      <h2 className="text-xl font-semibold text-white mb-4">
-        Seus Workspaces
-      </h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-semibold text-white">Seus Workspaces</h2>
+        {role === 'ADMIN' && (
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+          >
+            + Novo Workspace
+          </button>
+        )}
+      </div>
+
+      {error && <p className="text-red-400 mb-4">{error}</p>}
 
       {workspaces.length === 0 ? (
-        <p className="text-slate-400">
-          Nenhum workspace cadastrado ainda.
-        </p>
+        <p className="text-slate-400">Nenhum workspace cadastrado ainda.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {workspaces.map((workspace) => (
@@ -53,12 +70,17 @@ export function DashboardPage() {
                   {workspace.type}
                 </span>
               </div>
-              <p className="text-sm text-slate-400">
-                CNPJ: {workspace.documentId}
-              </p>
+              <p className="text-sm text-slate-400">CNPJ: {workspace.documentId}</p>
             </Link>
           ))}
         </div>
+      )}
+
+      {showCreateModal && (
+        <CreateWorkspaceModal
+          onClose={() => setShowCreateModal(false)}
+          onCreated={handleCreated}
+        />
       )}
     </div>
   )
