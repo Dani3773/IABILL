@@ -31,7 +31,7 @@ app:
     expiration-ms: 86400000  # 24 horas
 
 gemini:
-  api-key: ${AIzaSyA3A08IFK4jj_cqDIn0kjjVR7HeGHGJAWg}
+  api-key: ${GEMINI_API_KEY:}
   embedding-model: gemini-embedding-001
   embedding-dimension: 768
   generation-model: gemini-2.5-flash
