@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +21,7 @@ public class AuditLogController {
 
     // Note: so GET. Sem POST/PUT/DELETE - reforca a imutabilidade do log tambem na API.
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public List<AuditLogResponseDTO> findByTenant(@RequestParam UUID tenantId) {
         return auditLogService.findByTenant(tenantId);
     }

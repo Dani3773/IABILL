@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.projeto.assistant.dto.WorkspaceMembershipResponseDTO;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     public UserResponseDTO create(@Valid @RequestBody UserRequestDTO request) {
         return userService.create(request);
     }
@@ -37,6 +39,7 @@ public class UserController {
 
     @PostMapping("/{userId}/workspaces/{workspaceId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     public void addToWorkspace(@PathVariable UUID userId, @PathVariable UUID workspaceId) {
         userService.addUserToWorkspace(userId, workspaceId);
     }
