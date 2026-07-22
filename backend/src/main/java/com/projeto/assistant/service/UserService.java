@@ -43,8 +43,9 @@ public class UserService {
         return UserResponseDTO.fromEntity(saved);
     }
 
-    public List<UserResponseDTO> findAll() {
-        return userRepository.findAll()
+    @Transactional(readOnly = true)
+    public List<UserResponseDTO> findByTenant(UUID tenantId) {
+        return userRepository.findByTenantId(tenantId)
                 .stream()
                 .map(UserResponseDTO::fromEntity)
                 .toList();

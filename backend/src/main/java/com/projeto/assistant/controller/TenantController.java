@@ -8,8 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
+import com.projeto.assistant.config.JwtAuthenticationFilter;
+import org.springframework.web.bind.annotation.RequestAttribute;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -26,13 +27,8 @@ public class TenantController {
         return tenantService.create(request);
     }
 
-    @GetMapping
-    public List<TenantResponseDTO> findAll() {
-        return tenantService.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public TenantResponseDTO findById(@PathVariable UUID id) {
-        return tenantService.findById(id);
+    @GetMapping("/me")
+    public TenantResponseDTO findMyTenant(@RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId) {
+        return tenantService.findById(authTenantId);
     }
 }

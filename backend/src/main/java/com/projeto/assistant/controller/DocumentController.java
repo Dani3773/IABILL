@@ -1,5 +1,7 @@
 package com.projeto.assistant.controller;
 
+import com.projeto.assistant.config.JwtAuthenticationFilter;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import com.projeto.assistant.dto.DocumentRequestDTO;
 import com.projeto.assistant.dto.DocumentResponseDTO;
 import com.projeto.assistant.service.DocumentService;
@@ -25,7 +27,9 @@ public class DocumentController {
     }
 
     @GetMapping
-    public List<DocumentResponseDTO> findByWorkspace(@RequestParam UUID workspaceId) {
-        return documentService.findByWorkspace(workspaceId);
+    public List<DocumentResponseDTO> findByWorkspace(
+            @RequestParam UUID workspaceId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId) {
+        return documentService.findByWorkspace(workspaceId, authTenantId);
     }
 }

@@ -5,7 +5,8 @@ import com.projeto.assistant.service.AuditLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.projeto.assistant.config.JwtAuthenticationFilter;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -19,10 +20,9 @@ public class AuditLogController {
 
     private final AuditLogService auditLogService;
 
-    // Note: so GET. Sem POST/PUT/DELETE - reforca a imutabilidade do log tambem na API.
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public List<AuditLogResponseDTO> findByTenant(@RequestParam UUID tenantId) {
-        return auditLogService.findByTenant(tenantId);
+    public List<AuditLogResponseDTO> findByTenant(@RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId) {
+        return auditLogService.findByTenant(authTenantId);
     }
 }

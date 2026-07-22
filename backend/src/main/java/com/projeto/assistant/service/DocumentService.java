@@ -11,6 +11,7 @@ import com.projeto.assistant.repository.WorkspaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.access.AccessDeniedException;
 
 import com.projeto.assistant.model.AuditAction;
 import com.projeto.assistant.model.AuditEntityType;
@@ -57,7 +58,14 @@ public class DocumentService {
     }
 
     @Transactional(readOnly = true)
-    public List<DocumentResponseDTO> findByWorkspace(UUID workspaceId) {
+    public List<DocumentResponseDTO> findByWorkspace(UUID workspaceId, UUID authTenantId) {
+        Workspace workspace = workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new IllegalArgumentException("Workspace não encontrado: " + workspaceId));
+
+        if (!workspace.getTenant().getId().equals(authTenantId)) {
+            throw new AccessDeniedException("Você não tem acesso a este workspace");
+        }
+
         return documentRepository.findByWorkspaceId(workspaceId)
                 .stream()
                 .map(DocumentResponseDTO::fromEntity)

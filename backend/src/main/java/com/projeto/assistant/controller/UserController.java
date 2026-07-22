@@ -1,5 +1,7 @@
 package com.projeto.assistant.controller;
 
+import com.projeto.assistant.config.JwtAuthenticationFilter;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import com.projeto.assistant.dto.UserRequestDTO;
 import com.projeto.assistant.dto.UserResponseDTO;
 import com.projeto.assistant.service.UserService;
@@ -28,8 +30,9 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserResponseDTO> findAll() {
-        return userService.findAll();
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<UserResponseDTO> findAll(@RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId) {
+        return userService.findByTenant(authTenantId);
     }
 
     @GetMapping("/{id}")
