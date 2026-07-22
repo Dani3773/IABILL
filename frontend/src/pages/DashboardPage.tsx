@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { fetchWorkspaces } from '../api/workspaceService'
 import type { Workspace } from '../types/workspace'
 
@@ -35,9 +36,10 @@ export function DashboardPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {workspaces.map((workspace) => (
-            <div
+            <Link
               key={workspace.id}
-              className="bg-slate-800 rounded-lg p-4 border border-slate-700"
+              to={`/workspaces/${workspace.id}/documents`}
+              className="bg-slate-800 rounded-lg p-4 border border-slate-700 hover:border-blue-500 transition-colors"
             >
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-medium text-white">{workspace.name}</h3>
@@ -54,7 +56,7 @@ export function DashboardPage() {
               <p className="text-sm text-slate-400">
                 CNPJ: {workspace.documentId}
               </p>
-            </div>
+            </Link>
           ))}
         </div>
       )}

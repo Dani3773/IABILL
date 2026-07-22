@@ -5,6 +5,8 @@ import { Layout } from './components/Layout'
 import { LoginPage } from './pages/LoginPage'
 import { SignupPage } from './pages/SignupPage'
 import { DashboardPage } from './pages/DashboardPage'
+import { DocumentsPage } from './pages/DocumentsPage'
+import { DocumentDetailPage } from './pages/DocumentDetailPage'
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
               <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/workspaces/:workspaceId/documents" element={<DocumentsPage />} />
+              <Route path="/documents/:documentId" element={<DocumentDetailPage />} />
             </Route>
           </Route>
 
