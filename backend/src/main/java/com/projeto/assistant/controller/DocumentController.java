@@ -9,9 +9,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import com.projeto.assistant.service.DocumentChunkService;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/documents")
@@ -19,6 +21,7 @@ import java.util.UUID;
 public class DocumentController {
 
     private final DocumentService documentService;
+    private final DocumentChunkService documentChunkService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -31,5 +34,11 @@ public class DocumentController {
             @RequestParam UUID workspaceId,
             @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId) {
         return documentService.findByWorkspace(workspaceId, authTenantId);
+    }
+
+    @PostMapping("/{documentId}/content")
+    public Map<String, Object> processContent(@PathVariable UUID documentId, @RequestBody String rawContent) {
+        int chunksCreated = documentChunkService.processContent(documentId, rawContent);
+        return Map.of("chunksCreated", chunksCreated);
     }
 }
