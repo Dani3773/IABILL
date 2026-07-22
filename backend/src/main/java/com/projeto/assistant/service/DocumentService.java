@@ -8,15 +8,17 @@ import com.projeto.assistant.model.Workspace;
 import com.projeto.assistant.repository.DocumentRepository;
 import com.projeto.assistant.repository.UserRepository;
 import com.projeto.assistant.repository.WorkspaceRepository;
+import com.projeto.assistant.model.AuditAction;
+import com.projeto.assistant.model.AuditEntityType;
+import com.projeto.assistant.model.DocumentStatus;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.access.AccessDeniedException;
 
-import com.projeto.assistant.model.AuditAction;
-import com.projeto.assistant.model.AuditEntityType;
 import java.util.Map;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -70,6 +72,76 @@ public class DocumentService {
                 .stream()
                 .map(DocumentResponseDTO::fromEntity)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public DocumentResponseDTO findById(UUID documentId, UUID authTenantId) {
+        Document document = documentRepository.findById(documentId)
+                .orElseThrow(() -> new IllegalArgumentException("Documento não encontrado: " + documentId));
+
+        if (!document.getWorkspace().getTenant().getId().equals(authTenantId)) {
+            throw new AccessDeniedException("Você não tem acesso a este documento");
+        }
+
+        return DocumentResponseDTO.fromEntity(document);
+    }
+
+    @Transactional
+    public DocumentResponseDTO updateContent(UUID documentId, String content, UUID authTenantId, UUID authUserId) {
+        Document document = getValidatedDocument(documentId, authTenantId);
+
+        document.setGeneratedContent(content);
+        Document saved = documentRepository.save(document);
+
+        auditLogService.record(authTenantId, authUserId, AuditAction.UPDATE, AuditEntityType.DOCUMENT, documentId,
+                Map.of("field", "generatedContent"));
+
+        return DocumentResponseDTO.fromEntity(saved);
+    }
+
+    @Transactional
+    public DocumentResponseDTO markReviewed(UUID documentId, UUID authTenantId, UUID authUserId) {
+        Document document = getValidatedDocument(documentId, authTenantId);
+
+        if (document.getStatus() != DocumentStatus.GENERATED) {
+            throw new IllegalArgumentException("Só é possível revisar documentos com status GENERATED (atual: " + document.getStatus() + ")");
+        }
+
+        document.setStatus(DocumentStatus.REVIEWED);
+        Document saved = documentRepository.save(document);
+
+        auditLogService.record(authTenantId, authUserId, AuditAction.UPDATE, AuditEntityType.DOCUMENT, documentId,
+                Map.of("statusChange", "GENERATED -> REVIEWED"));
+
+        return DocumentResponseDTO.fromEntity(saved);
+    }
+
+    @Transactional
+    public DocumentResponseDTO approve(UUID documentId, UUID authTenantId, UUID authUserId) {
+        Document document = getValidatedDocument(documentId, authTenantId);
+
+        if (document.getStatus() != DocumentStatus.REVIEWED) {
+            throw new IllegalArgumentException("Só é possível aprovar documentos com status REVIEWED (atual: " + document.getStatus() + ")");
+        }
+
+        document.setStatus(DocumentStatus.APPROVED);
+        Document saved = documentRepository.save(document);
+
+        auditLogService.record(authTenantId, authUserId, AuditAction.APPROVE, AuditEntityType.DOCUMENT, documentId,
+                Map.of("statusChange", "REVIEWED -> APPROVED"));
+
+        return DocumentResponseDTO.fromEntity(saved);
+    }
+
+    private Document getValidatedDocument(UUID documentId, UUID authTenantId) {
+        Document document = documentRepository.findById(documentId)
+                .orElseThrow(() -> new IllegalArgumentException("Documento não encontrado: " + documentId));
+
+        if (!document.getWorkspace().getTenant().getId().equals(authTenantId)) {
+            throw new AccessDeniedException("Você não tem acesso a este documento");
+        }
+
+        return document;
     }
 
 }

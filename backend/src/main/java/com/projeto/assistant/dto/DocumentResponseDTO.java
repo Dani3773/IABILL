@@ -14,6 +14,7 @@ public record DocumentResponseDTO(
         DocumentType type,
         String title,
         DocumentStatus status,
+        String generatedContent,
         Instant createdAt
 ) {
     public static DocumentResponseDTO fromEntity(Document document) {
@@ -24,6 +25,7 @@ public record DocumentResponseDTO(
                 document.getType(),
                 document.getTitle(),
                 document.getStatus(),
+                document.getGeneratedContent(),
                 document.getCreatedAt()
         );
     }

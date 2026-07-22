@@ -5,15 +5,20 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import com.projeto.assistant.dto.DocumentRequestDTO;
 import com.projeto.assistant.dto.DocumentResponseDTO;
 import com.projeto.assistant.service.DocumentService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
 import com.projeto.assistant.service.DocumentChunkService;
 import com.projeto.assistant.dto.SemanticSearchRequestDTO;
 import com.projeto.assistant.dto.SemanticSearchResultDTO;
 import com.projeto.assistant.dto.DocumentGenerationRequestDTO;
 import com.projeto.assistant.dto.DocumentGenerationResponseDTO;
+import com.projeto.assistant.dto.DocumentContentUpdateRequestDTO;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+
 
 import java.util.List;
 import java.util.UUID;
@@ -65,5 +70,38 @@ public class DocumentController {
             @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
             @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
         return documentChunkService.generateAssistedContent(documentId, request.instruction(), authTenantId, authUserId);
+    }
+
+    @GetMapping("/{documentId}")
+    public DocumentResponseDTO findById(
+            @PathVariable UUID documentId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId) {
+        return documentService.findById(documentId, authTenantId);
+    }
+
+    @PutMapping("/{documentId}/content")
+    public DocumentResponseDTO updateContent(
+            @PathVariable UUID documentId,
+            @Valid @RequestBody DocumentContentUpdateRequestDTO request,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return documentService.updateContent(documentId, request.content(), authTenantId, authUserId);
+    }
+
+    @PutMapping("/{documentId}/review")
+    public DocumentResponseDTO markReviewed(
+            @PathVariable UUID documentId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return documentService.markReviewed(documentId, authTenantId, authUserId);
+    }
+
+    @PutMapping("/{documentId}/approve")
+    @PreAuthorize("hasRole('ADMIN')")
+    public DocumentResponseDTO approve(
+            @PathVariable UUID documentId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return documentService.approve(documentId, authTenantId, authUserId);
     }
 }
