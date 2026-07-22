@@ -24,3 +24,8 @@ server:
 logging:
   level:
     org.hibernate.SQL: debug
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:dev-only-secret-troque-isso-em-producao-1234567890abcdef}
+    expiration-ms: 86400000  # 24 horas
