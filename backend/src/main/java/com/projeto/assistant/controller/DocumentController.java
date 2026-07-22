@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.projeto.assistant.service.DocumentChunkService;
+import com.projeto.assistant.dto.SemanticSearchRequestDTO;
+import com.projeto.assistant.dto.SemanticSearchResultDTO;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.UUID;
@@ -40,5 +43,17 @@ public class DocumentController {
     public Map<String, Object> processContent(@PathVariable UUID documentId, @RequestBody String rawContent) {
         int chunksCreated = documentChunkService.processContent(documentId, rawContent);
         return Map.of("chunksCreated", chunksCreated);
+    }
+
+    @PostMapping("/search")
+    public List<SemanticSearchResultDTO> search(
+            @Valid @RequestBody SemanticSearchRequestDTO request,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId) {
+        return documentChunkService.semanticSearch(
+                request.workspaceId(),
+                request.query(),
+                request.limitOrDefault(),
+                authTenantId
+        );
     }
 }

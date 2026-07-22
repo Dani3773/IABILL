@@ -7,6 +7,10 @@ import com.projeto.assistant.repository.DocumentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.projeto.assistant.dto.SemanticSearchResultDTO;
+import com.projeto.assistant.model.Workspace;
+import com.projeto.assistant.repository.WorkspaceRepository;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +23,7 @@ public class DocumentChunkService {
     private final DocumentChunkRepository documentChunkRepository;
     private final TextChunker textChunker;
     private final GeminiEmbeddingService geminiEmbeddingService;
+    private final WorkspaceRepository workspaceRepository;
 
     // Recebe o texto bruto de um documento, quebra em pedacos, gera embedding
     // de cada um via Gemini, e salva tudo vinculado ao Document.
@@ -47,5 +52,38 @@ public class DocumentChunkService {
         }
 
         return pieces.size();
+    }
+
+    @Transactional(readOnly = true)
+    public List<SemanticSearchResultDTO> semanticSearch(UUID workspaceId, String query, int limit, UUID authTenantId) {
+        Workspace workspace = workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new IllegalArgumentException("Workspace não encontrado: " + workspaceId));
+
+        if (!workspace.getTenant().getId().equals(authTenantId)) {
+            throw new AccessDeniedException("Você não tem acesso a este workspace");
+        }
+
+        float[] queryEmbedding = geminiEmbeddingService.embed(query);
+        String vectorLiteral = toVectorLiteral(queryEmbedding);
+
+        return documentChunkRepository.findNearestChunks(workspaceId, vectorLiteral, limit)
+                .stream()
+                .map(chunk -> new SemanticSearchResultDTO(
+                        chunk.getDocument().getId(),
+                        chunk.getDocument().getTitle(),
+                        chunk.getChunkIndex(),
+                        chunk.getContent()
+                ))
+                .toList();
+    }
+
+    private String toVectorLiteral(float[] embedding) {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < embedding.length; i++) {
+            if (i > 0) sb.append(",");
+            sb.append(embedding[i]);
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }
