@@ -39,7 +39,7 @@ export function DashboardPage() {
         {role === 'ADMIN' && (
           <button
             onClick={() => setShowCreateModal(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+            className="bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
           >
             + Novo Workspace
           </button>
@@ -56,7 +56,7 @@ export function DashboardPage() {
             <Link
               key={workspace.id}
               to={`/workspaces/${workspace.id}/documents`}
-              className="bg-slate-800 rounded-lg p-4 border border-slate-700 hover:border-blue-500 transition-colors"
+              className="bg-slate-800 rounded-lg p-4 border border-slate-700 hover:border-cyan-500 transition-colors"
             >
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-medium text-white">{workspace.name}</h3>

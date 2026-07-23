@@ -53,7 +53,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-blue-500"
+              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             />
           </div>
 
@@ -64,7 +64,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-blue-500"
+              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             />
           </div>
 
@@ -76,7 +76,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
               onChange={(e) => setPassword(e.target.value)}
               minLength={8}
               required
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-blue-500"
+              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             />
           </div>
 
@@ -85,7 +85,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
             <select
               value={role}
               onChange={(e) => setRole(e.target.value as UserRole)}
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-blue-500"
+              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             >
               <option value="USER">Usuário</option>
               <option value="ADMIN">Administrador</option>
@@ -98,7 +98,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium rounded-lg py-2 transition-colors"
+              className="flex-1 bg-cyan-600 hover:bg-cyan-700 disabled:opacity-50 text-white font-medium rounded-lg py-2 transition-colors"
             >
               {isLoading ? 'Criando...' : 'Criar'}
             </button>

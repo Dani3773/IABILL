@@ -15,7 +15,6 @@ export interface SignupRequest {
 }
 
 export interface LoginRequest {
-  tenantId: string
   email: string
   password: string
 }

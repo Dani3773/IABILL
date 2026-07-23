@@ -62,7 +62,7 @@ export function CreateDocumentModal({ workspaceId, onClose, onCreated }: Props) 
               onChange={(e) => setTitle(e.target.value)}
               required
               placeholder="Ex: Relatório de Conformidade - Q3 2026"
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-blue-500"
+              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             />
           </div>
 
@@ -71,7 +71,7 @@ export function CreateDocumentModal({ workspaceId, onClose, onCreated }: Props) 
             <select
               value={type}
               onChange={(e) => setType(e.target.value as DocumentType)}
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-blue-500"
+              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             >
               {Object.entries(DOCUMENT_TYPE_LABELS).map(([value, label]) => (
                 <option key={value} value={value}>
@@ -87,7 +87,7 @@ export function CreateDocumentModal({ workspaceId, onClose, onCreated }: Props) 
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium rounded-lg py-2 transition-colors"
+              className="flex-1 bg-cyan-600 hover:bg-cyan-700 disabled:opacity-50 text-white font-medium rounded-lg py-2 transition-colors"
             >
               {isLoading ? 'Criando...' : 'Criar'}
             </button>

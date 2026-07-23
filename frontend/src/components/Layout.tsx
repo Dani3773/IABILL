@@ -1,34 +1,44 @@
-import { Outlet, useNavigate, Link } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
+import { Outlet, useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { ShieldCheck } from "lucide-react";
 
 export function Layout() {
-  const navigate = useNavigate()
-  const { role, clearAuth } = useAuth()
+  const navigate = useNavigate();
+  const { role, clearAuth } = useAuth();
 
   function handleLogout() {
-    clearAuth()
-    navigate('/login')
+    clearAuth();
+    navigate("/login");
   }
 
   return (
     <div className="min-h-screen bg-slate-900">
       <header className="bg-slate-800 border-b border-slate-700 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
-          <h1 className="text-lg font-semibold text-white">LGPD Assistant</h1>
+          <img src="../public/Logo.png" alt="IABill" className="h-8" />
           <nav className="flex items-center gap-4">
-            <Link to="/dashboard" className="text-sm text-slate-300 hover:text-white transition-colors">
+            <Link
+              to="/dashboard"
+              className="text-sm text-slate-300 hover:text-white transition-colors"
+            >
               Workspaces
             </Link>
-            {role === 'ADMIN' && (
-              <Link to="/users" className="text-sm text-slate-300 hover:text-white transition-colors">
+            {role === "ADMIN" && (
+              <Link
+                to="/users"
+                className="text-sm text-slate-300 hover:text-white transition-colors"
+              >
                 Usuários
               </Link>
             )}
-            {role === 'ADMIN' && (
-              <Link to="/audit-logs" className="text-sm text-slate-300 hover:text-white transition-colors">
+            {role === "ADMIN" && (
+              <Link
+                to="/audit-logs"
+                className="text-sm text-slate-300 hover:text-white transition-colors"
+              >
                 Auditoria
               </Link>
-           )}
+            )}
           </nav>
         </div>
         <div className="flex items-center gap-4">
@@ -46,5 +56,5 @@ export function Layout() {
         <Outlet />
       </main>
     </div>
-  )
+  );
 }

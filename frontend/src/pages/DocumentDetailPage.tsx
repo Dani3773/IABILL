@@ -121,7 +121,7 @@ export function DocumentDetailPage() {
     <div className="max-w-3xl mx-auto">
       <Link
         to={`/workspaces/${document.workspaceId}/documents`}
-        className="text-blue-400 hover:underline text-sm mb-4 inline-block"
+        className="text-cyan-400 hover:underline text-sm mb-4 inline-block"
       >
         ← Voltar aos Documentos
       </Link>
@@ -149,12 +149,12 @@ export function DocumentDetailPage() {
             onChange={(e) => setInstruction(e.target.value)}
             rows={3}
             placeholder="Ex: Escreva um resumo sobre a retenção de dados e base legal utilizada"
-            className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-blue-500 mb-3"
+            className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500 mb-3"
           />
           <button
             onClick={handleGenerate}
             disabled={isActionLoading || !instruction.trim()}
-            className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 transition-colors"
+            className="bg-cyan-600 hover:bg-cyan-700 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 transition-colors"
           >
             {isActionLoading ? 'Gerando...' : 'Gerar com IA'}
           </button>
@@ -172,7 +172,7 @@ export function DocumentDetailPage() {
             onChange={(e) => setEditedContent(e.target.value)}
             rows={10}
             readOnly={document.status === 'APPROVED'}
-            className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-blue-500 mb-3 disabled:opacity-70"
+            className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500 mb-3 disabled:opacity-70"
           />
           {document.status !== 'APPROVED' && (
             <button
@@ -193,7 +193,7 @@ export function DocumentDetailPage() {
             <button
               onClick={handleReview}
               disabled={isActionLoading}
-              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 transition-colors"
+              className="bg-cyan-600 hover:bg-cyan-700 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 transition-colors"
             >
               Marcar como Revisado
             </button>

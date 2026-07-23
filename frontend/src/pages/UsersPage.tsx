@@ -30,7 +30,7 @@ export function UsersPage() {
         <h2 className="text-xl font-semibold text-white">Usuários</h2>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+          className="bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
         >
           + Novo Usuário
         </button>
@@ -60,7 +60,7 @@ export function UsersPage() {
               </span>
               <button
                 onClick={() => setAssigningUser(user)}
-                className="text-sm text-blue-400 hover:underline"
+                className="text-sm text-cyan-400 hover:underline"
               >
                 Gerenciar workspaces
               </button>

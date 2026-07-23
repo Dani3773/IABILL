@@ -44,7 +44,7 @@ export function DocumentsPage() {
 
   return (
     <div>
-      <Link to="/dashboard" className="text-blue-400 hover:underline text-sm mb-4 inline-block">
+      <Link to="/dashboard" className="text-cyan-400 hover:underline text-sm mb-4 inline-block">
         ← Voltar aos Workspaces
       </Link>
 
@@ -52,7 +52,7 @@ export function DocumentsPage() {
         <h2 className="text-xl font-semibold text-white">Documentos</h2>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+          className="bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
         >
           + Novo Documento
         </button>
@@ -68,7 +68,7 @@ export function DocumentsPage() {
             <Link
               key={doc.id}
               to={`/documents/${doc.id}`}
-              className="flex items-center justify-between bg-slate-800 rounded-lg p-4 border border-slate-700 hover:border-blue-500 transition-colors"
+              className="flex items-center justify-between bg-slate-800 rounded-lg p-4 border border-slate-700 hover:border-cyan-500 transition-colors"
             >
               <div>
                 <p className="font-medium text-white">{doc.title}</p>

@@ -92,7 +92,7 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
               <select
                 value={selectedWorkspaceId}
                 onChange={(e) => setSelectedWorkspaceId(e.target.value)}
-                className="flex-1 rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-blue-500"
+                className="flex-1 rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
               >
                 {availableWorkspaces.map((w) => (
                   <option key={w.id} value={w.id}>
@@ -103,7 +103,7 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
               <button
                 onClick={handleAssign}
                 disabled={isLoading}
-                className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+                className="bg-cyan-600 hover:bg-cyan-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
               >
                 Vincular
               </button>

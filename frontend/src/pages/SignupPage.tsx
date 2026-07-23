@@ -42,6 +42,9 @@ export function SignupPage() {
   return (
     <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-md bg-slate-800 rounded-xl p-8 shadow-xl">
+        <div className="flex justify-center mb-6">
+          <img src="../public/Logo.png" alt="IABill" className="h-20" />
+        </div>
         <h1 className="text-2xl font-bold text-white mb-6 text-center">
           Cadastrar Empresa
         </h1>
@@ -56,7 +59,7 @@ export function SignupPage() {
               value={tenantName}
               onChange={(e) => setTenantName(e.target.value)}
               required
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-blue-500"
+              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             />
           </div>
 
@@ -69,7 +72,7 @@ export function SignupPage() {
               value={tenantDocumentId}
               onChange={(e) => setTenantDocumentId(e.target.value)}
               required
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-blue-500"
+              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             />
           </div>
 
@@ -83,7 +86,7 @@ export function SignupPage() {
               onChange={(e) => setTenantCountry(e.target.value.toUpperCase())}
               maxLength={2}
               required
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-blue-500"
+              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             />
           </div>
 
@@ -98,7 +101,7 @@ export function SignupPage() {
               value={adminUsername}
               onChange={(e) => setAdminUsername(e.target.value)}
               required
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-blue-500"
+              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             />
           </div>
 
@@ -111,7 +114,7 @@ export function SignupPage() {
               value={adminEmail}
               onChange={(e) => setAdminEmail(e.target.value)}
               required
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-blue-500"
+              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             />
           </div>
 
@@ -125,7 +128,7 @@ export function SignupPage() {
               onChange={(e) => setAdminPassword(e.target.value)}
               minLength={8}
               required
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-blue-500"
+              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             />
           </div>
 
@@ -136,7 +139,7 @@ export function SignupPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium rounded-lg py-2 transition-colors"
+            className="w-full bg-cyan-600 hover:bg-cyan-700 disabled:opacity-50 text-white font-medium rounded-lg py-2 transition-colors"
           >
             {isLoading ? 'Criando conta...' : 'Criar conta'}
           </button>
@@ -144,7 +147,7 @@ export function SignupPage() {
 
         <p className="text-center text-slate-400 text-sm mt-4">
           Já tem uma conta?{' '}
-          <Link to="/login" className="text-blue-400 hover:underline">
+          <Link to="/login" className="text-cyan-400 hover:underline">
             Entrar
           </Link>
         </p>
