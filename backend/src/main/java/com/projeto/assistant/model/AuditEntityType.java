@@ -5,5 +5,6 @@ public enum AuditEntityType {
     USER,
     WORKSPACE,
     DOCUMENT,
-    DOCUMENT_CHUNK
+    DOCUMENT_CHUNK,
+    ACTION_ITEM
 }
