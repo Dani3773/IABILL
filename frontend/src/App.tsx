@@ -8,6 +8,7 @@ import { DashboardPage } from './pages/DashboardPage'
 import { DocumentsPage } from './pages/DocumentsPage'
 import { DocumentDetailPage } from './pages/DocumentDetailPage'
 import { UsersPage } from './pages/UsersPage'
+import { AuditLogsPage } from './pages/AuditLogsPage'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/workspaces/:workspaceId/documents" element={<DocumentsPage />} />
               <Route path="/documents/:documentId" element={<DocumentDetailPage />} />
               <Route path="/users" element={<UsersPage />} />
+              <Route path="/audit-logs" element={<AuditLogsPage />} />
             </Route>
           </Route>
 

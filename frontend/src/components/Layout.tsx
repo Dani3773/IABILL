@@ -24,6 +24,11 @@ export function Layout() {
                 Usuários
               </Link>
             )}
+            {role === 'ADMIN' && (
+              <Link to="/audit-logs" className="text-sm text-slate-300 hover:text-white transition-colors">
+                Auditoria
+              </Link>
+           )}
           </nav>
         </div>
         <div className="flex items-center gap-4">
