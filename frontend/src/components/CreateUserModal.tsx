@@ -1,37 +1,44 @@
-import { useState, type FormEvent } from 'react'
-import { createUser } from '../api/userService'
-import { useAuth } from '../contexts/AuthContext'
-import type { User, UserRole } from '../types/user'
+import { useState, type FormEvent } from "react";
+import { createUser } from "../api/userService";
+import { useAuth } from "../contexts/AuthContext";
+import type { User, UserRole } from "../types/user";
+import { getErrorMessage } from "../api/errorUtils";
 
 interface Props {
-  onClose: () => void
-  onCreated: (user: User) => void
+  onClose: () => void;
+  onCreated: (user: User) => void;
 }
 
 export function CreateUserModal({ onClose, onCreated }: Props) {
-  const { tenantId } = useAuth()
+  const { tenantId } = useAuth();
 
-  const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [role, setRole] = useState<UserRole>('USER')
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState<UserRole>("USER");
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
-    e.preventDefault()
-    if (!tenantId) return
+    e.preventDefault();
+    if (!tenantId) return;
 
-    setError(null)
-    setIsLoading(true)
+    setError(null);
+    setIsLoading(true);
     try {
-      const user = await createUser({ tenantId, username, email, password, role })
-      onCreated(user)
-      onClose()
-    } catch {
-      setError('Não foi possível criar o usuário. Verifique se o e-mail já não está em uso.')
+      const user = await createUser({
+        tenantId,
+        username,
+        email,
+        password,
+        role,
+      });
+      onCreated(user);
+      onClose();
+    } catch (err) {
+      setError(getErrorMessage(err, "Não foi possível criar o usuário."));
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -40,14 +47,19 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
       <div className="w-full max-w-md bg-slate-800 rounded-xl p-6 shadow-xl border border-slate-700">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-white">Novo Usuário</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-white text-xl leading-none">
+          <button
+            onClick={onClose}
+            className="text-slate-400 hover:text-white text-xl leading-none"
+          >
             ×
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Nome de usuário</label>
+            <label className="block text-sm text-slate-300 mb-1">
+              Nome de usuário
+            </label>
             <input
               type="text"
               value={username}
@@ -69,7 +81,9 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
           </div>
 
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Senha (mínimo 8 caracteres)</label>
+            <label className="block text-sm text-slate-300 mb-1">
+              Senha (mínimo 8 caracteres)
+            </label>
             <input
               type="password"
               value={password}
@@ -100,7 +114,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
               disabled={isLoading}
               className="flex-1 bg-cyan-600 hover:bg-cyan-700 disabled:opacity-50 text-white font-medium rounded-lg py-2 transition-colors"
             >
-              {isLoading ? 'Criando...' : 'Criar'}
+              {isLoading ? "Criando..." : "Criar"}
             </button>
             <button
               type="button"
@@ -113,5 +127,5 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
         </form>
       </div>
     </div>
-  )
+  );
 }

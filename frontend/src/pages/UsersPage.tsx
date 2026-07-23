@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { fetchUsers } from '../api/userService'
 import { CreateUserModal } from '../components/CreateUserModal'
 import { AssignWorkspaceModal } from '../components/AssignWorkspaceModal'
+import { LoadingSpinner } from '../components/LoadingSpinner'
+import { Alert } from '../components/Alert'
+import { getErrorMessage } from '../api/errorUtils'
 import type { User } from '../types/user'
 
 export function UsersPage() {
@@ -14,7 +17,7 @@ export function UsersPage() {
   useEffect(() => {
     fetchUsers()
       .then(setUsers)
-      .catch(() => setError('Não foi possível carregar os usuários.'))
+      .catch((err) => setError(getErrorMessage(err, 'Não foi possível carregar os usuários.')))
       .finally(() => setIsLoading(false))
   }, [])
 
@@ -22,7 +25,7 @@ export function UsersPage() {
     setUsers((prev) => [...prev, newUser])
   }
 
-  if (isLoading) return <p className="text-slate-400">Carregando...</p>
+  if (isLoading) return <LoadingSpinner label="Carregando usuários..." />
 
   return (
     <div>
@@ -30,13 +33,13 @@ export function UsersPage() {
         <h2 className="text-xl font-semibold text-white">Usuários</h2>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+          className="bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
         >
           + Novo Usuário
         </button>
       </div>
 
-      {error && <p className="text-red-400 mb-4">{error}</p>}
+      {error && <div className="mb-4"><Alert type="error" message={error} /></div>}
 
       <div className="space-y-2">
         {users.map((user) => (

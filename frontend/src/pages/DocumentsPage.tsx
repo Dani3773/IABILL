@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { fetchDocumentsByWorkspace } from '../api/documentService'
 import { CreateDocumentModal } from '../components/CreateDocumentModal'
+import { LoadingSpinner } from '../components/LoadingSpinner'
+import { Alert } from '../components/Alert'
+import { getErrorMessage } from '../api/errorUtils'
 import type { Document, DocumentStatus } from '../types/document'
 
 const STATUS_STYLES: Record<DocumentStatus, string> = {
@@ -30,7 +33,7 @@ export function DocumentsPage() {
 
     fetchDocumentsByWorkspace(workspaceId)
       .then(setDocuments)
-      .catch(() => setError('Não foi possível carregar os documentos.'))
+      .catch((err) => setError(getErrorMessage(err, 'Não foi possível carregar os documentos.')))
       .finally(() => setIsLoading(false))
   }, [workspaceId])
 
@@ -38,9 +41,7 @@ export function DocumentsPage() {
     setDocuments((prev) => [...prev, newDocument])
   }
 
-  if (isLoading) {
-    return <p className="text-slate-400">Carregando...</p>
-  }
+  if (isLoading) return <LoadingSpinner label="Carregando documentos..." />
 
   return (
     <div>
@@ -52,13 +53,13 @@ export function DocumentsPage() {
         <h2 className="text-xl font-semibold text-white">Documentos</h2>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+          className="bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
         >
           + Novo Documento
         </button>
       </div>
 
-      {error && <p className="text-red-400 mb-4">{error}</p>}
+      {error && <div className="mb-4"><Alert type="error" message={error} /></div>}
 
       {documents.length === 0 ? (
         <p className="text-slate-400">Nenhum documento cadastrado ainda neste workspace.</p>

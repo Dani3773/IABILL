@@ -8,7 +8,10 @@ import {
   rejectDocument,
   approveDocument,
 } from '../api/documentService'
+import { getErrorMessage } from '../api/errorUtils'
 import { useAuth } from '../contexts/AuthContext'
+import { LoadingSpinner } from '../components/LoadingSpinner'
+import { Alert } from '../components/Alert'
 import type { Document } from '../types/document'
 
 export function DocumentDetailPage() {
@@ -24,6 +27,7 @@ export function DocumentDetailPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isActionLoading, setIsActionLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   useEffect(() => {
     if (!documentId) return
@@ -37,20 +41,26 @@ export function DocumentDetailPage() {
         setDocument(doc)
         setEditedContent(doc.generatedContent ?? '')
       })
-      .catch(() => setError('Não foi possível carregar o documento.'))
+      .catch((err) => setError(getErrorMessage(err, 'Não foi possível carregar o documento.')))
       .finally(() => setIsLoading(false))
+  }
+
+  function clearMessages() {
+    setError(null)
+    setSuccessMessage(null)
   }
 
   async function handleGenerate() {
     if (!documentId || !instruction.trim()) return
     setIsActionLoading(true)
-    setError(null)
+    clearMessages()
     try {
       await generateDocumentContent(documentId, { instruction })
       loadDocument(documentId)
       setInstruction('')
-    } catch {
-      setError('Falha ao gerar conteúdo. Tente novamente.')
+      setSuccessMessage('Conteúdo gerado com sucesso pela IA.')
+    } catch (err) {
+      setError(getErrorMessage(err, 'Falha ao gerar conteúdo. Tente novamente.'))
     } finally {
       setIsActionLoading(false)
     }
@@ -59,12 +69,13 @@ export function DocumentDetailPage() {
   async function handleSaveContent() {
     if (!documentId) return
     setIsActionLoading(true)
-    setError(null)
+    clearMessages()
     try {
       const updated = await updateDocumentContent(documentId, editedContent)
       setDocument(updated)
-    } catch {
-      setError('Falha ao salvar o conteúdo.')
+      setSuccessMessage('Conteúdo salvo.')
+    } catch (err) {
+      setError(getErrorMessage(err, 'Falha ao salvar o conteúdo.'))
     } finally {
       setIsActionLoading(false)
     }
@@ -73,12 +84,13 @@ export function DocumentDetailPage() {
   async function handleReview() {
     if (!documentId) return
     setIsActionLoading(true)
-    setError(null)
+    clearMessages()
     try {
       const updated = await reviewDocument(documentId)
       setDocument(updated)
-    } catch {
-      setError('Falha ao marcar como revisado.')
+      setSuccessMessage('Documento marcado como revisado.')
+    } catch (err) {
+      setError(getErrorMessage(err, 'Falha ao marcar como revisado.'))
     } finally {
       setIsActionLoading(false)
     }
@@ -87,14 +99,15 @@ export function DocumentDetailPage() {
   async function handleReject() {
     if (!documentId || !rejectionReason.trim()) return
     setIsActionLoading(true)
-    setError(null)
+    clearMessages()
     try {
       const updated = await rejectDocument(documentId, rejectionReason)
       setDocument(updated)
       setRejectionReason('')
       setShowRejectionForm(false)
-    } catch {
-      setError('Falha ao rejeitar o documento.')
+      setSuccessMessage('Documento rejeitado e devolvido para rascunho.')
+    } catch (err) {
+      setError(getErrorMessage(err, 'Falha ao rejeitar o documento.'))
     } finally {
       setIsActionLoading(false)
     }
@@ -103,19 +116,20 @@ export function DocumentDetailPage() {
   async function handleApprove() {
     if (!documentId) return
     setIsActionLoading(true)
-    setError(null)
+    clearMessages()
     try {
       const updated = await approveDocument(documentId)
       setDocument(updated)
-    } catch {
-      setError('Falha ao aprovar. Verifique se você tem permissão de ADMIN.')
+      setSuccessMessage('Documento aprovado.')
+    } catch (err) {
+      setError(getErrorMessage(err, 'Falha ao aprovar. Verifique se você tem permissão de ADMIN.'))
     } finally {
       setIsActionLoading(false)
     }
   }
 
-  if (isLoading) return <p className="text-slate-400">Carregando...</p>
-  if (!document) return <p className="text-red-400">Documento não encontrado.</p>
+  if (isLoading) return <LoadingSpinner label="Carregando documento..." />
+  if (!document) return <Alert type="error" message="Documento não encontrado." />
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -134,11 +148,11 @@ export function DocumentDetailPage() {
       </div>
       <p className="text-sm text-slate-400 mb-6">{document.type}</p>
 
-      {error && (
-        <p className="text-red-400 text-sm mb-4 bg-red-950 rounded-lg p-3">{error}</p>
-      )}
+      <div className="space-y-3 mb-4">
+        {error && <Alert type="error" message={error} />}
+        {successMessage && <Alert type="success" message={successMessage} />}
+      </div>
 
-      {/* DRAFT: pedir para a IA gerar */}
       {document.status === 'DRAFT' && (
         <div className="bg-slate-800 rounded-lg p-4 border border-slate-700 mb-4">
           <label className="block text-sm text-slate-300 mb-2">
@@ -154,14 +168,13 @@ export function DocumentDetailPage() {
           <button
             onClick={handleGenerate}
             disabled={isActionLoading || !instruction.trim()}
-            className="bg-cyan-600 hover:bg-cyan-700 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 transition-colors"
+            className="bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 transition-colors"
           >
             {isActionLoading ? 'Gerando...' : 'Gerar com IA'}
           </button>
         </div>
       )}
 
-      {/* Conteúdo gerado - editável enquanto nao APROVADO */}
       {document.generatedContent !== null && (
         <div className="bg-slate-800 rounded-lg p-4 border border-slate-700 mb-4">
           <label className="block text-sm text-slate-300 mb-2">
@@ -186,14 +199,13 @@ export function DocumentDetailPage() {
         </div>
       )}
 
-      {/* Acoes de revisao - GENERATED ou REVIEWED */}
       {(document.status === 'GENERATED' || document.status === 'REVIEWED') && (
         <div className="flex flex-wrap gap-3">
           {document.status === 'GENERATED' && (
             <button
               onClick={handleReview}
               disabled={isActionLoading}
-              className="bg-cyan-600 hover:bg-cyan-700 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 transition-colors"
+              className="bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 transition-colors"
             >
               Marcar como Revisado
             </button>
@@ -203,7 +215,7 @@ export function DocumentDetailPage() {
             <button
               onClick={handleApprove}
               disabled={isActionLoading}
-              className="bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 transition-colors"
+              className="bg-green-600 hover:bg-green-500 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 transition-colors"
             >
               Aprovar
             </button>

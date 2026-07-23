@@ -1,15 +1,8 @@
-import { AxiosError } from 'axios'
-
-interface BackendErrorBody {
-  message?: string
-}
-
-export function getErrorMessage(error: unknown, fallback: string): string {
-  if (error instanceof AxiosError) {
-    const body = error.response?.data as BackendErrorBody | undefined
-    if (body?.message) {
-      return body.message
-    }
-  }
-  return fallback
+export function LoadingSpinner({ label = 'Carregando...' }: { label?: string }) {
+  return (
+    <div className="flex items-center justify-center gap-3 py-12 text-slate-400">
+      <div className="w-5 h-5 border-2 border-slate-600 border-t-cyan-500 rounded-full animate-spin" />
+      <span className="text-sm">{label}</span>
+    </div>
+  )
 }

@@ -1,36 +1,42 @@
-import { useState, type FormEvent } from 'react'
-import { createWorkspace } from '../api/workspaceService'
-import { useAuth } from '../contexts/AuthContext'
-import type { Workspace } from '../types/workspace'
+import { useState, type FormEvent } from "react";
+import { createWorkspace } from "../api/workspaceService";
+import { useAuth } from "../contexts/AuthContext";
+import type { Workspace } from "../types/workspace";
+import { getErrorMessage } from "../api/errorUtils";
 
 interface Props {
-  onClose: () => void
-  onCreated: (workspace: Workspace) => void
+  onClose: () => void;
+  onCreated: (workspace: Workspace) => void;
 }
 
 export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
-  const { tenantId } = useAuth()
+  const { tenantId } = useAuth();
 
-  const [name, setName] = useState('')
-  const [type, setType] = useState<'MATRIZ' | 'FILIAL'>('FILIAL')
-  const [documentId, setDocumentId] = useState('')
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [name, setName] = useState("");
+  const [type, setType] = useState<"MATRIZ" | "FILIAL">("FILIAL");
+  const [documentId, setDocumentId] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
-    e.preventDefault()
-    if (!tenantId) return
+    e.preventDefault();
+    if (!tenantId) return;
 
-    setError(null)
-    setIsLoading(true)
+    setError(null);
+    setIsLoading(true);
     try {
-      const workspace = await createWorkspace({ tenantId, name, type, documentId })
-      onCreated(workspace)
-      onClose()
-    } catch {
-      setError('Não foi possível criar o workspace. Verifique se o CNPJ já não está em uso.')
+      const workspace = await createWorkspace({
+        tenantId,
+        name,
+        type,
+        documentId,
+      });
+      onCreated(workspace);
+      onClose();
+    } catch (err) {
+      setError(getErrorMessage(err, "Não foi possível criar o workspace."));
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -64,7 +70,7 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
             <label className="block text-sm text-slate-300 mb-1">Tipo</label>
             <select
               value={type}
-              onChange={(e) => setType(e.target.value as 'MATRIZ' | 'FILIAL')}
+              onChange={(e) => setType(e.target.value as "MATRIZ" | "FILIAL")}
               className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             >
               <option value="FILIAL">Filial</option>
@@ -92,7 +98,7 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
               disabled={isLoading}
               className="flex-1 bg-cyan-600 hover:bg-cyan-700 disabled:opacity-50 text-white font-medium rounded-lg py-2 transition-colors"
             >
-              {isLoading ? 'Criando...' : 'Criar'}
+              {isLoading ? "Criando..." : "Criar"}
             </button>
             <button
               type="button"
@@ -105,5 +111,5 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
         </form>
       </div>
     </div>
-  )
+  );
 }

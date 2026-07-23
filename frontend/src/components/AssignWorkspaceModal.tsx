@@ -3,6 +3,7 @@ import { fetchWorkspaces } from '../api/workspaceService'
 import { addUserToWorkspace, fetchUserWorkspaces } from '../api/userService'
 import type { Workspace } from '../types/workspace'
 import type { WorkspaceMembership } from '../types/user'
+import { getErrorMessage } from '../api/errorUtils'
 
 interface Props {
   userId: string

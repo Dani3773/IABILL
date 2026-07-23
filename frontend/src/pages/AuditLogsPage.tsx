@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import { fetchAuditLogs } from '../api/auditLogService'
+import { LoadingSpinner } from '../components/LoadingSpinner'
+import { Alert } from '../components/Alert'
+import { getErrorMessage } from '../api/errorUtils'
 import type { AuditLog, AuditAction } from '../types/auditLog'
 
 const ACTION_STYLES: Record<AuditAction, string> = {
@@ -33,12 +36,12 @@ export function AuditLogsPage() {
   useEffect(() => {
     fetchAuditLogs()
       .then(setLogs)
-      .catch(() => setError('Não foi possível carregar a trilha de auditoria.'))
+      .catch((err) => setError(getErrorMessage(err, 'Não foi possível carregar a trilha de auditoria.')))
       .finally(() => setIsLoading(false))
   }, [])
 
-  if (isLoading) return <p className="text-slate-400">Carregando...</p>
-  if (error) return <p className="text-red-400">{error}</p>
+  if (isLoading) return <LoadingSpinner label="Carregando trilha de auditoria..." />
+  if (error) return <Alert type="error" message={error} />
 
   return (
     <div>
