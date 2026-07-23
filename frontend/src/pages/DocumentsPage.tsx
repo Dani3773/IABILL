@@ -1,54 +1,54 @@
-import { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import { fetchDocumentsByWorkspace } from '../api/documentService'
-import { CreateDocumentModal } from '../components/CreateDocumentModal'
-import { LoadingSpinner } from '../components/LoadingSpinner'
-import { Alert } from '../components/Alert'
-import { getErrorMessage } from '../api/errorUtils'
-import type { Document, DocumentStatus } from '../types/document'
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { fetchDocumentsByWorkspace } from "../api/documentService";
+import { CreateDocumentModal } from "../components/CreateDocumentModal";
+import { LoadingSpinner } from "../components/LoadingSpinner";
+import { Alert } from "../components/Alert";
+import { getErrorMessage } from "../api/errorUtils";
+import type { Document, DocumentStatus } from "../types/document";
 
 const STATUS_STYLES: Record<DocumentStatus, string> = {
-  DRAFT: 'bg-slate-700 text-slate-300',
-  GENERATED: 'bg-yellow-900 text-yellow-300',
-  REVIEWED: 'bg-blue-900 text-blue-300',
-  APPROVED: 'bg-green-900 text-green-300',
-}
+  DRAFT: "bg-slate-700 text-slate-300",
+  GENERATED: "bg-yellow-900 text-yellow-300",
+  REVIEWED: "bg-blue-900 text-blue-300",
+  APPROVED: "bg-green-900 text-green-300",
+};
 
 const STATUS_LABELS: Record<DocumentStatus, string> = {
-  DRAFT: 'Rascunho',
-  GENERATED: 'Gerado por IA',
-  REVIEWED: 'Revisado',
-  APPROVED: 'Aprovado',
-}
+  DRAFT: "Rascunho",
+  GENERATED: "Gerado por IA",
+  REVIEWED: "Revisado",
+  APPROVED: "Aprovado",
+};
 
 export function DocumentsPage() {
-  const { workspaceId } = useParams<{ workspaceId: string }>()
-  const [documents, setDocuments] = useState<Document[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [showCreateModal, setShowCreateModal] = useState(false)
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  const [documents, setDocuments] = useState<Document[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
-    if (!workspaceId) return
+    if (!workspaceId) return;
 
     fetchDocumentsByWorkspace(workspaceId)
       .then(setDocuments)
-      .catch((err) => setError(getErrorMessage(err, 'Não foi possível carregar os documentos.')))
-      .finally(() => setIsLoading(false))
-  }, [workspaceId])
+      .catch((err) =>
+        setError(
+          getErrorMessage(err, "Não foi possível carregar os documentos."),
+        ),
+      )
+      .finally(() => setIsLoading(false));
+  }, [workspaceId]);
 
   function handleCreated(newDocument: Document) {
-    setDocuments((prev) => [...prev, newDocument])
+    setDocuments((prev) => [...prev, newDocument]);
   }
 
-  if (isLoading) return <LoadingSpinner label="Carregando documentos..." />
+  if (isLoading) return <LoadingSpinner label="Carregando documentos..." />;
 
   return (
     <div>
-      <Link to="/dashboard" className="text-cyan-400 hover:underline text-sm mb-4 inline-block">
-        ← Voltar aos Workspaces
-      </Link>
-
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold text-white">Documentos</h2>
         <button
@@ -59,10 +59,16 @@ export function DocumentsPage() {
         </button>
       </div>
 
-      {error && <div className="mb-4"><Alert type="error" message={error} /></div>}
+      {error && (
+        <div className="mb-4">
+          <Alert type="error" message={error} />
+        </div>
+      )}
 
       {documents.length === 0 ? (
-        <p className="text-slate-400">Nenhum documento cadastrado ainda neste workspace.</p>
+        <p className="text-slate-400">
+          Nenhum documento cadastrado ainda neste workspace.
+        </p>
       ) : (
         <div className="space-y-2">
           {documents.map((doc) => (
@@ -75,7 +81,9 @@ export function DocumentsPage() {
                 <p className="font-medium text-white">{doc.title}</p>
                 <p className="text-xs text-slate-400">{doc.type}</p>
               </div>
-              <span className={`text-xs px-2 py-1 rounded ${STATUS_STYLES[doc.status]}`}>
+              <span
+                className={`text-xs px-2 py-1 rounded ${STATUS_STYLES[doc.status]}`}
+              >
                 {STATUS_LABELS[doc.status]}
               </span>
             </Link>
@@ -91,5 +99,5 @@ export function DocumentsPage() {
         />
       )}
     </div>
-  )
+  );
 }
