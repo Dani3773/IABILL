@@ -2,6 +2,8 @@ import { useState, type FormEvent } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { signup } from '../api/authService'
 import { useAuth } from '../contexts/AuthContext'
+import { getErrorMessage } from '../api/errorUtils'
+import { Alert } from '../components/Alert'
 
 export function SignupPage() {
   const navigate = useNavigate()
@@ -32,8 +34,8 @@ export function SignupPage() {
       })
       setAuth(response)
       navigate('/dashboard')
-    } catch {
-      setError('Não foi possível criar a conta. Verifique os dados e tente novamente.')
+    } catch (err) {
+      setError(getErrorMessage(err, 'Não foi possível criar a conta. Verifique os dados e tente novamente.'))
     } finally {
       setIsLoading(false)
     }
@@ -132,9 +134,7 @@ export function SignupPage() {
             />
           </div>
 
-          {error && (
-            <p className="text-red-400 text-sm text-center">{error}</p>
-          )}
+          {error && <Alert type="error" message={error} />}
 
           <button
             type="submit"

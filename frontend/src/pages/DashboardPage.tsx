@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { fetchWorkspaces } from '../api/workspaceService'
 import { CreateWorkspaceModal } from '../components/CreateWorkspaceModal'
+import { LoadingSpinner } from '../components/LoadingSpinner'
+import { Alert } from '../components/Alert'
+import { getErrorMessage } from '../api/errorUtils'
 import { useAuth } from '../contexts/AuthContext'
 import type { Workspace } from '../types/workspace'
 
@@ -20,7 +23,7 @@ export function DashboardPage() {
     setIsLoading(true)
     fetchWorkspaces()
       .then(setWorkspaces)
-      .catch(() => setError('Não foi possível carregar os workspaces.'))
+      .catch((err) => setError(getErrorMessage(err, 'Não foi possível carregar os workspaces.')))
       .finally(() => setIsLoading(false))
   }
 
@@ -28,9 +31,7 @@ export function DashboardPage() {
     setWorkspaces((prev) => [...prev, newWorkspace])
   }
 
-  if (isLoading) {
-    return <p className="text-slate-400">Carregando...</p>
-  }
+  if (isLoading) return <LoadingSpinner label="Carregando workspaces..." />
 
   return (
     <div>
@@ -39,14 +40,14 @@ export function DashboardPage() {
         {role === 'ADMIN' && (
           <button
             onClick={() => setShowCreateModal(true)}
-            className="bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+            className="bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
           >
             + Novo Workspace
           </button>
         )}
       </div>
 
-      {error && <p className="text-red-400 mb-4">{error}</p>}
+      {error && <div className="mb-4"><Alert type="error" message={error} /></div>}
 
       {workspaces.length === 0 ? (
         <p className="text-slate-400">Nenhum workspace cadastrado ainda.</p>

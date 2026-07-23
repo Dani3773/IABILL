@@ -1,31 +1,32 @@
-import { useState, type FormEvent } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { login } from "../api/authService";
-import { useAuth } from "../contexts/AuthContext";
-import { ShieldCheck } from "lucide-react";
+import { useState, type FormEvent } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import { login } from '../api/authService'
+import { getErrorMessage } from '../api/errorUtils'
+import { useAuth } from '../contexts/AuthContext'
+import { Alert } from '../components/Alert'
 
 export function LoginPage() {
-  const navigate = useNavigate();
-  const { setAuth } = useAuth();
+  const navigate = useNavigate()
+  const { setAuth } = useAuth()
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setIsLoading(true);
+    e.preventDefault()
+    setError(null)
+    setIsLoading(true)
 
     try {
-      const response = await login({ email, password });
-      setAuth(response);
-      navigate("/dashboard");
-    } catch {
-      setError("E-mail ou senha inválidos");
+      const response = await login({ email, password })
+      setAuth(response)
+      navigate('/dashboard')
+    } catch (err) {
+      setError(getErrorMessage(err, 'E-mail ou senha inválidos'))
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
   }
 
@@ -34,7 +35,7 @@ export function LoginPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <img src="../public/Logo.png" alt="IABill" className="h-25" />
+            <img src="../public/Logo.png" alt="IABill" className="h-14" />
           </div>
           <p className="text-sm text-slate-400 mt-1">
             Conformidade estruturada com apoio de IA
@@ -72,32 +73,25 @@ export function LoginPage() {
               />
             </div>
 
-            {error && (
-              <div className="bg-red-950/50 border border-red-900/50 rounded-lg px-3 py-2">
-                <p className="text-red-400 text-sm text-center">{error}</p>
-              </div>
-            )}
+            {error && <Alert type="error" message={error} />}
 
             <button
               type="submit"
               disabled={isLoading}
               className="w-full bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg py-2.5 transition-colors mt-2"
             >
-              {isLoading ? "Entrando..." : "Entrar"}
+              {isLoading ? 'Entrando...' : 'Entrar'}
             </button>
           </form>
         </div>
 
         <p className="text-center text-slate-500 text-sm mt-6">
-          Não tem uma conta?{" "}
-          <Link
-            to="/signup"
-            className="text-cyan-400 hover:text-cyan-300 font-medium"
-          >
+          Não tem uma conta?{' '}
+          <Link to="/signup" className="text-cyan-400 hover:text-cyan-300 font-medium">
             Cadastre sua empresa
           </Link>
         </p>
       </div>
     </div>
-  );
+  )
 }
