@@ -7,6 +7,7 @@ import { SignupPage } from './pages/SignupPage'
 import { DashboardPage } from './pages/DashboardPage'
 import { DocumentsPage } from './pages/DocumentsPage'
 import { DocumentDetailPage } from './pages/DocumentDetailPage'
+import { UsersPage } from './pages/UsersPage'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/workspaces/:workspaceId/documents" element={<DocumentsPage />} />
               <Route path="/documents/:documentId" element={<DocumentDetailPage />} />
+              <Route path="/users" element={<UsersPage />} />
             </Route>
           </Route>
 
