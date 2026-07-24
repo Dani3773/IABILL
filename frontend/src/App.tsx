@@ -11,6 +11,7 @@ import { DocumentDetailPage } from './pages/DocumentDetailPage'
 import { UsersPage } from './pages/UsersPage'
 import { AuditLogsPage } from './pages/AuditLogsPage'
 import { ActionPlanPage } from './pages/ActionPlanPage'
+import { SearchPage } from './pages/SearchPage'
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
               <Route path="/workspaces/:workspaceId" element={<WorkspaceLayout />}>
                 <Route path="documents" element={<DocumentsPage />} />
                 <Route path="action-plan" element={<ActionPlanPage />} />
+                <Route path="search" element={<SearchPage />} />
               </Route>
             </Route>
           </Route>
