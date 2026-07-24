@@ -1,58 +1,115 @@
 import { useState, useRef, useEffect, type FormEvent } from 'react'
-import { MessageCircle, X, Send, Sparkles } from 'lucide-react'
-import { sendChatMessage } from '../api/chatService'
+import { MessageCircle, X, Send, Sparkles, Plus, ArrowLeft } from 'lucide-react'
+import {
+  createConversation,
+  listConversations,
+  getConversationMessages,
+  sendConversationMessage,
+} from '../api/chatService'
 import { getErrorMessage } from '../api/errorUtils'
-import type { ChatMessage } from '../types/chat'
+import type { ChatConversation, ChatMessage } from '../types/chat'
 
 interface Props {
   workspaceId: string
 }
 
+type View = 'list' | 'conversation'
+
 export function ChatWidget({ workspaceId }: Props) {
   const [isOpen, setIsOpen] = useState(false)
+  const [view, setView] = useState<View>('list')
+  const [conversations, setConversations] = useState<ChatConversation[]>([])
+  const [activeConversationId, setActiveConversationId] = useState<string | null>(null)
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isSending, setIsSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
-  }, [messages, isOpen])
+  }, [messages])
+
+  function openWidget() {
+    setIsOpen(true)
+    loadConversations()
+  }
+
+  function loadConversations() {
+    setIsLoading(true)
+    setError(null)
+    listConversations(workspaceId)
+      .then(setConversations)
+      .catch((err) => setError(getErrorMessage(err, 'Não foi possível carregar as conversas.')))
+      .finally(() => setIsLoading(false))
+  }
+
+  async function handleOpenConversation(conversationId: string) {
+    setActiveConversationId(conversationId)
+    setView('conversation')
+    setIsLoading(true)
+    setError(null)
+    try {
+      const msgs = await getConversationMessages(conversationId)
+      setMessages(msgs)
+    } catch (err) {
+      setError(getErrorMessage(err, 'Não foi possível carregar a conversa.'))
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  async function handleNewConversation() {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const conversation = await createConversation(workspaceId)
+      setConversations((prev) => [conversation, ...prev])
+      setActiveConversationId(conversation.id)
+      setMessages([])
+      setView('conversation')
+    } catch (err) {
+      setError(getErrorMessage(err, 'Não foi possível iniciar uma nova conversa.'))
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  function handleBackToList() {
+    setView('list')
+    setActiveConversationId(null)
+    loadConversations()
+  }
 
   async function handleSubmit(e: FormEvent) {
-  e.preventDefault()
-  if (!input.trim() || isLoading) return
+    e.preventDefault()
+    if (!input.trim() || isSending || !activeConversationId) return
 
-  const userMessage: ChatMessage = { role: 'user', text: input }
-  const history = messages.map((m) => ({
-    role: m.role === 'user' ? ('user' as const) : ('model' as const),
-    text: m.text,
-  }))
-
-  setMessages((prev) => [...prev, userMessage])
-  setInput('')
-  setIsLoading(true)
-  setError(null)
-
-  try {
-    const response = await sendChatMessage({ workspaceId, message: userMessage.text, history })
+    const userText = input
     setMessages((prev) => [
       ...prev,
-      { role: 'assistant', text: response.reply, actionsTaken: response.actionsTaken },
+      { id: `temp-${Date.now()}`, role: 'USER', content: userText, actionsTaken: null, createdAt: new Date().toISOString() },
     ])
-  } catch (err) {
-    setError(getErrorMessage(err, 'O assistente não conseguiu responder agora.'))
-  } finally {
-    setIsLoading(false)
+    setInput('')
+    setIsSending(true)
+    setError(null)
+
+    try {
+      const assistantMessage = await sendConversationMessage(activeConversationId, userText)
+      setMessages((prev) => [...prev, assistantMessage])
+    } catch (err) {
+      setError(getErrorMessage(err, 'O assistente não conseguiu responder agora.'))
+    } finally {
+      setIsSending(false)
+    }
   }
-}
 
   if (!isOpen) {
     return (
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={openWidget}
         className="fixed bottom-6 right-6 w-14 h-14 bg-cyan-600 hover:bg-cyan-500 rounded-full shadow-2xl flex items-center justify-center transition-colors z-40"
         aria-label="Abrir assistente"
       >
@@ -65,73 +122,118 @@ export function ChatWidget({ workspaceId }: Props) {
     <div className="fixed bottom-6 right-6 w-96 h-[32rem] bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 flex flex-col z-40">
       <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700">
         <div className="flex items-center gap-2">
+          {view === 'conversation' && (
+            <button onClick={handleBackToList} className="text-slate-400 hover:text-white">
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+          )}
           <Sparkles className="w-4 h-4 text-cyan-400" />
           <span className="text-sm font-medium text-white">Assistente IABill</span>
         </div>
-        <button onClick={() => setIsOpen(false)} className="text-slate-400 hover:text-white">
-          <X className="w-4 h-4" />
-        </button>
-      </div>
-
-      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
-        {messages.length === 0 && (
-          <p className="text-xs text-slate-500 text-center mt-8">
-            Pergunte sobre seus documentos, ou peça para criar tarefas e documentos.
-          </p>
-        )}
-
-        {messages.map((msg, i) => (
-          <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div
-              className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${
-                msg.role === 'user'
-                  ? 'bg-cyan-600 text-white'
-                  : 'bg-slate-700 text-slate-100'
-              }`}
+        <div className="flex items-center gap-2">
+          {view === 'list' && (
+            <button
+              onClick={handleNewConversation}
+              className="text-slate-400 hover:text-white"
+              title="Nova conversa"
             >
-              <p className="whitespace-pre-wrap">{msg.text}</p>
-              {msg.actionsTaken && msg.actionsTaken.length > 0 && (
-                <div className="mt-2 pt-2 border-t border-slate-600/50 space-y-0.5">
-                  {msg.actionsTaken.map((action, j) => (
-                    <p key={j} className="text-xs text-cyan-300 flex items-center gap-1">
-                      <Sparkles className="w-3 h-3" />
-                      {action}
-                    </p>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-
-        {isLoading && (
-          <div className="flex justify-start">
-            <div className="bg-slate-700 rounded-lg px-3 py-2 text-sm text-slate-400">
-              Pensando...
-            </div>
-          </div>
-        )}
-
-        {error && <p className="text-xs text-red-400 text-center">{error}</p>}
+              <Plus className="w-4 h-4" />
+            </button>
+          )}
+          <button onClick={() => setIsOpen(false)} className="text-slate-400 hover:text-white">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex items-center gap-2 p-3 border-t border-slate-700">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Pergunte ou peça uma ação..."
-          disabled={isLoading}
-          className="flex-1 rounded-lg bg-slate-900 text-white text-sm px-3 py-2 border border-slate-700 focus:outline-none focus:border-cyan-500 disabled:opacity-50"
-        />
-        <button
-          type="submit"
-          disabled={isLoading || !input.trim()}
-          className="bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white rounded-lg p-2 transition-colors"
-        >
-          <Send className="w-4 h-4" />
-        </button>
-      </form>
+      {view === 'list' ? (
+        <div className="flex-1 overflow-y-auto px-3 py-3 space-y-2">
+          {isLoading && <p className="text-xs text-slate-500 text-center mt-4">Carregando...</p>}
+
+          {!isLoading && conversations.length === 0 && (
+            <div className="text-center mt-8">
+              <p className="text-xs text-slate-500 mb-3">Nenhuma conversa ainda.</p>
+              <button
+                onClick={handleNewConversation}
+                className="text-sm bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg px-4 py-2 transition-colors"
+              >
+                Iniciar conversa
+              </button>
+            </div>
+          )}
+
+          {conversations.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => handleOpenConversation(c.id)}
+              className="w-full text-left bg-slate-700 hover:bg-slate-600 rounded-lg px-3 py-2.5 transition-colors"
+            >
+              <p className="text-sm text-slate-100 truncate">{c.title ?? 'Nova conversa'}</p>
+              <p className="text-xs text-slate-400 mt-0.5">
+                {new Date(c.updatedAt).toLocaleString('pt-BR')}
+              </p>
+            </button>
+          ))}
+
+          {error && <p className="text-xs text-red-400 text-center">{error}</p>}
+        </div>
+      ) : (
+        <>
+          <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
+            {isLoading && <p className="text-xs text-slate-500 text-center mt-4">Carregando...</p>}
+
+            {messages.map((msg) => (
+              <div key={msg.id} className={`flex ${msg.role === 'USER' ? 'justify-end' : 'justify-start'}`}>
+                <div
+                  className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${
+                    msg.role === 'USER' ? 'bg-cyan-600 text-white' : 'bg-slate-700 text-slate-100'
+                  }`}
+                >
+                  <p className="whitespace-pre-wrap">{msg.content}</p>
+                  {msg.actionsTaken && msg.actionsTaken.length > 0 && (
+                    <div className="mt-2 pt-2 border-t border-slate-600/50 space-y-0.5">
+                      {msg.actionsTaken.map((action, j) => (
+                        <p key={j} className="text-xs text-cyan-300 flex items-center gap-1">
+                          <Sparkles className="w-3 h-3" />
+                          {action}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+
+            {isSending && (
+              <div className="flex justify-start">
+                <div className="bg-slate-700 rounded-lg px-3 py-2 text-sm text-slate-400">
+                  Pensando...
+                </div>
+              </div>
+            )}
+
+            {error && <p className="text-xs text-red-400 text-center">{error}</p>}
+          </div>
+
+          <form onSubmit={handleSubmit} className="flex items-center gap-2 p-3 border-t border-slate-700">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Pergunte ou peça uma ação..."
+              disabled={isSending}
+              className="flex-1 rounded-lg bg-slate-900 text-white text-sm px-3 py-2 border border-slate-700 focus:outline-none focus:border-cyan-500 disabled:opacity-50"
+            />
+            <button
+              type="submit"
+              disabled={isSending || !input.trim()}
+              className="bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white rounded-lg p-2 transition-colors"
+            >
+              <Send className="w-4 h-4" />
+            </button>
+          </form>
+        </>
+      )}
     </div>
   )
 }
