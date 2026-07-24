@@ -27,6 +27,7 @@ public class ChatService {
     private final ChatMessageRepository messageRepository;
     private final WorkspaceRepository workspaceRepository;
     private final UserRepository userRepository;
+    private final RateLimiterService rateLimiterService;
 
     @Transactional
     public ChatConversationResponseDTO createConversation(UUID workspaceId, UUID authTenantId, UUID authUserId) {
@@ -64,6 +65,7 @@ public class ChatService {
 
     @Transactional
     public ChatMessageResponseDTO sendMessage(UUID conversationId, String userMessageText, UUID authTenantId, UUID authUserId) {
+        rateLimiterService.checkAiUsageLimit(authUserId);
         ChatConversation conversation = getValidatedConversation(conversationId, authTenantId, authUserId);
         UUID workspaceId = conversation.getWorkspace().getId();
 

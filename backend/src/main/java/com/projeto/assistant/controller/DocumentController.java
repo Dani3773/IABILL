@@ -47,8 +47,11 @@ public class DocumentController {
     }
 
     @PostMapping("/{documentId}/content")
-    public Map<String, Object> processContent(@PathVariable UUID documentId, @RequestBody String rawContent) {
-        int chunksCreated = documentChunkService.processContent(documentId, rawContent);
+    public Map<String, Object> processContent(
+            @PathVariable UUID documentId,
+            @RequestBody String rawContent,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        int chunksCreated = documentChunkService.processContent(documentId, rawContent, authUserId);
         return Map.of("chunksCreated", chunksCreated);
     }
 

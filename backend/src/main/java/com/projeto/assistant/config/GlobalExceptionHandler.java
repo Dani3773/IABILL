@@ -1,6 +1,7 @@
 package com.projeto.assistant.config;
 
 import com.projeto.assistant.dto.ErrorResponseDTO;
+import com.projeto.assistant.service.RateLimitExceededException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -70,5 +71,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponseDTO> handleDataIntegrityViolation(DataIntegrityViolationException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.CONFLICT, "Já existe um registro com esses dados (verifique CNPJ/e-mail duplicado)", request);
+    }
+
+    @ExceptionHandler(RateLimitExceededException.class)
+    public ResponseEntity<ErrorResponseDTO> handleRateLimitExceeded(RateLimitExceededException ex, HttpServletRequest request) {
+        return buildResponse(HttpStatus.TOO_MANY_REQUESTS, ex.getMessage(), request);
     }
 }

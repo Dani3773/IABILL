@@ -22,7 +22,7 @@ export function Layout() {
     <div className="flex min-h-screen bg-slate-900">
       <aside className="w-56 bg-slate-800 border-r border-slate-700 flex flex-col">
         <div className="p-4 border-b border-slate-700">
-          <img src="/logo.png" alt="IABill" className="h-8" />
+          <img src="../../public/logo.png" alt="IABill" className="h-8" />
         </div>
 
         <nav className="flex-1 p-3 space-y-1">

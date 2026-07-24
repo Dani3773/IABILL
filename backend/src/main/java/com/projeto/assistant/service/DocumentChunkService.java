@@ -31,11 +31,13 @@ public class DocumentChunkService {
     private final WorkspaceRepository workspaceRepository;
     private final AuditLogService auditLogService;
     private final GeminiGenerationService geminiGenerationService;
+    private final RateLimiterService rateLimiterService;
 
     // Recebe o texto bruto de um documento, quebra em pedacos, gera embedding
     // de cada um via Gemini, e salva tudo vinculado ao Document.
     @Transactional
-    public int processContent(UUID documentId, String rawContent) {
+    public int processContent(UUID documentId, String rawContent, UUID authUserId) {
+        rateLimiterService.checkAiUsageLimit(authUserId);
         Document document = documentRepository.findById(documentId)
                 .orElseThrow(() -> new IllegalArgumentException("Documento não encontrado: " + documentId));
 
@@ -96,6 +98,7 @@ public class DocumentChunkService {
 
     @Transactional
     public DocumentGenerationResponseDTO generateAssistedContent(UUID documentId, String instruction, UUID authTenantId, UUID authUserId) {
+        rateLimiterService.checkAiUsageLimit(authUserId);
         Document document = documentRepository.findById(documentId)
                 .orElseThrow(() -> new IllegalArgumentException("Documento não encontrado: " + documentId));
 

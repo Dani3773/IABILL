@@ -24,6 +24,7 @@ public class ActionItemService {
     private final GeminiGenerationService geminiGenerationService;
     private final AuditLogService auditLogService;
     private final ObjectMapper objectMapper;
+    private final RateLimiterService rateLimiterService;
 
     @Transactional
     public ActionItemResponseDTO create(ActionItemRequestDTO request, UUID authTenantId, UUID authUserId) {
@@ -77,6 +78,7 @@ public class ActionItemService {
     // NADA e salvo no banco ainda - o usuario aprova cada sugestao individualmente.
     @Transactional
     public List<SuggestedActionItemDTO> generateSuggestions(UUID workspaceId, UUID authTenantId, UUID authUserId) {
+        rateLimiterService.checkAiUsageLimit(authUserId);
         Workspace workspace = getValidatedWorkspace(workspaceId, authTenantId);
 
         List<SemanticSearchResultDTO> relevantChunks = documentChunkService.semanticSearch(
@@ -87,22 +89,22 @@ public class ActionItemService {
                 .reduce("", (a, b) -> a + "\n\n---\n\n" + b);
 
         String prompt = """
-                Você é um assistente especializado em conformidade com a LGPD/RGPD.
-                Com base no contexto abaixo (extraído de documentos já existentes da empresa),
-                sugira de 3 a 6 tarefas concretas e acionáveis (um "plano de ação") que a empresa
-                ainda precisa executar para avançar na adequação à LGPD.
+            Você é um assistente especializado em conformidade com a LGPD/RGPD.
+            Com base no contexto abaixo (extraído de documentos já existentes da empresa),
+            sugira de 3 a 6 tarefas concretas e acionáveis (um "plano de ação") que a empresa
+            ainda precisa executar para avançar na adequação à LGPD.
 
-                Se o contexto for insuficiente, sugira tarefas genéricas e essenciais de conformidade
-                (ex: nomear encarregado de dados, mapear fluxos de dados, etc.), mas nunca invente
-                fatos específicos sobre a empresa que não estejam no contexto.
+            Se o contexto for insuficiente, sugira tarefas genéricas e essenciais de conformidade
+            (ex: nomear encarregado de dados, mapear fluxos de dados, etc.), mas nunca invente
+            fatos específicos sobre a empresa que não estejam no contexto.
 
-                Contexto:
-                %s
+            Contexto:
+            %s
 
-                Responda ESTRITAMENTE em formato JSON, como uma lista de objetos, sem nenhum texto
-                antes ou depois, sem markdown, EXATAMENTE neste formato:
-                [{"title": "...", "description": "..."}, {"title": "...", "description": "..."}]
-                """.formatted(context);
+            Responda ESTRITAMENTE em formato JSON, como uma lista de objetos, sem nenhum texto
+            antes ou depois, sem markdown, EXATAMENTE neste formato:
+            [{"title": "...", "description": "..."}, {"title": "...", "description": "..."}]
+            """.formatted(context);
 
         String rawResponse = geminiGenerationService.generate(prompt);
         String cleaned = rawResponse.trim()
