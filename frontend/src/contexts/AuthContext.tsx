@@ -1,16 +1,8 @@
-import { createContext, useContext, useState, type ReactNode } from 'react'
-import { jwtDecode } from 'jwt-decode'
-import type { LoginResponse } from '../types/auth'
-
-interface JwtPayload {
-  sub: string // userId
-  tenantId: string
-  role: 'ADMIN' | 'USER'
-  exp: number
-}
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
+import { fetchCurrentUser, logout as logoutRequest } from '../api/authService'
+import type { AuthMeResponse } from '../types/auth'
 
 interface AuthState {
-  token: string | null
   userId: string | null
   tenantId: string | null
   role: 'ADMIN' | 'USER' | null
@@ -18,55 +10,43 @@ interface AuthState {
 
 interface AuthContextValue extends AuthState {
   isAuthenticated: boolean
-  setAuth: (data: LoginResponse) => void
-  clearAuth: () => void
+  isLoading: boolean
+  setAuth: (data: AuthMeResponse) => void
+  clearAuth: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
-const STORAGE_KEY = 'auth_token'
-
-function decodeStateFromToken(token: string): AuthState {
-  try {
-    const payload = jwtDecode<JwtPayload>(token)
-
-    // Se o token ja expirou, trata como se nao houvesse autenticacao.
-    if (payload.exp * 1000 < Date.now()) {
-      return { token: null, userId: null, tenantId: null, role: null }
-    }
-
-    return {
-      token,
-      userId: payload.sub,
-      tenantId: payload.tenantId,
-      role: payload.role,
-    }
-  } catch {
-    return { token: null, userId: null, tenantId: null, role: null }
-  }
-}
+const EMPTY_STATE: AuthState = { userId: null, tenantId: null, role: null }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<AuthState>(() => {
-    const stored = sessionStorage.getItem(STORAGE_KEY)
-    return stored
-      ? decodeStateFromToken(stored)
-      : { token: null, userId: null, tenantId: null, role: null }
-  })
+  const [state, setState] = useState<AuthState>(EMPTY_STATE)
+  const [isLoading, setIsLoading] = useState(true)
 
-  function setAuth(data: LoginResponse) {
-    sessionStorage.setItem(STORAGE_KEY, data.token)
-    setState(decodeStateFromToken(data.token))
+  // Ao carregar a pagina (F5, ou primeira visita), pergunta pro backend
+  // quem esta logado - o cookie httpOnly (se existir e for valido) resolve isso.
+  useEffect(() => {
+    fetchCurrentUser()
+      .then((data) => setState({ userId: data.userId, tenantId: data.tenantId, role: data.role }))
+      .catch(() => setState(EMPTY_STATE))
+      .finally(() => setIsLoading(false))
+  }, [])
+
+  function setAuth(data: AuthMeResponse) {
+    setState({ userId: data.userId, tenantId: data.tenantId, role: data.role })
   }
 
-  function clearAuth() {
-    sessionStorage.removeItem(STORAGE_KEY)
-    setState({ token: null, userId: null, tenantId: null, role: null })
+  async function clearAuth() {
+    try {
+      await logoutRequest()
+    } finally {
+      setState(EMPTY_STATE)
+    }
   }
 
   return (
     <AuthContext.Provider
-      value={{ ...state, isAuthenticated: !!state.token, setAuth, clearAuth }}
+      value={{ ...state, isAuthenticated: !!state.userId, isLoading, setAuth, clearAuth }}
     >
       {children}
     </AuthContext.Provider>

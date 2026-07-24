@@ -1,5 +1,4 @@
-export interface LoginResponse {
-  token: string
+export interface AuthMeResponse {
   userId: string
   tenantId: string
   role: 'ADMIN' | 'USER'
