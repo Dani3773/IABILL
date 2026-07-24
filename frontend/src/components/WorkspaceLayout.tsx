@@ -1,4 +1,5 @@
 import { Outlet, useParams, Link, useLocation } from 'react-router-dom'
+import { ChatWidget } from './ChatWidget'
 
 export function WorkspaceLayout() {
   const { workspaceId } = useParams<{ workspaceId: string }>()
@@ -35,6 +36,7 @@ export function WorkspaceLayout() {
       </div>
 
       <Outlet />
+      {workspaceId && <ChatWidget workspaceId={workspaceId} />}
     </div>
   )
 }

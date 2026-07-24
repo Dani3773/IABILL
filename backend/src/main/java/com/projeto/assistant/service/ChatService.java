@@ -1,9 +1,13 @@
 package com.projeto.assistant.service;
 
 import com.projeto.assistant.dto.*;
-import com.projeto.assistant.model.ActionItemSource;
-import com.projeto.assistant.model.DocumentType;
+import com.projeto.assistant.model.*;
+import com.projeto.assistant.repository.ChatConversationRepository;
+import com.projeto.assistant.repository.ChatMessageRepository;
+import com.projeto.assistant.repository.UserRepository;
+import com.projeto.assistant.repository.WorkspaceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,17 +23,83 @@ public class ChatService {
     private final DocumentService documentService;
     private final DocumentChunkService documentChunkService;
     private final ActionItemService actionItemService;
+    private final ChatConversationRepository conversationRepository;
+    private final ChatMessageRepository messageRepository;
+    private final WorkspaceRepository workspaceRepository;
+    private final UserRepository userRepository;
 
     @Transactional
-    public ChatResponseDTO sendMessage(ChatRequestDTO request, UUID authTenantId, UUID authUserId) {
+    public ChatConversationResponseDTO createConversation(UUID workspaceId, UUID authTenantId, UUID authUserId) {
+        Workspace workspace = getValidatedWorkspace(workspaceId, authTenantId);
+        User user = userRepository.findById(authUserId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + authUserId));
+
+        ChatConversation conversation = new ChatConversation();
+        conversation.setWorkspace(workspace);
+        conversation.setUser(user);
+
+        ChatConversation saved = conversationRepository.save(conversation);
+        return ChatConversationResponseDTO.fromEntity(saved);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ChatConversationResponseDTO> listConversations(UUID workspaceId, UUID authTenantId, UUID authUserId) {
+        getValidatedWorkspace(workspaceId, authTenantId);
+
+        return conversationRepository.findByWorkspaceIdAndUserIdOrderByUpdatedAtDesc(workspaceId, authUserId)
+                .stream()
+                .map(ChatConversationResponseDTO::fromEntity)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<ChatMessageResponseDTO> getMessages(UUID conversationId, UUID authTenantId, UUID authUserId) {
+        ChatConversation conversation = getValidatedConversation(conversationId, authTenantId, authUserId);
+
+        return messageRepository.findByConversationIdOrderByCreatedAtAsc(conversation.getId())
+                .stream()
+                .map(ChatMessageResponseDTO::fromEntity)
+                .toList();
+    }
+
+    @Transactional
+    public ChatMessageResponseDTO sendMessage(UUID conversationId, String userMessageText, UUID authTenantId, UUID authUserId) {
+        ChatConversation conversation = getValidatedConversation(conversationId, authTenantId, authUserId);
+        UUID workspaceId = conversation.getWorkspace().getId();
+
+        List<ChatMessage> existingMessages = messageRepository.findByConversationIdOrderByCreatedAtAsc(conversationId);
+
+        // Persiste a mensagem do usuario JA, antes de chamar a IA - garante que fica
+        // salva mesmo que a chamada ao Gemini falhe.
+        ChatMessage userMessage = new ChatMessage();
+        userMessage.setConversation(conversation);
+        userMessage.setRole(ChatMessageRole.USER);
+        userMessage.setContent(userMessageText);
+        messageRepository.save(userMessage);
+
+        // Se for a primeira mensagem, define o titulo da conversa a partir dela.
+        if (conversation.getTitle() == null) {
+            conversation.setTitle(userMessageText.length() > 60 ? userMessageText.substring(0, 60) + "..." : userMessageText);
+        }
+
         List<Map<String, Object>> contents = new ArrayList<>();
-        contents.add(Map.of(
-                "role", "user",
-                "parts", List.of(Map.of("text", buildSystemContext(request.workspaceId()) + "\n\nMensagem do usuário: " + request.message()))
-        ));
+
+        // Reconstroi o historico da conversa a partir do que ja esta salvo no banco -
+        // nao depende mais do frontend enviar o historico.
+        for (ChatMessage msg : existingMessages) {
+            String role = msg.getRole() == ChatMessageRole.USER ? "user" : "model";
+            contents.add(Map.of("role", role, "parts", List.of(Map.of("text", msg.getContent()))));
+        }
+
+        String textForModel = existingMessages.isEmpty()
+                ? buildSystemContext(workspaceId) + "\n\nMensagem do usuário: " + userMessageText
+                : userMessageText;
+
+        contents.add(Map.of("role", "user", "parts", List.of(Map.of("text", textForModel))));
 
         List<Map<String, Object>> tools = buildToolDeclarations();
         List<String> actionsTaken = new ArrayList<>();
+        String finalReply = "Desculpe, não consegui concluir a solicitação em tempo hábil.";
 
         for (int round = 0; round < MAX_TOOL_CALL_ROUNDS; round++) {
             Map<String, Object> modelContent = geminiFunctionCallingService.generateWithTools(contents, tools);
@@ -43,13 +113,12 @@ public class ChatService {
                     .orElse(null);
 
             if (functionCallPart == null) {
-                // Sem chamada de ferramenta - a IA respondeu com texto final.
-                String replyText = parts.stream()
+                finalReply = parts.stream()
                         .filter(p -> p.containsKey("text"))
                         .map(p -> (String) p.get("text"))
                         .findFirst()
                         .orElse("(sem resposta)");
-                return new ChatResponseDTO(replyText, actionsTaken);
+                break;
             }
 
             @SuppressWarnings("unchecked")
@@ -58,10 +127,8 @@ public class ChatService {
             @SuppressWarnings("unchecked")
             Map<String, Object> args = (Map<String, Object>) functionCall.get("args");
 
-            Object functionResult = executeFunction(functionName, args, request.workspaceId(), authTenantId, authUserId, actionsTaken);
+            Object functionResult = executeFunction(functionName, args, workspaceId, authTenantId, authUserId, actionsTaken);
 
-            // Adiciona a chamada de funcao do modelo E o resultado da execucao ao historico,
-            // para o Gemini continuar a conversa com base no que realmente aconteceu.
             contents.add(Map.of("role", "model", "parts", List.of(functionCallPart)));
             contents.add(Map.of(
                     "role", "function",
@@ -72,7 +139,16 @@ public class ChatService {
             ));
         }
 
-        return new ChatResponseDTO("Desculpe, não consegui concluir a solicitação em tempo hábil.", actionsTaken);
+        ChatMessage assistantMessage = new ChatMessage();
+        assistantMessage.setConversation(conversation);
+        assistantMessage.setRole(ChatMessageRole.ASSISTANT);
+        assistantMessage.setContent(finalReply);
+        assistantMessage.setActionsTaken(actionsTaken);
+        ChatMessage savedAssistantMessage = messageRepository.save(assistantMessage);
+
+        conversationRepository.save(conversation); // atualiza updated_at (via @PreUpdate) e o titulo, se foi setado agora
+
+        return ChatMessageResponseDTO.fromEntity(savedAssistantMessage);
     }
 
     private Object executeFunction(String functionName, Map<String, Object> args, UUID workspaceId, UUID authTenantId, UUID authUserId, List<String> actionsTaken) {
@@ -118,6 +194,30 @@ public class ChatService {
             }
             default -> Map.of("error", "Função desconhecida: " + functionName);
         };
+    }
+
+    private ChatConversation getValidatedConversation(UUID conversationId, UUID authTenantId, UUID authUserId) {
+        ChatConversation conversation = conversationRepository.findById(conversationId)
+                .orElseThrow(() -> new IllegalArgumentException("Conversa não encontrada: " + conversationId));
+
+        if (!conversation.getWorkspace().getTenant().getId().equals(authTenantId)) {
+            throw new AccessDeniedException("Você não tem acesso a esta conversa");
+        }
+        if (!conversation.getUser().getId().equals(authUserId)) {
+            throw new AccessDeniedException("Esta conversa pertence a outro usuário");
+        }
+
+        return conversation;
+    }
+
+    private Workspace getValidatedWorkspace(UUID workspaceId, UUID authTenantId) {
+        Workspace workspace = workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new IllegalArgumentException("Workspace não encontrado: " + workspaceId));
+
+        if (!workspace.getTenant().getId().equals(authTenantId)) {
+            throw new AccessDeniedException("Você não tem acesso a este workspace");
+        }
+        return workspace;
     }
 
     private String buildSystemContext(UUID workspaceId) {
