@@ -1,56 +1,56 @@
-import { useEffect, useState } from 'react'
-import { fetchWorkspaces } from '../api/workspaceService'
-import { addUserToWorkspace, fetchUserWorkspaces } from '../api/userService'
-import type { Workspace } from '../types/workspace'
-import type { WorkspaceMembership } from '../types/user'
-import { getErrorMessage } from '../api/errorUtils'
+import { useEffect, useState } from "react";
+import { fetchWorkspaces } from "../api/workspaceService";
+import { addUserToWorkspace, fetchUserWorkspaces } from "../api/userService";
+import type { Workspace } from "../types/workspace";
+import type { WorkspaceMembership } from "../types/user";
+import { getErrorMessage } from "../api/errorUtils";
 
 interface Props {
-  userId: string
-  username: string
-  onClose: () => void
+  userId: string;
+  username: string;
+  onClose: () => void;
 }
 
 export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
-  const [allWorkspaces, setAllWorkspaces] = useState<Workspace[]>([])
-  const [memberships, setMemberships] = useState<WorkspaceMembership[]>([])
-  const [selectedWorkspaceId, setSelectedWorkspaceId] = useState('')
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [allWorkspaces, setAllWorkspaces] = useState<Workspace[]>([]);
+  const [memberships, setMemberships] = useState<WorkspaceMembership[]>([]);
+  const [selectedWorkspaceId, setSelectedWorkspaceId] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     Promise.all([fetchWorkspaces(), fetchUserWorkspaces(userId)]).then(
       ([workspaces, userMemberships]) => {
-        setAllWorkspaces(workspaces)
-        setMemberships(userMemberships)
+        setAllWorkspaces(workspaces);
+        setMemberships(userMemberships);
         const available = workspaces.find(
-          (w) => !userMemberships.some((m) => m.workspaceId === w.id)
-        )
-        if (available) setSelectedWorkspaceId(available.id)
-      }
-    )
-  }, [userId])
+          (w) => !userMemberships.some((m) => m.workspaceId === w.id),
+        );
+        if (available) setSelectedWorkspaceId(available.id);
+      },
+    );
+  }, [userId]);
 
   const availableWorkspaces = allWorkspaces.filter(
-    (w) => !memberships.some((m) => m.workspaceId === w.id)
-  )
+    (w) => !memberships.some((m) => m.workspaceId === w.id),
+  );
 
   async function handleAssign() {
-    if (!selectedWorkspaceId) return
-    setError(null)
-    setIsLoading(true)
+    if (!selectedWorkspaceId) return;
+    setError(null);
+    setIsLoading(true);
     try {
-      await addUserToWorkspace(userId, selectedWorkspaceId)
-      const updated = await fetchUserWorkspaces(userId)
-      setMemberships(updated)
+      await addUserToWorkspace(userId, selectedWorkspaceId);
+      const updated = await fetchUserWorkspaces(userId);
+      setMemberships(updated);
       const nextAvailable = allWorkspaces.find(
-        (w) => !updated.some((m) => m.workspaceId === w.id)
-      )
-      setSelectedWorkspaceId(nextAvailable?.id ?? '')
-    } catch {
-      setError('Não foi possível vincular o workspace.')
+        (w) => !updated.some((m) => m.workspaceId === w.id),
+      );
+      setSelectedWorkspaceId(nextAvailable?.id ?? "");
+    } catch (err) {
+      setError(getErrorMessage(err, "Não foi possível vincular o workspace."));
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -61,7 +61,10 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
           <h2 className="text-lg font-semibold text-white">
             Workspaces de {username}
           </h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-white text-xl leading-none">
+          <button
+            onClick={onClose}
+            className="text-slate-400 hover:text-white text-xl leading-none"
+          >
             ×
           </button>
         </div>
@@ -115,5 +118,5 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
         {error && <p className="text-red-400 text-sm mt-3">{error}</p>}
       </div>
     </div>
-  )
+  );
 }

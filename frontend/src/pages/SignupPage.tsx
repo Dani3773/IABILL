@@ -45,7 +45,7 @@ export function SignupPage() {
     <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-md bg-slate-800 rounded-xl p-8 shadow-xl">
         <div className="flex justify-center mb-6">
-          <img src="../public/Logo.png" alt="IABill" className="h-20" />
+          <img src="/logo.png" alt="IABill" className="h-20" />
         </div>
         <h1 className="text-2xl font-bold text-white mb-6 text-center">
           Cadastrar Empresa

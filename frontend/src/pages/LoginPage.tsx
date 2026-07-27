@@ -35,7 +35,7 @@ export function LoginPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <img src="../public/Logo.png" alt="IABill" className="h-14" />
+            <img src="/logo.png" alt="IABill" className="h-14" />
           </div>
           <p className="text-sm text-slate-400 mt-1">
             Conformidade estruturada com apoio de IA
