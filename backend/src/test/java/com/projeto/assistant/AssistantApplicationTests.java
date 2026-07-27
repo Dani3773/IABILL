@@ -1,10 +1,8 @@
 package com.projeto.assistant;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class AssistantApplicationTests {
+class AssistantApplicationTests extends IntegrationTestBase {
 
 	@Test
 	void contextLoads() {
