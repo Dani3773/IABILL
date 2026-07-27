@@ -46,7 +46,9 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:5173",
-                "https://d2e6a9nhbrdjho.cloudfront.net"
+                "https://d2e6a9nhbrdjho.cloudfront.net",
+                "https://iabill.com",
+                "https://www.iabill.com"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
