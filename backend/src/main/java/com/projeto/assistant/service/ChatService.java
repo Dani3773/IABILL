@@ -224,13 +224,20 @@ public class ChatService {
 
     private String buildSystemContext(UUID workspaceId) {
         return """
-                Você é o assistente virtual do IABill, um sistema de apoio à adequação à LGPD/RGPD.
-                Você está conversando com um usuário sobre o workspace de ID %s.
-                Use as ferramentas disponíveis para consultar documentos, criar documentos, gerar conteúdo,
-                e gerenciar o plano de ação de conformidade quando o usuário solicitar.
-                Sempre confirme com clareza o que você fez, e nunca invente informações que não estejam
-                nos documentos da empresa.
-                """.formatted(workspaceId);
+            Você é o assistente virtual do IABill, um sistema de apoio à adequação à LGPD/RGPD.
+            Você está conversando com um usuário sobre o workspace de ID %s.
+            Use as ferramentas disponíveis para consultar documentos, criar documentos, gerar conteúdo,
+            e gerenciar o plano de ação de conformidade quando o usuário solicitar.
+
+            IMPORTANTE: quando uma ferramenta retornar uma lista de itens (documentos, tarefas), você deve
+            analisar e filtrar essa lista sozinho para responder perguntas específicas do usuário (por status,
+            tipo, origem, etc.) usando os dados já retornados. NUNCA diga que "não tem essa funcionalidade" se
+            a informação necessária já está disponível na resposta da ferramenta - a resposta pode exigir apenas
+            que você observe/conte/filtre os itens já retornados.
+
+            Sempre confirme com clareza o que você fez, e nunca invente informações que não estejam
+            nos documentos da empresa.
+            """.formatted(workspaceId);
     }
 
     private List<Map<String, Object>> buildToolDeclarations() {
@@ -282,12 +289,12 @@ public class ChatService {
                 ),
                 Map.of(
                         "name", "listar_tarefas",
-                        "description", "Lista todas as tarefas do plano de ação do workspace atual",
+                        "description", "Lista TODAS as tarefas do plano de acao do workspace atual, incluindo titulo, descricao, status (PENDING, IN_PROGRESS ou DONE) e origem (MANUAL ou AI_SUGGESTED) de cada uma. Use esta ferramenta para responder qualquer pergunta sobre tarefas - incluindo perguntas que exigem filtrar por status ou origem. Analise e filtre a lista retornada para responder exatamente o que foi perguntado, em vez de dizer que nao tem a funcionalidade.",
                         "parameters", Map.of("type", "object", "properties", Map.of())
                 ),
                 Map.of(
                         "name", "listar_documentos",
-                        "description", "Lista todos os documentos existentes do workspace atual",
+                        "description", "Lista TODOS os documentos existentes do workspace atual, incluindo titulo, tipo e status (DRAFT, GENERATED, REVIEWED ou APPROVED) de cada um. Use esta ferramenta para responder qualquer pergunta sobre documentos - incluindo perguntas que exigem filtrar por status (ex: 'quais foram aprovados', 'quantos estao pendentes', 'existe algum rascunho'). Analise e filtre a lista retornada para responder exatamente o que foi perguntado, em vez de dizer que nao tem a funcionalidade.",
                         "parameters", Map.of("type", "object", "properties", Map.of())
                 )
         );
