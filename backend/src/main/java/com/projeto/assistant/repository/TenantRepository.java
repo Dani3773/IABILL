@@ -2,8 +2,8 @@ package com.projeto.assistant.repository;
 
 import com.projeto.assistant.model.Tenant;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query
-import com.projeto.assistant.dto.PlatformTenantSummaryDTO
+import org.springframework.data.jpa.repository.Query;
+import com.projeto.assistant.dto.PlatformTenantSummaryDTO;
 
 import java.util.List;
 import java.util.UUID;
