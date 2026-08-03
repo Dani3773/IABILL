@@ -26,7 +26,7 @@ public class Document {
     private Workspace workspace;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", nullable = false)
+    @JoinColumn(name = "created_by", nullable = true)
     private User createdBy;
 
     @Enumerated(EnumType.STRING)
