@@ -8,7 +8,7 @@ import com.projeto.assistant.repository.TenantRepository;
 import com.projeto.assistant.repository.UserRepository;
 import com.projeto.assistant.repository.WorkspaceRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.constraints.UUID;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

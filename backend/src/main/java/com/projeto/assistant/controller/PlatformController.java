@@ -7,7 +7,7 @@ import com.projeto.assistant.dto.PlatformTenantUpdateRequestDTO;
 import com.projeto.assistant.service.PlatformService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.constraints.UUID;
+import java.util.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
