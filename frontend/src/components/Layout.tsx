@@ -1,5 +1,5 @@
 import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
-import { LayoutGrid, Users, ScrollText, LogOut } from "lucide-react";
+import { LayoutGrid, Users, ScrollText, LogOut, Shield } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 
 export function Layout() {
@@ -13,20 +13,34 @@ export function Layout() {
   }
 
   const navItems = [
-    {
-      label: "Workspaces",
-      path: "/dashboard",
-      icon: LayoutGrid,
-      adminOnly: false,
-    },
-    { label: "Usuários", path: "/users", icon: Users, adminOnly: true },
-    {
-      label: "Auditoria",
-      path: "/audit-logs",
-      icon: ScrollText,
-      adminOnly: true,
-    },
-  ];
+  { 
+    label: 'Workspaces', 
+    path: '/dashboard', 
+    icon: LayoutGrid, 
+    adminOnly: false, 
+    superAdminOnly: false 
+  },
+  { 
+    label: 'Usuários', 
+    path: '/users', 
+    icon: Users, 
+    adminOnly: true, 
+    superAdminOnly: false 
+  },
+  { 
+    label: 'Auditoria', 
+    path: '/audit-logs', 
+    icon: ScrollText, 
+    adminOnly: true, 
+    superAdminOnly: false 
+  },
+  { 
+    label: 'Plataforma', 
+    path: '/platform', 
+    icon: Shield, 
+    adminOnly: false, 
+    superAdminOnly: true },
+];
 
   return (
     <div className="flex min-h-screen bg-slate-900">
@@ -37,7 +51,7 @@ export function Layout() {
 
         <nav className="flex-1 p-3 space-y-1">
           {navItems
-            .filter((item) => !item.adminOnly || role === 'ADMIN' || role === 'SUPER_ADMIN')
+            .filter((item) => (!item.adminOnly || role === 'ADMIN' || role === 'SUPER_ADMIN') && (!item.superAdminOnly || role === 'SUPER_ADMIN'))
             .map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname.startsWith(item.path);
