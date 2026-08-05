@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 export function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { role, clearAuth } = useAuth();
+  const { role, tenantId, clearAuth } = useAuth()
 
   async function handleLogout() {
     await clearAuth();
@@ -13,34 +13,35 @@ export function Layout() {
   }
 
   const navItems = [
-  { 
-    label: 'Workspaces', 
-    path: '/dashboard', 
-    icon: LayoutGrid, 
-    adminOnly: false, 
-    superAdminOnly: false 
-  },
-  { 
-    label: 'Usuários', 
-    path: '/users', 
-    icon: Users, 
-    adminOnly: true, 
-    superAdminOnly: false 
-  },
-  { 
-    label: 'Auditoria', 
-    path: '/audit-logs', 
-    icon: ScrollText, 
-    adminOnly: true, 
-    superAdminOnly: false 
-  },
-  { 
-    label: 'Plataforma', 
-    path: '/platform', 
-    icon: Shield, 
-    adminOnly: false, 
-    superAdminOnly: true },
-];
+    {
+      label: "Workspaces",
+      path: "/dashboard",
+      icon: LayoutGrid,
+      adminOnly: false,
+      superAdminOnly: false,
+    },
+    {
+      label: "Usuários",
+      path: "/users",
+      icon: Users,
+      adminOnly: true,
+      superAdminOnly: false,
+    },
+    {
+      label: "Auditoria",
+      path: "/audit-logs",
+      icon: ScrollText,
+      adminOnly: true,
+      superAdminOnly: false,
+    },
+    {
+      label: "Plataforma",
+      path: "/platform",
+      icon: Shield,
+      adminOnly: false,
+      superAdminOnly: true,
+    },
+  ];
 
   return (
     <div className="flex min-h-screen bg-slate-900">
@@ -51,7 +52,17 @@ export function Layout() {
 
         <nav className="flex-1 p-3 space-y-1">
           {navItems
-            .filter((item) => (!item.adminOnly || role === 'ADMIN' || role === 'SUPER_ADMIN') && (!item.superAdminOnly || role === 'SUPER_ADMIN'))
+            .filter((item) => {
+              const passesAdminCheck =
+                !item.adminOnly || role === "ADMIN" || role === "SUPER_ADMIN";
+              const passesSuperAdminCheck =
+                !item.superAdminOnly || role === "SUPER_ADMIN";
+              const passesTenantCheck =
+                item.superAdminOnly || tenantId !== null;
+              return (
+                passesAdminCheck && passesSuperAdminCheck && passesTenantCheck
+              );
+            })
             .map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname.startsWith(item.path);
