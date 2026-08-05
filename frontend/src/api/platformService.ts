@@ -28,3 +28,7 @@ export async function resetUserPassword(userId: string): Promise<PlatformPasswor
   const response = await apiClient.post<PlatformPasswordResetResponse>(`/platform/users/${userId}/reset-password`)
   return response.data
 }
+
+export async function setTenantActive(id: string, active: boolean): Promise<void> {
+  await apiClient.put(`/platform/tenants/${id}/active`, null, { params: { active } })
+}

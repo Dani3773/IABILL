@@ -6,6 +6,7 @@ import { Alert } from "../components/Alert";
 import { getErrorMessage } from "../api/errorUtils";
 import type { PlatformTenantDetail } from "../types/platform";
 import { updateUserRole, resetUserPassword } from "../api/platformService";
+import { setTenantActive } from "../api/platformService";
 
 export function PlatformTenantDetailPage() {
   const { tenantId } = useParams<{ tenantId: string }>();
@@ -93,6 +94,29 @@ export function PlatformTenantDetailPage() {
     }
   }
 
+  async function handleToggleActive() {
+    if (!tenantId || !tenant) return;
+    const newStatus = !tenant.active;
+    const confirmMessage = newStatus
+      ? "Reativar esta empresa? Os usuários voltarão a ter acesso normal."
+      : "Desativar esta empresa? Todos os usuários perderão acesso em até 60 segundos.";
+
+    if (!window.confirm(confirmMessage)) return;
+
+    setError(null);
+    try {
+      await setTenantActive(tenantId, newStatus);
+      load(tenantId);
+      setSuccessMessage(
+        newStatus ? "Empresa reativada." : "Empresa desativada.",
+      );
+    } catch (err) {
+      setError(
+        getErrorMessage(err, "Não foi possível alterar o status da empresa."),
+      );
+    }
+  }
+
   return (
     <div className="max-w-3xl mx-auto">
       <Link
@@ -110,14 +134,29 @@ export function PlatformTenantDetailPage() {
       <div className="bg-slate-800 rounded-lg p-5 border border-slate-700 mb-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-white">Dados da Empresa</h2>
-          {!isEditing && (
-            <button
-              onClick={() => setIsEditing(true)}
-              className="text-sm text-cyan-400 hover:underline"
+          <div className="flex items-center gap-3">
+            <span
+              className={`text-xs px-2 py-1 rounded ${tenant.active ? "bg-green-900 text-green-300" : "bg-red-900 text-red-300"}`}
             >
-              Editar
-            </button>
-          )}
+              {tenant.active ? "Ativa" : "Desativada"}
+            </span>
+            {!isEditing && (
+              <>
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="text-sm text-cyan-400 hover:underline"
+                >
+                  Editar
+                </button>
+                <button
+                  onClick={handleToggleActive}
+                  className={`text-sm hover:underline ${tenant.active ? "text-red-400" : "text-green-400"}`}
+                >
+                  {tenant.active ? "Desativar" : "Reativar"}
+                </button>
+              </>
+            )}
+          </div>
         </div>
 
         {isEditing ? (

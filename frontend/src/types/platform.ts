@@ -7,6 +7,7 @@ export interface PlatformTenantSummary {
   userCount: number
   workspaceCount: number
   documentCount: number
+  active : boolean
 }
 
 export interface PlatformUser {
@@ -20,7 +21,7 @@ export interface PlatformWorkspace {
   id: string
   name: string
   type: 'MATRIZ' | 'FILIAL'
-  documentId: string
+  documentId: BigIntToLocaleStringOptions
 }
 
 export interface PlatformTenantDetail {
@@ -31,6 +32,7 @@ export interface PlatformTenantDetail {
   createdAt: string
   users: PlatformUser[]
   workspaces: PlatformWorkspace[]
+  active : boolean
 }
 
 export interface PlatformTenantUpdateRequest {

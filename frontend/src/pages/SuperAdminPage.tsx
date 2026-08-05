@@ -37,6 +37,7 @@ export function SuperAdminPage() {
               <th className="py-2 pr-4">Empresa</th>
               <th className="py-2 pr-4">CNPJ</th>
               <th className="py-2 pr-4">País</th>
+              <th className="py-2 pr-4">Status</th>
               <th className="py-2 pr-4">Cadastrada em</th>
               <th className="py-2 pr-4 text-center">Usuários</th>
               <th className="py-2 pr-4 text-center">Workspaces</th>
@@ -59,7 +60,13 @@ export function SuperAdminPage() {
                 <td className="py-3 pr-4 text-center text-slate-300">{t.userCount}</td>
                 <td className="py-3 pr-4 text-center text-slate-300">{t.workspaceCount}</td>
                 <td className="py-3 pr-4 text-center text-slate-300">{t.documentCount}</td>
+                <td className="py-3 pr-4 text-center">
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${t.active ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                    {t.active ? 'Ativo' : 'Inativo'}
+                  </span>
+                </td>
               </tr>
+              
             ))}
           </tbody>
         </table>
