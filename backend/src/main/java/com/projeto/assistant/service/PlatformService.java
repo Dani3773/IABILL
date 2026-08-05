@@ -1,9 +1,7 @@
 package com.projeto.assistant.service;
 
 import com.projeto.assistant.dto.*;
-import com.projeto.assistant.model.AuditAction;
-import com.projeto.assistant.model.AuditEntityType;
-import com.projeto.assistant.model.Tenant;
+import com.projeto.assistant.model.*;
 import com.projeto.assistant.repository.TenantRepository;
 import com.projeto.assistant.repository.UserRepository;
 import com.projeto.assistant.repository.WorkspaceRepository;
@@ -11,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import java.security.SecureRandom;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +23,7 @@ public class PlatformService {
     private final UserRepository userRepository;
     private final WorkspaceRepository workspaceRepository;
     private final AuditLogService auditLogService;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public List<PlatformTenantSummaryDTO> listAllTenants() {
@@ -67,5 +68,53 @@ public class PlatformService {
                 Map.of("before", before, "after", request.name() + " / " + request.documentId() + " / " + request.country()));
 
         return getTenantDetail(tenantId);
+    }
+
+    @Transactional
+    public PlatformUserSummaryDTO updateUserRole(UUID userId, UserRole newRole, UUID authUserId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + userId));
+
+        UserRole previousRole = user.getRole();
+        user.setRole(newRole);
+        userRepository.save(user);
+
+        // So registra na trilha de auditoria se o usuario pertence a um tenant real
+        // (contas Super-Admin sem tenant nao tem onde registrar isso).
+        if (user.getTenant() != null) {
+            auditLogService.record(user.getTenant().getId(), authUserId, AuditAction.UPDATE, AuditEntityType.USER, userId,
+                    Map.of("roleChange", previousRole + " -> " + newRole, "changedByPlatformAdmin", true));
+        }
+
+        return new PlatformUserSummaryDTO(user.getId(), user.getUsername(), user.getEmail(), user.getRole());
+    }
+
+    @Transactional
+    public PlatformPasswordResetResponseDTO resetUserPassword(UUID userId, UUID authUserId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + userId));
+
+        String temporaryPassword = generateTemporaryPassword();
+        user.setPasswordHash(passwordEncoder.encode(temporaryPassword));
+        userRepository.save(user);
+
+        // NUNCA registra a senha em texto puro na auditoria - so o fato de que
+        // a acao aconteceu.
+        if (user.getTenant() != null) {
+            auditLogService.record(user.getTenant().getId(), authUserId, AuditAction.UPDATE, AuditEntityType.USER, userId,
+                    Map.of("action", "senha resetada por administrador de plataforma"));
+        }
+
+        return new PlatformPasswordResetResponseDTO(temporaryPassword);
+    }
+
+    private String generateTemporaryPassword() {
+        String chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 12; i++) {
+            sb.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        return sb.toString();
     }
 }

@@ -1,9 +1,7 @@
 package com.projeto.assistant.controller;
 
 import com.projeto.assistant.config.JwtAuthenticationFilter;
-import com.projeto.assistant.dto.PlatformTenantDetailDTO;
-import com.projeto.assistant.dto.PlatformTenantSummaryDTO;
-import com.projeto.assistant.dto.PlatformTenantUpdateRequestDTO;
+import com.projeto.assistant.dto.*;
 import com.projeto.assistant.service.PlatformService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +38,22 @@ public class PlatformController {
             @Valid @RequestBody PlatformTenantUpdateRequestDTO request,
             @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
         return platformService.updateTenant(id, request, authUserId);
+    }
+
+    @PutMapping("/users/{userId}/role")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    public PlatformUserSummaryDTO updateUserRole(
+            @PathVariable UUID userId,
+            @Valid @RequestBody PlatformUserRoleUpdateRequestDTO request,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return platformService.updateUserRole(userId, request.role(), authUserId);
+    }
+
+    @PostMapping("/users/{userId}/reset-password")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    public PlatformPasswordResetResponseDTO resetUserPassword(
+            @PathVariable UUID userId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return platformService.resetUserPassword(userId, authUserId);
     }
 }
