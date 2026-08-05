@@ -38,3 +38,11 @@ export interface PlatformTenantUpdateRequest {
   documentId: string
   country: string
 }
+
+export interface PlatformUserRoleUpdateRequest {
+  role: 'ADMIN' | 'USER' | 'SUPER_ADMIN'
+}
+
+export interface PlatformPasswordResetResponse {
+  temporaryPassword: string
+}

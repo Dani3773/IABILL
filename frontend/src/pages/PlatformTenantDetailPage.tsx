@@ -1,66 +1,104 @@
-import { useEffect, useState, type FormEvent } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import { fetchTenantDetail, updateTenant } from '../api/platformService'
-import { LoadingSpinner } from '../components/LoadingSpinner'
-import { Alert } from '../components/Alert'
-import { getErrorMessage } from '../api/errorUtils'
-import type { PlatformTenantDetail } from '../types/platform'
+import { useEffect, useState, type FormEvent } from "react";
+import { useParams, Link } from "react-router-dom";
+import { fetchTenantDetail, updateTenant } from "../api/platformService";
+import { LoadingSpinner } from "../components/LoadingSpinner";
+import { Alert } from "../components/Alert";
+import { getErrorMessage } from "../api/errorUtils";
+import type { PlatformTenantDetail } from "../types/platform";
+import { updateUserRole, resetUserPassword } from "../api/platformService";
 
 export function PlatformTenantDetailPage() {
-  const { tenantId } = useParams<{ tenantId: string }>()
+  const { tenantId } = useParams<{ tenantId: string }>();
 
-  const [tenant, setTenant] = useState<PlatformTenantDetail | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [tenant, setTenant] = useState<PlatformTenantDetail | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const [isEditing, setIsEditing] = useState(false)
-  const [name, setName] = useState('')
-  const [documentId, setDocumentId] = useState('')
-  const [country, setCountry] = useState('')
-  const [saving, setSaving] = useState(false)
+  const [isEditing, setIsEditing] = useState(false);
+  const [name, setName] = useState("");
+  const [documentId, setDocumentId] = useState("");
+  const [country, setCountry] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  const [editingUserId, setEditingUserId] = useState<string | null>(null);
+  const [newRole, setNewRole] = useState<"ADMIN" | "USER" | "SUPER_ADMIN">(
+    "USER",
+  );
+  const [tempPassword, setTempPassword] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!tenantId) return
-    load(tenantId)
-  }, [tenantId])
+    if (!tenantId) return;
+    load(tenantId);
+  }, [tenantId]);
 
   function load(id: string) {
-    setIsLoading(true)
+    setIsLoading(true);
     fetchTenantDetail(id)
       .then((data) => {
-        setTenant(data)
-        setName(data.name)
-        setDocumentId(data.documentId)
-        setCountry(data.country)
+        setTenant(data);
+        setName(data.name);
+        setDocumentId(data.documentId);
+        setCountry(data.country);
       })
-      .catch((err) => setError(getErrorMessage(err, 'Não foi possível carregar o tenant.')))
-      .finally(() => setIsLoading(false))
+      .catch((err) =>
+        setError(getErrorMessage(err, "Não foi possível carregar o tenant.")),
+      )
+      .finally(() => setIsLoading(false));
   }
 
   async function handleSave(e: FormEvent) {
-    e.preventDefault()
-    if (!tenantId) return
-    setSaving(true)
-    setError(null)
+    e.preventDefault();
+    if (!tenantId) return;
+    setSaving(true);
+    setError(null);
     try {
-      const updated = await updateTenant(tenantId, { name, documentId, country })
-      setTenant(updated)
-      setIsEditing(false)
-      setSuccessMessage('Dados da empresa atualizados.')
+      const updated = await updateTenant(tenantId, {
+        name,
+        documentId,
+        country,
+      });
+      setTenant(updated);
+      setIsEditing(false);
+      setSuccessMessage("Dados da empresa atualizados.");
     } catch (err) {
-      setError(getErrorMessage(err, 'Não foi possível salvar as alterações.'))
+      setError(getErrorMessage(err, "Não foi possível salvar as alterações."));
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
   }
 
-  if (isLoading) return <LoadingSpinner label="Carregando empresa..." />
-  if (!tenant) return <Alert type="error" message="Empresa não encontrada." />
+  if (isLoading) return <LoadingSpinner label="Carregando empresa..." />;
+  if (!tenant) return <Alert type="error" message="Empresa não encontrada." />;
+
+  async function handleChangeRole(userId: string) {
+    setError(null);
+    try {
+      await updateUserRole(userId, newRole);
+      if (tenantId) load(tenantId);
+      setEditingUserId(null);
+      setSuccessMessage("Papel do usuário atualizado.");
+    } catch (err) {
+      setError(getErrorMessage(err, "Não foi possível atualizar o papel."));
+    }
+  }
+
+  async function handleResetPassword(userId: string) {
+    setError(null);
+    try {
+      const result = await resetUserPassword(userId);
+      setTempPassword(result.temporaryPassword);
+    } catch (err) {
+      setError(getErrorMessage(err, "Não foi possível resetar a senha."));
+    }
+  }
 
   return (
     <div className="max-w-3xl mx-auto">
-      <Link to="/platform" className="text-cyan-400 hover:underline text-sm mb-4 inline-block">
+      <Link
+        to="/platform"
+        className="text-cyan-400 hover:underline text-sm mb-4 inline-block"
+      >
         ← Voltar à Plataforma
       </Link>
 
@@ -118,7 +156,7 @@ export function PlatformTenantDetailPage() {
                 disabled={saving}
                 className="bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
               >
-                {saving ? 'Salvando...' : 'Salvar'}
+                {saving ? "Salvando..." : "Salvar"}
               </button>
               <button
                 type="button"
@@ -145,38 +183,126 @@ export function PlatformTenantDetailPage() {
             </div>
             <div>
               <dt className="text-slate-400">Cadastrada em</dt>
-              <dd className="text-white">{new Date(tenant.createdAt).toLocaleDateString('pt-BR')}</dd>
+              <dd className="text-white">
+                {new Date(tenant.createdAt).toLocaleDateString("pt-BR")}
+              </dd>
             </div>
           </dl>
         )}
       </div>
 
       <div className="bg-slate-800 rounded-lg p-5 border border-slate-700 mb-6">
-        <h2 className="text-lg font-semibold text-white mb-3">Usuários ({tenant.users.length})</h2>
+        <h2 className="text-lg font-semibold text-white mb-3">
+          Usuários ({tenant.users.length})
+        </h2>
         <div className="space-y-2">
           {tenant.users.map((u) => (
-            <div key={u.id} className="flex items-center justify-between bg-slate-900 rounded-lg px-3 py-2 text-sm">
-              <div>
-                <p className="text-white">{u.username}</p>
-                <p className="text-slate-400 text-xs">{u.email}</p>
+            <div
+              key={u.id}
+              className="bg-slate-900 rounded-lg px-3 py-2.5 text-sm"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-white">{u.username}</p>
+                  <p className="text-slate-400 text-xs">{u.email}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs px-2 py-1 rounded bg-slate-700 text-slate-300">
+                    {u.role}
+                  </span>
+                  <button
+                    onClick={() => {
+                      setEditingUserId(editingUserId === u.id ? null : u.id);
+                      setNewRole(u.role);
+                    }}
+                    className="text-xs text-cyan-400 hover:underline"
+                  >
+                    Mudar papel
+                  </button>
+                  <button
+                    onClick={() => handleResetPassword(u.id)}
+                    className="text-xs text-amber-400 hover:underline"
+                  >
+                    Resetar senha
+                  </button>
+                </div>
               </div>
-              <span className="text-xs px-2 py-1 rounded bg-slate-700 text-slate-300">{u.role}</span>
+
+              {editingUserId === u.id && (
+                <div className="flex items-center gap-2 mt-2 pt-2 border-t border-slate-800">
+                  <select
+                    value={newRole}
+                    onChange={(e) =>
+                      setNewRole(
+                        e.target.value as "ADMIN" | "USER" | "SUPER_ADMIN",
+                      )
+                    }
+                    className="text-xs rounded bg-slate-800 text-white px-2 py-1 border border-slate-700 focus:outline-none focus:border-cyan-500"
+                  >
+                    <option value="USER">USER</option>
+                    <option value="ADMIN">ADMIN</option>
+                    <option value="SUPER_ADMIN">SUPER_ADMIN</option>
+                  </select>
+                  <button
+                    onClick={() => handleChangeRole(u.id)}
+                    className="text-xs bg-cyan-600 hover:bg-cyan-500 text-white rounded px-3 py-1 transition-colors"
+                  >
+                    Salvar
+                  </button>
+                  <button
+                    onClick={() => setEditingUserId(null)}
+                    className="text-xs text-slate-400 hover:text-slate-300 px-2"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>
       </div>
 
+      {tempPassword && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center px-4 z-50">
+          <div className="w-full max-w-sm bg-slate-800 rounded-xl p-6 shadow-xl border border-amber-700">
+            <h3 className="text-white font-semibold mb-2">
+              Senha temporária gerada
+            </h3>
+            <p className="text-slate-400 text-xs mb-3">
+              Copie e envie ao usuário por um canal seguro. Essa senha não pode
+              ser recuperada depois de fechar esta janela.
+            </p>
+            <div className="bg-slate-900 rounded-lg px-3 py-2 font-mono text-cyan-400 text-sm mb-4 select-all">
+              {tempPassword}
+            </div>
+            <button
+              onClick={() => setTempPassword(null)}
+              className="w-full bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-medium rounded-lg py-2 transition-colors"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="bg-slate-800 rounded-lg p-5 border border-slate-700">
-        <h2 className="text-lg font-semibold text-white mb-3">Workspaces ({tenant.workspaces.length})</h2>
+        <h2 className="text-lg font-semibold text-white mb-3">
+          Workspaces ({tenant.workspaces.length})
+        </h2>
         <div className="space-y-2">
           {tenant.workspaces.map((w) => (
-            <div key={w.id} className="flex items-center justify-between bg-slate-900 rounded-lg px-3 py-2 text-sm">
+            <div
+              key={w.id}
+              className="flex items-center justify-between bg-slate-900 rounded-lg px-3 py-2 text-sm"
+            >
               <p className="text-white">{w.name}</p>
-              <span className="text-xs px-2 py-1 rounded bg-purple-900 text-purple-300">{w.type}</span>
+              <span className="text-xs px-2 py-1 rounded bg-purple-900 text-purple-300">
+                {w.type}
+              </span>
             </div>
           ))}
         </div>
       </div>
     </div>
-  )
+  );
 }
