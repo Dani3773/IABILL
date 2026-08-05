@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { fetchAllTenants } from '../api/platformService'
 import { LoadingSpinner } from '../components/LoadingSpinner'
 import { Alert } from '../components/Alert'
 import { getErrorMessage } from '../api/errorUtils'
 import type { PlatformTenantSummary } from '../types/platform'
-import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
 
 export function SuperAdminPage() {
+  const navigate = useNavigate()
   const [tenants, setTenants] = useState<PlatformTenantSummary[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -45,7 +45,11 @@ export function SuperAdminPage() {
           </thead>
           <tbody>
             {tenants.map((t) => (
-              <tr key={t.id} className="border-b border-slate-800">
+              <tr
+                key={t.id}
+                onClick={() => navigate(`/platform/${t.id}`)}
+                className="border-b border-slate-800 hover:bg-slate-800/50 cursor-pointer transition-colors"
+              >
                 <td className="py-3 pr-4 text-white font-medium">{t.name}</td>
                 <td className="py-3 pr-4 text-slate-400">{t.documentId}</td>
                 <td className="py-3 pr-4 text-slate-400">{t.country}</td>
