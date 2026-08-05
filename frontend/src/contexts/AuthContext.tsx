@@ -5,7 +5,7 @@ import type { AuthMeResponse } from '../types/auth'
 interface AuthState {
   userId: string | null
   tenantId: string | null
-  role: 'ADMIN' | 'USER' | null
+  role: 'ADMIN' | 'USER' | 'SUPER_ADMIN' | null
 }
 
 interface AuthContextValue extends AuthState {

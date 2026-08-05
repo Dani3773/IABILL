@@ -1,7 +1,7 @@
 export interface AuthMeResponse {
   userId: string
   tenantId: string
-  role: 'ADMIN' | 'USER'
+  role: 'ADMIN' | 'USER' | 'SUPER_ADMIN'
 }
 
 export interface SignupRequest {
