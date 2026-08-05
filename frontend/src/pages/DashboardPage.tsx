@@ -37,7 +37,7 @@ export function DashboardPage() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold text-white">Seus Workspaces</h2>
-        {role === 'ADMIN' && (
+        {(role === 'ADMIN' || role === 'SUPER_ADMIN') && (
           <button
             onClick={() => setShowCreateModal(true)}
             className="bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"

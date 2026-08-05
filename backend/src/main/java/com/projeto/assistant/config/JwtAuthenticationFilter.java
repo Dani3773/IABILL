@@ -49,7 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             var authentication = new UsernamePasswordAuthenticationToken(
                     userId,
                     null,
-                    List.of(new SimpleGrantedAuthority("ROLE_" + role))
+                    buildAuthorities(role)
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -76,5 +76,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         return null;
+    }
+
+    private List<SimpleGrantedAuthority> buildAuthorities(String role) {
+        if ("SUPER_ADMIN".equals(role)) {
+            return List.of(
+                    new SimpleGrantedAuthority("ROLE_SUPER_ADMIN"),
+                    new SimpleGrantedAuthority("ROLE_ADMIN")
+            );
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
     }
 }

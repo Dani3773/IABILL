@@ -37,7 +37,7 @@ export function Layout() {
 
         <nav className="flex-1 p-3 space-y-1">
           {navItems
-            .filter((item) => !item.adminOnly || role === "ADMIN")
+            .filter((item) => !item.adminOnly || role === 'ADMIN' || role === 'SUPER_ADMIN')
             .map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname.startsWith(item.path);

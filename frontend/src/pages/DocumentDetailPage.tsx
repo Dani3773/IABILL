@@ -211,7 +211,7 @@ export function DocumentDetailPage() {
             </button>
           )}
 
-          {role === 'ADMIN' && document.status === 'REVIEWED' && (
+          {(role === 'ADMIN' || role === 'SUPER_ADMIN') && document.status === 'REVIEWED' && (
             <button
               onClick={handleApprove}
               disabled={isActionLoading}
