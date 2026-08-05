@@ -24,6 +24,7 @@ public class PlatformService {
     private final WorkspaceRepository workspaceRepository;
     private final AuditLogService auditLogService;
     private final PasswordEncoder passwordEncoder;
+    private final TenantStatusCacheService tenantStatusCacheService;
 
     @Transactional(readOnly = true)
     public List<PlatformTenantSummaryDTO> listAllTenants() {
@@ -46,7 +47,7 @@ public class PlatformService {
 
         return new PlatformTenantDetailDTO(
                 tenant.getId(), tenant.getName(), tenant.getDocumentId(), tenant.getCountry(),
-                tenant.getCreatedAt(), users, workspaces);
+                tenant.getCreatedAt(), users, workspaces, tenant.isActive());
     }
 
     @Transactional
@@ -116,5 +117,20 @@ public class PlatformService {
             sb.append(chars.charAt(random.nextInt(chars.length())));
         }
         return sb.toString();
+    }
+
+    @Transactional
+    public PlatformTenantDetailDTO setTenantActive(UUID tenantId, boolean active, UUID authUserId) {
+        Tenant tenant = tenantRepository.findById(tenantId)
+                .orElseThrow(() -> new IllegalArgumentException("Tenant não encontrado: " + tenantId));
+
+        tenant.setActive(active);
+        tenantRepository.save(tenant);
+        tenantStatusCacheService.invalidate(tenantId);
+
+        auditLogService.record(tenantId, authUserId, AuditAction.UPDATE, AuditEntityType.TENANT, tenantId,
+                Map.of("statusChange", active ? "reativado" : "desativado", "changedByPlatformAdmin", true));
+
+        return getTenantDetail(tenantId);
     }
 }

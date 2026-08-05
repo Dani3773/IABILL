@@ -11,6 +11,7 @@ public record PlatformTenantDetailDTO(
         String country,
         Instant createdAt,
         List<PlatformUserSummaryDTO> users,
-        List<PlatformWorkspaceSummaryDTO> workspaces
+        List<PlatformWorkspaceSummaryDTO> workspaces,
+        boolean active
 ) {
 }

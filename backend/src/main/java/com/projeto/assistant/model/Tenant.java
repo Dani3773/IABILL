@@ -34,6 +34,9 @@ public class Tenant {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    @Column(nullable = false)
+    private boolean active = true;
+
     @PrePersist
     void onCreate() {
         Instant now = Instant.now();

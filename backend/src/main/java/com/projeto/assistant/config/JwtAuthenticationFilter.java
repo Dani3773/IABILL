@@ -1,6 +1,7 @@
 package com.projeto.assistant.config;
 
 import com.projeto.assistant.service.JwtService;
+import com.projeto.assistant.service.TenantStatusCacheService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -22,11 +23,10 @@ import java.util.UUID;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final TenantStatusCacheService tenantStatusCacheService;
 
     private static final String COOKIE_NAME = "auth_token";
 
-    // Nomes de atributo usados para "carregar" o contexto de tenant/usuario
-    // para o resto da requisicao (controllers podem ler via request.getAttribute(...))
     public static final String ATTR_USER_ID = "authUserId";
     public static final String ATTR_TENANT_ID = "authTenantId";
     public static final String ATTR_ROLE = "authRole";
@@ -42,25 +42,33 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UUID tenantId = jwtService.extractTenantId(token);
             String role = jwtService.extractRole(token);
 
-            request.setAttribute(ATTR_USER_ID, userId);
-            request.setAttribute(ATTR_TENANT_ID, tenantId);
-            request.setAttribute(ATTR_ROLE, role);
+            // Bloqueia o acesso se o tenant foi desativado por um Super-Admin -
+            // efeito em ate 60s (ver TenantStatusCacheService), nao precisa
+            // esperar o token expirar (ate 24h). Super-Admin sem tenant
+            // (tenantId == null) nunca e bloqueado por essa checagem.
+            boolean tenantBlocked = tenantId != null && !tenantStatusCacheService.isActive(tenantId);
 
-            var authentication = new UsernamePasswordAuthenticationToken(
-                    userId,
-                    null,
-                    buildAuthorities(role)
-            );
+            if (!tenantBlocked) {
+                request.setAttribute(ATTR_USER_ID, userId);
+                request.setAttribute(ATTR_TENANT_ID, tenantId);
+                request.setAttribute(ATTR_ROLE, role);
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                var authentication = new UsernamePasswordAuthenticationToken(
+                        userId,
+                        null,
+                        buildAuthorities(role)
+                );
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+            // Se tenantBlocked=true, simplesmente NAO autentica - a requisicao
+            // segue sem autenticacao, e cai no fluxo normal de 401 (mesmo
+            // comportamento de "sem token nenhum").
         }
 
         filterChain.doFilter(request, response);
     }
 
-    // Procura o token primeiro no header Authorization (compatibilidade com
-    // chamadas diretas via API/PowerShell/testes), e se nao achar, no cookie
-    // httpOnly (usado pelo navegador de verdade).
     private String extractToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {

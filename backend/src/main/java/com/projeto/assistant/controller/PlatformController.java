@@ -56,4 +56,13 @@ public class PlatformController {
             @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
         return platformService.resetUserPassword(userId, authUserId);
     }
+
+    @PutMapping("/tenants/{id}/active")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    public PlatformTenantDetailDTO setTenantActive(
+            @PathVariable UUID id,
+            @RequestParam boolean active,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return platformService.setTenantActive(id, active, authUserId);
+    }
 }

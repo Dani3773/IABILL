@@ -11,6 +11,7 @@ public record PlatformTenantSummaryDTO(
         Instant createdAt,
         long userCount,
         long workspaceCount,
-        long documentCount
+        long documentCount,
+        boolean active
 ) {
 }
