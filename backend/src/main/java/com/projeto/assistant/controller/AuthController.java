@@ -63,7 +63,7 @@ public class AuthController {
     @GetMapping("/me")
     public AuthMeResponseDTO me(
             @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId,
-            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
+            @RequestAttribute(value = JwtAuthenticationFilter.ATTR_TENANT_ID, required = false) UUID authTenantId,
             HttpServletRequest request) {
         String role = (String) request.getAttribute(JwtAuthenticationFilter.ATTR_ROLE);
         return new AuthMeResponseDTO(authUserId, authTenantId, role);

@@ -28,14 +28,19 @@ public class JwtService {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + expirationMs);
 
-        return Jwts.builder()
+        var builder = Jwts.builder()
                 .subject(userId.toString())
-                .claim("tenantId", tenantId.toString())
                 .claim("role", role)
                 .issuedAt(now)
-                .expiration(expiry)
-                .signWith(getSigningKey())
-                .compact();
+                .expiration(expiry);
+
+        // tenantId e null apenas para SUPER_ADMIN (nao vinculado a nenhuma empresa) -
+        // nesse caso, simplesmente nao incluimos a claim no token.
+        if (tenantId != null) {
+            builder.claim("tenantId", tenantId.toString());
+        }
+
+        return builder.signWith(getSigningKey()).compact();
     }
 
     public Claims parseToken(String token) {
@@ -51,7 +56,8 @@ public class JwtService {
     }
 
     public UUID extractTenantId(String token) {
-        return UUID.fromString(parseToken(token).get("tenantId", String.class));
+        String tenantIdStr = parseToken(token).get("tenantId", String.class);
+        return tenantIdStr != null ? UUID.fromString(tenantIdStr) : null;
     }
 
     public String extractRole(String token) {

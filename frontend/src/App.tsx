@@ -12,6 +12,8 @@ import { ActionPlanPage } from "./pages/ActionPlanPage";
 import { SearchPage } from "./pages/SearchPage";
 import { AuthPage } from './pages/AuthPage';
 import { SuperAdminPage } from './pages/SuperAdminPage'
+import { PlatformTenantDetailPage } from './pages/PlatformTenantDetailPage'
+
 
 function App() {
   return (
@@ -31,6 +33,7 @@ function App() {
               <Route path="/users" element={<UsersPage />} />
               <Route path="/audit-logs" element={<AuditLogsPage />} />
               <Route path="/platform" element={<SuperAdminPage />} />
+              <Route path="/platform/:tenantId" element={<PlatformTenantDetailPage />} />
 
               <Route
                 path="/workspaces/:workspaceId"

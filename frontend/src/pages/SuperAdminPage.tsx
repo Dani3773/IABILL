@@ -4,6 +4,8 @@ import { LoadingSpinner } from '../components/LoadingSpinner'
 import { Alert } from '../components/Alert'
 import { getErrorMessage } from '../api/errorUtils'
 import type { PlatformTenantSummary } from '../types/platform'
+import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export function SuperAdminPage() {
   const [tenants, setTenants] = useState<PlatformTenantSummary[]>([])

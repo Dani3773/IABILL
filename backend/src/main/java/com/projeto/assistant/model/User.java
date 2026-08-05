@@ -26,7 +26,7 @@ public class User {
     // FetchType.LAZY é obrigatório aqui - nunca carregamos o Tenant inteiro
     // só porque carregamos um User, a menos que explicitamente precisemos.
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tenant_id", nullable = false)
+    @JoinColumn(name = "tenant_id", nullable = true)
     private Tenant tenant;
 
     @Column(nullable = false)

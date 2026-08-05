@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -67,7 +68,8 @@ public class AuthService {
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos"));
 
-        String token = jwtService.generateToken(matchedUser.getId(), matchedUser.getTenant().getId(), matchedUser.getRole().name());
-        return new LoginResponseDTO(token, matchedUser.getId(), matchedUser.getTenant().getId(), matchedUser.getRole().name());
+        UUID tenantId = matchedUser.getTenant() != null ? matchedUser.getTenant().getId() : null;
+        String token = jwtService.generateToken(matchedUser.getId(), tenantId, matchedUser.getRole().name());
+        return new LoginResponseDTO(token, matchedUser.getId(), tenantId, matchedUser.getRole().name());
     }
 }
