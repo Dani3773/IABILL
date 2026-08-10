@@ -1,0 +1,97 @@
+{
+  "_metadata": {
+    "description": "Golden dataset AUTOCONTIDO - o proprio teste cria tenant/workspace/documentos/chunks no @BeforeAll usando este conteudo, chamando o Gemini real via processContent. Nao depende de dados de producao.",
+    "versao": "3.0 - self-contained (Opcao A)"
+  },
+  "fixture_documents": [
+    {
+      "doc_key": "politica_seguranca_rh",
+      "type": "POLITICA_PRIVACIDADE",
+      "title": "Politica de Privacidade - Seguranca de Dados de RH",
+      "raw_content": "A empresa adota medidas tecnicas e administrativas de seguranca para proteger os dados pessoais de funcionarios, incluindo criptografia de dados sensiveis em repouso, controle de acesso baseado em papel (RBAC) restrito ao setor de Recursos Humanos, e auditoria de todos os acessos aos registros de folha de pagamento."
+    },
+    {
+      "doc_key": "inventario_dados_geral",
+      "type": "INVENTARIO_DADOS",
+      "title": "Inventario de Dados Pessoais",
+      "raw_content": "O inventario de dados pessoais da empresa mapeia as seguintes categorias tratadas: dados cadastrais de clientes (nome, CPF, email), dados de funcionarios (nome, CPF, dados bancarios, historico de saude ocupacional), e dados de navegacao de visitantes do site institucional coletados via cookies."
+    },
+    {
+      "doc_key": "encarregado_dpo",
+      "type": "POLITICA_PRIVACIDADE",
+      "title": "Politica de Privacidade - Encarregado de Dados",
+      "raw_content": "A empresa designa formalmente um Encarregado de Protecao de Dados (DPO), responsavel por atuar como canal de comunicacao entre a empresa, os titulares de dados e a Autoridade Nacional de Protecao de Dados (ANPD), conforme exigido pelo Art. 41 da Lei Geral de Protecao de Dados."
+    },
+    {
+      "doc_key": "politica_cookies",
+      "type": "POLITICA_PRIVACIDADE",
+      "title": "Politica de Privacidade - Cookies do Site",
+      "raw_content": "O site institucional da empresa utiliza cookies de sessao para manter o usuario autenticado durante a navegacao, e cookies de terceiros para ferramentas de analytics, mediante consentimento previo do visitante conforme banner de cookies exibido na primeira visita."
+    },
+    {
+      "doc_key": "inventario_fornecedores",
+      "type": "INVENTARIO_DADOS",
+      "title": "Inventario de Dados - Compartilhamento com Fornecedores",
+      "raw_content": "A empresa compartilha dados de pagamento com o processador de cartao de credito Stone, e dados de entrega com transportadoras parceiras, sempre limitado ao minimo necessario para execucao do contrato de prestacao de servico."
+    },
+    {
+      "doc_key": "relatorio_treinamento",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Treinamento de Colaboradores",
+      "raw_content": "Todos os colaboradores do setor comercial passaram por treinamento obrigatorio sobre boas praticas de protecao de dados pessoais no primeiro trimestre de 2026, com avaliacao de aproveitamento aplicada ao final do curso."
+    },
+    {
+      "doc_key": "rat_marketing",
+      "type": "RAT",
+      "title": "Relatorio de Impacto - Campanha de Marketing por Email",
+      "raw_content": "A campanha de email marketing trimestral utiliza a base de leads captados via formulario do site, com opcao de descadastramento disponivel em todo envio, e retencao dos dados de contato limitada a 24 meses apos o ultimo engajamento."
+    },
+    {
+      "doc_key": "politica_acesso_fisico",
+      "type": "POLITICA_PRIVACIDADE",
+      "title": "Politica de Privacidade - Acesso Fisico as Instalacoes",
+      "raw_content": "O acesso as instalacoes fisicas onde sao armazenados servidores locais e restrito a colaboradores autorizados mediante cracha de identificacao, com registro de entrada e saida mantido por sistema de controle de acesso."
+    }
+  ],
+
+  "positive_cases": [
+    {
+      "id": "pos-001",
+      "query": "Quais medidas de seguranca sao aplicadas ao tratamento de dados pessoais de funcionarios?",
+      "expected_chunks": [{"doc_key": "politica_seguranca_rh", "chunk_index": 0}],
+      "category": "politica_privacidade"
+    },
+    {
+      "id": "pos-002",
+      "query": "Quais dados pessoais estao mapeados no inventario de dados da empresa?",
+      "expected_chunks": [{"doc_key": "inventario_dados_geral", "chunk_index": 0}],
+      "category": "inventario_dados"
+    },
+    {
+      "id": "pos-003",
+      "query": "A empresa tem um encarregado de dados (DPO) formalmente designado?",
+      "expected_chunks": [{"doc_key": "encarregado_dpo", "chunk_index": 0}],
+      "category": "politica_privacidade"
+    }
+  ],
+  "negative_cases": [
+    {
+      "id": "neg-001",
+      "query": "Quais sao as politicas de retencao de dados da empresa?",
+      "workspace": "vazio",
+      "expected_behavior": "recusa_contexto_insuficiente"
+    },
+    {
+      "id": "neg-002",
+      "query": "Qual o faturamento anual da empresa em 2025?",
+      "workspace": "populado",
+      "expected_behavior": "recusa_fora_de_escopo"
+    },
+    {
+      "id": "neg-003",
+      "query": "A empresa ja sofreu algum vazamento de dados?",
+      "workspace": "vazio",
+      "expected_behavior": "recusa_contexto_insuficiente"
+    }
+  ]
+}

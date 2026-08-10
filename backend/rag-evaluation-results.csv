@@ -1,0 +1,7 @@
+case_id,type,category,query,precision_at_k,recall_at_k,reciprocal_rank,expected_behavior,recusou_corretamente,generated_text_preview
+pos-001,positive,politica_privacidade,Quais medidas de seguranca sao aplicadas ao tratamento de dados pessoais de funcionarios?,0.2,1.0,1.0,,,
+pos-002,positive,inventario_dados,Quais dados pessoais estao mapeados no inventario de dados da empresa?,0.2,1.0,1.0,,,
+pos-003,positive,politica_privacidade,A empresa tem um encarregado de dados (DPO) formalmente designado?,0.2,1.0,1.0,,,
+neg-001,negative,,Quais sao as politicas de retencao de dados da empresa?,,,,recusa_contexto_insuficiente,true,Não há informações suficientes no contexto fornecido para descrever as políticas de retenção de dados da empresa.
+neg-002,negative,,Qual o faturamento anual da empresa em 2025?,,,,recusa_fora_de_escopo,true,Não há dados suficientes no contexto para determinar o faturamento anual da empresa em 2025.
+neg-003,negative,,A empresa ja sofreu algum vazamento de dados?,,,,recusa_contexto_insuficiente,true,Não há dados suficientes no contexto fornecido para determinar se a empresa já sofreu algum vazamento de dados.

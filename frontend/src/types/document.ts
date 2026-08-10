@@ -3,6 +3,7 @@ export type DocumentType =
   | 'POLITICA_PRIVACIDADE'
   | 'RELATORIO_CONFORMIDADE'
   | 'RAT'
+  | 'RIPD_DPIA'
 
 export type DocumentStatus = 'DRAFT' | 'GENERATED' | 'REVIEWED' | 'APPROVED'
 

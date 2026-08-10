@@ -4,5 +4,6 @@ public enum DocumentType {
     INVENTARIO_DADOS,
     POLITICA_PRIVACIDADE,
     RELATORIO_CONFORMIDADE,
-    RAT
+    RAT,
+    RIPD_DPIA
 }
