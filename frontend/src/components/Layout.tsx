@@ -2,10 +2,17 @@ import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
 import { LayoutGrid, Users, ScrollText, LogOut, Shield } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 
+const ROLE_LABELS: Record<string, string> = {
+  ADMIN: "Administrador",
+  USER: "Usuário",
+  DPO: "Encarregado de Dados (DPO)",
+  SUPER_ADMIN: "Super Administrador",
+};
+
 export function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { role, tenantId, clearAuth } = useAuth()
+  const { role, tenantId, clearAuth } = useAuth();
 
   async function handleLogout() {
     await clearAuth();
@@ -42,6 +49,8 @@ export function Layout() {
       superAdminOnly: true,
     },
   ];
+
+  const roleLabel = role ? (ROLE_LABELS[role] ?? role) : "—";
 
   return (
     <div className="flex min-h-screen bg-slate-900">
@@ -85,7 +94,7 @@ export function Layout() {
 
         <div className="p-3 border-t border-slate-700">
           <div className="px-3 py-2 text-xs text-slate-500 mb-1">
-            Papel: {role}
+            Papel: {roleLabel}
           </div>
           <button
             onClick={handleLogout}
