@@ -14,7 +14,7 @@ export interface PlatformUser {
   id: string
   username: string
   email: string
-  role: 'ADMIN' | 'USER' | 'SUPER_ADMIN'
+  role: 'ADMIN' | 'USER' | 'DPO' | 'SUPER_ADMIN'
 }
 
 export interface PlatformWorkspace {
@@ -42,7 +42,7 @@ export interface PlatformTenantUpdateRequest {
 }
 
 export interface PlatformUserRoleUpdateRequest {
-  role: 'ADMIN' | 'USER' | 'SUPER_ADMIN'
+  role: 'ADMIN' | 'USER' | 'DPO' | 'SUPER_ADMIN'
 }
 
 export interface PlatformPasswordResetResponse {
