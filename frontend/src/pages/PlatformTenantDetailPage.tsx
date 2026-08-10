@@ -23,7 +23,7 @@ export function PlatformTenantDetailPage() {
   const [saving, setSaving] = useState(false);
 
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
-  const [newRole, setNewRole] = useState<"ADMIN" | "USER" | "SUPER_ADMIN">(
+  const [newRole, setNewRole] = useState<"ADMIN" | "USER" | "DPO" | "SUPER_ADMIN">(
     "USER",
   );
   const [tempPassword, setTempPassword] = useState<string | null>(null);
@@ -273,12 +273,13 @@ export function PlatformTenantDetailPage() {
                     value={newRole}
                     onChange={(e) =>
                       setNewRole(
-                        e.target.value as "ADMIN" | "USER" | "SUPER_ADMIN",
+                        e.target.value as "ADMIN" | "USER" | "DPO" | "SUPER_ADMIN",
                       )
                     }
                     className="text-xs rounded bg-slate-800 text-white px-2 py-1 border border-slate-700 focus:outline-none focus:border-cyan-500"
                   >
                     <option value="USER">USER</option>
+                    <option value="DPO">DPO</option>
                     <option value="ADMIN">ADMIN</option>
                     <option value="SUPER_ADMIN">SUPER_ADMIN</option>
                   </select>

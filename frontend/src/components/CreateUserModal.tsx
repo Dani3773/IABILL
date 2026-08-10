@@ -102,6 +102,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
               className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             >
               <option value="USER">Usuário</option>
+              <option value="DPO">Encarregado de Dados (DPO)</option>
               <option value="ADMIN">Administrador</option>
             </select>
           </div>
