@@ -32,6 +32,7 @@ export function AuthPage({ initialMode = "login" }: Props) {
   const [showSignupPassword, setShowSignupPassword] = useState(false);
   const [signupError, setSignupError] = useState<string | null>(null);
   const [signupLoading, setSignupLoading] = useState(false);
+  const [cnpjLookupLoading, setCnpjLookupLoading] = useState(false);
 
   async function handleLogin(e: FormEvent) {
     e.preventDefault();
@@ -45,6 +46,27 @@ export function AuthPage({ initialMode = "login" }: Props) {
       setLoginError(getErrorMessage(err, "E-mail ou senha inválidos"));
     } finally {
       setLoginLoading(false);
+    }
+  }
+
+  async function handleCnpjBlur() {
+    const sanitized = tenantDocumentId.replace(/\D/g, "");
+    if (sanitized.length !== 14) return;
+
+    setCnpjLookupLoading(true);
+    try {
+      const response = await fetch(`/api/v1/auth/cnpj/${sanitized}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.found && data.name) {
+          setTenantName(data.name);
+        }
+      }
+    } catch {
+      // Falha silenciosa deliberada - autopreenchimento e opcional,
+      // usuario sempre pode digitar o nome manualmente.
+    } finally {
+      setCnpjLookupLoading(false);
     }
   }
 
@@ -176,6 +198,7 @@ export function AuthPage({ initialMode = "login" }: Props) {
               onChange={(e) => setTenantDocumentId(e.target.value)}
               required
               placeholder="CNPJ"
+              onBlur={handleCnpjBlur}
               className="w-full rounded-lg bg-slate-900 text-white text-xs px-3 py-1.5 border border-slate-700 focus:outline-none focus:border-cyan-500"
             />
             <input

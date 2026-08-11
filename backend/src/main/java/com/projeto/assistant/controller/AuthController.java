@@ -3,6 +3,7 @@ package com.projeto.assistant.controller;
 import com.projeto.assistant.config.JwtAuthenticationFilter;
 import com.projeto.assistant.dto.*;
 import com.projeto.assistant.service.AuthService;
+import com.projeto.assistant.service.CnpjLookupService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,8 @@ public class AuthController {
 
     private final AuthService authService;
 
+    private final CnpjLookupService cnpjLookupService;
+
     @Value("${app.cookie.secure}")
     private boolean cookieSecure;
 
@@ -37,6 +40,11 @@ public class AuthController {
     public ResponseEntity<AuthMeResponseDTO> signup(@Valid @RequestBody SignupRequestDTO request) {
         LoginResponseDTO result = authService.signup(request);
         return buildAuthResponse(result);
+    }
+
+    @GetMapping("/cnpj/{cnpj}")
+    public CnpjLookupResponseDTO lookupCnpj(@PathVariable String cnpj) {
+        return cnpjLookupService.lookup(cnpj);
     }
 
     @PostMapping("/login")
