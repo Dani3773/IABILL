@@ -12,8 +12,9 @@ import { AuditLogsPage } from "./pages/AuditLogsPage";
 import { ActionPlanPage } from "./pages/ActionPlanPage";
 import { SearchPage } from "./pages/SearchPage";
 import { AuthPage } from './pages/AuthPage';
-import { SuperAdminPage } from './pages/SuperAdminPage'
-import { PlatformTenantDetailPage } from './pages/PlatformTenantDetailPage'
+import { SuperAdminPage } from './pages/SuperAdminPage';
+import { PlatformTenantDetailPage } from './pages/PlatformTenantDetailPage';
+import { IncidentsPage } from "./pages/IncidentsPage";
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
               >
                 <Route path="documents" element={<DocumentsPage />} />
                 <Route path="action-plan" element={<ActionPlanPage />} />
+                <Route path="incidents" element={<IncidentsPage />} />
                 <Route path="search" element={<SearchPage />} />
               </Route>
             </Route>

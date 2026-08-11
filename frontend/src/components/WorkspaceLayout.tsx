@@ -8,6 +8,7 @@ export function WorkspaceLayout() {
   const tabs = [
     { label: "Documentos", path: `/workspaces/${workspaceId}/documents` },
     { label: "Plano de Ação", path: `/workspaces/${workspaceId}/action-plan` },
+    { label: "Incidentes", path: `/workspaces/${workspaceId}/incidents` },
     { label: "Buscar", path: `/workspaces/${workspaceId}/search` },
   ];
 
