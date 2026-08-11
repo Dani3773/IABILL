@@ -49,6 +49,16 @@ export function AuthPage({ initialMode = "login" }: Props) {
     }
   }
 
+  function formatCnpj(value: string): string {
+    const digits = value.replace(/\D/g, "").slice(0, 14);
+
+    if (digits.length <= 2) return digits;
+    if (digits.length <= 5) return `${digits.slice(0, 2)}.${digits.slice(2)}`;
+    if (digits.length <= 8) return `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5)}`;
+    if (digits.length <= 12) return `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5, 8)}/${digits.slice(8)}`;
+    return `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5, 8)}/${digits.slice(8, 12)}-${digits.slice(12)}`;
+  }
+
   async function handleCnpjBlur() {
     const sanitized = tenantDocumentId.replace(/\D/g, "");
     if (sanitized.length !== 14) return;
@@ -186,16 +196,8 @@ export function AuthPage({ initialMode = "login" }: Props) {
 
             <input
               type="text"
-              value={tenantName}
-              onChange={(e) => setTenantName(e.target.value)}
-              required
-              placeholder="Nome da empresa"
-              className="w-full rounded-lg bg-slate-900 text-white text-xs px-3 py-1.5 border border-slate-700 focus:outline-none focus:border-cyan-500"
-            />
-            <input
-              type="text"
               value={tenantDocumentId}
-              onChange={(e) => setTenantDocumentId(e.target.value)}
+              onChange={(e) => setTenantDocumentId(formatCnpj(e.target.value))}
               required
               placeholder="CNPJ"
               onBlur={handleCnpjBlur}
@@ -204,6 +206,15 @@ export function AuthPage({ initialMode = "login" }: Props) {
             {cnpjLookupLoading && (
               <p className="text-xs text-cyan-400">Buscando dados da empresa...</p>
             )}
+            <input
+              type="text"
+              value={tenantName}
+              onChange={(e) => setTenantName(e.target.value)}
+              required
+              placeholder="Nome da empresa"
+              className="w-full rounded-lg bg-slate-900 text-white text-xs px-3 py-1.5 border border-slate-700 focus:outline-none focus:border-cyan-500"
+            />
+            
             <input
               type="text"
               value={tenantCountry}
