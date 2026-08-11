@@ -15,6 +15,7 @@ import { AuthPage } from './pages/AuthPage';
 import { SuperAdminPage } from './pages/SuperAdminPage';
 import { PlatformTenantDetailPage } from './pages/PlatformTenantDetailPage';
 import { IncidentsPage } from "./pages/IncidentsPage";
+import { LandingPage } from "./pages/LandingPage";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<AuthPage initialMode="login" />} />
           <Route path="/signup" element={<AuthPage initialMode="signup" />} />
 
