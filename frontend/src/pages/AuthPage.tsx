@@ -201,6 +201,9 @@ export function AuthPage({ initialMode = "login" }: Props) {
               onBlur={handleCnpjBlur}
               className="w-full rounded-lg bg-slate-900 text-white text-xs px-3 py-1.5 border border-slate-700 focus:outline-none focus:border-cyan-500"
             />
+            {cnpjLookupLoading && (
+              <p className="text-xs text-cyan-400">Buscando dados da empresa...</p>
+            )}
             <input
               type="text"
               value={tenantCountry}
