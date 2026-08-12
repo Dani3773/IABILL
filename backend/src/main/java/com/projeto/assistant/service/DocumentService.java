@@ -130,6 +130,10 @@ public class DocumentService {
         auditLogService.record(authTenantId, authUserId, AuditAction.APPROVE, AuditEntityType.DOCUMENT, documentId,
                 Map.of("statusChange", "REVIEWED -> APPROVED"));
 
+        // Um documento recem-aprovado pode conter informacao que torna outros
+        // documentos ja fechados desatualizados - sinaliza os demais para revisao.
+        flagRelatedDocumentsForReview(document.getWorkspace().getId(), documentId, document.getTitle());
+
         return DocumentResponseDTO.fromEntity(saved);
     }
 

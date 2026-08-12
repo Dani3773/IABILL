@@ -20,10 +20,12 @@ import org.springframework.security.access.AccessDeniedException;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class DocumentServiceTest {
@@ -82,13 +84,24 @@ class DocumentServiceTest {
                 .isInstanceOf(AccessDeniedException.class);
     }
 
-    @Test
     void reject_whenStatusIsDraft_shouldThrowIllegalArgumentException() {
         document.setStatus(DocumentStatus.DRAFT);
         when(documentRepository.findById(document.getId())).thenReturn(Optional.of(document));
 
         assertThatThrownBy(() -> documentService.reject(document.getId(), "motivo", tenantId, authUserId))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void approve_whenStatusIsReviewed_shouldSucceedAndFlagRelatedDocuments() {
+        document.setStatus(DocumentStatus.REVIEWED);
+        when(documentRepository.findById(document.getId())).thenReturn(Optional.of(document));
+        when(documentRepository.save(document)).thenReturn(document);
+        when(documentRepository.findByWorkspaceIdAndStatusIn(any(), any())).thenReturn(List.of());
+
+        var result = documentService.approve(document.getId(), tenantId, authUserId);
+
+        assertThat(result.status()).isEqualTo(DocumentStatus.APPROVED);
     }
 
     @Test

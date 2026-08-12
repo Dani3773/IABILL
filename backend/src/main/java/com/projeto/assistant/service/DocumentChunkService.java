@@ -28,7 +28,6 @@ public class DocumentChunkService {
     private final AuditLogService auditLogService;
     private final GeminiGenerationService geminiGenerationService;
     private final RateLimiterService rateLimiterService;
-    private final DocumentService documentService;
 
     // Recebe o texto bruto de um documento, quebra em pedacos, gera embedding
     // de cada um via Gemini, e salva tudo vinculado ao Document.
@@ -56,11 +55,6 @@ public class DocumentChunkService {
 
             documentChunkRepository.save(chunk);
         }
-
-        // Sinaliza outros documentos ja "fechados" do mesmo workspace como
-        // possivelmente desatualizados, ja que novo conteudo relacionado entrou.
-        documentService.flagRelatedDocumentsForReview(
-                document.getWorkspace().getId(), documentId, document.getTitle());
 
         return pieces.size();
     }
