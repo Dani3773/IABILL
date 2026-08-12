@@ -58,6 +58,9 @@ public class Document {
     @Column(name = "review_recommended_reason")
     private String reviewRecommendedReason;
 
+    @Column(name = "review_due_at")
+    private Instant reviewDueAt;
+
     @PrePersist
     void onCreate() {
         Instant now = Instant.now();

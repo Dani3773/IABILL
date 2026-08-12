@@ -18,6 +18,7 @@ export interface Document {
   reviewRecommended: boolean
   reviewRecommendedReason: string | null
   createdAt: string
+  reviewDueAt: string | null
 }
 
 export interface DocumentRequest {

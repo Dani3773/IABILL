@@ -17,12 +17,10 @@ public record DocumentResponseDTO(
         String generatedContent,
         boolean reviewRecommended,
         String reviewRecommendedReason,
+        Instant reviewDueAt,
         Instant createdAt
 ) {
     public static DocumentResponseDTO fromEntity(Document document) {
-        // createdBy pode ser null se o usuario que criou o documento foi
-        // removido do sistema (ver migration V13 - ON DELETE SET NULL).
-        // O documento continua valido mesmo sem essa referencia.
         UUID createdByUserId = document.getCreatedBy() != null
                 ? document.getCreatedBy().getId()
                 : null;
@@ -36,6 +34,7 @@ public record DocumentResponseDTO(
                 document.getGeneratedContent(),
                 document.isReviewRecommended(),
                 document.getReviewRecommendedReason(),
+                document.getReviewDueAt(),
                 document.getCreatedAt()
         );
     }

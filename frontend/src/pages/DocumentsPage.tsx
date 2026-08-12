@@ -114,6 +114,12 @@ export function DocumentsPage() {
                     {doc.reviewRecommendedReason &&
                       ` — ${doc.reviewRecommendedReason}`}
                   </p>
+                  {doc.reviewDueAt && new Date(doc.reviewDueAt) < new Date() && (
+                <p className="text-xs text-blue-400 mt-2">
+                  🕐 Revisão periódica vencida desde{" "}
+                  {new Date(doc.reviewDueAt).toLocaleDateString("pt-BR")}
+                </p>
+              )}
                   <button
                     onClick={(e) => handleDismissReviewFlag(e, doc.id)}
                     className="text-xs text-slate-400 hover:text-slate-300 shrink-0"

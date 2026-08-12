@@ -18,9 +18,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.access.AccessDeniedException;
 
+import java.time.Instant;
 import java.util.Map;
 import java.util.List;
 import java.util.UUID;
+import java.time.temporal.ChronoUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -125,6 +127,7 @@ public class DocumentService {
         }
 
         document.setStatus(DocumentStatus.APPROVED);
+        document.setReviewDueAt(Instant.now().plus(365, ChronoUnit.DAYS));
         Document saved = documentRepository.save(document);
 
         auditLogService.record(authTenantId, authUserId, AuditAction.APPROVE, AuditEntityType.DOCUMENT, documentId,
