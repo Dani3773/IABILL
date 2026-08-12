@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { fetchDocumentsByWorkspace } from "../api/documentService";
 import { CreateDocumentModal } from "../components/CreateDocumentModal";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Alert } from "../components/Alert";
 import { getErrorMessage } from "../api/errorUtils";
 import type { Document, DocumentStatus } from "../types/document";
+import {
+  fetchDocumentsByWorkspace,
+  dismissReviewFlag,
+} from "../api/documentService";
 
 const STATUS_STYLES: Record<DocumentStatus, string> = {
   DRAFT: "bg-slate-700 text-slate-300",
@@ -47,6 +50,22 @@ export function DocumentsPage() {
 
   if (isLoading) return <LoadingSpinner label="Carregando documentos..." />;
 
+  async function handleDismissReviewFlag(
+    e: React.MouseEvent,
+    documentId: string,
+  ) {
+    e.preventDefault(); // evita navegar para o documento ao clicar no botao
+    e.stopPropagation();
+    try {
+      const updated = await dismissReviewFlag(documentId);
+      setDocuments((prev) =>
+        prev.map((d) => (d.id === documentId ? updated : d)),
+      );
+    } catch (err) {
+      setError(getErrorMessage(err, "Não foi possível dispensar o aviso."));
+    }
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
@@ -75,17 +94,34 @@ export function DocumentsPage() {
             <Link
               key={doc.id}
               to={`/documents/${doc.id}`}
-              className="flex items-center justify-between bg-slate-800 rounded-lg p-4 border border-slate-700 hover:border-cyan-500 transition-colors"
+              className="block bg-slate-800 rounded-lg p-4 border border-slate-700 hover:border-cyan-500 transition-colors"
             >
-              <div>
-                <p className="font-medium text-white">{doc.title}</p>
-                <p className="text-xs text-slate-400">{doc.type}</p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-white">{doc.title}</p>
+                  <p className="text-xs text-slate-400">{doc.type}</p>
+                </div>
+                <span
+                  className={`text-xs px-2 py-1 rounded ${STATUS_STYLES[doc.status]}`}
+                >
+                  {STATUS_LABELS[doc.status]}
+                </span>
               </div>
-              <span
-                className={`text-xs px-2 py-1 rounded ${STATUS_STYLES[doc.status]}`}
-              >
-                {STATUS_LABELS[doc.status]}
-              </span>
+              {doc.reviewRecommended && (
+                <div className="flex items-center justify-between gap-2 mt-3 pt-3 border-t border-amber-900/40">
+                  <p className="text-xs text-amber-400">
+                    ⚠ Revisão recomendada
+                    {doc.reviewRecommendedReason &&
+                      ` — ${doc.reviewRecommendedReason}`}
+                  </p>
+                  <button
+                    onClick={(e) => handleDismissReviewFlag(e, doc.id)}
+                    className="text-xs text-slate-400 hover:text-slate-300 shrink-0"
+                  >
+                    Dispensar
+                  </button>
+                </div>
+              )}
             </Link>
           ))}
         </div>

@@ -50,3 +50,8 @@ export async function updateDocumentContent(id: string, content: string): Promis
   const response = await apiClient.put<Document>(`/documents/${id}/content`, { content })
   return response.data
 }
+
+export async function dismissReviewFlag(documentId: string): Promise<Document> {
+  const response = await apiClient.put<Document>(`/documents/${documentId}/dismiss-review-flag`)
+  return response.data
+}

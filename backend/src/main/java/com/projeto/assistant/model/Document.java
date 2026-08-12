@@ -52,6 +52,12 @@ public class Document {
     @Column(name = "generated_content", columnDefinition = "TEXT")
     private String generatedContent;
 
+    @Column(name = "review_recommended", nullable = false)
+    private boolean reviewRecommended = false;
+
+    @Column(name = "review_recommended_reason")
+    private String reviewRecommendedReason;
+
     @PrePersist
     void onCreate() {
         Instant now = Instant.now();

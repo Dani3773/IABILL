@@ -118,4 +118,11 @@ public class DocumentController {
         return documentService.reject(documentId, request.reason(), authTenantId, authUserId);
     }
 
+    @PutMapping("/{documentId}/dismiss-review-flag")
+    public DocumentResponseDTO dismissReviewFlag(
+            @PathVariable UUID documentId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return documentService.dismissReviewFlag(documentId, authTenantId, authUserId);
+    }
 }

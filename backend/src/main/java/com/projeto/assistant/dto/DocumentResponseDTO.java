@@ -15,6 +15,8 @@ public record DocumentResponseDTO(
         String title,
         DocumentStatus status,
         String generatedContent,
+        boolean reviewRecommended,
+        String reviewRecommendedReason,
         Instant createdAt
 ) {
     public static DocumentResponseDTO fromEntity(Document document) {
@@ -24,7 +26,6 @@ public record DocumentResponseDTO(
         UUID createdByUserId = document.getCreatedBy() != null
                 ? document.getCreatedBy().getId()
                 : null;
-
         return new DocumentResponseDTO(
                 document.getId(),
                 document.getWorkspace().getId(),
@@ -33,6 +34,8 @@ public record DocumentResponseDTO(
                 document.getTitle(),
                 document.getStatus(),
                 document.getGeneratedContent(),
+                document.isReviewRecommended(),
+                document.getReviewRecommendedReason(),
                 document.getCreatedAt()
         );
     }

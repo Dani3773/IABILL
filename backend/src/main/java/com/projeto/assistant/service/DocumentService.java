@@ -163,4 +163,39 @@ public class DocumentService {
         return DocumentResponseDTO.fromEntity(saved);
     }
 
+    // Sinaliza documentos "fechados" (GENERATED/REVIEWED/APPROVED) do mesmo workspace
+    // quando um documento novo e processado - chamado pelo DocumentChunkService logo
+    // apos a ingestao. Nunca sinaliza o proprio documento que disparou a ingestao.
+    @Transactional
+    public void flagRelatedDocumentsForReview(UUID workspaceId, UUID triggeringDocumentId, String triggeringDocumentTitle) {
+        List<Document> closedDocuments = documentRepository.findByWorkspaceIdAndStatusIn(
+                workspaceId,
+                List.of(DocumentStatus.GENERATED, DocumentStatus.REVIEWED, DocumentStatus.APPROVED)
+        );
+
+        String reason = "Conteúdo relacionado atualizado em \"" + triggeringDocumentTitle + "\"";
+
+        for (Document doc : closedDocuments) {
+            if (doc.getId().equals(triggeringDocumentId)) continue;
+
+            doc.setReviewRecommended(true);
+            doc.setReviewRecommendedReason(reason);
+            documentRepository.save(doc);
+        }
+    }
+
+    @Transactional
+    public DocumentResponseDTO dismissReviewFlag(UUID documentId, UUID authTenantId, UUID authUserId) {
+        Document document = getValidatedDocument(documentId, authTenantId);
+
+        document.setReviewRecommended(false);
+        document.setReviewRecommendedReason(null);
+        Document saved = documentRepository.save(document);
+
+        auditLogService.record(authTenantId, authUserId, AuditAction.UPDATE, AuditEntityType.DOCUMENT, documentId,
+                Map.of("field", "reviewRecommended", "value", "dismissed"));
+
+        return DocumentResponseDTO.fromEntity(saved);
+    }
+
 }

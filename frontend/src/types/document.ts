@@ -15,6 +15,8 @@ export interface Document {
   title: string
   status: DocumentStatus
   generatedContent: string | null
+  reviewRecommended: boolean
+  reviewRecommendedReason: string | null
   createdAt: string
 }
 
