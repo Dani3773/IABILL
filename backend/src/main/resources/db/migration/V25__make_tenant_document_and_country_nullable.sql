@@ -1,0 +1,3 @@
+ALTER TABLE tenants
+    ALTER COLUMN document_id DROP NOT NULL,
+ALTER COLUMN country DROP NOT NULL;
