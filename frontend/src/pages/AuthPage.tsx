@@ -218,6 +218,7 @@ export function AuthPage({ initialMode = "login" }: Props) {
               onChange={(e) => setWorkspaceDocumentId(formatCnpj(e.target.value))}
               onBlur={handleCnpjBlur}
               required
+              autoComplete="off"
               placeholder="CNPJ"
               className="w-full rounded-lg bg-slate-900 text-white text-xs px-3 py-1.5 border border-slate-700 focus:outline-none focus:border-cyan-500"
             />
@@ -229,6 +230,7 @@ export function AuthPage({ initialMode = "login" }: Props) {
               value={workspaceName}
               onChange={(e) => setWorkspaceName(e.target.value)}
               required
+              autoComplete="off"
               placeholder="Nome da empresa"
               className="w-full rounded-lg bg-slate-900 text-white text-xs px-3 py-1.5 border border-slate-700 focus:outline-none focus:border-cyan-500"
             />
@@ -236,6 +238,7 @@ export function AuthPage({ initialMode = "login" }: Props) {
               type="text"
               value={workspacePhone}
               onChange={(e) => setWorkspacePhone(e.target.value)}
+              autoComplete="off"
               placeholder="Telefone (opcional)"
               className="w-full rounded-lg bg-slate-900 text-white text-xs px-3 py-1.5 border border-slate-700 focus:outline-none focus:border-cyan-500"
             />
@@ -254,6 +257,7 @@ export function AuthPage({ initialMode = "login" }: Props) {
                 type="text"
                 value={workspaceState}
                 onChange={(e) => setWorkspaceState(e.target.value)}
+                autoComplete="off"
                 placeholder="Estado"
                 className="w-full rounded-lg bg-slate-900 text-white text-xs px-3 py-1.5 border border-slate-700 focus:outline-none focus:border-cyan-500"
               />
@@ -261,6 +265,7 @@ export function AuthPage({ initialMode = "login" }: Props) {
                 type="text"
                 value={workspaceCity}
                 onChange={(e) => setWorkspaceCity(e.target.value)}
+                autoComplete="off"
                 placeholder="Cidade"
                 className="w-full rounded-lg bg-slate-900 text-white text-xs px-3 py-1.5 border border-slate-700 focus:outline-none focus:border-cyan-500"
               />
@@ -271,6 +276,7 @@ export function AuthPage({ initialMode = "login" }: Props) {
                 type="text"
                 value={workspaceStreet}
                 onChange={(e) => setWorkspaceStreet(e.target.value)}
+                autoComplete="off"
                 placeholder="Rua"
                 className="col-span-2 w-full rounded-lg bg-slate-900 text-white text-xs px-3 py-1.5 border border-slate-700 focus:outline-none focus:border-cyan-500"
               />
@@ -278,6 +284,7 @@ export function AuthPage({ initialMode = "login" }: Props) {
                 type="text"
                 value={workspaceAddressNumber}
                 onChange={(e) => setWorkspaceAddressNumber(e.target.value)}
+                autoComplete="off"
                 placeholder="Número"
                 className="w-full rounded-lg bg-slate-900 text-white text-xs px-3 py-1.5 border border-slate-700 focus:outline-none focus:border-cyan-500"
               />
