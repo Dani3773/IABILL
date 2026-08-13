@@ -9,6 +9,7 @@ export function WorkspaceLayout() {
     { label: "Documentos", path: `/workspaces/${workspaceId}/documents` },
     { label: "Plano de Ação", path: `/workspaces/${workspaceId}/action-plan` },
     { label: "Incidentes", path: `/workspaces/${workspaceId}/incidents` },
+    { label: "Solicitações", path: `/workspaces/${workspaceId}/data-subject-requests` },
     { label: "Buscar", path: `/workspaces/${workspaceId}/search` },
   ];
 

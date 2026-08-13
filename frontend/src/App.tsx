@@ -16,6 +16,8 @@ import { SuperAdminPage } from './pages/SuperAdminPage';
 import { PlatformTenantDetailPage } from './pages/PlatformTenantDetailPage';
 import { IncidentsPage } from "./pages/IncidentsPage";
 import { LandingPage } from "./pages/LandingPage";
+import { PublicDataSubjectRequestPage } from "./pages/PublicDataSubjectRequestPage";
+import { DataSubjectRequestsPage } from "./pages/DataSubjectRequestsPage";
 
 
 function App() {
@@ -26,6 +28,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<AuthPage initialMode="login" />} />
           <Route path="/signup" element={<AuthPage initialMode="signup" />} />
+          <Route path="/solicitacao/:documentId" element={<PublicDataSubjectRequestPage />} />
 
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
@@ -46,6 +49,9 @@ function App() {
                 <Route path="documents" element={<DocumentsPage />} />
                 <Route path="action-plan" element={<ActionPlanPage />} />
                 <Route path="incidents" element={<IncidentsPage />} />
+                <Route path="search" element={<SearchPage />} />
+                <Route path="incidents" element={<IncidentsPage />} />
+                <Route path="data-subject-requests" element={<DataSubjectRequestsPage />} />
                 <Route path="search" element={<SearchPage />} />
               </Route>
             </Route>
