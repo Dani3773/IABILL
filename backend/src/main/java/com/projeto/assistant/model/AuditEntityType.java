@@ -7,5 +7,6 @@ public enum AuditEntityType {
     DOCUMENT,
     DOCUMENT_CHUNK,
     ACTION_ITEM,
-    INCIDENT
+    INCIDENT,
+    DATA_SUBJECT_REQUEST
 }
