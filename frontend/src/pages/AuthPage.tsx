@@ -74,6 +74,13 @@ export function AuthPage({ initialMode = "login" }: Props) {
     setCnpjLookupLoading(true);
     try {
       const response = await fetch(`/api/v1/auth/cnpj/${sanitized}`);
+
+      // Protecao contra condicao de corrida: se o usuario ja mudou o campo de
+      // CNPJ enquanto esta busca estava em andamento, a resposta e descartada -
+      // nunca sobrescreve o nome com dado de uma consulta desatualizada.
+      const stillSameCnpj = workspaceDocumentId.replace(/\D/g, "") === sanitized;
+      if (!stillSameCnpj) return;
+
       if (response.ok) {
         const data = await response.json();
         if (data.found && data.name) {
