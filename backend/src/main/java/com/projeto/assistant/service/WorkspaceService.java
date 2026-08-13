@@ -34,6 +34,13 @@ public class WorkspaceService {
         workspace.setName(request.name());
         workspace.setType(request.type());
         workspace.setDocumentId(request.documentId());
+        workspace.setCountry(request.country());
+        workspace.setState(request.state());
+        workspace.setCity(request.city());
+        workspace.setStreet(request.street());
+        workspace.setAddressNumber(request.addressNumber());
+        workspace.setPhone(request.phone());
+        workspace.setLegalRegimes(request.legalRegimes());
 
         Workspace saved = workspaceRepository.save(workspace);
 

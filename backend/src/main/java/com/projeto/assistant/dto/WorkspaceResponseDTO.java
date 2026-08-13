@@ -1,9 +1,11 @@
 package com.projeto.assistant.dto;
 
+import com.projeto.assistant.model.LegalRegime;
 import com.projeto.assistant.model.Workspace;
 import com.projeto.assistant.model.WorkspaceType;
 
 import java.time.Instant;
+import java.util.Set;
 import java.util.UUID;
 
 public record WorkspaceResponseDTO(
@@ -12,6 +14,13 @@ public record WorkspaceResponseDTO(
         String name,
         WorkspaceType type,
         String documentId,
+        String country,
+        String state,
+        String city,
+        String street,
+        String addressNumber,
+        String phone,
+        Set<LegalRegime> legalRegimes,
         Instant createdAt
 ) {
     public static WorkspaceResponseDTO fromEntity(Workspace workspace) {
@@ -21,6 +30,13 @@ public record WorkspaceResponseDTO(
                 workspace.getName(),
                 workspace.getType(),
                 workspace.getDocumentId(),
+                workspace.getCountry(),
+                workspace.getState(),
+                workspace.getCity(),
+                workspace.getStreet(),
+                workspace.getAddressNumber(),
+                workspace.getPhone(),
+                workspace.getLegalRegimes(),
                 workspace.getCreatedAt()
         );
     }

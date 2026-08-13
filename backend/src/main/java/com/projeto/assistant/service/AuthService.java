@@ -8,6 +8,8 @@ import com.projeto.assistant.model.User;
 import com.projeto.assistant.model.UserRole;
 import com.projeto.assistant.repository.TenantRepository;
 import com.projeto.assistant.repository.UserRepository;
+import com.projeto.assistant.model.Workspace;
+import com.projeto.assistant.model.WorkspaceType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,16 +30,36 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final com.projeto.assistant.repository.WorkspaceRepository workspaceRepository;
 
-    // Cria o Tenant e o primeiro usuario (ADMIN) de forma atomica, e ja retorna logado.
-    // Este e o UNICO endpoint publico que cria dados no sistema.
+    // Cria o Tenant (conta), o primeiro Workspace (a empresa de verdade, com CNPJ/
+    // endereco/regime legal) e o primeiro usuario (ADMIN), tudo de forma atomica, e
+    // ja retorna logado. Este e o UNICO endpoint publico que cria dados no sistema.
+    //
+    // NOTA (13/08/2026): Tenant.documentId e Tenant.country nao sao mais preenchidos
+    // aqui - esses dados agora pertencem ao Workspace, que e a entidade legal real
+    // (uma conta/Tenant pode ter varios Workspaces, cada um com seu proprio CNPJ).
+    // As colunas antigas continuam existindo no banco por seguranca, mas ficam nulas
+    // para contas novas a partir de agora.
     @Transactional
     public LoginResponseDTO signup(SignupRequestDTO request) {
         Tenant tenant = new Tenant();
         tenant.setName(request.tenantName());
-        tenant.setDocumentId(request.tenantDocumentId());
-        tenant.setCountry(request.tenantCountry());
         Tenant savedTenant = tenantRepository.save(tenant);
+
+        Workspace workspace = new Workspace();
+        workspace.setTenant(savedTenant);
+        workspace.setName(request.workspaceName());
+        workspace.setType(WorkspaceType.MATRIZ);
+        workspace.setDocumentId(request.workspaceDocumentId());
+        workspace.setCountry(request.workspaceCountry());
+        workspace.setState(request.workspaceState());
+        workspace.setCity(request.workspaceCity());
+        workspace.setStreet(request.workspaceStreet());
+        workspace.setAddressNumber(request.workspaceAddressNumber());
+        workspace.setPhone(request.workspacePhone());
+        workspace.setLegalRegimes(request.workspaceLegalRegimes());
+        workspaceRepository.save(workspace);
 
         User user = new User();
         user.setTenant(savedTenant);

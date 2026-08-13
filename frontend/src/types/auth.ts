@@ -6,8 +6,15 @@ export interface AuthMeResponse {
 
 export interface SignupRequest {
   tenantName: string
-  tenantDocumentId: string
-  tenantCountry: string
+  workspaceName: string
+  workspaceDocumentId: string
+  workspaceCountry: string
+  workspaceState?: string
+  workspaceCity?: string
+  workspaceStreet?: string
+  workspaceAddressNumber?: string
+  workspacePhone?: string
+  workspaceLegalRegimes: ('LGPD' | 'RGPD')[]
   adminUsername: string
   adminEmail: string
   adminPassword: string

@@ -9,6 +9,8 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "workspaces")
@@ -34,6 +36,30 @@ public class Workspace {
 
     @Column(name = "document_id", nullable = false, length = 32)
     private String documentId;
+
+    @Column(length = 2)
+    private String country;
+
+    @Column
+    private String state;
+
+    @Column
+    private String city;
+
+    @Column
+    private String street;
+
+    @Column(name = "address_number")
+    private String addressNumber;
+
+    @Column
+    private String phone;
+
+    @ElementCollection(targetClass = LegalRegime.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "workspace_legal_regimes", joinColumns = @JoinColumn(name = "workspace_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "legal_regime")
+    private Set<LegalRegime> legalRegimes = new HashSet<>();
 
     // Lado "inverso" do ManyToMany - o dono do relacionamento é o User (veja User.java)
     @ManyToMany(mappedBy = "workspaces")
