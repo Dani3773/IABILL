@@ -89,8 +89,11 @@ jobs:
           role-to-assume: arn:aws:iam::154102274042:role/github-actions-iabill-deploy
           aws-region: sa-east-1
 
-      - name: Sync to S3
-        run: aws s3 sync dist/ s3://iabill-frontend --delete
+      - name: Sync to S3 (assets com cache longo, hash no nome garante atualizacao)
+        run: aws s3 sync dist/ s3://iabill-frontend --delete --exclude "index.html" --cache-control "public, max-age=31536000, immutable"
+
+      - name: Sync index.html (sem cache - sempre revalida antes de servir)
+        run: aws s3 cp dist/index.html s3://iabill-frontend/index.html --cache-control "no-cache, no-store, must-revalidate"
 
       - name: Invalidate CloudFront cache
         run: aws cloudfront create-invalidation --distribution-id E13AQSF9P20W4L --paths "/*"
