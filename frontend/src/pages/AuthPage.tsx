@@ -3,7 +3,6 @@ import {
   useState,
   type FormEvent,
   type KeyboardEvent,
-  type MouseEvent as ReactMouseEvent,
   type ReactNode,
 } from "react";
 import { useNavigate } from "react-router-dom";
@@ -39,15 +38,6 @@ const STEPS: { label: string; icon: typeof Building2 }[] = [
   { label: "Empresa", icon: Building2 },
   { label: "Endereço", icon: MapPin },
   { label: "Conta", icon: UserRound },
-];
-
-const AUTH_LOG_LINES = [
-  "CREATE · DOCUMENT · workspace:matriz-fpolis",
-  "AI_GENERATE · DOCUMENT · gemini-2.5-flash",
-  "APPROVE · DOCUMENT · reviewed_by:admin",
-  "UPDATE · INCIDENT · anpd_notified",
-  "VIEW · DOCUMENT_CHUNK · rag:semantic_search",
-  "REJECT · DOCUMENT · reason:incomplete_context",
 ];
 
 const NOISE_TEXTURE =
@@ -173,14 +163,8 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const [signupError, setSignupError] = useState<string | null>(null);
   const [signupLoading, setSignupLoading] = useState(false);
 
-  const spotlightRef = useRef<HTMLDivElement>(null);
   const autofillTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const strength = passwordStrength(adminPassword);
-
-  function handleMouseMove(e: ReactMouseEvent) {
-    const el = spotlightRef.current;
-    if (el) el.style.transform = `translate(${e.clientX - 320}px, ${e.clientY - 320}px)`;
-  }
 
   function handleCapsLock(e: KeyboardEvent<HTMLInputElement>) {
     setCapsLockOn(e.getModifierState?.("CapsLock") ?? false);
@@ -317,27 +301,13 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const cityState = [workspaceCity, workspaceState].filter(Boolean).join(" - ");
 
   return (
-    <div
-      onMouseMove={handleMouseMove}
-      className="relative min-h-screen bg-[#0A0D16] flex items-center justify-center px-4 py-8 overflow-hidden"
-    >
+    <div className="relative min-h-screen bg-[#161310] flex items-center justify-center px-4 py-8 overflow-hidden">
       <style>{`
-        @keyframes iabill-blob-a {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(70px, -50px) scale(1.18); }
-          66% { transform: translate(20px, 30px) scale(0.95); }
+        @keyframes iabill-glow-pulse {
+          0%, 100% { opacity: 0.7; }
+          50% { opacity: 1; }
         }
-        @keyframes iabill-blob-b {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(-60px, 55px) scale(1.12); }
-        }
-        @keyframes iabill-blob-c {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(40px, 35px) scale(0.88); }
-        }
-        .iabill-blob-a { animation: iabill-blob-a 26s ease-in-out infinite; }
-        .iabill-blob-b { animation: iabill-blob-b 30s ease-in-out infinite; }
-        .iabill-blob-c { animation: iabill-blob-c 22s ease-in-out infinite; }
+        .iabill-glow-pulse { animation: iabill-glow-pulse 8s ease-in-out infinite; }
         @keyframes iabill-card-enter {
           from { opacity: 0; transform: translateY(16px) scale(0.985); }
           to { opacity: 1; transform: translateY(0) scale(1); }
@@ -367,12 +337,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
           80% { transform: translateX(4px); }
         }
         .iabill-shake { animation: iabill-shake 0.4s ease-in-out both; }
-        @keyframes iabill-authlogin-log-scroll {
-          from { transform: translateY(0); }
-          to { transform: translateY(-50%); }
-        }
-        .iabill-authlogin-log-track { animation: iabill-authlogin-log-scroll 18s linear infinite; }
-        .iabill-authlogin-log-track:hover { animation-play-state: paused; }
         .iabill-sheen { position: relative; overflow: hidden; }
         .iabill-sheen::after {
           content: '';
@@ -392,15 +356,14 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
           border: 1px solid transparent;
         }
         @media (prefers-reduced-motion: reduce) {
-          .iabill-seal-pop, .iabill-step-fwd, .iabill-step-back, .iabill-authlogin-log-track,
-          .iabill-blob-a, .iabill-blob-b, .iabill-blob-c, .iabill-card-enter,
-          .iabill-shake { animation: none; }
+          .iabill-seal-pop, .iabill-step-fwd, .iabill-step-back,
+          .iabill-glow-pulse, .iabill-card-enter, .iabill-shake { animation: none; }
           .iabill-sheen::after { display: none; }
         }
       `}</style>
 
       <div
-        className="absolute inset-0 opacity-[0.06]"
+        className="absolute inset-0 opacity-[0.05]"
         style={{
           backgroundImage:
             "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
@@ -409,23 +372,18 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
           WebkitMaskImage: "radial-gradient(ellipse 90% 80% at 50% 45%, black, transparent)",
         }}
       />
-      <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: NOISE_TEXTURE }} />
-      <div className="absolute -top-32 -left-20 w-[440px] h-[440px] rounded-full bg-[#14B8A6]/20 blur-[120px] iabill-blob-a" />
-      <div className="absolute top-1/3 -right-24 w-[400px] h-[400px] rounded-full bg-[#B8862B]/15 blur-[120px] iabill-blob-b" />
-      <div className="absolute -bottom-24 left-1/3 w-[360px] h-[360px] rounded-full bg-[#3B5BDB]/12 blur-[120px] iabill-blob-c" />
+      <div className="absolute inset-0 opacity-[0.035] pointer-events-none" style={{ backgroundImage: NOISE_TEXTURE }} />
       <div
-        ref={spotlightRef}
-        className="absolute top-0 left-0 w-[640px] h-[640px] rounded-full pointer-events-none will-change-transform hidden md:block"
+        className="absolute inset-0 flex items-center justify-center pointer-events-none iabill-glow-pulse"
         style={{
-          background: "radial-gradient(circle, rgba(20,184,166,0.055) 0%, transparent 60%)",
-          transition: "transform 0.18s ease-out",
+          background: "radial-gradient(ellipse 700px 500px at 50% 50%, rgba(184,134,43,0.10), transparent 70%)",
         }}
       />
 
       <div className="iabill-card-enter iabill-card-edge relative w-full max-w-4xl grid md:grid-cols-[1fr_1.15fr] rounded-2xl overflow-hidden backdrop-blur-xl shadow-[0_24px_80px_-16px_rgba(0,0,0,0.7)]">
-        <div className="absolute top-0 inset-x-8 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
+        <div className="absolute top-0 inset-x-8 h-px bg-linear-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
 
-        <div className="hidden md:flex flex-col justify-between p-8 border-r border-white/10 bg-black/10">
+        <div className="hidden md:flex flex-col justify-between p-8 border-r border-white/10 bg-white/1.5">
           {isSignUpMode ? (
             <>
               <div>
@@ -435,7 +393,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                 <div className="space-y-4">
                   <div>
                     <div className="h-2 w-2/3 bg-white/10 rounded-full mb-2" />
-                    <h2 className="font-serif text-xl text-white leading-snug min-h-[2.5rem] transition-all">
+                    <h2 className="font-serif text-xl text-white leading-snug min-h-10 transition-all">
                       {workspaceName || <span className="text-slate-600">Sua empresa aparece aqui</span>}
                     </h2>
                     {workspaceDocumentId && (
@@ -467,7 +425,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                   {workspacePhone && <p className="text-xs text-slate-400 font-mono">{workspacePhone}</p>}
                 </div>
               </div>
-              <div className="flex items-center justify-center pt-6 min-h-[8.5rem]">
+              <div className="flex items-center justify-center pt-6 min-h-34">
                 {justCreated ? (
                   <div className="iabill-seal-pop drop-shadow-[0_0_24px_rgba(184,134,43,0.35)]">
                     <ApprovalSeal size={112} />
@@ -483,17 +441,15 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               </div>
             </>
           ) : (
-            <div className="flex-1 flex flex-col min-h-0">
-              <div className="shrink-0">
-                <p className="font-mono text-[10px] tracking-[0.2em] text-[#14B8A6] uppercase mb-2">
-                  Bem-vindo de volta
-                </p>
-                <h2 className="font-serif text-xl text-white leading-snug mb-4">
-                  Sua conformidade, sempre auditável.
-                </h2>
-              </div>
+            <div>
+              <p className="font-mono text-[10px] tracking-[0.2em] text-[#14B8A6] uppercase mb-2">
+                Bem-vindo de volta
+              </p>
+              <h2 className="font-serif text-xl text-white leading-snug mb-6">
+                Sua conformidade, sempre auditável.
+              </h2>
 
-              <div className="shrink-0 grid grid-cols-3 gap-2 mb-5 pb-5 border-b border-white/10">
+              <div className="grid grid-cols-3 gap-2 mb-6 pb-6 border-b border-white/10">
                 <div>
                   <p className="font-mono text-lg text-white">1.000</p>
                   <p className="text-[9px] text-slate-500 uppercase tracking-wide leading-tight mt-0.5">
@@ -514,26 +470,10 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                 </div>
               </div>
 
-              <div className="flex-1 min-h-0 rounded-lg border border-white/10 bg-black/25 overflow-hidden flex flex-col">
-                <div className="shrink-0 flex items-center gap-2 px-4 py-2.5 border-b border-white/10">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#14B8A6] animate-pulse" />
-                  <span className="font-mono text-[10px] text-slate-400 uppercase tracking-[0.15em]">
-                    Trilha de auditoria · tempo real
-                  </span>
-                </div>
-                <div className="relative flex-1 min-h-0 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]">
-                  <div className="iabill-authlogin-log-track">
-                    {[...AUTH_LOG_LINES, ...AUTH_LOG_LINES].map((line, i) => (
-                      <div
-                        key={i}
-                        className="font-mono text-[11px] text-slate-400 px-4 py-2 border-b border-white/5 hover:text-slate-200 hover:bg-white/[0.03] transition-colors"
-                      >
-                        <span className="text-[#14B8A6]">›</span> {line}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Cada ação sobre dados pessoais fica registrada numa trilha de auditoria imutável,
+                validada por avaliação quantitativa do mecanismo de recuperação de contexto.
+              </p>
             </div>
           )}
         </div>
@@ -543,7 +483,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
             <Wordmark />
           </div>
 
-          <div className="relative grid grid-cols-2 rounded-xl bg-white/[0.04] border border-white/10 p-1 mb-6 text-sm">
+          <div className="relative grid grid-cols-2 rounded-xl bg-white/4 border border-white/10 p-1 mb-6 text-sm">
             <div
               className={`absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] rounded-lg bg-white/10 border border-white/10 shadow-sm transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 isSignUpMode ? "translate-x-full" : "translate-x-0"
@@ -696,7 +636,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               <form onSubmit={handleSignup} className="flex-1 flex flex-col">
                 <div
                   key={step}
-                  className={`${stepDirection === "fwd" ? "iabill-step-fwd" : "iabill-step-back"} space-y-3 flex-1 min-h-[17rem]`}
+                  className={`${stepDirection === "fwd" ? "iabill-step-fwd" : "iabill-step-back"} space-y-3 flex-1 min-h-68`}
                 >
                   {step === 1 && (
                     <>
@@ -732,7 +672,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             className={
                               INPUT_WITH_ICON +
                               (cnpjAutofilled
-                                ? " ring-2 ring-[#14B8A6]/50 border-[#14B8A6]/70 bg-[#14B8A6]/[0.06]"
+                                ? " ring-2 ring-[#14B8A6]/50 border-[#14B8A6]/70 bg-[#14B8A6]/6"
                                 : "")
                             }
                           />
@@ -939,7 +879,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     <button
                       type="button"
                       onClick={goBack}
-                      className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-white px-3 py-2.5 rounded-lg hover:bg-white/[0.05] transition-all"
+                      className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-white px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all"
                     >
                       <ArrowLeft className="w-4 h-4" /> Voltar
                     </button>
