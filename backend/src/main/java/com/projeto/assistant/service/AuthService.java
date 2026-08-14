@@ -10,6 +10,8 @@ import com.projeto.assistant.repository.TenantRepository;
 import com.projeto.assistant.repository.UserRepository;
 import com.projeto.assistant.model.Workspace;
 import com.projeto.assistant.model.WorkspaceType;
+import com.projeto.assistant.dto.SignupResponseDTO;
+import com.projeto.assistant.dto.EmailConfirmationResponseDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.SecureRandom;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +36,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final com.projeto.assistant.repository.WorkspaceRepository workspaceRepository;
+    private final EmailService emailService;
 
     // Cria o Tenant (conta), o primeiro Workspace (a empresa de verdade, com CNPJ/
     // endereco/regime legal) e o primeiro usuario (ADMIN), tudo de forma atomica, e
@@ -42,7 +48,7 @@ public class AuthService {
     // As colunas antigas continuam existindo no banco por seguranca, mas ficam nulas
     // para contas novas a partir de agora.
     @Transactional
-    public LoginResponseDTO signup(SignupRequestDTO request) {
+    public SignupResponseDTO signup(SignupRequestDTO request) {
         Tenant tenant = new Tenant();
         tenant.setName(request.tenantName());
         Tenant savedTenant = tenantRepository.save(tenant);
@@ -63,16 +69,28 @@ public class AuthService {
         workspace.setLegalRegimes(request.workspaceLegalRegimes());
         workspaceRepository.save(workspace);
 
+        String verificationToken = generateToken();
+
         User user = new User();
         user.setTenant(savedTenant);
         user.setUsername(request.adminUsername());
         user.setEmail(request.adminEmail());
         user.setPasswordHash(passwordEncoder.encode(request.adminPassword()));
         user.setRole(UserRole.ADMIN);
+        user.setEmailVerified(false);
+        user.setEmailVerificationToken(verificationToken);
+        user.setEmailVerificationExpiresAt(Instant.now().plus(48, ChronoUnit.HOURS));
         User savedUser = userRepository.save(user);
 
-        String token = jwtService.generateToken(savedUser.getId(), savedTenant.getId(), savedUser.getRole().name());
-        return new LoginResponseDTO(token, savedUser.getId(), savedTenant.getId(), savedUser.getRole().name());
+        emailService.sendEmailConfirmation(savedUser.getEmail(), savedUser.getUsername(), verificationToken);
+
+        return new SignupResponseDTO(true, "Conta criada. Verifique seu e-mail para confirmar e poder entrar.");
+    }
+
+    private String generateToken() {
+        byte[] bytes = new byte[32];
+        new SecureRandom().nextBytes(bytes);
+        return java.util.Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 
     @Transactional(readOnly = true)
@@ -92,8 +110,57 @@ public class AuthService {
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos"));
 
+        if (!matchedUser.isEmailVerified()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Confirme seu e-mail antes de entrar. Verifique sua caixa de entrada.");
+        }
+
         UUID tenantId = matchedUser.getTenant() != null ? matchedUser.getTenant().getId() : null;
         String token = jwtService.generateToken(matchedUser.getId(), tenantId, matchedUser.getRole().name());
         return new LoginResponseDTO(token, matchedUser.getId(), tenantId, matchedUser.getRole().name());
+    }
+
+    @Transactional
+    public EmailConfirmationResponseDTO resendConfirmation(LoginRequestDTO request) {
+        List<User> candidates = userRepository.findByEmail(request.email());
+
+        User matchedUser = candidates.stream()
+                .filter(u -> passwordEncoder.matches(request.password(), u.getPasswordHash()))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos"));
+
+        if (matchedUser.isEmailVerified()) {
+            return new EmailConfirmationResponseDTO(false, "Este e-mail já está confirmado.");
+        }
+
+        String newToken = generateToken();
+        matchedUser.setEmailVerificationToken(newToken);
+        matchedUser.setEmailVerificationExpiresAt(Instant.now().plus(48, ChronoUnit.HOURS));
+        userRepository.save(matchedUser);
+
+        emailService.sendEmailConfirmation(matchedUser.getEmail(), matchedUser.getUsername(), newToken);
+
+        return new EmailConfirmationResponseDTO(true, "E-mail de confirmação reenviado.");
+    }
+
+    @Transactional
+    public EmailConfirmationResponseDTO confirmEmail(String token) {
+        User user = userRepository.findByEmailVerificationToken(token)
+                .orElse(null);
+
+        if (user == null) {
+            return new EmailConfirmationResponseDTO(false, "Link de confirmação inválido.");
+        }
+
+        if (user.getEmailVerificationExpiresAt() != null
+                && user.getEmailVerificationExpiresAt().isBefore(Instant.now())) {
+            return new EmailConfirmationResponseDTO(false, "Link de confirmação expirado.");
+        }
+
+        user.setEmailVerified(true);
+        user.setEmailVerificationToken(null);
+        user.setEmailVerificationExpiresAt(null);
+        userRepository.save(user);
+
+        return new EmailConfirmationResponseDTO(true, "E-mail confirmado com sucesso.");
     }
 }

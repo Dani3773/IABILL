@@ -26,3 +26,13 @@ export interface LoginRequest {
   email: string
   password: string
 }
+
+export interface SignupResponse {
+  success: boolean
+  message: string
+}
+
+export interface EmailConfirmationResponse {
+  success: boolean
+  message: string
+}

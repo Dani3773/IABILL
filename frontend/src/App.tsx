@@ -18,6 +18,7 @@ import { IncidentsPage } from "./pages/IncidentsPage";
 import { LandingPage } from "./pages/LandingPage";
 import { PublicDataSubjectRequestPage } from "./pages/PublicDataSubjectRequestPage";
 import { DataSubjectRequestsPage } from "./pages/DataSubjectRequestsPage";
+import { EmailConfirmationPage } from "./pages/EmailConfirmationPage";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           <Route path="/login" element={<AuthPage initialMode="login" />} />
           <Route path="/signup" element={<AuthPage initialMode="signup" />} />
           <Route path="/solicitacao/:documentId" element={<PublicDataSubjectRequestPage />} />
+          <Route path="/confirmar-email/:token" element={<EmailConfirmationPage />} />
 
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>

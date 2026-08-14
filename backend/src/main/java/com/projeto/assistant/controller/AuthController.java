@@ -40,9 +40,8 @@ public class AuthController {
     private long jwtExpirationMs;
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthMeResponseDTO> signup(@Valid @RequestBody SignupRequestDTO request) {
-        LoginResponseDTO result = authService.signup(request);
-        return buildAuthResponse(result);
+    public SignupResponseDTO signup(@Valid @RequestBody SignupRequestDTO request) {
+        return authService.signup(request);
     }
 
     @GetMapping("/cnpj/{cnpj}")
@@ -99,5 +98,15 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK)
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(body);
+    }
+
+    @GetMapping("/confirm-email/{token}")
+    public EmailConfirmationResponseDTO confirmEmail(@PathVariable String token) {
+        return authService.confirmEmail(token);
+    }
+
+    @PostMapping("/resend-confirmation")
+    public EmailConfirmationResponseDTO resendConfirmation(@Valid @RequestBody LoginRequestDTO request) {
+        return authService.resendConfirmation(request);
     }
 }

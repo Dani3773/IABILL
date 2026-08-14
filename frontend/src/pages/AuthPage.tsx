@@ -30,6 +30,8 @@ import { getErrorMessage } from "../api/errorUtils";
 import { useAuth } from "../contexts/AuthContext";
 import { Alert } from "../components/Alert";
 import { COUNTRIES, BRAZILIAN_STATES } from "../constants/locations";
+import { AxiosError } from "axios";
+import { resendConfirmation } from "../api/authService";
 
 type SignupStep = 1 | 2 | 3;
 type LegalRegime = "LGPD" | "RGPD";
@@ -171,6 +173,11 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const [workspacePostalCode, setWorkspacePostalCode] = useState("");
   const [cepLookupLoading, setCepLookupLoading] = useState(false);
 
+  const [needsConfirmation, setNeedsConfirmation] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendMessage, setResendMessage] = useState<string | null>(null);
+  const [signupSuccess, setSignupSuccess] = useState<string | null>(null);
+
   function handleCapsLock(e: KeyboardEvent<HTMLInputElement>) {
     setCapsLockOn(e.getModifierState?.("CapsLock") ?? false);
   }
@@ -178,15 +185,35 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   async function handleLogin(e: FormEvent) {
     e.preventDefault();
     setLoginError(null);
+    setNeedsConfirmation(false);
+    setResendMessage(null);
     setLoginLoading(true);
     try {
       const response = await login({ email, password });
       setAuth(response);
       navigate(response.tenantId ? "/dashboard" : "/platform");
     } catch (err) {
-      setLoginError(getErrorMessage(err, "E-mail ou senha inválidos"));
+      if (err instanceof AxiosError && err.response?.status === 403) {
+        setNeedsConfirmation(true);
+        setLoginError(getErrorMessage(err, "Confirme seu e-mail antes de entrar."));
+      } else {
+        setLoginError(getErrorMessage(err, "E-mail ou senha inválidos"));
+      }
     } finally {
       setLoginLoading(false);
+    }
+  }
+
+  async function handleResendConfirmation() {
+    setResendLoading(true);
+    setResendMessage(null);
+    try {
+      const result = await resendConfirmation({ email, password });
+      setResendMessage(result.message);
+    } catch (err) {
+      setResendMessage(getErrorMessage(err, "Não foi possível reenviar o e-mail."));
+    } finally {
+      setResendLoading(false);
     }
   }
 
@@ -316,10 +343,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
         adminPassword,
       });
       setJustCreated(true);
-      setTimeout(() => {
-        setAuth(response);
-        navigate("/dashboard");
-      }, 1600);
+      setSignupSuccess(response.message);
     } catch (err) {
       setSignupError(getErrorMessage(err, "Não foi possível criar a conta. Verifique os dados."));
     } finally {
@@ -601,6 +625,21 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                   <Alert type="error" message={loginError} />
                 </div>
               )}
+              {needsConfirmation && (
+                <div className="text-center">
+                  <button
+                    type="button"
+                    onClick={handleResendConfirmation}
+                    disabled={resendLoading}
+                    className="text-[#14B8A6] hover:underline text-xs disabled:opacity-50"
+                  >
+                    {resendLoading ? "Reenviando..." : "Reenviar e-mail de confirmação"}
+                  </button>
+                  {resendMessage && (
+                    <p className="text-xs text-slate-400 mt-1">{resendMessage}</p>
+                  )}
+                </div>
+              )}
               <div className="flex-1" />
               <button
                 type="submit"
@@ -622,14 +661,19 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               </p>
             </form>
           ) : justCreated ? (
-            <div className="flex-1 flex flex-col items-center justify-center gap-4 py-8">
+            <div className="flex-1 flex flex-col items-center justify-center gap-4 py-8 text-center">
               <div className="iabill-seal-pop md:hidden drop-shadow-[0_0_24px_rgba(184,134,43,0.35)]">
                 <ApprovalSeal size={120} />
               </div>
-              <p className="font-serif text-lg text-white">Conta criada com sucesso</p>
-              <p className="flex items-center gap-2 text-xs text-slate-400 font-mono">
-                <Loader2 className="w-3.5 h-3.5 animate-spin text-[#14B8A6]" /> Redirecionando para o painel...
-              </p>
+              <p className="font-serif text-lg text-white">Conta criada</p>
+              <p className="text-sm text-slate-400 max-w-xs">{signupSuccess}</p>
+              <button
+                type="button"
+                onClick={() => switchMode(false)}
+                className="text-[#14B8A6] hover:underline text-sm mt-2"
+              >
+                Ir para o login
+              </button>
             </div>
           ) : (
             <div className="flex-1 flex flex-col">
