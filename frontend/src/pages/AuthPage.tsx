@@ -483,24 +483,45 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               </div>
             </>
           ) : (
-            <>
-              <div>
+            <div className="flex-1 flex flex-col min-h-0">
+              <div className="shrink-0">
                 <p className="font-mono text-[10px] tracking-[0.2em] text-[#14B8A6] uppercase mb-2">
                   Bem-vindo de volta
                 </p>
-                <h2 className="font-serif text-xl text-white leading-snug mb-1">
+                <h2 className="font-serif text-xl text-white leading-snug mb-4">
                   Sua conformidade, sempre auditável.
                 </h2>
-                <div className="h-px w-12 bg-[#B8862B]/60 mt-4 mb-6" />
               </div>
-              <div className="rounded-lg border border-white/10 bg-black/25 overflow-hidden h-56">
-                <div className="flex items-center gap-2 px-4 py-2.5 border-b border-white/10">
+
+              <div className="shrink-0 grid grid-cols-3 gap-2 mb-5 pb-5 border-b border-white/10">
+                <div>
+                  <p className="font-mono text-lg text-white">1.000</p>
+                  <p className="text-[9px] text-slate-500 uppercase tracking-wide leading-tight mt-0.5">
+                    Precision@1
+                  </p>
+                </div>
+                <div>
+                  <p className="font-mono text-lg text-white">1.000</p>
+                  <p className="text-[9px] text-slate-500 uppercase tracking-wide leading-tight mt-0.5">
+                    Recall@5
+                  </p>
+                </div>
+                <div>
+                  <p className="font-mono text-lg text-white">100%</p>
+                  <p className="text-[9px] text-slate-500 uppercase tracking-wide leading-tight mt-0.5">
+                    Recusa correta
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex-1 min-h-0 rounded-lg border border-white/10 bg-black/25 overflow-hidden flex flex-col">
+                <div className="shrink-0 flex items-center gap-2 px-4 py-2.5 border-b border-white/10">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#14B8A6] animate-pulse" />
                   <span className="font-mono text-[10px] text-slate-400 uppercase tracking-[0.15em]">
                     Trilha de auditoria · tempo real
                   </span>
                 </div>
-                <div className="relative h-[calc(100%-2.375rem)] overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)]">
+                <div className="relative flex-1 min-h-0 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]">
                   <div className="iabill-authlogin-log-track">
                     {[...AUTH_LOG_LINES, ...AUTH_LOG_LINES].map((line, i) => (
                       <div
@@ -513,7 +534,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                   </div>
                 </div>
               </div>
-            </>
+            </div>
           )}
         </div>
 
