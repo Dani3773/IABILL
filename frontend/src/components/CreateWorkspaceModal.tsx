@@ -3,6 +3,7 @@ import { createWorkspace } from "../api/workspaceService";
 import { useAuth } from "../contexts/AuthContext";
 import type { Workspace } from "../types/workspace";
 import { getErrorMessage } from "../api/errorUtils";
+import { COUNTRIES, BRAZILIAN_STATES } from "../constants/locations";
 
 interface Props {
   onClose: () => void;
@@ -14,13 +15,16 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
   const [name, setName] = useState("");
   const [type, setType] = useState<"MATRIZ" | "FILIAL">("FILIAL");
   const [documentId, setDocumentId] = useState("");
-  const [country, setCountry] = useState("BR");
+  const [country, setCountry] = useState("Brasil");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
+  const [neighborhood, setNeighborhood] = useState("");
+  const [postalCode, setPostalCode] = useState("");
   const [street, setStreet] = useState("");
   const [addressNumber, setAddressNumber] = useState("");
   const [phone, setPhone] = useState("");
   const [legalRegimes, setLegalRegimes] = useState<("LGPD" | "RGPD")[]>(["LGPD"]);
+  const [cepLookupLoading, setCepLookupLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,10 +37,42 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
     return `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5, 8)}/${digits.slice(8, 12)}-${digits.slice(12)}`;
   }
 
+  function formatCep(value: string): string {
+    const digits = value.replace(/\D/g, "").slice(0, 8);
+    if (digits.length <= 5) return digits;
+    return `${digits.slice(0, 5)}-${digits.slice(5)}`;
+  }
+
   function toggleLegalRegime(regime: "LGPD" | "RGPD") {
     setLegalRegimes((prev) =>
       prev.includes(regime) ? prev.filter((r) => r !== regime) : [...prev, regime],
     );
+  }
+
+  async function handleCepBlur() {
+    const sanitized = postalCode.replace(/\D/g, "");
+    if (sanitized.length !== 8) return;
+
+    setCepLookupLoading(true);
+    try {
+      const response = await fetch(`/api/v1/auth/cep/${sanitized}`);
+      const stillSameCep = postalCode.replace(/\D/g, "") === sanitized;
+      if (!stillSameCep) return;
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.found) {
+          if (data.street) setStreet(data.street);
+          if (data.neighborhood) setNeighborhood(data.neighborhood);
+          if (data.city) setCity(data.city);
+          if (data.state) setState(data.state);
+        }
+      }
+    } catch {
+      // Falha silenciosa deliberada - autopreenchimento e opcional.
+    } finally {
+      setCepLookupLoading(false);
+    }
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -57,6 +93,8 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
         country,
         state: state || undefined,
         city: city || undefined,
+        neighborhood: neighborhood || undefined,
+        postalCode: postalCode || undefined,
         street: street || undefined,
         addressNumber: addressNumber || undefined,
         phone: phone || undefined,
@@ -113,6 +151,7 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
               value={documentId}
               onChange={(e) => setDocumentId(formatCnpj(e.target.value))}
               required
+              autoComplete="off"
               placeholder="Somente números"
               className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             />
@@ -123,30 +162,80 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
               type="text"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
+              autoComplete="off"
               placeholder="Opcional"
               className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             />
           </div>
-          <div className="grid grid-cols-3 gap-2">
-            <div>
-              <label className="block text-sm text-slate-300 mb-1">País</label>
+
+          <div>
+            <label className="block text-sm text-slate-300 mb-1">País</label>
+            <select
+              value={country}
+              onChange={(e) => {
+                setCountry(e.target.value);
+                setState("");
+              }}
+              required
+              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
+            >
+              {COUNTRIES.map((c) => (
+                <option key={c.code} value={c.name}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm text-slate-300 mb-1">
+              {country === "Brasil" ? "CEP" : "Código postal"}
+            </label>
+            <div className="relative">
               <input
                 type="text"
-                value={country}
-                onChange={(e) => setCountry(e.target.value.toUpperCase())}
-                maxLength={2}
-                required
+                inputMode="numeric"
+                value={postalCode}
+                onChange={(e) => setPostalCode(formatCep(e.target.value))}
+                onBlur={country === "Brasil" ? handleCepBlur : undefined}
+                autoComplete="off"
+                placeholder={country === "Brasil" ? "00000-000" : "Código postal"}
                 className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
               />
+              {cepLookupLoading && (
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-cyan-400">
+                  buscando...
+                </span>
+              )}
             </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="block text-sm text-slate-300 mb-1">Estado</label>
-              <input
-                type="text"
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-                className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
-              />
+              {country === "Brasil" ? (
+                <select
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
+                >
+                  <option value="">Selecione</option>
+                  {BRAZILIAN_STATES.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type="text"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  autoComplete="off"
+                  placeholder="Estado/Região"
+                  className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
+                />
+              )}
             </div>
             <div>
               <label className="block text-sm text-slate-300 mb-1">Cidade</label>
@@ -154,10 +243,23 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
                 type="text"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
+                autoComplete="off"
                 className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
               />
             </div>
           </div>
+
+          <div>
+            <label className="block text-sm text-slate-300 mb-1">Bairro</label>
+            <input
+              type="text"
+              value={neighborhood}
+              onChange={(e) => setNeighborhood(e.target.value)}
+              autoComplete="off"
+              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
+            />
+          </div>
+
           <div className="grid grid-cols-3 gap-2">
             <div className="col-span-2">
               <label className="block text-sm text-slate-300 mb-1">Rua</label>
@@ -165,6 +267,7 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
                 type="text"
                 value={street}
                 onChange={(e) => setStreet(e.target.value)}
+                autoComplete="off"
                 className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
               />
             </div>
@@ -174,10 +277,12 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
                 type="text"
                 value={addressNumber}
                 onChange={(e) => setAddressNumber(e.target.value)}
+                autoComplete="off"
                 className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
               />
             </div>
           </div>
+
           <div>
             <label className="block text-sm text-slate-300 mb-1">Regime legal aplicável</label>
             <div className="flex gap-4">
@@ -201,6 +306,7 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
               </label>
             </div>
           </div>
+
           {error && <p className="text-red-400 text-sm">{error}</p>}
           <div className="flex gap-3 pt-2">
             <button

@@ -7,6 +7,8 @@ export interface Workspace {
   country: string | null
   state: string | null
   city: string | null
+  neighborhood: string | null
+  postalCode: string | null
   street: string | null
   addressNumber: string | null
   phone: string | null
@@ -22,6 +24,8 @@ export interface WorkspaceRequest {
   country: string
   state?: string
   city?: string
+  neighborhood?: string
+  postalCode?: string
   street?: string
   addressNumber?: string
   phone?: string

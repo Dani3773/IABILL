@@ -11,6 +11,8 @@ export interface SignupRequest {
   workspaceCountry: string
   workspaceState?: string
   workspaceCity?: string
+  workspaceNeighborhood?: string
+  workspacePostalCode?: string
   workspaceStreet?: string
   workspaceAddressNumber?: string
   workspacePhone?: string

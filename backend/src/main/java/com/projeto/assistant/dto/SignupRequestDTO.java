@@ -20,11 +20,12 @@ public record SignupRequestDTO(
         String workspaceDocumentId,
 
         @NotBlank(message = "O país é obrigatório")
-        @Size(min = 2, max = 2, message = "Use o código ISO de 2 letras, ex: BR")
         String workspaceCountry,
 
         String workspaceState,
         String workspaceCity,
+        String workspaceNeighborhood,
+        String workspacePostalCode,
         String workspaceStreet,
         String workspaceAddressNumber,
         String workspacePhone,

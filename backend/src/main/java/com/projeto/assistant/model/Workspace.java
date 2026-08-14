@@ -37,7 +37,7 @@ public class Workspace {
     @Column(name = "document_id", nullable = false, length = 32)
     private String documentId;
 
-    @Column(length = 2)
+    @Column(length = 100)
     private String country;
 
     @Column
@@ -45,6 +45,12 @@ public class Workspace {
 
     @Column
     private String city;
+
+    @Column
+    private String neighborhood;
+
+    @Column(name = "postal_code")
+    private String postalCode;
 
     @Column
     private String street;

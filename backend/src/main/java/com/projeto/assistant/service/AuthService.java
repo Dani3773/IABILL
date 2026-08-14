@@ -55,6 +55,8 @@ public class AuthService {
         workspace.setCountry(request.workspaceCountry());
         workspace.setState(request.workspaceState());
         workspace.setCity(request.workspaceCity());
+        workspace.setNeighborhood(request.workspaceNeighborhood());
+        workspace.setPostalCode(request.workspacePostalCode());
         workspace.setStreet(request.workspaceStreet());
         workspace.setAddressNumber(request.workspaceAddressNumber());
         workspace.setPhone(request.workspacePhone());

@@ -29,6 +29,7 @@ import { login, signup } from "../api/authService";
 import { getErrorMessage } from "../api/errorUtils";
 import { useAuth } from "../contexts/AuthContext";
 import { Alert } from "../components/Alert";
+import { COUNTRIES, BRAZILIAN_STATES } from "../constants/locations";
 
 type SignupStep = 1 | 2 | 3;
 type LegalRegime = "LGPD" | "RGPD";
@@ -166,6 +167,10 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const autofillTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const strength = passwordStrength(adminPassword);
 
+  const [workspaceNeighborhood, setWorkspaceNeighborhood] = useState("");
+  const [workspacePostalCode, setWorkspacePostalCode] = useState("");
+  const [cepLookupLoading, setCepLookupLoading] = useState(false);
+
   function handleCapsLock(e: KeyboardEvent<HTMLInputElement>) {
     setCapsLockOn(e.getModifierState?.("CapsLock") ?? false);
   }
@@ -226,6 +231,38 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
     }
   }
 
+  function formatCep(value: string): string {
+    const digits = value.replace(/\D/g, "").slice(0, 8);
+    if (digits.length <= 5) return digits;
+    return `${digits.slice(0, 5)}-${digits.slice(5)}`;
+  }
+
+  async function handleCepBlur() {
+    const sanitized = workspacePostalCode.replace(/\D/g, "");
+    if (sanitized.length !== 8) return;
+
+    setCepLookupLoading(true);
+    try {
+      const response = await fetch(`/api/v1/auth/cep/${sanitized}`);
+      const stillSameCep = workspacePostalCode.replace(/\D/g, "") === sanitized;
+      if (!stillSameCep) return;
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.found) {
+          if (data.street) setWorkspaceStreet(data.street);
+          if (data.neighborhood) setWorkspaceNeighborhood(data.neighborhood);
+          if (data.city) setWorkspaceCity(data.city);
+          if (data.state) setWorkspaceState(data.state);
+        }
+      }
+    } catch {
+      // Falha silenciosa deliberada - autopreenchimento e opcional.
+    } finally {
+      setCepLookupLoading(false);
+    }
+  }
+
   function toggleLegalRegime(regime: LegalRegime) {
     setLegalRegimes((prev) => (prev.includes(regime) ? prev.filter((r) => r !== regime) : [...prev, regime]));
   }
@@ -268,6 +305,8 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
         workspaceCountry,
         workspaceState: workspaceState || undefined,
         workspaceCity: workspaceCity || undefined,
+        workspaceNeighborhood: workspaceNeighborhood || undefined,
+        workspacePostalCode: workspacePostalCode || undefined,
         workspaceStreet: workspaceStreet || undefined,
         workspaceAddressNumber: workspaceAddressNumber || undefined,
         workspacePhone: workspacePhone || undefined,
@@ -412,11 +451,12 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                       ))}
                     </div>
                   )}
-                  {(addressParts || cityState || workspaceCountry) && (
+                  {(addressParts || workspaceNeighborhood || cityState || workspaceCountry) && (
                     <div className="pt-3 border-t border-white/10">
                       <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-slate-500 mb-1">Endereço</p>
                       <p className="text-xs text-slate-400 leading-relaxed">
                         {addressParts && <>{addressParts}<br /></>}
+                        {workspaceNeighborhood && <>{workspaceNeighborhood}<br /></>}
                         {cityState && <>{cityState}<br /></>}
                         {workspaceCountry}
                       </p>
@@ -720,30 +760,71 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                   )}
                   {step === 2 && (
                     <>
-                      <div className="grid grid-cols-3 gap-2">
-                        <Field label="País">
-                          <div className="relative">
-                            <Globe className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                            <input
-                              type="text"
-                              value={workspaceCountry}
-                              onChange={(e) => setWorkspaceCountry(e.target.value.toUpperCase())}
-                              maxLength={2}
-                              required
-                              placeholder="BR"
-                              className={INPUT_WITH_ICON + " font-mono uppercase"}
-                            />
-                          </div>
-                        </Field>
-                        <Field label="Estado" optional>
+                      <Field label="País">
+                        <div className="relative">
+                          <Globe className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <select
+                            value={workspaceCountry}
+                            onChange={(e) => {
+                              setWorkspaceCountry(e.target.value);
+                              setWorkspaceState("");
+                            }}
+                            required
+                            className={INPUT_WITH_ICON + " appearance-none cursor-pointer"}
+                          >
+                            {COUNTRIES.map((c) => (
+                              <option key={c.code} value={c.name} className="bg-[#161310]">
+                                {c.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </Field>
+
+                      <Field label="CEP" optional={workspaceCountry !== "Brasil"}>
+                        <div className="relative">
+                          <Hash className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
                             type="text"
-                            value={workspaceState}
-                            onChange={(e) => setWorkspaceState(e.target.value)}
+                            inputMode="numeric"
+                            value={workspacePostalCode}
+                            onChange={(e) => setWorkspacePostalCode(formatCep(e.target.value))}
+                            onBlur={workspaceCountry === "Brasil" ? handleCepBlur : undefined}
                             autoComplete="off"
-                            placeholder="SC"
-                            className={INPUT_CLASS}
+                            placeholder={workspaceCountry === "Brasil" ? "00000-000" : "Código postal"}
+                            className={INPUT_WITH_ICON + " font-mono"}
                           />
+                          {cepLookupLoading && (
+                            <Loader2 className="w-4 h-4 text-[#14B8A6] animate-spin absolute right-3 top-1/2 -translate-y-1/2" />
+                          )}
+                        </div>
+                      </Field>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <Field label="Estado">
+                          {workspaceCountry === "Brasil" ? (
+                            <select
+                              value={workspaceState}
+                              onChange={(e) => setWorkspaceState(e.target.value)}
+                              className={INPUT_CLASS + " appearance-none cursor-pointer"}
+                            >
+                              <option value="" className="bg-[#161310]">Selecione</option>
+                              {BRAZILIAN_STATES.map((s) => (
+                                <option key={s} value={s} className="bg-[#161310]">
+                                  {s}
+                                </option>
+                              ))}
+                            </select>
+                          ) : (
+                            <input
+                              type="text"
+                              value={workspaceState}
+                              onChange={(e) => setWorkspaceState(e.target.value)}
+                              autoComplete="off"
+                              placeholder="Estado/Região"
+                              className={INPUT_CLASS}
+                            />
+                          )}
                         </Field>
                         <Field label="Cidade" optional>
                           <input
@@ -756,6 +837,18 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                           />
                         </Field>
                       </div>
+
+                      <Field label="Bairro" optional>
+                        <input
+                          type="text"
+                          value={workspaceNeighborhood}
+                          onChange={(e) => setWorkspaceNeighborhood(e.target.value)}
+                          autoComplete="off"
+                          placeholder="Centro"
+                          className={INPUT_CLASS}
+                        />
+                      </Field>
+
                       <div className="grid grid-cols-3 gap-2">
                         <div className="col-span-2">
                           <Field label="Rua" optional>
@@ -787,7 +880,9 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                         </Field>
                       </div>
                       <p className="text-[11px] text-slate-600 pt-1 leading-relaxed">
-                        O endereço é usado nos registros de conformidade da sua organização. Você pode completá-lo depois.
+                        {workspaceCountry === "Brasil"
+                          ? "Informe o CEP para preencher automaticamente rua, bairro, cidade e estado."
+                          : "O endereço é usado nos registros de conformidade da sua organização. Você pode completá-lo depois."}
                       </p>
                     </>
                   )}

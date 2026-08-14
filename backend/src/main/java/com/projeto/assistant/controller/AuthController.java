@@ -4,6 +4,7 @@ import com.projeto.assistant.config.JwtAuthenticationFilter;
 import com.projeto.assistant.dto.*;
 import com.projeto.assistant.service.AuthService;
 import com.projeto.assistant.service.CnpjLookupService;
+import com.projeto.assistant.service.CepLookupService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,8 @@ public class AuthController {
 
     private final CnpjLookupService cnpjLookupService;
 
+    private final CepLookupService cepLookupService;
+
     @Value("${app.cookie.secure}")
     private boolean cookieSecure;
 
@@ -45,6 +48,11 @@ public class AuthController {
     @GetMapping("/cnpj/{cnpj}")
     public CnpjLookupResponseDTO lookupCnpj(@PathVariable String cnpj) {
         return cnpjLookupService.lookup(cnpj);
+    }
+
+    @GetMapping("/cep/{cep}")
+    public CepLookupResponseDTO lookupCep(@PathVariable String cep) {
+        return cepLookupService.lookup(cep);
     }
 
     @PostMapping("/login")

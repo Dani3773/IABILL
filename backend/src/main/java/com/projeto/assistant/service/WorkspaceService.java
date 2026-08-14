@@ -37,6 +37,8 @@ public class WorkspaceService {
         workspace.setCountry(request.country());
         workspace.setState(request.state());
         workspace.setCity(request.city());
+        workspace.setNeighborhood(request.neighborhood());
+        workspace.setPostalCode(request.postalCode());
         workspace.setStreet(request.street());
         workspace.setAddressNumber(request.addressNumber());
         workspace.setPhone(request.phone());
