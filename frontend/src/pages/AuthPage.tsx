@@ -150,7 +150,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const [cnpjLookupLoading, setCnpjLookupLoading] = useState(false);
   const [cnpjAutofilled, setCnpjAutofilled] = useState(false);
 
-  const [workspaceCountry, setWorkspaceCountry] = useState("BR");
+  const [workspaceCountry, setWorkspaceCountry] = useState("Brasil");
   const [workspaceState, setWorkspaceState] = useState("");
   const [workspaceCity, setWorkspaceCity] = useState("");
   const [workspaceStreet, setWorkspaceStreet] = useState("");
@@ -271,7 +271,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
     return workspaceDocumentId.replace(/\D/g, "").length === 14 && workspaceName.trim().length > 0 && legalRegimes.length > 0;
   }
   function canAdvanceFromStep2() {
-    return workspaceCountry.trim().length === 2;
+    return workspaceCountry.trim().length > 0;
   }
 
   function goNext() {
