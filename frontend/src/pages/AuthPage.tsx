@@ -11,6 +11,15 @@ type LegalRegime = "LGPD" | "RGPD";
 
 const STEP_LABELS = ["Empresa", "Endereço", "Conta"];
 
+const AUTH_LOG_LINES = [
+  "CREATE · DOCUMENT · workspace:matriz-fpolis",
+  "AI_GENERATE · DOCUMENT · gemini-2.5-flash",
+  "APPROVE · DOCUMENT · reviewed_by:admin",
+  "UPDATE · INCIDENT · anpd_notified",
+  "VIEW · DOCUMENT_CHUNK · rag:semantic_search",
+  "REJECT · DOCUMENT · reason:incomplete_context",
+];
+
 function Wordmark({ size = "text-2xl" }: { size?: string }) {
   return (
     <div className="flex items-center gap-2">
@@ -214,83 +223,114 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
         }
         .iabill-step-in { animation: iabill-fade-slide 0.35s ease-out both; }
         @media (prefers-reduced-motion: reduce) {
-          .iabill-seal-pop, .iabill-step-in { animation: none; }
+          .iabill-seal-pop, .iabill-step-in, .iabill-authlogin-log-track { animation: none; }
         }
+        @keyframes iabill-authlogin-log-scroll {
+          from { transform: translateY(0); }
+          to { transform: translateY(-50%); }
+        }
+        .iabill-authlogin-log-track { animation: iabill-authlogin-log-scroll 16s linear infinite; }
       `}</style>
 
       <div className="w-full max-w-4xl grid md:grid-cols-[1fr_1.15fr] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
         {/* Painel esquerdo - preview ao vivo (documento) */}
         <div className="hidden md:flex flex-col justify-between bg-[#EDEAE1] p-8">
-          <div>
-            <p className="font-mono text-[10px] tracking-widest text-[#0d7a6d] uppercase mb-6">
-              {isSignUpMode ? "Pré-visualização · Cadastro" : "Bem-vindo de volta"}
-            </p>
+          {isSignUpMode ? (
+            <>
+              <div>
+                <p className="font-mono text-[10px] tracking-widest text-[#0d7a6d] uppercase mb-6">
+                  Pré-visualização · Cadastro
+                </p>
+                <div className="space-y-4">
+                  <div>
+                    <div className="h-2 w-2/3 bg-[#1B2233]/15 rounded-full mb-2" />
+                    <h2 className="font-serif text-xl text-[#1B2233] leading-snug min-h-[2.5rem]">
+                      {workspaceName || "Sua empresa aparece aqui"}
+                    </h2>
+                    {workspaceDocumentId && (
+                      <p className="font-mono text-xs text-[#1B2233]/50 mt-1">
+                        {formatCnpj(workspaceDocumentId)}
+                      </p>
+                    )}
+                  </div>
 
-            {isSignUpMode ? (
-              <div className="space-y-4">
-                <div>
-                  <div className="h-2 w-2/3 bg-[#1B2233]/15 rounded-full mb-2" />
-                  <h2 className="font-serif text-xl text-[#1B2233] leading-snug min-h-[2.5rem]">
-                    {workspaceName || "Sua empresa aparece aqui"}
-                  </h2>
-                  {workspaceDocumentId && (
-                    <p className="font-mono text-xs text-[#1B2233]/50 mt-1">
-                      {formatCnpj(workspaceDocumentId)}
-                    </p>
+                  {legalRegimes.length > 0 && (
+                    <div className="flex gap-1.5 flex-wrap">
+                      {legalRegimes.map((r) => (
+                        <span
+                          key={r}
+                          className="text-[10px] font-mono tracking-wide uppercase bg-[#14B8A6]/15 text-[#0d7a6d] rounded px-2 py-1"
+                        >
+                          {r}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {(addressParts || cityState || workspaceCountry) && (
+                    <div className="pt-3 border-t border-[#1B2233]/10">
+                      <p className="text-[10px] font-mono uppercase tracking-wide text-[#1B2233]/40 mb-1">
+                        Endereço
+                      </p>
+                      <p className="text-xs text-[#1B2233]/70 leading-relaxed">
+                        {addressParts && <>{addressParts}<br /></>}
+                        {cityState && <>{cityState}<br /></>}
+                        {workspaceCountry}
+                      </p>
+                    </div>
+                  )}
+
+                  {workspacePhone && (
+                    <p className="text-xs text-[#1B2233]/60 font-mono">{workspacePhone}</p>
                   )}
                 </div>
+              </div>
 
-                {legalRegimes.length > 0 && (
-                  <div className="flex gap-1.5 flex-wrap">
-                    {legalRegimes.map((r) => (
-                      <span
-                        key={r}
-                        className="text-[10px] font-mono tracking-wide uppercase bg-[#14B8A6]/15 text-[#0d7a6d] rounded px-2 py-1"
+              <div className="flex items-center justify-center pt-6">
+                {justCreated ? (
+                  <div className="iabill-seal-pop">
+                    <ApprovalSeal size={112} />
+                  </div>
+                ) : (
+                  <p className="text-[10px] font-mono text-[#1B2233]/35 uppercase tracking-widest">
+                    Aguardando confirmação
+                  </p>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <p className="font-mono text-[10px] tracking-widest text-[#0d7a6d] uppercase mb-2">
+                  Bem-vindo de volta
+                </p>
+                <h2 className="font-serif text-xl text-[#1B2233] leading-snug mb-6">
+                  Sua conformidade, sempre auditável.
+                </h2>
+              </div>
+
+              <div className="rounded-lg border border-[#1B2233]/10 bg-[#0E1220] overflow-hidden h-56">
+                <div className="flex items-center gap-2 px-4 py-2.5 border-b border-white/10">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#14B8A6] animate-pulse" />
+                  <span className="font-mono text-[10px] text-slate-400 uppercase tracking-wide">
+                    Trilha de auditoria · tempo real
+                  </span>
+                </div>
+                <div className="relative h-[calc(100%-2.375rem)] overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)]">
+                  <div className="iabill-authlogin-log-track">
+                    {[...AUTH_LOG_LINES, ...AUTH_LOG_LINES].map((line, i) => (
+                      <div
+                        key={i}
+                        className="font-mono text-[11px] text-slate-400 px-4 py-2 border-b border-white/5"
                       >
-                        {r}
-                      </span>
+                        <span className="text-[#14B8A6]">›</span> {line}
+                      </div>
                     ))}
                   </div>
-                )}
-
-                {(addressParts || cityState || workspaceCountry) && (
-                  <div className="pt-3 border-t border-[#1B2233]/10">
-                    <p className="text-[10px] font-mono uppercase tracking-wide text-[#1B2233]/40 mb-1">
-                      Endereço
-                    </p>
-                    <p className="text-xs text-[#1B2233]/70 leading-relaxed">
-                      {addressParts && <>{addressParts}<br /></>}
-                      {cityState && <>{cityState}<br /></>}
-                      {workspaceCountry}
-                    </p>
-                  </div>
-                )}
-
-                {workspacePhone && (
-                  <p className="text-xs text-[#1B2233]/60 font-mono">{workspacePhone}</p>
-                )}
+                </div>
               </div>
-            ) : (
-              <div className="space-y-3">
-                <div className="h-2 w-3/4 bg-[#1B2233]/15 rounded-full" />
-                <div className="h-2 w-full bg-[#1B2233]/10 rounded-full" />
-                <div className="h-2 w-5/6 bg-[#1B2233]/10 rounded-full" />
-                <div className="h-2 w-2/3 bg-[#1B2233]/10 rounded-full" />
-              </div>
-            )}
-          </div>
-
-          <div className="flex items-center justify-center pt-6">
-            {justCreated ? (
-              <div className="iabill-seal-pop">
-                <ApprovalSeal size={112} />
-              </div>
-            ) : (
-              <p className="text-[10px] font-mono text-[#1B2233]/35 uppercase tracking-widest">
-                Aguardando confirmação
-              </p>
-            )}
-          </div>
+            </>
+          )}
         </div>
 
         {/* Painel direito - formulário */}
