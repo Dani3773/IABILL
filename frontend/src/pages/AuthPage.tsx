@@ -60,28 +60,24 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const [step, setStep] = useState<SignupStep>(1);
   const [justCreated, setJustCreated] = useState(false);
 
-  // Login
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
   const [loginLoading, setLoginLoading] = useState(false);
 
-  // Signup - empresa
   const [workspaceDocumentId, setWorkspaceDocumentId] = useState("");
   const [workspaceName, setWorkspaceName] = useState("");
   const [workspacePhone, setWorkspacePhone] = useState("");
   const [legalRegimes, setLegalRegimes] = useState<LegalRegime[]>(["LGPD"]);
   const [cnpjLookupLoading, setCnpjLookupLoading] = useState(false);
 
-  // Signup - endereço
   const [workspaceCountry, setWorkspaceCountry] = useState("BR");
   const [workspaceState, setWorkspaceState] = useState("");
   const [workspaceCity, setWorkspaceCity] = useState("");
   const [workspaceStreet, setWorkspaceStreet] = useState("");
   const [workspaceAddressNumber, setWorkspaceAddressNumber] = useState("");
 
-  // Signup - conta
   const [adminUsername, setAdminUsername] = useState("");
   const [adminEmail, setAdminEmail] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
@@ -117,34 +113,29 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   async function handleCnpjBlur() {
     const sanitized = workspaceDocumentId.replace(/\D/g, "");
     if (sanitized.length !== 14) return;
-
     setCnpjLookupLoading(true);
     try {
       const response = await fetch(`/api/v1/auth/cnpj/${sanitized}`);
       const stillSameCnpj = workspaceDocumentId.replace(/\D/g, "") === sanitized;
       if (!stillSameCnpj) return;
-
       if (response.ok) {
         const data = await response.json();
         if (data.found && data.name) setWorkspaceName(data.name);
       }
     } catch {
-      // Falha silenciosa deliberada - autopreenchimento e opcional.
+      // Falha silenciosa deliberada.
     } finally {
       setCnpjLookupLoading(false);
     }
   }
 
   function toggleLegalRegime(regime: LegalRegime) {
-    setLegalRegimes((prev) =>
-      prev.includes(regime) ? prev.filter((r) => r !== regime) : [...prev, regime],
-    );
+    setLegalRegimes((prev) => (prev.includes(regime) ? prev.filter((r) => r !== regime) : [...prev, regime]));
   }
 
   function canAdvanceFromStep1() {
     return workspaceDocumentId.replace(/\D/g, "").length === 14 && workspaceName.trim().length > 0 && legalRegimes.length > 0;
   }
-
   function canAdvanceFromStep2() {
     return workspaceCountry.trim().length === 2;
   }
@@ -161,7 +152,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
     }
     setStep((prev) => (prev < 3 ? ((prev + 1) as SignupStep) : prev));
   }
-
   function goBack() {
     setSignupError(null);
     setStep((prev) => (prev > 1 ? ((prev - 1) as SignupStep) : prev));
@@ -210,8 +200,23 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const cityState = [workspaceCity, workspaceState].filter(Boolean).join(" - ");
 
   return (
-    <div className="min-h-screen bg-[#0E1220] flex items-center justify-center px-4 py-8">
+    <div className="relative min-h-screen bg-[#0A0D16] flex items-center justify-center px-4 py-8 overflow-hidden">
       <style>{`
+        @keyframes iabill-blob-a {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(60px, -40px) scale(1.15); }
+        }
+        @keyframes iabill-blob-b {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(-50px, 50px) scale(1.1); }
+        }
+        @keyframes iabill-blob-c {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(30px, 30px) scale(0.9); }
+        }
+        .iabill-blob-a { animation: iabill-blob-a 22s ease-in-out infinite; }
+        .iabill-blob-b { animation: iabill-blob-b 26s ease-in-out infinite; }
+        .iabill-blob-c { animation: iabill-blob-c 19s ease-in-out infinite; }
         @keyframes iabill-seal-pop {
           from { opacity: 0; transform: scale(0.7) rotate(-12deg); }
           to { opacity: 1; transform: scale(1) rotate(-6deg); }
@@ -222,77 +227,81 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
           to { opacity: 1; transform: translateX(0); }
         }
         .iabill-step-in { animation: iabill-fade-slide 0.35s ease-out both; }
-        @media (prefers-reduced-motion: reduce) {
-          .iabill-seal-pop, .iabill-step-in, .iabill-authlogin-log-track { animation: none; }
-        }
         @keyframes iabill-authlogin-log-scroll {
           from { transform: translateY(0); }
           to { transform: translateY(-50%); }
         }
         .iabill-authlogin-log-track { animation: iabill-authlogin-log-scroll 16s linear infinite; }
+        @media (prefers-reduced-motion: reduce) {
+          .iabill-seal-pop, .iabill-step-in, .iabill-authlogin-log-track,
+          .iabill-blob-a, .iabill-blob-b, .iabill-blob-c { animation: none; }
+        }
       `}</style>
 
-      <div className="w-full max-w-4xl grid md:grid-cols-[1fr_1.15fr] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-        {/* Painel esquerdo - preview ao vivo (documento) */}
-        <div className="hidden md:flex flex-col justify-between bg-[#EDEAE1] p-8">
+      {/* Fundo animado: grid sutil + blobs de gradiente */}
+      <div
+        className="absolute inset-0 opacity-[0.07]"
+        style={{
+          backgroundImage:
+            "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
+          backgroundSize: "56px 56px",
+        }}
+      />
+      <div className="absolute -top-32 -left-20 w-[420px] h-[420px] rounded-full bg-[#14B8A6]/25 blur-[110px] iabill-blob-a" />
+      <div className="absolute top-1/3 -right-24 w-[380px] h-[380px] rounded-full bg-[#B8862B]/20 blur-[110px] iabill-blob-b" />
+      <div className="absolute -bottom-24 left-1/3 w-[340px] h-[340px] rounded-full bg-[#3B5BDB]/15 blur-[110px] iabill-blob-c" />
+
+      {/* Cartao de vidro */}
+      <div className="relative w-full max-w-4xl grid md:grid-cols-[1fr_1.15fr] rounded-2xl overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-xl shadow-2xl">
+        <div className="hidden md:flex flex-col justify-between p-8 border-r border-white/10">
           {isSignUpMode ? (
             <>
               <div>
-                <p className="font-mono text-[10px] tracking-widest text-[#0d7a6d] uppercase mb-6">
+                <p className="font-mono text-[10px] tracking-widest text-[#14B8A6] uppercase mb-6">
                   Pré-visualização · Cadastro
                 </p>
                 <div className="space-y-4">
                   <div>
-                    <div className="h-2 w-2/3 bg-[#1B2233]/15 rounded-full mb-2" />
-                    <h2 className="font-serif text-xl text-[#1B2233] leading-snug min-h-[2.5rem]">
+                    <div className="h-2 w-2/3 bg-white/10 rounded-full mb-2" />
+                    <h2 className="font-serif text-xl text-white leading-snug min-h-[2.5rem]">
                       {workspaceName || "Sua empresa aparece aqui"}
                     </h2>
                     {workspaceDocumentId && (
-                      <p className="font-mono text-xs text-[#1B2233]/50 mt-1">
-                        {formatCnpj(workspaceDocumentId)}
-                      </p>
+                      <p className="font-mono text-xs text-slate-400 mt-1">{formatCnpj(workspaceDocumentId)}</p>
                     )}
                   </div>
-
                   {legalRegimes.length > 0 && (
                     <div className="flex gap-1.5 flex-wrap">
                       {legalRegimes.map((r) => (
                         <span
                           key={r}
-                          className="text-[10px] font-mono tracking-wide uppercase bg-[#14B8A6]/15 text-[#0d7a6d] rounded px-2 py-1"
+                          className="text-[10px] font-mono tracking-wide uppercase bg-[#14B8A6]/15 text-[#14B8A6] rounded px-2 py-1"
                         >
                           {r}
                         </span>
                       ))}
                     </div>
                   )}
-
                   {(addressParts || cityState || workspaceCountry) && (
-                    <div className="pt-3 border-t border-[#1B2233]/10">
-                      <p className="text-[10px] font-mono uppercase tracking-wide text-[#1B2233]/40 mb-1">
-                        Endereço
-                      </p>
-                      <p className="text-xs text-[#1B2233]/70 leading-relaxed">
+                    <div className="pt-3 border-t border-white/10">
+                      <p className="text-[10px] font-mono uppercase tracking-wide text-slate-500 mb-1">Endereço</p>
+                      <p className="text-xs text-slate-400 leading-relaxed">
                         {addressParts && <>{addressParts}<br /></>}
                         {cityState && <>{cityState}<br /></>}
                         {workspaceCountry}
                       </p>
                     </div>
                   )}
-
-                  {workspacePhone && (
-                    <p className="text-xs text-[#1B2233]/60 font-mono">{workspacePhone}</p>
-                  )}
+                  {workspacePhone && <p className="text-xs text-slate-400 font-mono">{workspacePhone}</p>}
                 </div>
               </div>
-
               <div className="flex items-center justify-center pt-6">
                 {justCreated ? (
                   <div className="iabill-seal-pop">
                     <ApprovalSeal size={112} />
                   </div>
                 ) : (
-                  <p className="text-[10px] font-mono text-[#1B2233]/35 uppercase tracking-widest">
+                  <p className="text-[10px] font-mono text-slate-600 uppercase tracking-widest">
                     Aguardando confirmação
                   </p>
                 )}
@@ -301,15 +310,14 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
           ) : (
             <>
               <div>
-                <p className="font-mono text-[10px] tracking-widest text-[#0d7a6d] uppercase mb-2">
+                <p className="font-mono text-[10px] tracking-widest text-[#14B8A6] uppercase mb-2">
                   Bem-vindo de volta
                 </p>
-                <h2 className="font-serif text-xl text-[#1B2233] leading-snug mb-6">
+                <h2 className="font-serif text-xl text-white leading-snug mb-6">
                   Sua conformidade, sempre auditável.
                 </h2>
               </div>
-
-              <div className="rounded-lg border border-[#1B2233]/10 bg-[#0E1220] overflow-hidden h-56">
+              <div className="rounded-lg border border-white/10 bg-black/20 overflow-hidden h-56">
                 <div className="flex items-center gap-2 px-4 py-2.5 border-b border-white/10">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#14B8A6] animate-pulse" />
                   <span className="font-mono text-[10px] text-slate-400 uppercase tracking-wide">
@@ -319,10 +327,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                 <div className="relative h-[calc(100%-2.375rem)] overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)]">
                   <div className="iabill-authlogin-log-track">
                     {[...AUTH_LOG_LINES, ...AUTH_LOG_LINES].map((line, i) => (
-                      <div
-                        key={i}
-                        className="font-mono text-[11px] text-slate-400 px-4 py-2 border-b border-white/5"
-                      >
+                      <div key={i} className="font-mono text-[11px] text-slate-400 px-4 py-2 border-b border-white/5">
                         <span className="text-[#14B8A6]">›</span> {line}
                       </div>
                     ))}
@@ -333,8 +338,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
           )}
         </div>
 
-        {/* Painel direito - formulário */}
-        <div className="bg-[#0E1220] p-8 flex flex-col">
+        <div className="p-8 flex flex-col">
           <div className="mb-6">
             <Wordmark />
           </div>
@@ -398,14 +402,13 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               <button
                 type="submit"
                 disabled={loginLoading}
-                className="w-full bg-[#14B8A6] hover:bg-[#0d9c8c] disabled:opacity-50 text-[#0E1220] text-sm font-semibold rounded-lg py-2.5 transition-colors mt-2"
+                className="w-full bg-[#14B8A6] hover:bg-[#0d9c8c] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-colors mt-2"
               >
                 {loginLoading ? "Entrando..." : "Entrar"}
               </button>
             </form>
           ) : (
             <div className="flex-1 flex flex-col">
-              {/* Stepper */}
               <div className="flex items-center gap-2 mb-6">
                 {STEP_LABELS.map((label, i) => {
                   const stepNum = (i + 1) as SignupStep;
@@ -416,7 +419,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                       <div
                         className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-medium shrink-0 transition-colors ${
                           isDone
-                            ? "bg-[#14B8A6] text-[#0E1220]"
+                            ? "bg-[#14B8A6] text-[#0A0D16]"
                             : isCurrent
                               ? "border-2 border-[#14B8A6] text-[#14B8A6]"
                               : "border border-slate-700 text-slate-600"
@@ -447,9 +450,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                         placeholder="CNPJ"
                         className="w-full rounded-lg bg-white/5 text-white text-sm px-3 py-2.5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/40 focus:border-[#14B8A6] placeholder:text-slate-600"
                       />
-                      {cnpjLookupLoading && (
-                        <p className="text-xs text-[#14B8A6]">Buscando dados da empresa...</p>
-                      )}
+                      {cnpjLookupLoading && <p className="text-xs text-[#14B8A6]">Buscando dados da empresa...</p>}
                       <input
                         type="text"
                         value={workspaceName}
@@ -602,7 +603,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     <button
                       type="button"
                       onClick={goNext}
-                      className="flex-1 flex items-center justify-center gap-1.5 bg-[#14B8A6] hover:bg-[#0d9c8c] text-[#0E1220] text-sm font-semibold rounded-lg py-2.5 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1.5 bg-[#14B8A6] hover:bg-[#0d9c8c] text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-colors"
                     >
                       Continuar <ArrowRight className="w-4 h-4" />
                     </button>
@@ -610,7 +611,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     <button
                       type="submit"
                       disabled={signupLoading || justCreated}
-                      className="flex-1 bg-[#B8862B] hover:bg-[#A9791F] disabled:opacity-50 text-[#0E1220] text-sm font-semibold rounded-lg py-2.5 transition-colors"
+                      className="flex-1 bg-[#B8862B] hover:bg-[#A9791F] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-colors"
                     >
                       {justCreated ? "Conta criada ✓" : signupLoading ? "Criando..." : "Criar conta"}
                     </button>
