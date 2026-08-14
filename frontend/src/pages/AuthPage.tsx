@@ -57,27 +57,17 @@ const INPUT_CLASS =
   "w-full rounded-lg bg-white/[0.05] text-white text-sm px-3 py-2.5 border border-white/10 transition-all duration-200 placeholder:text-slate-600 " +
   "hover:border-white/20 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/35 focus:border-[#14B8A6]/70 focus:bg-white/[0.07] " +
   "[&:-webkit-autofill]:[-webkit-text-fill-color:#fff] [&:-webkit-autofill]:[transition:background-color_9999s]";
-
 const INPUT_WITH_ICON = INPUT_CLASS + " pl-9";
 
 function Wordmark({ size = "text-2xl" }: { size?: string }) {
   return (
-    <div className="flex items-center gap-2 select-none">
-      <svg viewBox="0 0 28 28" className="w-7 h-7 shrink-0">
-        <rect x="1" y="1" width="26" height="26" rx="6" fill="none" stroke="#B8862B" strokeWidth="1.5" />
-        <path
-          d="M8 14.5 12 18.5 20 9"
-          fill="none"
-          stroke="#14B8A6"
-          strokeWidth="2.4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="iabill-check-draw"
-        />
-      </svg>
+    <div className="select-none">
       <span className={`font-serif ${size} text-white tracking-tight`}>
-        <span className="text-[#14B8A6]">IA</span>Bill
+        IA<span className="text-[#14B8A6]">Bill</span>
       </span>
+      <p className="font-mono text-[9px] text-slate-500 uppercase tracking-[0.25em] mt-0.5">
+        Plataforma de conformidade
+      </p>
     </div>
   );
 }
@@ -185,7 +175,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
 
   const spotlightRef = useRef<HTMLDivElement>(null);
   const autofillTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-
   const strength = passwordStrength(adminPassword);
 
   function handleMouseMove(e: ReactMouseEvent) {
@@ -349,20 +338,17 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
         .iabill-blob-a { animation: iabill-blob-a 26s ease-in-out infinite; }
         .iabill-blob-b { animation: iabill-blob-b 30s ease-in-out infinite; }
         .iabill-blob-c { animation: iabill-blob-c 22s ease-in-out infinite; }
-
         @keyframes iabill-card-enter {
           from { opacity: 0; transform: translateY(16px) scale(0.985); }
           to { opacity: 1; transform: translateY(0) scale(1); }
         }
         .iabill-card-enter { animation: iabill-card-enter 0.65s cubic-bezier(0.16,1,0.3,1) both; }
-
         @keyframes iabill-seal-pop {
           0% { opacity: 0; transform: scale(0.6) rotate(-16deg); }
           70% { opacity: 1; transform: scale(1.06) rotate(-4deg); }
           100% { opacity: 1; transform: scale(1) rotate(-6deg); }
         }
         .iabill-seal-pop { animation: iabill-seal-pop 0.6s cubic-bezier(0.16,1,0.3,1) both; }
-
         @keyframes iabill-slide-fwd {
           from { opacity: 0; transform: translateX(18px); }
           to { opacity: 1; transform: translateX(0); }
@@ -373,7 +359,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
         }
         .iabill-step-fwd { animation: iabill-slide-fwd 0.32s cubic-bezier(0.16,1,0.3,1) both; }
         .iabill-step-back { animation: iabill-slide-back 0.32s cubic-bezier(0.16,1,0.3,1) both; }
-
         @keyframes iabill-shake {
           0%, 100% { transform: translateX(0); }
           20% { transform: translateX(-6px); }
@@ -382,20 +367,12 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
           80% { transform: translateX(4px); }
         }
         .iabill-shake { animation: iabill-shake 0.4s ease-in-out both; }
-
         @keyframes iabill-authlogin-log-scroll {
           from { transform: translateY(0); }
           to { transform: translateY(-50%); }
         }
         .iabill-authlogin-log-track { animation: iabill-authlogin-log-scroll 18s linear infinite; }
         .iabill-authlogin-log-track:hover { animation-play-state: paused; }
-
-        @keyframes iabill-check-draw {
-          from { stroke-dasharray: 24; stroke-dashoffset: 24; }
-          to { stroke-dasharray: 24; stroke-dashoffset: 0; }
-        }
-        .iabill-check-draw { animation: iabill-check-draw 0.7s 0.25s cubic-bezier(0.16,1,0.3,1) both; }
-
         .iabill-sheen { position: relative; overflow: hidden; }
         .iabill-sheen::after {
           content: '';
@@ -408,23 +385,20 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
           pointer-events: none;
         }
         .iabill-sheen:hover::after { left: 130%; }
-
         .iabill-card-edge {
           background:
             linear-gradient(rgba(255,255,255,0.045), rgba(255,255,255,0.045)) padding-box,
             linear-gradient(135deg, rgba(20,184,166,0.35), rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.06) 65%, rgba(184,134,43,0.35)) border-box;
           border: 1px solid transparent;
         }
-
         @media (prefers-reduced-motion: reduce) {
           .iabill-seal-pop, .iabill-step-fwd, .iabill-step-back, .iabill-authlogin-log-track,
           .iabill-blob-a, .iabill-blob-b, .iabill-blob-c, .iabill-card-enter,
-          .iabill-shake, .iabill-check-draw { animation: none; }
+          .iabill-shake { animation: none; }
           .iabill-sheen::after { display: none; }
         }
       `}</style>
 
-      {/* Fundo: grid sutil + ruído + blobs de gradiente + spotlight do mouse */}
       <div
         className="absolute inset-0 opacity-[0.06]"
         style={{
@@ -448,12 +422,9 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
         }}
       />
 
-      {/* Cartão de vidro */}
       <div className="iabill-card-enter iabill-card-edge relative w-full max-w-4xl grid md:grid-cols-[1fr_1.15fr] rounded-2xl overflow-hidden backdrop-blur-xl shadow-[0_24px_80px_-16px_rgba(0,0,0,0.7)]">
-        {/* Linha de brilho no topo do cartão */}
         <div className="absolute top-0 inset-x-8 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
 
-        {/* ============ Painel esquerdo ============ */}
         <div className="hidden md:flex flex-col justify-between p-8 border-r border-white/10 bg-black/10">
           {isSignUpMode ? (
             <>
@@ -546,13 +517,11 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
           )}
         </div>
 
-        {/* ============ Painel direito ============ */}
         <div className="p-8 flex flex-col">
           <div className="mb-6">
             <Wordmark />
           </div>
 
-          {/* Seletor de modo com pílula deslizante */}
           <div className="relative grid grid-cols-2 rounded-xl bg-white/[0.04] border border-white/10 p-1 mb-6 text-sm">
             <div
               className={`absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] rounded-lg bg-white/10 border border-white/10 shadow-sm transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
@@ -580,7 +549,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
           </div>
 
           {!isSignUpMode ? (
-            /* ============ LOGIN ============ */
             <form onSubmit={handleLogin} className="space-y-4 flex-1 flex flex-col">
               <Field label="E-mail">
                 <div className="relative">
@@ -622,21 +590,17 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                   </button>
                 </div>
               </Field>
-
               {capsLockOn && (
                 <p className="flex items-center gap-1.5 text-xs text-[#FBBF24]">
                   <AlertTriangle className="w-3.5 h-3.5" /> Caps Lock está ativado
                 </p>
               )}
-
               {loginError && (
                 <div key={loginError} className="iabill-shake">
                   <Alert type="error" message={loginError} />
                 </div>
               )}
-
               <div className="flex-1" />
-
               <button
                 type="submit"
                 disabled={loginLoading}
@@ -652,13 +616,11 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                   </>
                 )}
               </button>
-
               <p className="flex items-center justify-center gap-1.5 text-[10px] font-mono text-slate-600 uppercase tracking-[0.15em] pt-1">
                 <ShieldCheck className="w-3 h-3" /> Conexão criptografada
               </p>
             </form>
           ) : justCreated ? (
-            /* ============ SUCESSO (visível também no mobile) ============ */
             <div className="flex-1 flex flex-col items-center justify-center gap-4 py-8">
               <div className="iabill-seal-pop md:hidden drop-shadow-[0_0_24px_rgba(184,134,43,0.35)]">
                 <ApprovalSeal size={120} />
@@ -669,9 +631,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               </p>
             </div>
           ) : (
-            /* ============ CADASTRO ============ */
             <div className="flex-1 flex flex-col">
-              {/* Stepper com conectores animados */}
               <div className="flex items-center gap-2 mb-6">
                 {STEPS.map(({ label, icon: Icon }, i) => {
                   const stepNum = (i + 1) as SignupStep;
@@ -712,7 +672,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                   );
                 })}
               </div>
-
               <form onSubmit={handleSignup} className="flex-1 flex flex-col">
                 <div
                   key={step}
@@ -798,7 +757,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                       </div>
                     </>
                   )}
-
                   {step === 2 && (
                     <>
                       <div className="grid grid-cols-3 gap-2">
@@ -872,7 +830,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                       </p>
                     </>
                   )}
-
                   {step === 3 && (
                     <>
                       <Field label="Nome de usuário">
@@ -926,8 +883,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                           </button>
                         </div>
                       </Field>
-
-                      {/* Medidor de força da senha */}
                       {adminPassword && (
                         <div className="space-y-1.5">
                           <div className="flex gap-1.5">
@@ -953,13 +908,11 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     </>
                   )}
                 </div>
-
                 {signupError && (
                   <div key={signupError} className="iabill-shake mt-3">
                     <Alert type="error" message={signupError} />
                   </div>
                 )}
-
                 <div className="flex gap-2 pt-4">
                   {step > 1 && (
                     <button
