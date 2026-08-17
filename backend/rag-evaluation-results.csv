@@ -2,6 +2,36 @@ case_id,type,category,query,precision_at_k,recall_at_k,reciprocal_rank,expected_
 pos-001,positive,politica_privacidade,Quais medidas de seguranca sao aplicadas ao tratamento de dados pessoais de funcionarios?,0.2,1.0,1.0,,,
 pos-002,positive,inventario_dados,Quais dados pessoais estao mapeados no inventario de dados da empresa?,0.2,1.0,1.0,,,
 pos-003,positive,politica_privacidade,A empresa tem um encarregado de dados (DPO) formalmente designado?,0.2,1.0,1.0,,,
-neg-001,negative,,Quais sao as politicas de retencao de dados da empresa?,,,,recusa_contexto_insuficiente,true,Não há informações suficientes no contexto fornecido para descrever as políticas de retenção de dados da empresa.
+pos-004,positive,politica_privacidade,Qual o prazo para a empresa responder a uma solicitacao de acesso a dados pelo titular?,0.2,1.0,1.0,,,
+pos-005,positive,politica_privacidade,O titular pode pedir para excluir seus dados pessoais da empresa?,0.2,1.0,1.0,,,
+pos-006,positive,relatorio_conformidade,Qual base legal e usada para o envio de comunicacoes de marketing?,0.2,1.0,1.0,,,
+pos-007,positive,relatorio_conformidade,Qual e a base legal utilizada para o monitoramento por cameras de seguranca?,0.2,1.0,1.0,,,
+pos-008,positive,relatorio_conformidade,Como a empresa garante protecao adequada ao transferir dados para servidores fora do Brasil?,0.2,1.0,1.0,,,
+pos-009,positive,relatorio_conformidade,Como os dados sao tratados antes de serem usados em analises estatisticas internas?,0.2,1.0,1.0,,,
+pos-010,positive,relatorio_conformidade,O que a empresa faz em caso de incidente de seguranca em relacao a ANPD?,0.2,1.0,1.0,,,
+pos-011,positive,relatorio_conformidade,Os titulares afetados por um incidente de seguranca sao avisados individualmente?,0.2,1.0,1.0,,,
+pos-012,positive,ripd_dpia,Em quais situacoes a empresa elabora um relatorio de impacto a protecao de dados?,0.2,1.0,1.0,,,
+pos-013,positive,politica_privacidade,Como e obtido o consentimento para tratar dados pessoais de criancas e adolescentes?,0.2,1.0,1.0,,,
+pos-014,positive,inventario_dados,Por quanto tempo a empresa guarda o curriculo de um candidato nao contratado?,0.2,1.0,1.0,,,
+pos-015,positive,inventario_dados,O aplicativo de entregas coleta a localizacao dos veiculos fora do horario de trabalho?,0.2,1.0,1.0,,,
+pos-016,positive,inventario_dados,Que tipo de dado biometrico e coletado no sistema de acesso da portaria?,0.2,1.0,1.0,,,
+pos-017,positive,relatorio_conformidade,Em que condicoes a empresa compartilha dados pessoais com autoridades publicas?,0.2,1.0,1.0,,,
+pos-018,positive,relatorio_conformidade,Como sao registrados os acessos a sistemas com dados de saude ocupacional?,0.2,1.0,1.0,,,
+pos-019,positive,relatorio_conformidade,Os colaboradores recebem treinamento sobre protecao de dados pessoais?,0.2,1.0,1.0,,,
+pos-020,positive,politica_privacidade,Existe autenticacao multifator para acessar sistemas com dados pessoais?,0.2,1.0,1.0,,,
+pos-021,positive,relatorio_conformidade,Com que frequencia sao feitos backups dos bancos de dados com informacoes pessoais?,0.2,1.0,1.0,,,
+pos-022,positive,politica_privacidade,Como e feito o descarte de documentos fisicos que contem dados pessoais?,0.2,1.0,1.0,,,
+pos-023,positive,relatorio_conformidade,A empresa avalia a seguranca de fornecedores antes de compartilhar dados com eles?,0.2,1.0,1.0,,,
+pos-024,positive,politica_privacidade,O titular pode solicitar que seus dados sejam transferidos para outro fornecedor?,0.2,1.0,1.0,,,
+pos-025,positive,politica_privacidade,Decisoes tomadas automaticamente por sistemas podem ser revisadas pelo titular?,0.2,1.0,1.0,,,
+pos-026,positive,politica_privacidade,Os cookies de publicidade sao ativados automaticamente ou exigem consentimento?,0.2,1.0,1.0,,,
+pos-027,positive,relatorio_conformidade,A empresa tem um canal para receber relatos de vulnerabilidades de seguranca?,0.2,1.0,1.0,,,
+pos-028,positive,inventario_dados,Como os dados pessoais sao classificados por nivel de sensibilidade?,0.2,1.0,1.0,,,
+pos-029,positive,relatorio_conformidade,Quem e responsavel por coordenar o plano de resposta a incidentes de seguranca?,0.2,1.0,1.0,,,
+pos-030,positive,relatorio_conformidade,A empresa contrata auditoria externa para avaliar conformidade com a LGPD?,0.2,1.0,1.0,,,
+neg-001,negative,,Quais sao as politicas de retencao de dados da empresa?,,,,recusa_contexto_insuficiente,true,Não há dados suficientes no contexto fornecido para determinar as políticas de retenção de dados da empresa.
 neg-002,negative,,Qual o faturamento anual da empresa em 2025?,,,,recusa_fora_de_escopo,true,Não há dados suficientes no contexto para determinar o faturamento anual da empresa em 2025.
-neg-003,negative,,A empresa ja sofreu algum vazamento de dados?,,,,recusa_contexto_insuficiente,true,Não há dados suficientes no contexto fornecido para determinar se a empresa já sofreu algum vazamento de dados.
+neg-003,negative,,A empresa ja sofreu algum vazamento de dados?,,,,recusa_contexto_insuficiente,true,Não há dados suficientes no contexto fornecido para responder se a empresa já sofreu algum vazamento de dados.
+neg-004,negative,,Quantos funcionarios a empresa tem atualmente?,,,,recusa_fora_de_escopo,true,Não há dados suficientes no contexto para determinar quantos funcionários a empresa tem atualmente.
+neg-005,negative,,Qual e a politica de ferias e licenca maternidade da empresa?,,,,recusa_contexto_insuficiente,true,Não há dados suficientes no contexto fornecido para determinar a política de férias e licença maternidade da empresa.
+neg-006,negative,,A empresa oferece plano de carreira e promocao interna aos colaboradores?,,,,recusa_fora_de_escopo,true,Não há dados suficientes no contexto fornecido para determinar se a empresa oferece plano de carreira e promoção interna aos colaboradores.

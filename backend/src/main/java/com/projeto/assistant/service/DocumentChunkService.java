@@ -11,7 +11,10 @@ import com.projeto.assistant.dto.SemanticSearchResultDTO;
 import com.projeto.assistant.repository.WorkspaceRepository;
 import org.springframework.security.access.AccessDeniedException;
 import com.projeto.assistant.dto.DocumentGenerationResponseDTO;
+import com.projeto.assistant.dto.GeminiGenerationResultDTO;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -97,23 +100,30 @@ public class DocumentChunkService {
         rateLimiterService.checkAiUsageLimit(authUserId);
         Document document = documentRepository.findById(documentId)
                 .orElseThrow(() -> new IllegalArgumentException("Documento não encontrado: " + documentId));
-
         UUID workspaceId = document.getWorkspace().getId();
-
         if (!document.getWorkspace().getTenant().getId().equals(authTenantId)) {
             throw new AccessDeniedException("Você não tem acesso a este documento");
         }
-
-        // Passo 1 (Retrieval): busca os trechos mais relevantes do proprio workspace
+        // Passo 1 (Retrieval): busca os trechos mais relevantes do proprio workspace,
+        // medindo a latencia dessa etapa separada da geracao.
+        Instant retrievalStart = Instant.now();
         List<SemanticSearchResultDTO> relevantChunks = semanticSearch(workspaceId, instruction, 5, authTenantId);
+        long retrievalLatencyMs = Duration.between(retrievalStart, Instant.now()).toMillis();
 
         String context = relevantChunks.stream()
                 .map(SemanticSearchResultDTO::content)
                 .reduce("", (a, b) -> a + "\n\n---\n\n" + b);
 
+        // Documentos-fonte distintos usados como contexto - base para a metrica de
+        // "taxa de reutilizacao documental": mede se documentos ja aprovados sao
+        // reaproveitados como contexto em geracoes futuras, nao so nesta chamada.
+        List<String> sourceDocumentIds = relevantChunks.stream()
+                .map(r -> r.documentId().toString())
+                .distinct()
+                .toList();
+
         // Passo 2 (Augmented): monta o prompt com o contexto recuperado
         String diretrizesEspecificas = buildTypeSpecificGuidance(document.getType());
-
         String prompt = """
             Você é um assistente que ajuda a redigir documentos de conformidade com a LGPD/RGPD.
             Use SOMENTE as informações de contexto abaixo para responder.
@@ -121,16 +131,16 @@ public class DocumentChunkService {
             %s
             Contexto:
             %s
-
             Instrução: %s
-
             Redija o conteúdo solicitado de forma clara e objetiva:
             """.formatted(diretrizesEspecificas, context, instruction);
 
-        // Passo 3 (Generation): chama o Gemini
-        String generatedText = geminiGenerationService.generate(prompt);
+        // Passo 3 (Generation): chama o Gemini, medindo latencia e capturando consumo de tokens
+        Instant generationStart = Instant.now();
+        GeminiGenerationResultDTO result = geminiGenerationService.generate(prompt);
+        long generationLatencyMs = Duration.between(generationStart, Instant.now()).toMillis();
 
-        document.setGeneratedContent(generatedText);
+        document.setGeneratedContent(result.text());
         document.setStatus(DocumentStatus.GENERATED);
         documentRepository.save(document);
 
@@ -140,10 +150,19 @@ public class DocumentChunkService {
                 AuditAction.AI_GENERATE,
                 AuditEntityType.DOCUMENT,
                 documentId,
-                Map.of("instruction", instruction, "chunksUsed", relevantChunks.size())
+                Map.of(
+                        "instruction", instruction,
+                        "chunksUsed", relevantChunks.size(),
+                        "sourceDocumentIds", sourceDocumentIds,
+                        "retrievalLatencyMs", retrievalLatencyMs,
+                        "generationLatencyMs", generationLatencyMs,
+                        "promptTokens", result.promptTokenCount(),
+                        "candidatesTokens", result.candidatesTokenCount(),
+                        "totalTokens", result.totalTokenCount()
+                )
         );
 
-        return new DocumentGenerationResponseDTO(documentId, generatedText, DocumentStatus.GENERATED);
+        return new DocumentGenerationResponseDTO(documentId, result.text(), DocumentStatus.GENERATED);
     }
 
     private String buildTypeSpecificGuidance(DocumentType type) {

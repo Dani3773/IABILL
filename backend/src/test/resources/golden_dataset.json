@@ -1,7 +1,7 @@
 {
   "_metadata": {
     "description": "Golden dataset AUTOCONTIDO - o proprio teste cria tenant/workspace/documentos/chunks no @BeforeAll usando este conteudo, chamando o Gemini real via processContent. Nao depende de dados de producao.",
-    "versao": "3.0 - self-contained (Opcao A)"
+    "versao": "4.0 - expandido para 30 consultas positivas + 6 negativas (36 total), conforme orientacao do Prof. Matheus (17/08/2026)"
   },
   "fixture_documents": [
     {
@@ -21,6 +21,168 @@
       "type": "POLITICA_PRIVACIDADE",
       "title": "Politica de Privacidade - Encarregado de Dados",
       "raw_content": "A empresa designa formalmente um Encarregado de Protecao de Dados (DPO), responsavel por atuar como canal de comunicacao entre a empresa, os titulares de dados e a Autoridade Nacional de Protecao de Dados (ANPD), conforme exigido pelo Art. 41 da Lei Geral de Protecao de Dados."
+    },
+    {
+      "doc_key": "direito_acesso_titular",
+      "type": "POLITICA_PRIVACIDADE",
+      "title": "Politica de Privacidade - Direito de Acesso do Titular",
+      "raw_content": "Qualquer titular de dados pode solicitar acesso as informacoes pessoais tratadas pela empresa a qualquer momento, sendo o prazo maximo de resposta de 15 dias uteis a partir do recebimento formal da solicitacao, conforme estabelecido no Art. 18 da LGPD."
+    },
+    {
+      "doc_key": "direito_exclusao_dados",
+      "type": "POLITICA_PRIVACIDADE",
+      "title": "Politica de Privacidade - Direito de Eliminacao de Dados",
+      "raw_content": "O titular pode solicitar a eliminacao de seus dados pessoais tratados com base em consentimento, exceto quando a manutencao for exigida por obrigacao legal ou regulatoria, situacao em que a empresa informara ao titular o motivo da retencao."
+    },
+    {
+      "doc_key": "base_legal_consentimento",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Base Legal de Consentimento",
+      "raw_content": "Para o envio de comunicacoes de marketing, a empresa utiliza como base legal o consentimento explicito do titular, coletado por meio de formulario de opt-in duplo, com registro de data, hora e origem da manifestacao de vontade armazenado para fins de comprovacao."
+    },
+    {
+      "doc_key": "base_legal_legitimo_interesse",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Base Legal de Legitimo Interesse",
+      "raw_content": "O monitoramento de seguranca das instalacoes por meio de cameras e realizado com base na hipotese legal de legitimo interesse, tendo sido conduzido teste de balanceamento (balancing test) documentando a necessidade e proporcionalidade da medida em relacao aos direitos dos titulares."
+    },
+    {
+      "doc_key": "transferencia_internacional",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Transferencia Internacional de Dados",
+      "raw_content": "Quando dados pessoais sao transferidos para provedores de nuvem localizados fora do Brasil, a empresa exige a adocao de clausulas contratuais padrao equivalentes as previstas pela legislacao europeia, garantindo nivel de protecao adequado aos titulares independentemente do pais de destino."
+    },
+    {
+      "doc_key": "anonimizacao_pesquisa",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Anonimizacao para Pesquisa Interna",
+      "raw_content": "Dados utilizados em analises estatisticas internas de desempenho comercial sao previamente anonimizados por meio de tecnicas de generalizacao e supressao de identificadores diretos, de forma que nao seja possivel a reidentificacao do titular a partir do conjunto de dados resultante."
+    },
+    {
+      "doc_key": "notificacao_anpd_incidente",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Notificacao de Incidentes a ANPD",
+      "raw_content": "Em caso de incidente de seguranca que possa acarretar risco relevante aos titulares, a empresa se compromete a notificar a Autoridade Nacional de Protecao de Dados em prazo razoavel, comunicando a natureza dos dados afetados, as medidas tecnicas adotadas e os riscos envolvidos, conforme Art. 48 da LGPD."
+    },
+    {
+      "doc_key": "notificacao_titulares_incidente",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Notificacao de Titulares Afetados",
+      "raw_content": "Alem da comunicacao a ANPD, a empresa notifica individualmente os titulares cujos dados pessoais tenham sido afetados por incidente de seguranca, informando em linguagem clara e acessivel a natureza do incidente e as recomendacoes de precaucao a serem adotadas."
+    },
+    {
+      "doc_key": "criterios_ripd",
+      "type": "RIPD_DPIA",
+      "title": "RIPD - Criterios para Elaboracao de Relatorio de Impacto",
+      "raw_content": "A empresa elabora Relatorio de Impacto a Protecao de Dados Pessoais sempre que uma nova atividade de tratamento envolver dados sensiveis em larga escala, monitoramento sistematico de titulares, ou uso de tecnologias inovadoras com potencial de gerar riscos elevados aos direitos e liberdades individuais."
+    },
+    {
+      "doc_key": "consentimento_menores",
+      "type": "POLITICA_PRIVACIDADE",
+      "title": "Politica de Privacidade - Tratamento de Dados de Menores",
+      "raw_content": "O tratamento de dados pessoais de criancas e adolescentes e realizado exclusivamente no melhor interesse do titular, com consentimento especifico e em destaque fornecido por ao menos um dos pais ou responsavel legal, conforme exigido pelo Art. 14 da LGPD."
+    },
+    {
+      "doc_key": "retencao_curriculos",
+      "type": "INVENTARIO_DADOS",
+      "title": "Inventario de Dados - Curriculos de Candidatos",
+      "raw_content": "Curriculos de candidatos nao contratados em processos seletivos sao mantidos pelo prazo de 12 meses para eventual aproveitamento em vagas futuras, sendo automaticamente eliminados apos esse periodo caso o candidato nao autorize expressamente a extensao do prazo de retencao."
+    },
+    {
+      "doc_key": "dados_geolocalizacao",
+      "type": "INVENTARIO_DADOS",
+      "title": "Inventario de Dados - Geolocalizacao via Aplicativo",
+      "raw_content": "O aplicativo de rastreamento de entregas coleta dados de geolocalizacao dos veiculos da frota em tempo real durante o horario de expediente, sendo essa coleta interrompida automaticamente fora do horario de trabalho e os dados historicos mantidos por no maximo 90 dias."
+    },
+    {
+      "doc_key": "biometria_portaria",
+      "type": "INVENTARIO_DADOS",
+      "title": "Inventario de Dados - Biometria de Acesso",
+      "raw_content": "O sistema de reconhecimento facial instalado na portaria principal coleta dados biometricos de colaboradores para fins de controle de acesso, classificados como dado pessoal sensivel, sendo o consentimento especifico obtido no momento do cadastro do colaborador no sistema."
+    },
+    {
+      "doc_key": "compartilhamento_autoridades",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Compartilhamento com Autoridades Publicas",
+      "raw_content": "O compartilhamento de dados pessoais com autoridades publicas somente e realizado mediante ordem judicial, requisicao formal fundamentada ou obrigacao legal expressa, sendo cada solicitacao registrada e avaliada juridicamente antes do atendimento."
+    },
+    {
+      "doc_key": "auditoria_acessos_sensiveis",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Auditoria de Acessos a Dados Sensiveis",
+      "raw_content": "Todos os acessos a sistemas que armazenam dados de saude ocupacional ou dados biometricos sao registrados em trilha de auditoria imutavel, contendo identificacao do usuario, data, hora e a operacao realizada, revisada trimestralmente pelo Encarregado de Dados."
+    },
+    {
+      "doc_key": "treinamento_privacidade",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Treinamento de Conscientizacao em Privacidade",
+      "raw_content": "Todos os colaboradores com acesso a dados pessoais participam de treinamento obrigatorio de conscientizacao em protecao de dados no momento da admissao e em reciclagem anual subsequente, com registro de presenca e avaliacao de aproveitamento mantidos para fins de comprovacao."
+    },
+    {
+      "doc_key": "politica_senhas_mfa",
+      "type": "POLITICA_PRIVACIDADE",
+      "title": "Politica de Privacidade - Autenticacao e Senhas",
+      "raw_content": "O acesso aos sistemas internos que tratam dados pessoais exige senha com complexidade minima definida e autenticacao multifator obrigatoria, sendo as senhas armazenadas exclusivamente em formato de hash criptografico, nunca em texto plano."
+    },
+    {
+      "doc_key": "backup_recuperacao",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Backup e Recuperacao de Desastres",
+      "raw_content": "Copias de seguranca dos bancos de dados contendo informacoes pessoais sao realizadas diariamente e armazenadas de forma criptografada em ambiente segregado, com testes periodicos de restauracao para garantir a disponibilidade dos dados em caso de incidente."
+    },
+    {
+      "doc_key": "descarte_documentos_fisicos",
+      "type": "POLITICA_PRIVACIDADE",
+      "title": "Politica de Privacidade - Descarte de Documentos Fisicos",
+      "raw_content": "Documentos fisicos contendo dados pessoais que atingiram o fim de seu prazo de retencao sao descartados por meio de fragmentacao mecanica, sendo vedado o descarte em lixo comum sem previa destruicao do conteudo identificavel."
+    },
+    {
+      "doc_key": "due_diligence_fornecedores",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Due Diligence de Fornecedores",
+      "raw_content": "Antes de compartilhar dados pessoais com fornecedores terceirizados, a empresa realiza avaliacao previa das praticas de seguranca da informacao do parceiro e formaliza contrato especifico de tratamento de dados (DPA), definindo obrigacoes, responsabilidades e limites de uso das informacoes."
+    },
+    {
+      "doc_key": "direito_portabilidade",
+      "type": "POLITICA_PRIVACIDADE",
+      "title": "Politica de Privacidade - Direito de Portabilidade",
+      "raw_content": "O titular pode solicitar a portabilidade de seus dados pessoais para outro fornecedor de servico ou produto, sendo os dados disponibilizados em formato estruturado, de uso comum e leitura automatizada, conforme regulamentacao especifica da ANPD."
+    },
+    {
+      "doc_key": "revisao_decisao_automatizada",
+      "type": "POLITICA_PRIVACIDADE",
+      "title": "Politica de Privacidade - Revisao de Decisoes Automatizadas",
+      "raw_content": "Decisoes tomadas exclusivamente com base em tratamento automatizado de dados pessoais que afetem os interesses do titular podem ser revisadas mediante solicitacao, sendo assegurada a explicacao dos criterios e procedimentos utilizados no processo decisorio automatizado."
+    },
+    {
+      "doc_key": "cookies_publicitarios",
+      "type": "POLITICA_PRIVACIDADE",
+      "title": "Politica de Privacidade - Cookies de Rastreamento Publicitario",
+      "raw_content": "Diferentemente dos cookies essenciais de sessao, os cookies de rastreamento publicitario utilizados para remarketing em redes de anuncios somente sao ativados mediante consentimento explicito do visitante, podendo ser revogados a qualquer momento nas configuracoes do site."
+    },
+    {
+      "doc_key": "divulgacao_vulnerabilidades",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Divulgacao Responsavel de Vulnerabilidades",
+      "raw_content": "A empresa mantem canal formal para recebimento de relatos de vulnerabilidades de seguranca identificadas por pesquisadores externos, comprometendo-se a avaliar e corrigir falhas criticas que possam expor dados pessoais em prazo prioritario."
+    },
+    {
+      "doc_key": "classificacao_sensibilidade",
+      "type": "INVENTARIO_DADOS",
+      "title": "Inventario de Dados - Classificacao por Nivel de Sensibilidade",
+      "raw_content": "Os dados pessoais tratados pela empresa sao classificados em quatro niveis de sensibilidade (publico, interno, confidencial e restrito), sendo dados de saude, biometricos e financeiros automaticamente enquadrados no nivel restrito, com controles de acesso mais rigorosos."
+    },
+    {
+      "doc_key": "plano_resposta_incidentes",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Plano de Resposta a Incidentes",
+      "raw_content": "O plano de resposta a incidentes de seguranca define papeis e responsabilidades especificos para deteccao, contencao, erradicacao e comunicacao de incidentes, coordenado pelo Encarregado de Dados em conjunto com a equipe tecnica responsavel pela infraestrutura."
+    },
+    {
+      "doc_key": "auditoria_externa_anual",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Auditoria Externa Anual",
+      "raw_content": "Anualmente, a empresa contrata auditoria externa independente para avaliar o nivel de conformidade dos processos de tratamento de dados pessoais em relacao a LGPD, cujo relatorio final e apresentado a alta direcao com recomendacoes de melhoria priorizadas por criticidade."
     },
     {
       "doc_key": "politica_cookies",
@@ -51,9 +213,38 @@
       "type": "POLITICA_PRIVACIDADE",
       "title": "Politica de Privacidade - Acesso Fisico as Instalacoes",
       "raw_content": "O acesso as instalacoes fisicas onde sao armazenados servidores locais e restrito a colaboradores autorizados mediante cracha de identificacao, com registro de entrada e saida mantido por sistema de controle de acesso."
+    },
+    {
+      "doc_key": "politica_home_office",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Politica de Trabalho Remoto",
+      "raw_content": "Colaboradores em regime de trabalho remoto recebem equipamento corporativo padronizado e sao orientados a nao utilizar redes Wi-Fi publicas para acesso a sistemas internos, sem qualquer relacao direta com o tratamento de dados pessoais de titulares."
+    },
+    {
+      "doc_key": "codigo_conduta_etica",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Codigo de Conduta Etica",
+      "raw_content": "O codigo de conduta etica da empresa estabelece diretrizes gerais de comportamento profissional, incluindo vedacao a conflitos de interesse e recebimento de presentes de fornecedores acima de valor simbolico estabelecido em politica interna."
+    },
+    {
+      "doc_key": "beneficios_saude_ocupacional",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Programa de Beneficios de Saude",
+      "raw_content": "O programa de beneficios oferece plano de saude, vale academia e auxilio farmacia aos colaboradores efetivos, administrado por operadora terceirizada responsavel pela gestao operacional das solicitacoes de reembolso."
+    },
+    {
+      "doc_key": "programa_sustentabilidade",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Programa de Sustentabilidade Ambiental",
+      "raw_content": "O programa de sustentabilidade da empresa inclui metas de reducao de consumo de papel, reciclagem de residuos eletronicos e uso de energia solar nas instalacoes administrativas, sem relacao com processos de protecao de dados pessoais."
+    },
+    {
+      "doc_key": "politica_viagens_corporativas",
+      "type": "RELATORIO_CONFORMIDADE",
+      "title": "Relatorio de Conformidade - Politica de Viagens Corporativas",
+      "raw_content": "Despesas de viagem corporativa devem ser previamente aprovadas pela gestao direta e prestadas contas em ate 10 dias uteis apos o retorno, com reembolso processado pelo departamento financeiro mediante apresentacao de comprovantes fiscais."
     }
   ],
-
   "positive_cases": [
     {
       "id": "pos-001",
@@ -72,6 +263,168 @@
       "query": "A empresa tem um encarregado de dados (DPO) formalmente designado?",
       "expected_chunks": [{"doc_key": "encarregado_dpo", "chunk_index": 0}],
       "category": "politica_privacidade"
+    },
+    {
+      "id": "pos-004",
+      "query": "Qual o prazo para a empresa responder a uma solicitacao de acesso a dados pelo titular?",
+      "expected_chunks": [{"doc_key": "direito_acesso_titular", "chunk_index": 0}],
+      "category": "politica_privacidade"
+    },
+    {
+      "id": "pos-005",
+      "query": "O titular pode pedir para excluir seus dados pessoais da empresa?",
+      "expected_chunks": [{"doc_key": "direito_exclusao_dados", "chunk_index": 0}],
+      "category": "politica_privacidade"
+    },
+    {
+      "id": "pos-006",
+      "query": "Qual base legal e usada para o envio de comunicacoes de marketing?",
+      "expected_chunks": [{"doc_key": "base_legal_consentimento", "chunk_index": 0}],
+      "category": "relatorio_conformidade"
+    },
+    {
+      "id": "pos-007",
+      "query": "Qual e a base legal utilizada para o monitoramento por cameras de seguranca?",
+      "expected_chunks": [{"doc_key": "base_legal_legitimo_interesse", "chunk_index": 0}],
+      "category": "relatorio_conformidade"
+    },
+    {
+      "id": "pos-008",
+      "query": "Como a empresa garante protecao adequada ao transferir dados para servidores fora do Brasil?",
+      "expected_chunks": [{"doc_key": "transferencia_internacional", "chunk_index": 0}],
+      "category": "relatorio_conformidade"
+    },
+    {
+      "id": "pos-009",
+      "query": "Como os dados sao tratados antes de serem usados em analises estatisticas internas?",
+      "expected_chunks": [{"doc_key": "anonimizacao_pesquisa", "chunk_index": 0}],
+      "category": "relatorio_conformidade"
+    },
+    {
+      "id": "pos-010",
+      "query": "O que a empresa faz em caso de incidente de seguranca em relacao a ANPD?",
+      "expected_chunks": [{"doc_key": "notificacao_anpd_incidente", "chunk_index": 0}],
+      "category": "relatorio_conformidade"
+    },
+    {
+      "id": "pos-011",
+      "query": "Os titulares afetados por um incidente de seguranca sao avisados individualmente?",
+      "expected_chunks": [{"doc_key": "notificacao_titulares_incidente", "chunk_index": 0}],
+      "category": "relatorio_conformidade"
+    },
+    {
+      "id": "pos-012",
+      "query": "Em quais situacoes a empresa elabora um relatorio de impacto a protecao de dados?",
+      "expected_chunks": [{"doc_key": "criterios_ripd", "chunk_index": 0}],
+      "category": "ripd_dpia"
+    },
+    {
+      "id": "pos-013",
+      "query": "Como e obtido o consentimento para tratar dados pessoais de criancas e adolescentes?",
+      "expected_chunks": [{"doc_key": "consentimento_menores", "chunk_index": 0}],
+      "category": "politica_privacidade"
+    },
+    {
+      "id": "pos-014",
+      "query": "Por quanto tempo a empresa guarda o curriculo de um candidato nao contratado?",
+      "expected_chunks": [{"doc_key": "retencao_curriculos", "chunk_index": 0}],
+      "category": "inventario_dados"
+    },
+    {
+      "id": "pos-015",
+      "query": "O aplicativo de entregas coleta a localizacao dos veiculos fora do horario de trabalho?",
+      "expected_chunks": [{"doc_key": "dados_geolocalizacao", "chunk_index": 0}],
+      "category": "inventario_dados"
+    },
+    {
+      "id": "pos-016",
+      "query": "Que tipo de dado biometrico e coletado no sistema de acesso da portaria?",
+      "expected_chunks": [{"doc_key": "biometria_portaria", "chunk_index": 0}],
+      "category": "inventario_dados"
+    },
+    {
+      "id": "pos-017",
+      "query": "Em que condicoes a empresa compartilha dados pessoais com autoridades publicas?",
+      "expected_chunks": [{"doc_key": "compartilhamento_autoridades", "chunk_index": 0}],
+      "category": "relatorio_conformidade"
+    },
+    {
+      "id": "pos-018",
+      "query": "Como sao registrados os acessos a sistemas com dados de saude ocupacional?",
+      "expected_chunks": [{"doc_key": "auditoria_acessos_sensiveis", "chunk_index": 0}],
+      "category": "relatorio_conformidade"
+    },
+    {
+      "id": "pos-019",
+      "query": "Os colaboradores recebem treinamento sobre protecao de dados pessoais?",
+      "expected_chunks": [{"doc_key": "treinamento_privacidade", "chunk_index": 0}],
+      "category": "relatorio_conformidade"
+    },
+    {
+      "id": "pos-020",
+      "query": "Existe autenticacao multifator para acessar sistemas com dados pessoais?",
+      "expected_chunks": [{"doc_key": "politica_senhas_mfa", "chunk_index": 0}],
+      "category": "politica_privacidade"
+    },
+    {
+      "id": "pos-021",
+      "query": "Com que frequencia sao feitos backups dos bancos de dados com informacoes pessoais?",
+      "expected_chunks": [{"doc_key": "backup_recuperacao", "chunk_index": 0}],
+      "category": "relatorio_conformidade"
+    },
+    {
+      "id": "pos-022",
+      "query": "Como e feito o descarte de documentos fisicos que contem dados pessoais?",
+      "expected_chunks": [{"doc_key": "descarte_documentos_fisicos", "chunk_index": 0}],
+      "category": "politica_privacidade"
+    },
+    {
+      "id": "pos-023",
+      "query": "A empresa avalia a seguranca de fornecedores antes de compartilhar dados com eles?",
+      "expected_chunks": [{"doc_key": "due_diligence_fornecedores", "chunk_index": 0}],
+      "category": "relatorio_conformidade"
+    },
+    {
+      "id": "pos-024",
+      "query": "O titular pode solicitar que seus dados sejam transferidos para outro fornecedor?",
+      "expected_chunks": [{"doc_key": "direito_portabilidade", "chunk_index": 0}],
+      "category": "politica_privacidade"
+    },
+    {
+      "id": "pos-025",
+      "query": "Decisoes tomadas automaticamente por sistemas podem ser revisadas pelo titular?",
+      "expected_chunks": [{"doc_key": "revisao_decisao_automatizada", "chunk_index": 0}],
+      "category": "politica_privacidade"
+    },
+    {
+      "id": "pos-026",
+      "query": "Os cookies de publicidade sao ativados automaticamente ou exigem consentimento?",
+      "expected_chunks": [{"doc_key": "cookies_publicitarios", "chunk_index": 0}],
+      "category": "politica_privacidade"
+    },
+    {
+      "id": "pos-027",
+      "query": "A empresa tem um canal para receber relatos de vulnerabilidades de seguranca?",
+      "expected_chunks": [{"doc_key": "divulgacao_vulnerabilidades", "chunk_index": 0}],
+      "category": "relatorio_conformidade"
+    },
+    {
+      "id": "pos-028",
+      "query": "Como os dados pessoais sao classificados por nivel de sensibilidade?",
+      "expected_chunks": [{"doc_key": "classificacao_sensibilidade", "chunk_index": 0}],
+      "category": "inventario_dados"
+    },
+    {
+      "id": "pos-029",
+      "query": "Quem e responsavel por coordenar o plano de resposta a incidentes de seguranca?",
+      "expected_chunks": [{"doc_key": "plano_resposta_incidentes", "chunk_index": 0}],
+      "category": "relatorio_conformidade"
+    },
+    {
+      "id": "pos-030",
+      "query": "A empresa contrata auditoria externa para avaliar conformidade com a LGPD?",
+      "expected_chunks": [{"doc_key": "auditoria_externa_anual", "chunk_index": 0}],
+      "category": "relatorio_conformidade"
     }
   ],
   "negative_cases": [
@@ -92,6 +445,24 @@
       "query": "A empresa ja sofreu algum vazamento de dados?",
       "workspace": "vazio",
       "expected_behavior": "recusa_contexto_insuficiente"
+    },
+    {
+      "id": "neg-004",
+      "query": "Quantos funcionarios a empresa tem atualmente?",
+      "workspace": "populado",
+      "expected_behavior": "recusa_fora_de_escopo"
+    },
+    {
+      "id": "neg-005",
+      "query": "Qual e a politica de ferias e licenca maternidade da empresa?",
+      "workspace": "vazio",
+      "expected_behavior": "recusa_contexto_insuficiente"
+    },
+    {
+      "id": "neg-006",
+      "query": "A empresa oferece plano de carreira e promocao interna aos colaboradores?",
+      "workspace": "populado",
+      "expected_behavior": "recusa_fora_de_escopo"
     }
   ]
 }

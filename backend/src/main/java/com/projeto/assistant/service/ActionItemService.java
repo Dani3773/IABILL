@@ -4,6 +4,8 @@ import com.projeto.assistant.dto.*;
 import com.projeto.assistant.model.*;
 import com.projeto.assistant.repository.ActionItemRepository;
 import com.projeto.assistant.repository.WorkspaceRepository;
+import com.projeto.assistant.dto.GeminiGenerationResultDTO;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -106,7 +108,8 @@ public class ActionItemService {
             [{"title": "...", "description": "..."}, {"title": "...", "description": "..."}]
             """.formatted(context);
 
-        String rawResponse = geminiGenerationService.generate(prompt);
+        GeminiGenerationResultDTO generationResult = geminiGenerationService.generate(prompt);
+        String rawResponse = generationResult.text();
         String cleaned = rawResponse.trim()
                 .replaceAll("^```json", "")
                 .replaceAll("^```", "")

@@ -32,6 +32,8 @@ app:
   cookie:
     secure: ${COOKIE_SECURE:false}
     same-site: ${COOKIE_SAME_SITE:Lax}
+  rate-limit:
+    ai-actions-per-hour: 30
 
 gemini:
   api-key: ${GEMINI_API_KEY:}

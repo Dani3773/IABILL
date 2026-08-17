@@ -11,9 +11,11 @@ import com.projeto.assistant.repository.TenantRepository;
 import com.projeto.assistant.repository.UserRepository;
 import com.projeto.assistant.repository.WorkspaceRepository;
 import com.projeto.assistant.service.DocumentChunkService;
+
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.jupiter.api.TestInstance;
+import org.springframework.test.context.TestPropertySource;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -32,14 +34,17 @@ import java.util.stream.Collectors;
  *
  *   ./mvnw test -Dgroups=evaluation -Dtest=RagEvaluationTest
  *
- * Consome ~16 chamadas de IA por execucao (3 embeddings de ingestao + 3 embeddings
- * de query positiva + 3 embeddings + 3 geracoes dos casos negativos) - bem dentro
- * do limite de 30/hora do RateLimiterService, mas evite rodar em loop apertado.
+ * Consome dezenas de chamadas de IA por execucao (40 embeddings de ingestao +
+ * embeddings de busca para cada consulta positiva + geracoes para os casos
+ * negativos) - excede o limite padrao de 30/hora do RateLimiterService, por
+ * isso a classe sobrescreve app.rate-limit.ai-actions-per-hour via
+ * @TestPropertySource. Evite rodar em loop apertado mesmo assim.
  *
  * Saida: rag-evaluation-results.csv, consumido por evaluate_rag_metrics.py.
  */
 @Tag("evaluation")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestPropertySource(properties = "app.rate-limit.ai-actions-per-hour=200")
 class RagEvaluationTest extends IntegrationTestBase {
 
     private static final int TOP_K = 5;
