@@ -20,6 +20,8 @@ import { PublicDataSubjectRequestPage } from "./pages/PublicDataSubjectRequestPa
 import { DataSubjectRequestsPage } from "./pages/DataSubjectRequestsPage";
 import { EmailConfirmationPage } from "./pages/EmailConfirmationPage";
 import { AccountActivationPage } from "./pages/AccountActivationPage";
+import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
+import { ResetPasswordPage } from "./pages/ResetPasswordPage";
 
 
 function App() {
@@ -33,6 +35,8 @@ function App() {
           <Route path="/solicitacao/:documentId" element={<PublicDataSubjectRequestPage />} />
           <Route path="/confirmar-email/:token" element={<EmailConfirmationPage />} />
           <Route path="/ativar-conta/:token" element={<AccountActivationPage />} />
+          <Route path="/esqueci-senha" element={<ForgotPasswordPage />} />
+          <Route path="/redefinir-senha/:token" element={<ResetPasswordPage />} />
 
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>

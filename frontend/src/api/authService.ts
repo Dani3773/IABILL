@@ -6,6 +6,8 @@ import type {
   SignupResponse,
   EmailConfirmationResponse,
   UserActivationRequest,
+  ForgotPasswordRequest,
+  ResetPasswordRequest,
 } from '../types/auth'
 
 export async function login(request: LoginRequest): Promise<AuthMeResponse> {
@@ -39,5 +41,15 @@ export async function resendConfirmation(request: LoginRequest): Promise<EmailCo
 
 export async function activateAccount(request: UserActivationRequest): Promise<EmailConfirmationResponse> {
   const response = await apiClient.post<EmailConfirmationResponse>('/users/activate', request)
+  return response.data
+}
+
+export async function forgotPassword(request: ForgotPasswordRequest): Promise<EmailConfirmationResponse> {
+  const response = await apiClient.post<EmailConfirmationResponse>('/auth/forgot-password', request)
+  return response.data
+}
+
+export async function resetPassword(request: ResetPasswordRequest): Promise<EmailConfirmationResponse> {
+  const response = await apiClient.post<EmailConfirmationResponse>('/auth/reset-password', request)
   return response.data
 }

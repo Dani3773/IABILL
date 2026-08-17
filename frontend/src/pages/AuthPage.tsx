@@ -32,6 +32,7 @@ import { Alert } from "../components/Alert";
 import { COUNTRIES, BRAZILIAN_STATES } from "../constants/locations";
 import { AxiosError } from "axios";
 import { resendConfirmation } from "../api/authService";
+import { Link } from "react-router-dom";
 
 type SignupStep = 1 | 2 | 3;
 type LegalRegime = "LGPD" | "RGPD";
@@ -589,7 +590,12 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                   />
                 </div>
               </Field>
-              <Field label="Senha">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-medium text-slate-400 tracking-wide">Senha</span>
+                <Link to="/esqueci-senha" className="text-[11px] text-[#14B8A6] hover:underline">
+                  Esqueceu a senha?
+                </Link>
+              </div>
                 <div className="relative">
                   <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
@@ -614,7 +620,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
-              </Field>
               {capsLockOn && (
                 <p className="flex items-center gap-1.5 text-xs text-[#FBBF24]">
                   <AlertTriangle className="w-3.5 h-3.5" /> Caps Lock está ativado
