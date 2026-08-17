@@ -11,10 +11,8 @@ interface Props {
 
 export function CreateUserModal({ onClose, onCreated }: Props) {
   const { tenantId } = useAuth();
-
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [role, setRole] = useState<UserRole>("USER");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +20,6 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!tenantId) return;
-
     setError(null);
     setIsLoading(true);
     try {
@@ -30,7 +27,6 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
         tenantId,
         username,
         email,
-        password,
         role,
       });
       onCreated(user);
@@ -54,7 +50,6 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
             ×
           </button>
         </div>
-
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm text-slate-300 mb-1">
@@ -68,7 +63,6 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
               className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             />
           </div>
-
           <div>
             <label className="block text-sm text-slate-300 mb-1">E-mail</label>
             <input
@@ -79,21 +73,6 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
               className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             />
           </div>
-
-          <div>
-            <label className="block text-sm text-slate-300 mb-1">
-              Senha (mínimo 8 caracteres)
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              minLength={8}
-              required
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
-            />
-          </div>
-
           <div>
             <label className="block text-sm text-slate-300 mb-1">Papel</label>
             <select
@@ -106,16 +85,17 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
               <option value="ADMIN">Administrador</option>
             </select>
           </div>
-
+          <p className="text-xs text-slate-500">
+            O usuário receberá um e-mail de convite para definir sua própria senha e ativar o acesso.
+          </p>
           {error && <p className="text-red-400 text-sm">{error}</p>}
-
           <div className="flex gap-3 pt-2">
             <button
               type="submit"
               disabled={isLoading}
               className="flex-1 bg-cyan-600 hover:bg-cyan-700 disabled:opacity-50 text-white font-medium rounded-lg py-2 transition-colors"
             >
-              {isLoading ? "Criando..." : "Criar"}
+              {isLoading ? "Enviando convite..." : "Convidar"}
             </button>
             <button
               type="button"

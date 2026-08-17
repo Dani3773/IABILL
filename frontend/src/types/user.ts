@@ -13,7 +13,6 @@ export interface UserRequest {
   tenantId: string
   username: string
   email: string
-  password: string
   role: UserRole
 }
 

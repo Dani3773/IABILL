@@ -5,6 +5,7 @@ import type {
   SignupRequest,
   SignupResponse,
   EmailConfirmationResponse,
+  UserActivationRequest,
 } from '../types/auth'
 
 export async function login(request: LoginRequest): Promise<AuthMeResponse> {
@@ -33,5 +34,10 @@ export async function confirmEmail(token: string): Promise<EmailConfirmationResp
 
 export async function resendConfirmation(request: LoginRequest): Promise<EmailConfirmationResponse> {
   const response = await apiClient.post<EmailConfirmationResponse>('/auth/resend-confirmation', request)
+  return response.data
+}
+
+export async function activateAccount(request: UserActivationRequest): Promise<EmailConfirmationResponse> {
+  const response = await apiClient.post<EmailConfirmationResponse>('/users/activate', request)
   return response.data
 }

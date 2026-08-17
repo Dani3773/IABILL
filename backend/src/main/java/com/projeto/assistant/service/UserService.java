@@ -11,6 +11,8 @@ import com.projeto.assistant.model.Workspace;
 import com.projeto.assistant.repository.WorkspaceRepository;
 import com.projeto.assistant.model.AuditAction;
 import com.projeto.assistant.model.AuditEntityType;
+import com.projeto.assistant.dto.UserActivationRequestDTO;
+import com.projeto.assistant.dto.EmailConfirmationResponseDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 import java.util.Map;
+import java.security.SecureRandom;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -31,30 +36,70 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final WorkspaceRepository workspaceRepository;
     private final AuditLogService auditLogService;
+    private final EmailService emailService;
 
+    @Transactional
     public UserResponseDTO create(UserRequestDTO request, UUID authUserId) {
         Tenant tenant = tenantRepository.findById(request.tenantId())
                 .orElseThrow(() -> new IllegalArgumentException("Tenant não encontrado: " + request.tenantId()));
+
+        String invitationToken = generateToken();
 
         User user = new User();
         user.setTenant(tenant);
         user.setUsername(request.username());
         user.setEmail(request.email());
-        user.setPasswordHash(passwordEncoder.encode(request.password())); // nunca salvamos a senha em texto puro
+        // Senha temporaria aleatoria, inutilizavel - ninguem (nem o ADMIN que convidou)
+        // sabe esse valor. O usuario convidado define a senha real na ativacao.
+        user.setPasswordHash(passwordEncoder.encode(generateToken()));
         user.setRole(request.role());
+        user.setEmailVerified(false);
+        user.setEmailVerificationToken(invitationToken);
+        user.setEmailVerificationExpiresAt(Instant.now().plus(7, ChronoUnit.DAYS));
 
         User saved = userRepository.save(user);
 
         auditLogService.record(
                 tenant.getId(),
-                authUserId, // TODO: ajustado no 27.3
+                authUserId,
                 AuditAction.CREATE,
                 AuditEntityType.USER,
                 saved.getId(),
                 Map.of("username", saved.getUsername(), "role", saved.getRole().name())
         );
 
+        emailService.sendUserInvitation(saved.getEmail(), saved.getUsername(), tenant.getName(), invitationToken);
+
         return UserResponseDTO.fromEntity(saved);
+    }
+
+    @Transactional
+    public EmailConfirmationResponseDTO activateAccount(UserActivationRequestDTO request) {
+        User user = userRepository.findByEmailVerificationToken(request.token())
+                .orElse(null);
+
+        if (user == null) {
+            return new EmailConfirmationResponseDTO(false, "Link de convite inválido.");
+        }
+
+        if (user.getEmailVerificationExpiresAt() != null
+                && user.getEmailVerificationExpiresAt().isBefore(Instant.now())) {
+            return new EmailConfirmationResponseDTO(false, "Link de convite expirado. Peça ao administrador para reenviar o convite.");
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(request.password()));
+        user.setEmailVerified(true);
+        user.setEmailVerificationToken(null);
+        user.setEmailVerificationExpiresAt(null);
+        userRepository.save(user);
+
+        return new EmailConfirmationResponseDTO(true, "Conta ativada com sucesso.");
+    }
+
+    private String generateToken() {
+        byte[] bytes = new byte[32];
+        new SecureRandom().nextBytes(bytes);
+        return java.util.Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 
     @Transactional(readOnly = true)

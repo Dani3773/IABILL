@@ -19,6 +19,7 @@ import { LandingPage } from "./pages/LandingPage";
 import { PublicDataSubjectRequestPage } from "./pages/PublicDataSubjectRequestPage";
 import { DataSubjectRequestsPage } from "./pages/DataSubjectRequestsPage";
 import { EmailConfirmationPage } from "./pages/EmailConfirmationPage";
+import { AccountActivationPage } from "./pages/AccountActivationPage";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/signup" element={<AuthPage initialMode="signup" />} />
           <Route path="/solicitacao/:documentId" element={<PublicDataSubjectRequestPage />} />
           <Route path="/confirmar-email/:token" element={<EmailConfirmationPage />} />
+          <Route path="/ativar-conta/:token" element={<AccountActivationPage />} />
 
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>

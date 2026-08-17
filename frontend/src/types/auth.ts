@@ -36,3 +36,8 @@ export interface EmailConfirmationResponse {
   success: boolean
   message: string
 }
+
+export interface UserActivationRequest {
+  token: string
+  password: string
+}

@@ -49,6 +49,27 @@ public class EmailService {
         send(toEmail, subject, body);
     }
 
+    public void sendUserInvitation(String toEmail, String username, String inviterTenantName, String token) {
+        String activationUrl = "https://iabill.com/ativar-conta/" + token;
+
+        String subject = "Você foi convidado para o IABill";
+        String body = """
+                Olá, %s,
+
+                Você foi convidado para acessar o IABill como parte da conta de %s.
+
+                Para definir sua senha e ativar seu acesso, clique no link abaixo:
+
+                %s
+
+                Se você não esperava este convite, pode ignorar este e-mail.
+
+                Equipe IABill
+                """.formatted(username, inviterTenantName, activationUrl);
+
+        send(toEmail, subject, body);
+    }
+
     private void send(String toEmail, String subject, String body) {
         try {
             SendEmailRequest request = SendEmailRequest.builder()

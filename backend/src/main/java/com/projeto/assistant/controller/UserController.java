@@ -61,4 +61,10 @@ public class UserController {
     public List<WorkspaceMembershipResponseDTO> findWorkspaces(@PathVariable UUID userId) {
         return userService.findWorkspacesOfUser(userId);
     }
+
+    @PostMapping("/activate")
+    public com.projeto.assistant.dto.EmailConfirmationResponseDTO activate(
+            @Valid @RequestBody com.projeto.assistant.dto.UserActivationRequestDTO request) {
+        return userService.activateAccount(request);
+    }
 }
