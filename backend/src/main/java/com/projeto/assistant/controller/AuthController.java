@@ -109,4 +109,14 @@ public class AuthController {
     public EmailConfirmationResponseDTO resendConfirmation(@Valid @RequestBody LoginRequestDTO request) {
         return authService.resendConfirmation(request);
     }
+
+    @PostMapping("/forgot-password")
+    public EmailConfirmationResponseDTO forgotPassword(@Valid @RequestBody ForgotPasswordRequestDTO request) {
+        return authService.forgotPassword(request);
+    }
+
+    @PostMapping("/reset-password")
+    public EmailConfirmationResponseDTO resetPassword(@Valid @RequestBody ResetPasswordRequestDTO request) {
+        return authService.resetPassword(request);
+    }
 }

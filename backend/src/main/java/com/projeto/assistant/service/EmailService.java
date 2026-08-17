@@ -90,4 +90,27 @@ public class EmailService {
             log.warn("Falha ao enviar e-mail para {}: {}", toEmail, e.getMessage());
         }
     }
+
+    public void sendPasswordReset(String toEmail, String username, String tenantName, String token) {
+        String resetUrl = "https://iabill.com/redefinir-senha/" + token;
+
+        String subject = "Redefinir senha da sua conta em " + tenantName;
+        String body = """
+                Olá, %s,
+
+                Recebemos uma solicitação para redefinir a senha da sua conta no IABill,
+                vinculada à empresa %s.
+
+                Para escolher uma nova senha, acesse:
+
+                %s
+
+                Se você não solicitou essa redefinição, pode ignorar este e-mail com segurança -
+                sua senha atual continua válida.
+
+                Equipe IABill
+                """.formatted(username, tenantName, resetUrl);
+
+        send(toEmail, subject, body);
+    }
 }

@@ -12,6 +12,8 @@ import com.projeto.assistant.model.Workspace;
 import com.projeto.assistant.model.WorkspaceType;
 import com.projeto.assistant.dto.SignupResponseDTO;
 import com.projeto.assistant.dto.EmailConfirmationResponseDTO;
+import com.projeto.assistant.dto.ForgotPasswordRequestDTO;
+import com.projeto.assistant.dto.ResetPasswordRequestDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -162,5 +164,50 @@ public class AuthService {
         userRepository.save(user);
 
         return new EmailConfirmationResponseDTO(true, "E-mail confirmado com sucesso.");
+    }
+
+    @Transactional
+    public EmailConfirmationResponseDTO forgotPassword(ForgotPasswordRequestDTO request) {
+        List<User> candidates = userRepository.findByEmail(request.email());
+
+        // Um e-mail de reset separado por CADA conta que tiver esse endereco -
+        // nao da pra adivinhar qual conta a pessoa quer resetar, entao cada
+        // e-mail identifica a empresa correspondente, e a pessoa escolhe o link certo.
+        for (User user : candidates) {
+            String token = generateToken();
+            user.setPasswordResetToken(token);
+            user.setPasswordResetExpiresAt(Instant.now().plus(2, ChronoUnit.HOURS));
+            userRepository.save(user);
+
+            String tenantName = user.getTenant() != null ? user.getTenant().getName() : "sua conta";
+            emailService.sendPasswordReset(user.getEmail(), user.getUsername(), tenantName, token);
+        }
+
+        // Resposta SEMPRE identica, exista ou nao o e-mail no sistema - evita que
+        // esse endpoint seja usado para descobrir quais e-mails tem conta cadastrada.
+        return new EmailConfirmationResponseDTO(true,
+                "Se existir uma conta com esse e-mail, você receberá instruções para redefinir sua senha.");
+    }
+
+    @Transactional
+    public EmailConfirmationResponseDTO resetPassword(ResetPasswordRequestDTO request) {
+        User user = userRepository.findByPasswordResetToken(request.token())
+                .orElse(null);
+
+        if (user == null) {
+            return new EmailConfirmationResponseDTO(false, "Link de redefinição inválido.");
+        }
+
+        if (user.getPasswordResetExpiresAt() != null
+                && user.getPasswordResetExpiresAt().isBefore(Instant.now())) {
+            return new EmailConfirmationResponseDTO(false, "Link de redefinição expirado. Solicite um novo.");
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
+        user.setPasswordResetToken(null);
+        user.setPasswordResetExpiresAt(null);
+        userRepository.save(user);
+
+        return new EmailConfirmationResponseDTO(true, "Senha redefinida com sucesso.");
     }
 }
