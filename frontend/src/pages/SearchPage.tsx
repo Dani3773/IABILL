@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Search } from 'lucide-react'
+import { Search, FileSearch } from 'lucide-react'
 import { semanticSearch } from '../api/searchService'
 import { LoadingSpinner } from '../components/LoadingSpinner'
 import { Alert } from '../components/Alert'
@@ -35,8 +35,8 @@ export function SearchPage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h2 className="text-xl font-semibold text-white mb-1">Busca Semântica</h2>
-      <p className="text-sm text-slate-400 mb-6">
+      <h1 className="text-xl font-serif text-[#1B2233] mb-1">Busca Semântica</h1>
+      <p className="text-sm text-[#1B2233]/55 mb-6">
         Busque por significado nos documentos deste workspace, não só por palavra-chave.
       </p>
 
@@ -46,12 +46,12 @@ export function SearchPage() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Ex: por quanto tempo os dados ficam guardados?"
-          className="flex-1 rounded-lg bg-slate-800 text-white px-4 py-2.5 border border-slate-700 focus:outline-none focus:border-cyan-500"
+          className="flex-1 rounded-lg bg-white text-[#1B2233] px-4 py-2.5 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] placeholder:text-[#1B2233]/40"
         />
         <button
           type="submit"
           disabled={isLoading || !query.trim()}
-          className="bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white rounded-lg px-4 py-2.5 transition-colors flex items-center gap-2"
+          className="bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] font-semibold rounded-lg px-4 py-2.5 transition-colors flex items-center gap-2"
         >
           <Search className="w-4 h-4" />
           Buscar
@@ -62,7 +62,10 @@ export function SearchPage() {
       {error && <Alert type="error" message={error} />}
 
       {!isLoading && hasSearched && results.length === 0 && (
-        <p className="text-slate-400 text-sm">Nenhum resultado encontrado para essa busca.</p>
+        <div className="bg-white rounded-xl border border-[#1B2233]/10 p-10 text-center">
+          <FileSearch className="w-8 h-8 text-[#1B2233]/25 mx-auto mb-3" />
+          <p className="text-[#1B2233]/55 text-sm">Nenhum resultado encontrado para essa busca.</p>
+        </div>
       )}
 
       {!isLoading && results.length > 0 && (
@@ -71,10 +74,10 @@ export function SearchPage() {
             <Link
               key={`${result.documentId}-${result.chunkIndex}-${i}`}
               to={`/documents/${result.documentId}`}
-              className="block bg-slate-800 rounded-lg p-4 border border-slate-700 hover:border-cyan-500 transition-colors"
+              className="block bg-white rounded-xl p-4 border border-[#1B2233]/10 hover:border-[#14B8A6]/50 hover:shadow-md transition-all"
             >
-              <p className="text-sm font-medium text-cyan-400 mb-1">{result.documentTitle}</p>
-              <p className="text-sm text-slate-300 line-clamp-3">{result.content}</p>
+              <p className="text-sm font-medium text-[#0d7a6d] mb-1">{result.documentTitle}</p>
+              <p className="text-sm text-[#1B2233]/70 line-clamp-3">{result.content}</p>
             </Link>
           ))}
         </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useParams, Link } from "react-router-dom";
 import { lookupWorkspace, submitDataSubjectRequest } from "../api/dataSubjectRequestService";
 import { getErrorMessage } from "../api/errorUtils";
@@ -14,17 +14,14 @@ const TYPE_LABELS: Record<DataSubjectRequestType, string> = {
 
 export function PublicDataSubjectRequestPage() {
   const { documentId } = useParams<{ documentId: string }>();
-
   const [loadingCompany, setLoadingCompany] = useState(true);
   const [companyFound, setCompanyFound] = useState(false);
   const [companyName, setCompanyName] = useState<string | null>(null);
-
   const [requesterName, setRequesterName] = useState("");
   const [requesterEmail, setRequesterEmail] = useState("");
   const [requesterDocumentId, setRequesterDocumentId] = useState("");
   const [requestType, setRequestType] = useState<DataSubjectRequestType>("ACCESS");
   const [description, setDescription] = useState("");
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
@@ -40,7 +37,7 @@ export function PublicDataSubjectRequestPage() {
       .finally(() => setLoadingCompany(false));
   }, [documentId]);
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!documentId) return;
     setIsSubmitting(true);
@@ -63,7 +60,7 @@ export function PublicDataSubjectRequestPage() {
 
   if (loadingCompany) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-500 text-sm">
+      <div className="min-h-screen bg-[#F5F2EA] flex items-center justify-center text-[#1B2233]/50 text-sm">
         Carregando...
       </div>
     );
@@ -71,14 +68,14 @@ export function PublicDataSubjectRequestPage() {
 
   if (!companyFound) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#F5F2EA] flex items-center justify-center px-4">
         <div className="max-w-md text-center">
-          <h1 className="text-white text-lg font-semibold mb-2">Empresa não encontrada</h1>
-          <p className="text-slate-500 text-sm">
+          <h1 className="text-[#1B2233] text-lg font-semibold mb-2">Empresa não encontrada</h1>
+          <p className="text-[#1B2233]/55 text-sm">
             O link que você acessou não corresponde a nenhuma empresa cadastrada no IABill. Confirme o link com
             quem forneceu, ou entre em contato diretamente com a empresa.
           </p>
-          <Link to="/" className="text-cyan-400 hover:underline text-sm mt-4 inline-block">
+          <Link to="/" className="text-[#0d7a6d] hover:underline text-sm mt-4 inline-block font-medium">
             Voltar ao início
           </Link>
         </div>
@@ -88,14 +85,14 @@ export function PublicDataSubjectRequestPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#F5F2EA] flex items-center justify-center px-4">
         <div className="max-w-md text-center">
-          <div className="w-14 h-14 rounded-full bg-emerald-900/40 flex items-center justify-center mx-auto mb-4">
-            <span className="text-emerald-400 text-2xl">✓</span>
+          <div className="w-14 h-14 rounded-full bg-[#14B8A6]/15 flex items-center justify-center mx-auto mb-4">
+            <span className="text-[#0d7a6d] text-2xl">✓</span>
           </div>
-          <h1 className="text-white text-lg font-semibold mb-2">Solicitação enviada</h1>
-          <p className="text-slate-500 text-sm">
-            Sua solicitação foi recebida por <strong className="text-slate-300">{companyName}</strong> e será
+          <h1 className="text-[#1B2233] text-lg font-semibold mb-2">Solicitação enviada</h1>
+          <p className="text-[#1B2233]/55 text-sm">
+            Sua solicitação foi recebida por <strong className="text-[#1B2233]">{companyName}</strong> e será
             analisada. Você pode ser contatado pelo e-mail informado para dar continuidade ao processo.
           </p>
         </div>
@@ -104,53 +101,52 @@ export function PublicDataSubjectRequestPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 px-4 py-12">
+    <div className="min-h-screen bg-[#F5F2EA] px-4 py-12">
       <div className="max-w-lg mx-auto">
-        <p className="font-mono text-xs tracking-widest text-emerald-400 uppercase mb-2">
+        <p className="font-mono text-xs tracking-widest text-[#0d7a6d] uppercase mb-2">
           Portal de solicitação do titular · Art. 18 LGPD
         </p>
-        <h1 className="text-white text-2xl font-semibold mb-1">{companyName}</h1>
-        <p className="text-slate-500 text-sm mb-8">
+        <h1 className="text-[#1B2233] text-2xl font-serif mb-1">{companyName}</h1>
+        <p className="text-[#1B2233]/55 text-sm mb-8">
           Use este formulário para solicitar acesso, correção, eliminação, portabilidade ou anonimização dos seus
           dados pessoais tratados por esta empresa.
         </p>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 bg-white rounded-xl p-6 border border-[#1B2233]/10">
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Seu nome completo</label>
+            <label className="block text-sm text-[#1B2233]/70 mb-1">Seu nome completo</label>
             <input
               type="text"
               value={requesterName}
               onChange={(e) => setRequesterName(e.target.value)}
               required
-              className="w-full rounded-lg bg-slate-900 text-white px-3 py-2 border border-slate-700 focus:outline-none focus:border-cyan-500"
+              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6]"
             />
           </div>
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Seu e-mail</label>
+            <label className="block text-sm text-[#1B2233]/70 mb-1">Seu e-mail</label>
             <input
               type="email"
               value={requesterEmail}
               onChange={(e) => setRequesterEmail(e.target.value)}
               required
-              className="w-full rounded-lg bg-slate-900 text-white px-3 py-2 border border-slate-700 focus:outline-none focus:border-cyan-500"
+              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6]"
             />
           </div>
           <div>
-            <label className="block text-sm text-slate-300 mb-1">CPF (opcional, ajuda a empresa a te localizar)</label>
+            <label className="block text-sm text-[#1B2233]/70 mb-1">CPF (opcional, ajuda a empresa a te localizar)</label>
             <input
               type="text"
               value={requesterDocumentId}
               onChange={(e) => setRequesterDocumentId(e.target.value)}
-              className="w-full rounded-lg bg-slate-900 text-white px-3 py-2 border border-slate-700 focus:outline-none focus:border-cyan-500"
+              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6]"
             />
           </div>
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Tipo de solicitação</label>
+            <label className="block text-sm text-[#1B2233]/70 mb-1">Tipo de solicitação</label>
             <select
               value={requestType}
               onChange={(e) => setRequestType(e.target.value as DataSubjectRequestType)}
-              className="w-full rounded-lg bg-slate-900 text-white px-3 py-2 border border-slate-700 focus:outline-none focus:border-cyan-500"
+              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6]"
             >
               {Object.entries(TYPE_LABELS).map(([value, label]) => (
                 <option key={value} value={value}>
@@ -160,23 +156,21 @@ export function PublicDataSubjectRequestPage() {
             </select>
           </div>
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Descreva sua solicitação</label>
+            <label className="block text-sm text-[#1B2233]/70 mb-1">Descreva sua solicitação</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
               rows={4}
               placeholder="Ex: Gostaria de saber quais dados meus vocês possuem, e desde quando."
-              className="w-full rounded-lg bg-slate-900 text-white px-3 py-2 border border-slate-700 focus:outline-none focus:border-cyan-500"
+              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] placeholder:text-[#1B2233]/40"
             />
           </div>
-
-          {error && <p className="text-red-400 text-sm">{error}</p>}
-
+          {error && <p className="text-red-600 text-sm">{error}</p>}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white text-sm font-medium rounded-lg py-2.5 transition-colors"
+            className="w-full bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-colors"
           >
             {isSubmitting ? "Enviando..." : "Enviar solicitação"}
           </button>
