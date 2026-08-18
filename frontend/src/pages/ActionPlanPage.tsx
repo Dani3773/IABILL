@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { ArrowLeft, Sparkles, ClipboardList } from 'lucide-react'
 import {
   fetchActionItems,
   createActionItem,
@@ -18,19 +19,17 @@ const STATUS_LABELS: Record<ActionItemStatus, string> = {
 }
 
 const STATUS_STYLES: Record<ActionItemStatus, string> = {
-  PENDING: 'bg-slate-700 text-slate-300',
-  IN_PROGRESS: 'bg-yellow-900 text-yellow-300',
-  DONE: 'bg-green-900 text-green-300',
+  PENDING: 'bg-[#1B2233]/8 text-[#1B2233]/70',
+  IN_PROGRESS: 'bg-[#B8862B]/12 text-[#B8862B]',
+  DONE: 'bg-[#14B8A6]/12 text-[#0d7a6d]',
 }
 
 export function ActionPlanPage() {
   const { workspaceId } = useParams<{ workspaceId: string }>()
-
   const [items, setItems] = useState<ActionItem[]>([])
   const [suggestions, setSuggestions] = useState<SuggestedActionItem[]>([])
   const [newTitle, setNewTitle] = useState('')
   const [newDescription, setNewDescription] = useState('')
-
   const [isLoading, setIsLoading] = useState(true)
   const [isSuggesting, setIsSuggesting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -111,13 +110,14 @@ export function ActionPlanPage() {
     <div className="max-w-3xl mx-auto">
       <Link
         to={`/workspaces/${workspaceId}/documents`}
-        className="text-cyan-400 hover:underline text-sm mb-4 inline-block"
+        className="flex items-center gap-1.5 text-[#0d7a6d] hover:text-[#14B8A6] text-sm mb-4 font-medium transition-colors w-fit"
       >
-        ← Voltar aos Documentos
+        <ArrowLeft className="w-3.5 h-3.5" />
+        Voltar aos Documentos
       </Link>
 
-      <h2 className="text-xl font-semibold text-white mb-1">Plano de Ação para Adequação</h2>
-      <p className="text-sm text-slate-400 mb-6">
+      <h1 className="text-xl font-serif text-[#1B2233] mb-1">Plano de Ação para Adequação</h1>
+      <p className="text-sm text-[#1B2233]/55 mb-6">
         Tarefas de conformidade — manuais ou sugeridas por IA com base nos documentos existentes.
       </p>
 
@@ -127,34 +127,36 @@ export function ActionPlanPage() {
       </div>
 
       {/* Sugestao via IA */}
-      <div className="bg-slate-800 rounded-lg p-4 border border-slate-700 mb-6">
+      <div className="bg-white rounded-xl p-4 border border-[#1B2233]/10 mb-6">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-sm font-medium text-slate-300">Sugestão com IA</h3>
+          <h3 className="flex items-center gap-1.5 text-sm font-medium text-[#1B2233]/70">
+            <Sparkles className="w-3.5 h-3.5 text-[#B8862B]" />
+            Sugestão com IA
+          </h3>
           <button
             onClick={handleSuggest}
             disabled={isSuggesting}
-            className="bg-purple-700 hover:bg-purple-600 disabled:opacity-50 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+            className="bg-[#B8862B] hover:bg-[#A9791F] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg px-4 py-2 transition-colors"
           >
             {isSuggesting ? 'Analisando documentos...' : 'Sugerir plano com IA'}
           </button>
         </div>
-
         {suggestions.length > 0 && (
           <div className="space-y-2 mt-3">
             {suggestions.map((s) => (
-              <div key={s.title} className="bg-slate-900 rounded-lg p-3 border border-purple-900/50">
-                <p className="font-medium text-white text-sm">{s.title}</p>
-                <p className="text-xs text-slate-400 mt-1 mb-2">{s.description}</p>
+              <div key={s.title} className="bg-[#B8862B]/[0.04] rounded-lg p-3 border border-[#B8862B]/20">
+                <p className="font-medium text-[#1B2233] text-sm">{s.title}</p>
+                <p className="text-xs text-[#1B2233]/60 mt-1 mb-2">{s.description}</p>
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleApproveSuggestion(s)}
-                    className="text-xs bg-purple-700 hover:bg-purple-600 text-white rounded px-3 py-1 transition-colors"
+                    className="text-xs bg-[#B8862B] hover:bg-[#A9791F] text-[#0A0D16] font-medium rounded px-3 py-1 transition-colors"
                   >
                     Aprovar e adicionar
                   </button>
                   <button
                     onClick={() => handleDismissSuggestion(s)}
-                    className="text-xs text-slate-400 hover:text-slate-300 px-3 py-1"
+                    className="text-xs text-[#1B2233]/50 hover:text-[#1B2233]/75 px-3 py-1"
                   >
                     Descartar
                   </button>
@@ -166,57 +168,60 @@ export function ActionPlanPage() {
       </div>
 
       {/* Criacao manual */}
-      <div className="bg-slate-800 rounded-lg p-4 border border-slate-700 mb-6">
-        <h3 className="text-sm font-medium text-slate-300 mb-2">Adicionar tarefa manual</h3>
+      <div className="bg-white rounded-xl p-4 border border-[#1B2233]/10 mb-6">
+        <h3 className="text-sm font-medium text-[#1B2233]/70 mb-2">Adicionar tarefa manual</h3>
         <input
           type="text"
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
           placeholder="Título da tarefa"
-          className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500 mb-2"
+          className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] mb-2 placeholder:text-[#1B2233]/40"
         />
         <textarea
           value={newDescription}
           onChange={(e) => setNewDescription(e.target.value)}
           rows={2}
           placeholder="Descrição (opcional)"
-          className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500 mb-2"
+          className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] mb-2 placeholder:text-[#1B2233]/40"
         />
         <button
           onClick={handleCreateManual}
           disabled={!newTitle.trim()}
-          className="bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+          className="bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg px-4 py-2 transition-colors"
         >
           Adicionar
         </button>
       </div>
 
       {/* Lista de tarefas */}
-      <h3 className="text-sm font-medium text-slate-300 mb-2">Tarefas ({items.length})</h3>
+      <h3 className="text-sm font-medium text-[#1B2233]/70 mb-2">Tarefas ({items.length})</h3>
       {items.length === 0 ? (
-        <p className="text-slate-400 text-sm">Nenhuma tarefa cadastrada ainda.</p>
+        <div className="bg-white rounded-xl border border-[#1B2233]/10 p-10 text-center">
+          <ClipboardList className="w-8 h-8 text-[#1B2233]/25 mx-auto mb-3" />
+          <p className="text-[#1B2233]/55 text-sm">Nenhuma tarefa cadastrada ainda.</p>
+        </div>
       ) : (
         <div className="space-y-2">
           {items.map((item) => (
-            <div key={item.id} className="bg-slate-800 rounded-lg p-4 border border-slate-700">
+            <div key={item.id} className="bg-white rounded-xl p-4 border border-[#1B2233]/10">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <p className="font-medium text-white text-sm">{item.title}</p>
+                    <p className="font-medium text-[#1B2233] text-sm">{item.title}</p>
                     {item.source === 'AI_SUGGESTED' && (
-                      <span className="text-xs px-1.5 py-0.5 rounded bg-purple-900 text-purple-300">
+                      <span className="text-xs px-1.5 py-0.5 rounded bg-[#B8862B]/12 text-[#B8862B] font-medium">
                         IA
                       </span>
                     )}
                   </div>
                   {item.description && (
-                    <p className="text-xs text-slate-400">{item.description}</p>
+                    <p className="text-xs text-[#1B2233]/60">{item.description}</p>
                   )}
                 </div>
                 <select
                   value={item.status}
                   onChange={(e) => handleStatusChange(item.id, e.target.value as ActionItemStatus)}
-                  className={`text-xs rounded px-2 py-1 border-0 focus:outline-none focus:ring-1 focus:ring-cyan-500 ${STATUS_STYLES[item.status]}`}
+                  className={`text-xs rounded px-2 py-1 border-0 focus:outline-none focus:ring-1 focus:ring-[#14B8A6] font-medium ${STATUS_STYLES[item.status]}`}
                 >
                   {Object.entries(STATUS_LABELS).map(([value, label]) => (
                     <option key={value} value={value}>

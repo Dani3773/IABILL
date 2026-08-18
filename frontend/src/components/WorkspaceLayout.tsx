@@ -1,4 +1,5 @@
 import { Outlet, useParams, Link, useLocation } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { ChatWidget } from "./ChatWidget";
 
 export function WorkspaceLayout() {
@@ -17,12 +18,13 @@ export function WorkspaceLayout() {
     <div>
       <Link
         to="/dashboard"
-        className="text-cyan-400 hover:underline text-sm mb-4 inline-block"
+        className="flex items-center gap-1.5 text-[#0d7a6d] hover:text-[#14B8A6] text-sm mb-4 font-medium transition-colors w-fit"
       >
-        ← Voltar aos Workspaces
+        <ArrowLeft className="w-3.5 h-3.5" />
+        Voltar aos Workspaces
       </Link>
 
-      <div className="flex gap-1 border-b border-slate-700 mb-6">
+      <div className="flex gap-1 border-b border-[#1B2233]/12 mb-6">
         {tabs.map((tab) => {
           const isActive = location.pathname === tab.path;
           return (
@@ -31,8 +33,8 @@ export function WorkspaceLayout() {
               to={tab.path}
               className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                 isActive
-                  ? "border-cyan-500 text-white"
-                  : "border-transparent text-slate-400 hover:text-slate-300"
+                  ? "border-[#14B8A6] text-[#1B2233]"
+                  : "border-transparent text-[#1B2233]/55 hover:text-[#1B2233]/80"
               }`}
             >
               {tab.label}
