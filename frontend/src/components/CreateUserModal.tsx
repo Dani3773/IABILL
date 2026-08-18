@@ -9,6 +9,21 @@ interface Props {
   onCreated: (user: User) => void;
 }
 
+const DPO_CONFLICT_KEYWORDS = [
+  "ti",
+  "tecnologia",
+  "marketing",
+  "rh",
+  "recursos humanos",
+  "financeiro",
+  "finanças",
+];
+
+function hasDpoConflict(jobTitle: string): boolean {
+  const normalized = jobTitle.toLowerCase();
+  return DPO_CONFLICT_KEYWORDS.some((keyword) => normalized.includes(keyword));
+}
+
 export function CreateUserModal({ onClose, onCreated }: Props) {
   const { tenantId } = useAuth();
   const [username, setUsername] = useState("");
@@ -18,6 +33,8 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [jobTitle, setJobTitle] = useState("");
   const [committeeRole, setCommitteeRole] = useState("");
+  const showDpoConflictWarning =
+    role === "DPO" && jobTitle.trim().length > 0 && hasDpoConflict(jobTitle);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -102,6 +119,21 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
               className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
             />
           </div>
+          {showDpoConflictWarning && (
+            <div className="bg-amber-950/40 border border-amber-700/50 rounded-lg p-3">
+              <p className="text-xs text-amber-300 font-medium mb-1">
+                ⚠️ Possível conflito de interesse
+              </p>
+              <p className="text-xs text-amber-200/80 leading-relaxed">
+                Segundo a ANPD, o Encarregado (DPO) não deveria acumular cargos
+                de chefia/gerência em áreas como TI, Marketing, RH ou
+                Financeiro, responsáveis pela decisão sobre como os dados são
+                tratados — isso pode comprometer a independência exigida do
+                papel. Considere indicar outra pessoa, ou avaliar um DPO
+                terceirizado.
+              </p>
+            </div>
+          )}
           <div>
             <label className="block text-sm text-slate-300 mb-1">
               Cargo no comitê de LGPD{" "}
