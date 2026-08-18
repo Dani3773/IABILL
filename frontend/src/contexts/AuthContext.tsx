@@ -5,7 +5,9 @@ import type { AuthMeResponse } from '../types/auth'
 interface AuthState {
   userId: string | null
   tenantId: string | null
-  role: 'ADMIN' | 'USER' | 'SUPER_ADMIN' | null
+  role: 'ADMIN' | 'USER' | 'DPO' | 'SUPER_ADMIN' | null
+  username: string | null
+  email: string | null
 }
 
 interface AuthContextValue extends AuthState {
@@ -17,7 +19,7 @@ interface AuthContextValue extends AuthState {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
-const EMPTY_STATE: AuthState = { userId: null, tenantId: null, role: null }
+const EMPTY_STATE: AuthState = { userId: null, tenantId: null, role: null, username: null, email: null }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>(EMPTY_STATE)
@@ -27,13 +29,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // quem esta logado - o cookie httpOnly (se existir e for valido) resolve isso.
   useEffect(() => {
     fetchCurrentUser()
-      .then((data) => setState({ userId: data.userId, tenantId: data.tenantId, role: data.role }))
+      .then((data) => setState({ userId: data.userId, tenantId: data.tenantId, role: data.role, username: data.username, email: data.email }))
       .catch(() => setState(EMPTY_STATE))
       .finally(() => setIsLoading(false))
   }, [])
 
   function setAuth(data: AuthMeResponse) {
-    setState({ userId: data.userId, tenantId: data.tenantId, role: data.role })
+    setState({ userId: data.userId, tenantId: data.tenantId, role: data.role, username: data.username, email: data.email })
   }
 
   async function clearAuth() {

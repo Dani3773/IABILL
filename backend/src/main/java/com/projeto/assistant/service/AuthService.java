@@ -1,8 +1,6 @@
 package com.projeto.assistant.service;
 
-import com.projeto.assistant.dto.LoginRequestDTO;
-import com.projeto.assistant.dto.LoginResponseDTO;
-import com.projeto.assistant.dto.SignupRequestDTO;
+import com.projeto.assistant.dto.*;
 import com.projeto.assistant.model.Tenant;
 import com.projeto.assistant.model.User;
 import com.projeto.assistant.model.UserRole;
@@ -10,10 +8,6 @@ import com.projeto.assistant.repository.TenantRepository;
 import com.projeto.assistant.repository.UserRepository;
 import com.projeto.assistant.model.Workspace;
 import com.projeto.assistant.model.WorkspaceType;
-import com.projeto.assistant.dto.SignupResponseDTO;
-import com.projeto.assistant.dto.EmailConfirmationResponseDTO;
-import com.projeto.assistant.dto.ForgotPasswordRequestDTO;
-import com.projeto.assistant.dto.ResetPasswordRequestDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -118,7 +112,8 @@ public class AuthService {
 
         UUID tenantId = matchedUser.getTenant() != null ? matchedUser.getTenant().getId() : null;
         String token = jwtService.generateToken(matchedUser.getId(), tenantId, matchedUser.getRole().name());
-        return new LoginResponseDTO(token, matchedUser.getId(), tenantId, matchedUser.getRole().name());
+        return new LoginResponseDTO(token, matchedUser.getId(), tenantId, matchedUser.getRole().name(),
+                matchedUser.getUsername(), matchedUser.getEmail());
     }
 
     @Transactional
@@ -209,5 +204,12 @@ public class AuthService {
         userRepository.save(user);
 
         return new EmailConfirmationResponseDTO(true, "Senha redefinida com sucesso.");
+    }
+
+    @Transactional(readOnly = true)
+    public AuthMeResponseDTO getCurrentUser(UUID userId, UUID tenantId, String role) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + userId));
+        return new AuthMeResponseDTO(userId, tenantId, role, user.getUsername(), user.getEmail());
     }
 }

@@ -5,6 +5,8 @@ import java.util.UUID;
 public record AuthMeResponseDTO(
         UUID userId,
         UUID tenantId,
-        String role
+        String role,
+        String username,
+        String email
 ) {
 }

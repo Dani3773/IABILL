@@ -81,7 +81,7 @@ public class AuthController {
             @RequestAttribute(value = JwtAuthenticationFilter.ATTR_TENANT_ID, required = false) UUID authTenantId,
             HttpServletRequest request) {
         String role = (String) request.getAttribute(JwtAuthenticationFilter.ATTR_ROLE);
-        return new AuthMeResponseDTO(authUserId, authTenantId, role);
+        return authService.getCurrentUser(authUserId, authTenantId, role);
     }
 
     private ResponseEntity<AuthMeResponseDTO> buildAuthResponse(LoginResponseDTO result) {
@@ -93,8 +93,8 @@ public class AuthController {
                 .maxAge(jwtExpirationMs / 1000)
                 .build();
 
-        AuthMeResponseDTO body = new AuthMeResponseDTO(result.userId(), result.tenantId(), result.role());
-
+        AuthMeResponseDTO body = new AuthMeResponseDTO(result.userId(), result.tenantId(), result.role(),
+                result.username(), result.email());
         return ResponseEntity.status(HttpStatus.OK)
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(body);

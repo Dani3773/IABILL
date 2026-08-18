@@ -6,6 +6,8 @@ public record LoginResponseDTO(
         String token,
         UUID userId,
         UUID tenantId,
-        String role
+        String role,
+        String username,
+        String email
 ) {
 }
