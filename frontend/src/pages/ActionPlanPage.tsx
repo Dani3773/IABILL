@@ -144,7 +144,7 @@ export function ActionPlanPage() {
         {suggestions.length > 0 && (
           <div className="space-y-2 mt-3">
             {suggestions.map((s) => (
-              <div key={s.title} className="bg-[#B8862B]/[0.04] rounded-lg p-3 border border-[#B8862B]/20">
+              <div key={s.title} className="bg-[#B8862B]/4 rounded-lg p-3 border border-[#B8862B]/20">
                 <p className="font-medium text-[#1B2233] text-sm">{s.title}</p>
                 <p className="text-xs text-[#1B2233]/60 mt-1 mb-2">{s.description}</p>
                 <div className="flex gap-2">
