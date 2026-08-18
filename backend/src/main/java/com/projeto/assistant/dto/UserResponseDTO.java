@@ -12,6 +12,8 @@ public record UserResponseDTO(
         String username,
         String email,
         UserRole role,
+        String jobTitle,
+        String committeeRole,
         Instant createdAt
 ) {
     public static UserResponseDTO fromEntity(User user) {
@@ -21,6 +23,8 @@ public record UserResponseDTO(
                 user.getUsername(),
                 user.getEmail(),
                 user.getRole(),
+                user.getJobTitle(),
+                user.getCommitteeRole(),
                 user.getCreatedAt()
         );
     }

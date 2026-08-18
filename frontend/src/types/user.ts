@@ -6,6 +6,8 @@ export interface User {
   username: string
   email: string
   role: UserRole
+  jobTitle: string | null
+  committeeRole: string | null
   createdAt: string
 }
 
@@ -14,6 +16,8 @@ export interface UserRequest {
   username: string
   email: string
   role: UserRole
+  jobTitle?: string
+  committeeRole?: string
 }
 
 export interface WorkspaceMembership {

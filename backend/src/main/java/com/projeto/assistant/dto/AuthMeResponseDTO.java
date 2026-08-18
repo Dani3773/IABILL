@@ -7,6 +7,8 @@ public record AuthMeResponseDTO(
         UUID tenantId,
         String role,
         String username,
-        String email
+        String email,
+        String jobTitle,
+        String committeeRole
 ) {
 }

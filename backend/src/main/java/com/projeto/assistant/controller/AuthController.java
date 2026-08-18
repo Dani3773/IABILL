@@ -94,7 +94,7 @@ public class AuthController {
                 .build();
 
         AuthMeResponseDTO body = new AuthMeResponseDTO(result.userId(), result.tenantId(), result.role(),
-                result.username(), result.email());
+                result.username(), result.email(), null, null);
         return ResponseEntity.status(HttpStatus.OK)
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(body);

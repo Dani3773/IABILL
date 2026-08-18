@@ -8,6 +8,8 @@ interface AuthState {
   role: 'ADMIN' | 'USER' | 'DPO' | 'SUPER_ADMIN' | null
   username: string | null
   email: string | null
+  jobTitle: string | null
+  committeeRole: string | null
 }
 
 interface AuthContextValue extends AuthState {
@@ -19,7 +21,7 @@ interface AuthContextValue extends AuthState {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
-const EMPTY_STATE: AuthState = { userId: null, tenantId: null, role: null, username: null, email: null }
+const EMPTY_STATE: AuthState = { userId: null, tenantId: null, role: null, username: null, email: null, jobTitle: null, committeeRole: null }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>(EMPTY_STATE)
@@ -29,13 +31,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // quem esta logado - o cookie httpOnly (se existir e for valido) resolve isso.
   useEffect(() => {
     fetchCurrentUser()
-      .then((data) => setState({ userId: data.userId, tenantId: data.tenantId, role: data.role, username: data.username, email: data.email }))
+      .then((data) => setState({
+        userId: data.userId, tenantId: data.tenantId, role: data.role,
+        username: data.username, email: data.email,
+        jobTitle: data.jobTitle, committeeRole: data.committeeRole,
+      }))
       .catch(() => setState(EMPTY_STATE))
       .finally(() => setIsLoading(false))
   }, [])
 
   function setAuth(data: AuthMeResponse) {
-    setState({ userId: data.userId, tenantId: data.tenantId, role: data.role, username: data.username, email: data.email })
+    setState({
+      userId: data.userId, tenantId: data.tenantId, role: data.role,
+      username: data.username, email: data.email,
+      jobTitle: data.jobTitle ?? null, committeeRole: data.committeeRole ?? null,
+    })
   }
 
   async function clearAuth() {

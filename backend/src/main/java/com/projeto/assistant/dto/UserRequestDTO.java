@@ -20,6 +20,9 @@ public record UserRequestDTO(
         String email,
 
         @NotNull(message = "O papel (role) é obrigatório")
-        UserRole role
+        UserRole role,
+
+        String jobTitle,
+        String committeeRole
 ) {
 }

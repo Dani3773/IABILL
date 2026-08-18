@@ -16,6 +16,8 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
   const [role, setRole] = useState<UserRole>("USER");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [jobTitle, setJobTitle] = useState("");
+  const [committeeRole, setCommitteeRole] = useState("");
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -28,6 +30,8 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
         username,
         email,
         role,
+        jobTitle: jobTitle || undefined,
+        committeeRole: committeeRole || undefined,
       });
       onCreated(user);
       onClose();
@@ -85,8 +89,35 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
               <option value="ADMIN">Administrador</option>
             </select>
           </div>
+          <div>
+            <label className="block text-sm text-slate-300 mb-1">
+              Cargo na empresa{" "}
+              <span className="text-slate-500">(opcional)</span>
+            </label>
+            <input
+              type="text"
+              value={jobTitle}
+              onChange={(e) => setJobTitle(e.target.value)}
+              placeholder="Ex: Analista de RH"
+              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm text-slate-300 mb-1">
+              Cargo no comitê de LGPD{" "}
+              <span className="text-slate-500">(opcional)</span>
+            </label>
+            <input
+              type="text"
+              value={committeeRole}
+              onChange={(e) => setCommitteeRole(e.target.value)}
+              placeholder="Ex: Membro titular"
+              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
+            />
+          </div>
           <p className="text-xs text-slate-500">
-            O usuário receberá um e-mail de convite para definir sua própria senha e ativar o acesso.
+            O usuário receberá um e-mail de convite para definir sua própria
+            senha e ativar o acesso.
           </p>
           {error && <p className="text-red-400 text-sm">{error}</p>}
           <div className="flex gap-3 pt-2">

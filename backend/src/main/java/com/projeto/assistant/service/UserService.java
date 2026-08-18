@@ -49,6 +49,8 @@ public class UserService {
         user.setTenant(tenant);
         user.setUsername(request.username());
         user.setEmail(request.email());
+        user.setJobTitle(request.jobTitle());
+        user.setCommitteeRole(request.committeeRole());
         // Senha temporaria aleatoria, inutilizavel - ninguem (nem o ADMIN que convidou)
         // sabe esse valor. O usuario convidado define a senha real na ativacao.
         user.setPasswordHash(passwordEncoder.encode(generateToken()));

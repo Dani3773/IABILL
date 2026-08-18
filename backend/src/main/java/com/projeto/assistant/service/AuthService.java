@@ -210,6 +210,7 @@ public class AuthService {
     public AuthMeResponseDTO getCurrentUser(UUID userId, UUID tenantId, String role) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + userId));
-        return new AuthMeResponseDTO(userId, tenantId, role, user.getUsername(), user.getEmail());
+        return new AuthMeResponseDTO(userId, tenantId, role, user.getUsername(), user.getEmail(),
+                user.getJobTitle(), user.getCommitteeRole());
     }
 }

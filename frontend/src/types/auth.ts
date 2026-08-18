@@ -4,6 +4,8 @@ export interface AuthMeResponse {
   role: 'ADMIN' | 'USER' | 'DPO' | 'SUPER_ADMIN'
   username: string
   email: string
+  jobTitle: string | null
+  committeeRole: string | null
 }
 
 export interface SignupRequest {
