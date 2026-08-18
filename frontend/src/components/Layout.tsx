@@ -33,8 +33,8 @@ export function Layout() {
   const roleLabel = role ? (ROLE_LABELS[role] ?? role) : "—";
 
   return (
-    <div className="flex min-h-screen bg-[#F5F2EA]">
-      <aside className={`${collapsed ? "w-16" : "w-60"} bg-[#161310] flex flex-col shrink-0 transition-all duration-200`}>
+    <div className="flex h-screen bg-[#F5F2EA] overflow-hidden">
+      <aside className={`${collapsed ? "w-16" : "w-60"} h-full bg-[#161310] flex flex-col shrink-0 transition-all duration-200`}>
         <div className={`p-5 border-b border-white/10 flex items-center ${collapsed ? "justify-center" : "justify-between"}`}>
           {!collapsed && (
             <span className="font-serif text-xl text-white tracking-tight select-none">
@@ -123,7 +123,7 @@ export function Layout() {
         </div>
       </aside>
 
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 h-full overflow-y-auto p-8">
         <Outlet />
       </main>
     </div>

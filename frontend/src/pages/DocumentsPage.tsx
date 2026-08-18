@@ -100,7 +100,7 @@ export function DocumentsPage() {
                     </div>
                     <div className="min-w-0">
                       <p className="font-medium text-[#1B2233] truncate">{doc.title}</p>
-                      <p className="text-xs font-mono text-[#1B2233]/45">{doc.type}</p>
+                      <p className="text-xs font-mono text-[#1B2233]/65">{doc.type}</p>
                     </div>
                   </div>
                   <span className={`text-xs px-2 py-1 rounded shrink-0 ${STATUS_STYLES[doc.status]}`}>
@@ -117,7 +117,7 @@ export function DocumentsPage() {
                     </p>
                     <button
                       onClick={(e) => handleDismissReviewFlag(e, doc.id)}
-                      className="text-xs text-[#1B2233]/45 hover:text-[#1B2233]/70 shrink-0"
+                      className="text-xs text-[#1B2233]/60 hover:text-[#1B2233]/85 shrink-0 font-medium"
                     >
                       Dispensar
                     </button>
