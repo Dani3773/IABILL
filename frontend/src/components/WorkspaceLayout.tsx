@@ -7,6 +7,7 @@ export function WorkspaceLayout() {
   const location = useLocation();
 
   const tabs = [
+    { label: "Pilares", path: `/workspaces/${workspaceId}/pilares` },
     { label: "Documentos", path: `/workspaces/${workspaceId}/documents` },
     { label: "Plano de Ação", path: `/workspaces/${workspaceId}/action-plan` },
     { label: "Incidentes", path: `/workspaces/${workspaceId}/incidents` },

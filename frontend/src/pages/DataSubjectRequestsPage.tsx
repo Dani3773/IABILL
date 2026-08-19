@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Inbox } from "lucide-react";
+import { useParams } from "react-router-dom";
+import { Inbox } from "lucide-react";
 import {
   fetchDataSubjectRequests,
   updateDataSubjectRequestStatus,
@@ -85,13 +85,6 @@ export function DataSubjectRequestsPage() {
 
   return (
     <div>
-      <Link
-        to={`/workspaces/${workspaceId}/documents`}
-        className="flex items-center gap-1.5 text-[#0d7a6d] hover:text-[#14B8A6] text-sm mb-4 font-medium transition-colors w-fit"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        Voltar aos Documentos
-      </Link>
 
       <h1 className="text-xl font-serif text-[#1B2233] mb-1">Solicitações de Titulares</h1>
       <p className="text-sm text-[#1B2233]/55 mb-6">

@@ -22,6 +22,8 @@ import { EmailConfirmationPage } from "./pages/EmailConfirmationPage";
 import { AccountActivationPage } from "./pages/AccountActivationPage";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
+import { PilaresPage } from "./pages/PilaresPage";
+import { ProcessingActivitiesPage } from "./pages/ProcessingActivitiesPage";
 
 
 function App() {
@@ -54,10 +56,10 @@ function App() {
                 path="/workspaces/:workspaceId"
                 element={<WorkspaceLayout />}
               >
+                <Route path="pilares" element={<PilaresPage />} />
+                <Route path="pilares/ropa" element={<ProcessingActivitiesPage />} />
                 <Route path="documents" element={<DocumentsPage />} />
                 <Route path="action-plan" element={<ActionPlanPage />} />
-                <Route path="incidents" element={<IncidentsPage />} />
-                <Route path="search" element={<SearchPage />} />
                 <Route path="incidents" element={<IncidentsPage />} />
                 <Route path="data-subject-requests" element={<DataSubjectRequestsPage />} />
                 <Route path="search" element={<SearchPage />} />

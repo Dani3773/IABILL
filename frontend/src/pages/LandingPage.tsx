@@ -299,7 +299,7 @@ export function LandingPage() {
             {FEATURES.map((feature) => (
               <div
                 key={feature.title}
-                className="rounded-xl border border-white/10 bg-white/[0.03] p-6 hover:border-white/20 transition-colors"
+                className="rounded-xl border border-white/10 bg-white/3 p-6 hover:border-white/20 transition-colors"
               >
                 <div className="flex items-center justify-between mb-4">
                   <feature.icon className="w-5 h-5 text-[#14B8A6]" />
@@ -364,14 +364,14 @@ export function LandingPage() {
             </ul>
           </div>
 
-          <div className="rounded-xl border border-white/10 bg-white/[0.03] overflow-hidden h-64">
+          <div className="rounded-xl border border-white/10 bg-white/3 overflow-hidden h-64">
             <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
               <ScrollText className="w-3.5 h-3.5 text-[#14B8A6]" />
               <span className="font-mono text-[11px] text-[#9CA3AF] uppercase tracking-wide">
                 Trilha de auditoria · tempo real
               </span>
             </div>
-            <div className="relative h-[calc(100%-2.75rem)] overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)]">
+            <div className="relative h-[calc(100%-2.75rem)] overflow-hidden mask-[linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)]">
               <div className="iabill-log-track">
                 {[...AUDIT_LOG_LINES, ...AUDIT_LOG_LINES].map((line, i) => (
                   <div

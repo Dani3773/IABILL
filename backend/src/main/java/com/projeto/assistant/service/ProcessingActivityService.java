@@ -1,0 +1,116 @@
+package com.projeto.assistant.service;
+
+import com.projeto.assistant.dto.ProcessingActivityRequestDTO;
+import com.projeto.assistant.dto.ProcessingActivityResponseDTO;
+import com.projeto.assistant.model.ProcessingActivity;
+import com.projeto.assistant.model.Workspace;
+import com.projeto.assistant.repository.ProcessingActivityRepository;
+import com.projeto.assistant.repository.WorkspaceRepository;
+import com.projeto.assistant.model.AuditAction;
+import com.projeto.assistant.model.AuditEntityType;
+
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.Map;
+
+@Service
+@RequiredArgsConstructor
+public class ProcessingActivityService {
+
+    private final ProcessingActivityRepository processingActivityRepository;
+    private final WorkspaceRepository workspaceRepository;
+    private final AuditLogService auditLogService;
+
+    @Transactional
+    public ProcessingActivityResponseDTO create(ProcessingActivityRequestDTO request, UUID authTenantId, UUID authUserId) {
+        Workspace workspace = workspaceRepository.findById(request.workspaceId())
+                .orElseThrow(() -> new IllegalArgumentException("Workspace não encontrado: " + request.workspaceId()));
+
+        if (!workspace.getTenant().getId().equals(authTenantId)) {
+            throw new AccessDeniedException("Você não tem acesso a este workspace");
+        }
+
+        ProcessingActivity activity = new ProcessingActivity();
+        activity.setWorkspace(workspace);
+        activity.setProcessName(request.processName());
+        activity.setPurpose(request.purpose());
+        activity.setLegalBasis(request.legalBasis());
+        activity.setDataSubjectCategories(request.dataSubjectCategories());
+        activity.setPersonalDataCategories(request.personalDataCategories());
+        activity.setDataSharing(request.dataSharing());
+        activity.setSecurityMeasures(request.securityMeasures());
+        activity.setRetentionPeriod(request.retentionPeriod());
+        activity.setInvolvesSensitiveData(request.involvesSensitiveData());
+        activity.setObservations(request.observations());
+        activity.setCreatedBy(authUserId);
+
+        ProcessingActivity saved = processingActivityRepository.save(activity);
+
+        auditLogService.record(
+                authTenantId,
+                authUserId,
+                AuditAction.CREATE,
+                AuditEntityType.PROCESSING_ACTIVITY,
+                saved.getId(),
+                Map.of("processName", saved.getProcessName(), "legalBasis", saved.getLegalBasis().name())
+        );
+
+        return ProcessingActivityResponseDTO.fromEntity(saved);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProcessingActivityResponseDTO> findByWorkspace(UUID workspaceId, UUID authTenantId) {
+        Workspace workspace = workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new IllegalArgumentException("Workspace não encontrado: " + workspaceId));
+
+        if (!workspace.getTenant().getId().equals(authTenantId)) {
+            throw new AccessDeniedException("Você não tem acesso a este workspace");
+        }
+
+        return processingActivityRepository.findByWorkspaceId(workspaceId)
+                .stream()
+                .map(ProcessingActivityResponseDTO::fromEntity)
+                .toList();
+    }
+
+    @Transactional
+    public ProcessingActivityResponseDTO update(UUID id, ProcessingActivityRequestDTO request, UUID authTenantId) {
+        ProcessingActivity activity = processingActivityRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Atividade de tratamento não encontrada: " + id));
+
+        if (!activity.getWorkspace().getTenant().getId().equals(authTenantId)) {
+            throw new AccessDeniedException("Você não tem acesso a esta atividade de tratamento");
+        }
+
+        activity.setProcessName(request.processName());
+        activity.setPurpose(request.purpose());
+        activity.setLegalBasis(request.legalBasis());
+        activity.setDataSubjectCategories(request.dataSubjectCategories());
+        activity.setPersonalDataCategories(request.personalDataCategories());
+        activity.setDataSharing(request.dataSharing());
+        activity.setSecurityMeasures(request.securityMeasures());
+        activity.setRetentionPeriod(request.retentionPeriod());
+        activity.setInvolvesSensitiveData(request.involvesSensitiveData());
+        activity.setObservations(request.observations());
+
+        return ProcessingActivityResponseDTO.fromEntity(processingActivityRepository.save(activity));
+    }
+
+    @Transactional
+    public void delete(UUID id, UUID authTenantId) {
+        ProcessingActivity activity = processingActivityRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Atividade de tratamento não encontrada: " + id));
+
+        if (!activity.getWorkspace().getTenant().getId().equals(authTenantId)) {
+            throw new AccessDeniedException("Você não tem acesso a esta atividade de tratamento");
+        }
+
+        processingActivityRepository.delete(activity);
+    }
+}
