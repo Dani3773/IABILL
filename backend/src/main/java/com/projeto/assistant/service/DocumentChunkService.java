@@ -168,7 +168,6 @@ public class DocumentChunkService {
     private String buildTypeSpecificGuidance(DocumentType type) {
         if (type == DocumentType.RIPD_DPIA) {
             return """
-
                 Este documento é um Relatório de Impacto à Proteção de Dados (RIPD/DPIA),
                 conforme Art. 38 da LGPD. Estruture o conteúdo cobrindo obrigatoriamente,
                 quando houver informação disponível no contexto, os seguintes elementos:
@@ -178,6 +177,24 @@ public class DocumentChunkService {
                 4. Medidas de mitigação e salvaguardas adotadas ou recomendadas para reduzir os riscos identificados.
                 Se o contexto não tiver informação suficiente para algum desses 4 elementos,
                 declare explicitamente qual elemento está incompleto - não invente conteúdo para preenchê-lo.
+                """;
+        }
+        if (type == DocumentType.POLITICA_SEGURANCA_INFORMACAO) {
+            return """
+                Este documento é uma Política de Segurança da Informação (PSI), seguindo as
+                boas práticas recomendadas pelo Guia Orientativo sobre Segurança da Informação
+                da ANPD para Agentes de Tratamento de Pequeno Porte. Estruture o conteúdo
+                cobrindo obrigatoriamente, quando houver informação disponível no contexto, os
+                seguintes tópicos:
+                1. Política de senhas e autenticação (complexidade exigida, troca periódica, MFA quando aplicável).
+                2. Política de backup e recuperação de dados.
+                3. Controle de acesso a sistemas e dados pessoais (quem pode acessar o quê, e como isso é revisado).
+                4. Compartilhamento de dados com terceiros e fornecedores.
+                5. Atualização e manutenção de sistemas e softwares (patches de segurança).
+                6. Uso seguro de e-mail e comunicações eletrônicas.
+                7. Proteção contra malware/antivírus.
+                Se o contexto não tiver informação suficiente para algum desses tópicos,
+                declare explicitamente qual tópico está incompleto - não invente conteúdo para preenchê-lo.
                 """;
         }
         return "";

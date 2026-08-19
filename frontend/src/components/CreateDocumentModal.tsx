@@ -17,6 +17,7 @@ const DOCUMENT_TYPE_LABELS: Record<DocumentType, string> = {
   RELATORIO_CONFORMIDADE: "Relatório de Conformidade",
   RAT: "RAT (Registro de Atividades de Tratamento)",
   RIPD_DPIA: "RIPD/DPIA (Relatório de Impacto à Proteção de Dados)",
+  POLITICA_SEGURANCA_INFORMACAO: "Política de Segurança da Informação (PSI)",
 };
 
 export function CreateDocumentModal({ workspaceId, onClose, onCreated }: Props) {

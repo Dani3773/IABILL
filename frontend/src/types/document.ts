@@ -4,6 +4,7 @@ export type DocumentType =
   | 'RELATORIO_CONFORMIDADE'
   | 'RAT'
   | 'RIPD_DPIA'
+  | 'POLITICA_SEGURANCA_INFORMACAO'
 
 export type DocumentStatus = 'DRAFT' | 'GENERATED' | 'REVIEWED' | 'APPROVED'
 
