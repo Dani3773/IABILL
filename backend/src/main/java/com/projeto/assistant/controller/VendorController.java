@@ -4,10 +4,14 @@ import com.projeto.assistant.config.JwtAuthenticationFilter;
 import com.projeto.assistant.dto.VendorRequestDTO;
 import com.projeto.assistant.dto.VendorResponseDTO;
 import com.projeto.assistant.service.VendorService;
+
 import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +25,7 @@ public class VendorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAnyRole('ADMIN', 'DPO', 'SUPER_ADMIN')")
     public VendorResponseDTO create(
             @Valid @RequestBody VendorRequestDTO request,
             @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
@@ -36,6 +41,7 @@ public class VendorController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DPO', 'SUPER_ADMIN')")
     public VendorResponseDTO update(
             @PathVariable UUID id,
             @Valid @RequestBody VendorRequestDTO request,
@@ -46,6 +52,7 @@ public class VendorController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAnyRole('ADMIN', 'DPO', 'SUPER_ADMIN')")
     public void delete(
             @PathVariable UUID id,
             @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
