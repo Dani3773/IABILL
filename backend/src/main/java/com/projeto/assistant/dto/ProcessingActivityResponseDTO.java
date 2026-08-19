@@ -20,6 +20,7 @@ public record ProcessingActivityResponseDTO(
         String securityMeasures,
         String retentionPeriod,
         boolean involvesSensitiveData,
+        boolean ripdSuggestionDismissed,
         String observations,
         Instant createdAt,
         Instant updatedAt
@@ -38,6 +39,7 @@ public record ProcessingActivityResponseDTO(
                 activity.getSecurityMeasures(),
                 activity.getRetentionPeriod(),
                 activity.isInvolvesSensitiveData(),
+                activity.isRipdSuggestionDismissed(),
                 activity.getObservations(),
                 activity.getCreatedAt(),
                 activity.getUpdatedAt()

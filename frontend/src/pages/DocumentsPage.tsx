@@ -5,6 +5,7 @@ import { CreateDocumentModal } from "../components/CreateDocumentModal";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Alert } from "../components/Alert";
 import { getErrorMessage } from "../api/errorUtils";
+import { useLocation } from "react-router-dom";
 import type { Document, DocumentStatus } from "../types/document";
 import {
   fetchDocumentsByWorkspace,
@@ -31,6 +32,8 @@ export function DocumentsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const location = useLocation();
+  const prefill = location.state as { prefillType?: string; prefillTitle?: string } | null;
 
   useEffect(() => {
     if (!workspaceId) return;
@@ -41,6 +44,16 @@ export function DocumentsPage() {
       )
       .finally(() => setIsLoading(false));
   }, [workspaceId]);
+
+    useEffect(() => {
+    if (prefill?.prefillType) {
+      setShowCreateModal(true);
+      // Limpa o state da navegacao para nao reabrir o modal se a pessoa
+      // atualizar a pagina ou voltar/avancar no historico do navegador.
+      window.history.replaceState({}, "");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function handleCreated(newDocument: Document) {
     setDocuments((prev) => [...prev, newDocument]);
@@ -144,6 +157,8 @@ export function DocumentsPage() {
           workspaceId={workspaceId}
           onClose={() => setShowCreateModal(false)}
           onCreated={handleCreated}
+          initialType={prefill?.prefillType as never}
+          initialTitle={prefill?.prefillTitle}
         />
       )}
     </div>

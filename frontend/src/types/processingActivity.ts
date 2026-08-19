@@ -23,6 +23,7 @@ export interface ProcessingActivity {
   securityMeasures: string | null
   retentionPeriod: string | null
   involvesSensitiveData: boolean
+  ripdSuggestionDismissed: boolean
   observations: string | null
   createdAt: string
   updatedAt: string

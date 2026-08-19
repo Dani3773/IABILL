@@ -19,3 +19,8 @@ export async function updateProcessingActivity(id: string, request: ProcessingAc
 export async function deleteProcessingActivity(id: string): Promise<void> {
   await apiClient.delete(`/processing-activities/${id}`)
 }
+
+export async function dismissRipdSuggestion(id: string): Promise<ProcessingActivity> {
+  const response = await apiClient.put<ProcessingActivity>(`/processing-activities/${id}/dismiss-ripd-suggestion`)
+  return response.data
+}

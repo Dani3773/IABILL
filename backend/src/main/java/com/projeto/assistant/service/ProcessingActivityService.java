@@ -135,4 +135,28 @@ public class ProcessingActivityService {
 
         processingActivityRepository.delete(activity);
     }
+
+    @Transactional
+    public ProcessingActivityResponseDTO dismissRipdSuggestion(UUID id, UUID authTenantId, UUID authUserId) {
+        ProcessingActivity activity = processingActivityRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Atividade de tratamento não encontrada: " + id));
+
+        if (!activity.getWorkspace().getTenant().getId().equals(authTenantId)) {
+            throw new AccessDeniedException("Você não tem acesso a esta atividade de tratamento");
+        }
+
+        activity.setRipdSuggestionDismissed(true);
+        ProcessingActivity saved = processingActivityRepository.save(activity);
+
+        auditLogService.record(
+                authTenantId,
+                authUserId,
+                AuditAction.UPDATE,
+                AuditEntityType.PROCESSING_ACTIVITY,
+                saved.getId(),
+                Map.of("action", "dismiss_ripd_suggestion")
+        );
+
+        return ProcessingActivityResponseDTO.fromEntity(saved);
+    }
 }

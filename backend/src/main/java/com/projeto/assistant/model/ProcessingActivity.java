@@ -63,6 +63,9 @@ public class ProcessingActivity {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    @Column(name = "ripd_suggestion_dismissed", nullable = false)
+    private boolean ripdSuggestionDismissed = false;
+
     @PrePersist
     protected void onCreate() {
         createdAt = Instant.now();

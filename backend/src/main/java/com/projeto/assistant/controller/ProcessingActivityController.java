@@ -52,4 +52,12 @@ public class ProcessingActivityController {
             @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
         processingActivityService.delete(id, authTenantId, authUserId);
     }
+
+    @PutMapping("/{id}/dismiss-ripd-suggestion")
+    public ProcessingActivityResponseDTO dismissRipdSuggestion(
+            @PathVariable UUID id,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return processingActivityService.dismissRipdSuggestion(id, authTenantId, authUserId);
+    }
 }

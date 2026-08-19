@@ -9,6 +9,8 @@ interface Props {
   workspaceId: string;
   onClose: () => void;
   onCreated: (document: Document) => void;
+  initialType?: DocumentType;
+  initialTitle?: string;
 }
 
 const DOCUMENT_TYPE_LABELS: Record<DocumentType, string> = {
@@ -20,10 +22,10 @@ const DOCUMENT_TYPE_LABELS: Record<DocumentType, string> = {
   POLITICA_SEGURANCA_INFORMACAO: "Política de Segurança da Informação (PSI)",
 };
 
-export function CreateDocumentModal({ workspaceId, onClose, onCreated }: Props) {
+export function CreateDocumentModal({ workspaceId, onClose, onCreated, initialType, initialTitle }: Props) {
   const { userId } = useAuth();
-  const [title, setTitle] = useState("");
-  const [type, setType] = useState<DocumentType>("INVENTARIO_DADOS");
+  const [title, setTitle] = useState(initialTitle ?? "");
+  const [type, setType] = useState<DocumentType>(initialType ?? "INVENTARIO_DADOS");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
