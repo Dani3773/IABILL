@@ -9,12 +9,22 @@ export type AuditAction =
   | 'EXPORT'
   | 'REJECT'
 
-export type AuditEntityType = 'TENANT' | 'USER' | 'WORKSPACE' | 'DOCUMENT' | 'DOCUMENT_CHUNK'
+export type AuditEntityType =
+  | 'TENANT'
+  | 'USER'
+  | 'WORKSPACE'
+  | 'DOCUMENT'
+  | 'DOCUMENT_CHUNK'
+  | 'ACTION_ITEM'
+  | 'INCIDENT'
+  | 'DATA_SUBJECT_REQUEST'
+  | 'PROCESSING_ACTIVITY'
 
 export interface AuditLog {
   id: string
   tenantId: string
   userId: string | null
+  username: string | null
   action: AuditAction
   entityType: AuditEntityType
   entityId: string

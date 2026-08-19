@@ -58,6 +58,7 @@ export function AuditLogsPage() {
             <thead>
               <tr className="text-left text-slate-400 border-b border-slate-700">
                 <th className="py-2 pr-4">Data</th>
+                <th className="py-2 pr-4">Usuário</th>
                 <th className="py-2 pr-4">Ação</th>
                 <th className="py-2 pr-4">Entidade</th>
                 <th className="py-2 pr-4">Detalhes</th>
@@ -68,6 +69,9 @@ export function AuditLogsPage() {
                 <tr key={log.id} className="border-b border-slate-800">
                   <td className="py-3 pr-4 text-slate-300 whitespace-nowrap">
                     {formatDate(log.createdAt)}
+                  </td>
+                  <td className="py-3 pr-4 text-slate-300">
+                    {log.username ?? <span className="text-slate-500 italic">Sistema</span>}
                   </td>
                   <td className="py-3 pr-4">
                     <span className={`text-xs px-2 py-1 rounded ${ACTION_STYLES[log.action]}`}>
