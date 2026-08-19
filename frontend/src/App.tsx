@@ -24,6 +24,7 @@ import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
 import { PilaresPage } from "./pages/PilaresPage";
 import { ProcessingActivitiesPage } from "./pages/ProcessingActivitiesPage";
+import { VendorsPage } from "./pages/VendorsPage";
 
 
 function App() {
@@ -63,6 +64,7 @@ function App() {
                 <Route path="incidents" element={<IncidentsPage />} />
                 <Route path="data-subject-requests" element={<DataSubjectRequestsPage />} />
                 <Route path="search" element={<SearchPage />} />
+                <Route path="pilares/fornecedores" element={<VendorsPage />} />
               </Route>
             </Route>
           </Route>
