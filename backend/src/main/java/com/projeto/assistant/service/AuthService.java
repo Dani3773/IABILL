@@ -33,6 +33,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final com.projeto.assistant.repository.WorkspaceRepository workspaceRepository;
     private final EmailService emailService;
+    private final MfaService mfaService;
 
     // Cria o Tenant (conta), o primeiro Workspace (a empresa de verdade, com CNPJ/
     // endereco/regime legal) e o primeiro usuario (ADMIN), tudo de forma atomica, e
@@ -90,19 +91,39 @@ public class AuthService {
     }
 
     @Transactional(readOnly = true)
-    public LoginResponseDTO login(LoginRequestDTO request) {
-        // Busca TODOS os usuarios com esse e-mail, em qualquer tenant (email e unico
-        // POR tenant, nao globalmente - ver decisao de design da modelagem de User).
-        List<User> candidates = userRepository.findByEmail(request.email());
+    public LoginResultDTO login(LoginRequestDTO request) {
+        User matchedUser = findAndValidateCredentials(request.email(), request.password());
 
-        // Filtra pelo primeiro cujo hash de senha bate. Na pratica, e-mails corporativos
-        // sao globalmente unicos (dominio da empresa garante isso), entao colisao real
-        // entre tenants e praticamente impossivel - mas o codigo trata o caso mesmo assim.
-        // LIMITACAO CONHECIDA E DOCUMENTADA: se por algum motivo o mesmo par e-mail+senha
-        // existir em mais de um tenant, o primeiro encontrado "ganha" - aceitavel para o
-        // escopo atual do projeto, mas anotado na tasklist para revisitar se necessario.
+        // Se a conta tem MFA ativada, NAO emite token ainda - o frontend precisa
+        // chamar /login/mfa com o codigo TOTP antes do cookie ser gerado.
+        if (matchedUser.isMfaEnabled()) {
+            return new LoginResultDTO(true, null);
+        }
+
+        return new LoginResultDTO(false, buildLoginResponse(matchedUser));
+    }
+
+    @Transactional(readOnly = true)
+    public LoginResponseDTO loginWithMfa(MfaVerifyRequestDTO request) {
+        User matchedUser = findAndValidateCredentials(request.email(), request.password());
+
+        if (!matchedUser.isMfaEnabled()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Esta conta não tem MFA habilitada.");
+        }
+
+        if (!mfaService.verifyCode(matchedUser, request.code())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Código de verificação inválido.");
+        }
+
+        return buildLoginResponse(matchedUser);
+    }
+
+    // Centraliza a validacao de credenciais + confirmacao de e-mail, reaproveitada
+    // tanto pelo login normal quanto pelo login com MFA (segunda etapa).
+    private User findAndValidateCredentials(String email, String password) {
+        List<User> candidates = userRepository.findByEmail(email);
         User matchedUser = candidates.stream()
-                .filter(u -> passwordEncoder.matches(request.password(), u.getPasswordHash()))
+                .filter(u -> passwordEncoder.matches(password, u.getPasswordHash()))
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos"));
 
@@ -110,10 +131,14 @@ public class AuthService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Confirme seu e-mail antes de entrar. Verifique sua caixa de entrada.");
         }
 
-        UUID tenantId = matchedUser.getTenant() != null ? matchedUser.getTenant().getId() : null;
-        String token = jwtService.generateToken(matchedUser.getId(), tenantId, matchedUser.getRole().name());
-        return new LoginResponseDTO(token, matchedUser.getId(), tenantId, matchedUser.getRole().name(),
-                matchedUser.getUsername(), matchedUser.getEmail());
+        return matchedUser;
+    }
+
+    private LoginResponseDTO buildLoginResponse(User user) {
+        UUID tenantId = user.getTenant() != null ? user.getTenant().getId() : null;
+        String token = jwtService.generateToken(user.getId(), tenantId, user.getRole().name());
+        return new LoginResponseDTO(token, user.getId(), tenantId, user.getRole().name(),
+                user.getUsername(), user.getEmail());
     }
 
     @Transactional

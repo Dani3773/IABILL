@@ -37,6 +37,13 @@ export function AccountActivationPage() {
       // Ativação deu certo - loga automaticamente com o e-mail que a pessoa
       // informar, ja que o backend nao retorna o e-mail junto da confirmacao.
       const loginResponse = await login({ email, password });
+      if ("mfaRequired" in loginResponse) {
+        // Conta ja tem MFA ativada de outra empresa - nao da pra pular a segunda
+        // etapa so porque acabou de ativar um convite novo. Manda pro login normal,
+        // que vai pedir o codigo MFA no proximo passo.
+        navigate("/login");
+        return;
+      }
       setAuth(loginResponse);
       setStatus("success");
       setTimeout(() => navigate("/dashboard"), 1200);

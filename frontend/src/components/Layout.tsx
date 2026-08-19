@@ -1,8 +1,10 @@
 import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
-import { LayoutGrid, Users, ScrollText, LogOut, Shield, ChevronDown, ChevronsLeft, ChevronsRight } from "lucide-react";
-import { useState } from "react";
+import { LayoutGrid, Users, ScrollText, LogOut, Shield, ChevronDown, ChevronsLeft, ChevronsRight, ShieldCheck } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { AvatarImage } from "../components/AvatarImage";
+import { MfaSetupModal } from "../components/MfaSetupModal";
+import { fetchMfaStatus, disableMfa } from "../api/authService";
 
 const ROLE_LABELS: Record<string, string> = {
   ADMIN: "Administrador",
@@ -17,10 +19,28 @@ export function Layout() {
   const { role, tenantId, username, email, jobTitle, committeeRole, clearAuth } = useAuth();
   const [profileOpen, setProfileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  const [mfaEnabled, setMfaEnabled] = useState<boolean | null>(null);
+  const [showMfaModal, setShowMfaModal] = useState(false);
+
+  useEffect(() => {
+    fetchMfaStatus()
+      .then((status) => setMfaEnabled(status.enabled))
+      .catch(() => setMfaEnabled(null));
+  }, []);
 
   async function handleLogout() {
     await clearAuth();
     navigate("/login");
+  }
+
+  async function handleDisableMfa() {
+    if (!window.confirm("Desativar a verificação em 2 etapas? Sua conta ficará protegida só por senha.")) return;
+    try {
+      await disableMfa();
+      setMfaEnabled(false);
+    } catch {
+      // silencioso - falha rara, usuario pode tentar de novo pelo mesmo menu
+    }
   }
 
   const navItems = [
@@ -95,6 +115,27 @@ export function Layout() {
                 )}
               </div>
               <button
+                onClick={() => {
+                  if (mfaEnabled) {
+                    handleDisableMfa();
+                  } else {
+                    setShowMfaModal(true);
+                    setProfileOpen(false);
+                  }
+                }}
+                className="flex items-center justify-between gap-2.5 w-full px-3 py-2.5 text-sm font-medium text-slate-300 hover:bg-white/5 transition-colors border-b border-white/10"
+              >
+                <span className="flex items-center gap-2.5">
+                  <ShieldCheck className="w-4 h-4" />
+                  Verificação em 2 Etapas
+                </span>
+                <span className={`text-[10px] font-mono uppercase tracking-wide px-1.5 py-0.5 rounded ${
+                  mfaEnabled ? "bg-[#14B8A6]/15 text-[#14B8A6]" : "bg-white/5 text-slate-500"
+                }`}>
+                  {mfaEnabled ? "Ativa" : "Inativa"}
+                </span>
+              </button>
+              <button
                 onClick={handleLogout}
                 className="flex items-center gap-2.5 w-full px-3 py-2.5 text-sm font-medium text-red-400 hover:bg-red-950/40 transition-colors"
               >
@@ -126,6 +167,13 @@ export function Layout() {
       <main className="flex-1 h-full overflow-y-auto p-8">
         <Outlet />
       </main>
+
+      {showMfaModal && (
+        <MfaSetupModal
+          onClose={() => setShowMfaModal(false)}
+          onEnabled={() => setMfaEnabled(true)}
+        />
+      )}
     </div>
   );
 }

@@ -33,6 +33,7 @@ import { COUNTRIES, BRAZILIAN_STATES } from "../constants/locations";
 import { AxiosError } from "axios";
 import { resendConfirmation } from "../api/authService";
 import { Link } from "react-router-dom";
+import { loginWithMfa } from "../api/authService";
 
 type SignupStep = 1 | 2 | 3;
 type LegalRegime = "LGPD" | "RGPD";
@@ -179,6 +180,10 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const [resendMessage, setResendMessage] = useState<string | null>(null);
   const [signupSuccess, setSignupSuccess] = useState<string | null>(null);
 
+  const [mfaStep, setMfaStep] = useState(false);
+  const [mfaCode, setMfaCode] = useState("");
+  const [mfaLoading, setMfaLoading] = useState(false);
+
   function handleCapsLock(e: KeyboardEvent<HTMLInputElement>) {
     setCapsLockOn(e.getModifierState?.("CapsLock") ?? false);
   }
@@ -191,6 +196,10 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
     setLoginLoading(true);
     try {
       const response = await login({ email, password });
+      if ("mfaRequired" in response) {
+        setMfaStep(true);
+        return;
+      }
       setAuth(response);
       navigate(response.tenantId ? "/dashboard" : "/platform");
     } catch (err) {
@@ -202,6 +211,21 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
       }
     } finally {
       setLoginLoading(false);
+    }
+  }
+
+  async function handleMfaSubmit(e: FormEvent) {
+    e.preventDefault();
+    setLoginError(null);
+    setMfaLoading(true);
+    try {
+      const response = await loginWithMfa({ email, password, code: Number(mfaCode) });
+      setAuth(response);
+      navigate(response.tenantId ? "/dashboard" : "/platform");
+    } catch (err) {
+      setLoginError(getErrorMessage(err, "Código inválido."));
+    } finally {
+      setMfaLoading(false);
     }
   }
 
@@ -574,7 +598,54 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
             </button>
           </div>
 
-          {!isSignUpMode ? (
+          {!isSignUpMode && mfaStep ? (
+            <form onSubmit={handleMfaSubmit} className="space-y-4 flex-1 flex flex-col">
+              <Field label="Código de verificação">
+                <div className="relative">
+                  <ShieldCheck className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={mfaCode}
+                    onChange={(e) => setMfaCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                    required
+                    autoFocus
+                    placeholder="000000"
+                    className={INPUT_WITH_ICON + " font-mono tracking-widest text-center"}
+                  />
+                </div>
+              </Field>
+              <p className="text-xs text-slate-500">
+                Abra seu aplicativo autenticador e digite o código de 6 dígitos.
+              </p>
+              {loginError && (
+                <div key={loginError} className="iabill-shake">
+                  <Alert type="error" message={loginError} />
+                </div>
+              )}
+              <div className="flex-1" />
+              <button
+                type="submit"
+                disabled={mfaLoading || mfaCode.length !== 6}
+                className="iabill-sheen w-full flex items-center justify-center gap-2 bg-[#14B8A6] hover:bg-[#10a595] active:scale-[0.985] disabled:opacity-60 disabled:pointer-events-none text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-all duration-200 shadow-[0_8px_24px_-8px_rgba(20,184,166,0.5)]"
+              >
+                {mfaLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" /> Verificando...
+                  </>
+                ) : (
+                  "Verificar"
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={() => { setMfaStep(false); setMfaCode(""); }}
+                className="text-xs text-slate-500 hover:text-slate-300 text-center"
+              >
+                Voltar ao login
+              </button>
+            </form>
+          ) : !isSignUpMode ? (
             <form onSubmit={handleLogin} className="space-y-4 flex-1 flex flex-col">
               <Field label="E-mail">
                 <div className="relative">

@@ -69,6 +69,12 @@ public class User {
     @Column(name = "password_reset_expires_at")
     private Instant passwordResetExpiresAt;
 
+    @Column(name = "mfa_secret")
+    private String mfaSecret;
+
+    @Column(name = "mfa_enabled", nullable = false)
+    private boolean mfaEnabled = false;
+
     @PrePersist
     void onCreate() {
         Instant now = Instant.now();

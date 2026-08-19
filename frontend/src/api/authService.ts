@@ -8,10 +8,19 @@ import type {
   UserActivationRequest,
   ForgotPasswordRequest,
   ResetPasswordRequest,
+  MfaVerifyRequest,
+  MfaRequiredResponse,
+  MfaStatusResponse,
+  MfaSetupResponse,
 } from '../types/auth'
 
-export async function login(request: LoginRequest): Promise<AuthMeResponse> {
-  const response = await apiClient.post<AuthMeResponse>('/auth/login', request)
+export async function login(request: LoginRequest): Promise<AuthMeResponse | MfaRequiredResponse> {
+  const response = await apiClient.post<AuthMeResponse | MfaRequiredResponse>('/auth/login', request)
+  return response.data
+}
+
+export async function loginWithMfa(request: MfaVerifyRequest): Promise<AuthMeResponse> {
+  const response = await apiClient.post<AuthMeResponse>('/auth/login/mfa', request)
   return response.data
 }
 
@@ -52,4 +61,23 @@ export async function forgotPassword(request: ForgotPasswordRequest): Promise<Em
 export async function resetPassword(request: ResetPasswordRequest): Promise<EmailConfirmationResponse> {
   const response = await apiClient.post<EmailConfirmationResponse>('/auth/reset-password', request)
   return response.data
+}
+
+export async function fetchMfaStatus(): Promise<MfaStatusResponse> {
+  const response = await apiClient.get<MfaStatusResponse>('/mfa/status')
+  return response.data
+}
+
+export async function startMfaSetup(): Promise<MfaSetupResponse> {
+  const response = await apiClient.post<MfaSetupResponse>('/mfa/setup')
+  return response.data
+}
+
+export async function confirmMfaSetup(code: number): Promise<{ success: boolean }> {
+  const response = await apiClient.post<{ success: boolean }>('/mfa/confirm', { code })
+  return response.data
+}
+
+export async function disableMfa(): Promise<void> {
+  await apiClient.delete('/mfa')
 }

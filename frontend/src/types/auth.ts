@@ -54,3 +54,21 @@ export interface ResetPasswordRequest {
   token: string
   newPassword: string
 }
+
+export interface MfaRequiredResponse {
+  mfaRequired: true
+}
+
+export interface MfaVerifyRequest {
+  email: string
+  password: string
+  code: number
+}
+
+export interface MfaSetupResponse {
+  otpAuthUri: string
+}
+
+export interface MfaStatusResponse {
+  enabled: boolean
+}

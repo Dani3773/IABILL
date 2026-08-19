@@ -55,8 +55,17 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthMeResponseDTO> login(@Valid @RequestBody LoginRequestDTO request) {
-        LoginResponseDTO result = authService.login(request);
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO request) {
+        LoginResultDTO result = authService.login(request);
+        if (result.mfaRequired()) {
+            return ResponseEntity.ok(new MfaRequiredResponseDTO(true));
+        }
+        return buildAuthResponse(result.loginResponse());
+    }
+
+    @PostMapping("/login/mfa")
+    public ResponseEntity<AuthMeResponseDTO> loginWithMfa(@Valid @RequestBody MfaVerifyRequestDTO request) {
+        LoginResponseDTO result = authService.loginWithMfa(request);
         return buildAuthResponse(result);
     }
 
