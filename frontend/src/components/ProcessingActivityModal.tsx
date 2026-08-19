@@ -1,8 +1,17 @@
 import { useState, type FormEvent } from "react";
 import { X, ClipboardList } from "lucide-react";
-import { createProcessingActivity, updateProcessingActivity } from "../api/processingActivityService";
+import {
+  createProcessingActivity,
+  updateProcessingActivity,
+} from "../api/processingActivityService";
 import { getErrorMessage } from "../api/errorUtils";
-import { LEGAL_BASIS_LABELS, type LegalBasis, type ProcessingActivity } from "../types/processingActivity";
+import {
+  LEGAL_BASIS_LABELS,
+  LEGAL_REGIME_LABELS,
+  RGPD_LEGAL_BASIS_OPTIONS,
+  type LegalBasis,
+  type ProcessingActivity,
+} from "../types/processingActivity";
 
 interface Props {
   workspaceId: string;
@@ -11,19 +20,39 @@ interface Props {
   onSaved: (activity: ProcessingActivity) => void;
 }
 
-export function ProcessingActivityModal({ workspaceId, editing, onClose, onSaved }: Props) {
+export function ProcessingActivityModal({
+  workspaceId,
+  editing,
+  onClose,
+  onSaved,
+}: Props) {
   const [processName, setProcessName] = useState(editing?.processName ?? "");
   const [purpose, setPurpose] = useState(editing?.purpose ?? "");
-  const [legalBasis, setLegalBasis] = useState<LegalBasis>(editing?.legalBasis ?? "CUMPRIMENTO_OBRIGACAO_LEGAL");
-  const [dataSubjectCategories, setDataSubjectCategories] = useState(editing?.dataSubjectCategories ?? "");
-  const [personalDataCategories, setPersonalDataCategories] = useState(editing?.personalDataCategories ?? "");
+  const [legalBasis, setLegalBasis] = useState<LegalBasis>(
+    editing?.legalBasis ?? "CUMPRIMENTO_OBRIGACAO_LEGAL",
+  );
+  const [dataSubjectCategories, setDataSubjectCategories] = useState(
+    editing?.dataSubjectCategories ?? "",
+  );
+  const [personalDataCategories, setPersonalDataCategories] = useState(
+    editing?.personalDataCategories ?? "",
+  );
   const [dataSharing, setDataSharing] = useState(editing?.dataSharing ?? "");
-  const [securityMeasures, setSecurityMeasures] = useState(editing?.securityMeasures ?? "");
-  const [retentionPeriod, setRetentionPeriod] = useState(editing?.retentionPeriod ?? "");
-  const [involvesSensitiveData, setInvolvesSensitiveData] = useState(editing?.involvesSensitiveData ?? false);
+  const [securityMeasures, setSecurityMeasures] = useState(
+    editing?.securityMeasures ?? "",
+  );
+  const [retentionPeriod, setRetentionPeriod] = useState(
+    editing?.retentionPeriod ?? "",
+  );
+  const [involvesSensitiveData, setInvolvesSensitiveData] = useState(
+    editing?.involvesSensitiveData ?? false,
+  );
   const [observations, setObservations] = useState(editing?.observations ?? "");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [applicableRegime, setApplicableRegime] = useState<"LGPD" | "RGPD">(
+    editing?.applicableRegime ?? "LGPD",
+  );
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -32,6 +61,7 @@ export function ProcessingActivityModal({ workspaceId, editing, onClose, onSaved
     try {
       const payload = {
         workspaceId,
+        applicableRegime,
         processName,
         purpose,
         legalBasis,
@@ -49,7 +79,12 @@ export function ProcessingActivityModal({ workspaceId, editing, onClose, onSaved
       onSaved(saved);
       onClose();
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível salvar a atividade de tratamento."));
+      setError(
+        getErrorMessage(
+          err,
+          "Não foi possível salvar a atividade de tratamento.",
+        ),
+      );
     } finally {
       setIsLoading(false);
     }
@@ -68,14 +103,42 @@ export function ProcessingActivityModal({ workspaceId, editing, onClose, onSaved
               <ClipboardList className="w-4 h-4 text-[#14B8A6]" />
             </div>
             <h2 className="text-lg font-serif text-[#1B2233]">
-              {editing ? "Editar Atividade de Tratamento" : "Nova Atividade de Tratamento"}
+              {editing
+                ? "Editar Atividade de Tratamento"
+                : "Nova Atividade de Tratamento"}
             </h2>
           </div>
-          <button onClick={onClose} className="text-[#1B2233]/40 hover:text-[#1B2233] transition-colors">
+          <button
+            onClick={onClose}
+            className="text-[#1B2233]/40 hover:text-[#1B2233] transition-colors"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
-
+        <div>
+          <label className={labelClass}>Regime legal aplicável</label>
+          <select
+            value={applicableRegime}
+            onChange={(e) => {
+              const regime = e.target.value as "LGPD" | "RGPD";
+              setApplicableRegime(regime);
+              // Se a hipotese legal atual nao existe no RGPD, reseta para a primeira opcao valida
+              if (
+                regime === "RGPD" &&
+                !RGPD_LEGAL_BASIS_OPTIONS.includes(legalBasis)
+              ) {
+                setLegalBasis(RGPD_LEGAL_BASIS_OPTIONS[0]);
+              }
+            }}
+            className={inputClass}
+          >
+            {Object.entries(LEGAL_REGIME_LABELS).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className={labelClass}>Nome do processo</label>
@@ -108,11 +171,13 @@ export function ProcessingActivityModal({ workspaceId, editing, onClose, onSaved
               onChange={(e) => setLegalBasis(e.target.value as LegalBasis)}
               className={inputClass}
             >
-              {Object.entries(LEGAL_BASIS_LABELS).map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
+              {Object.entries(LEGAL_BASIS_LABELS)
+                .filter(([value]) => applicableRegime === "LGPD" || RGPD_LEGAL_BASIS_OPTIONS.includes(value as LegalBasis))
+                .map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -142,7 +207,10 @@ export function ProcessingActivityModal({ workspaceId, editing, onClose, onSaved
           </div>
 
           <div>
-            <label className={labelClass}>Compartilhamento de dados <span className="text-[#1B2233]/40">(opcional)</span></label>
+            <label className={labelClass}>
+              Compartilhamento de dados{" "}
+              <span className="text-[#1B2233]/40">(opcional)</span>
+            </label>
             <textarea
               value={dataSharing}
               onChange={(e) => setDataSharing(e.target.value)}
@@ -153,7 +221,10 @@ export function ProcessingActivityModal({ workspaceId, editing, onClose, onSaved
           </div>
 
           <div>
-            <label className={labelClass}>Medidas de segurança <span className="text-[#1B2233]/40">(opcional)</span></label>
+            <label className={labelClass}>
+              Medidas de segurança{" "}
+              <span className="text-[#1B2233]/40">(opcional)</span>
+            </label>
             <textarea
               value={securityMeasures}
               onChange={(e) => setSecurityMeasures(e.target.value)}
@@ -165,7 +236,10 @@ export function ProcessingActivityModal({ workspaceId, editing, onClose, onSaved
 
           <div className="grid grid-cols-2 gap-3 items-start">
             <div>
-              <label className={labelClass}>Período de armazenamento <span className="text-[#1B2233]/40">(opcional)</span></label>
+              <label className={labelClass}>
+                Período de armazenamento{" "}
+                <span className="text-[#1B2233]/40">(opcional)</span>
+              </label>
               <input
                 type="text"
                 value={retentionPeriod}
@@ -188,7 +262,9 @@ export function ProcessingActivityModal({ workspaceId, editing, onClose, onSaved
           </div>
 
           <div>
-            <label className={labelClass}>Observações <span className="text-[#1B2233]/40">(opcional)</span></label>
+            <label className={labelClass}>
+              Observações <span className="text-[#1B2233]/40">(opcional)</span>
+            </label>
             <textarea
               value={observations}
               onChange={(e) => setObservations(e.target.value)}
@@ -205,7 +281,11 @@ export function ProcessingActivityModal({ workspaceId, editing, onClose, onSaved
               disabled={isLoading}
               className="flex-1 bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-colors"
             >
-              {isLoading ? "Salvando..." : editing ? "Salvar alterações" : "Adicionar atividade"}
+              {isLoading
+                ? "Salvando..."
+                : editing
+                  ? "Salvar alterações"
+                  : "Adicionar atividade"}
             </button>
             <button
               type="button"

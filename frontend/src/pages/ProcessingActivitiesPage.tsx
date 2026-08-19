@@ -6,7 +6,7 @@ import { ProcessingActivityModal } from "../components/ProcessingActivityModal";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Alert } from "../components/Alert";
 import { getErrorMessage } from "../api/errorUtils";
-import { LEGAL_BASIS_LABELS, type ProcessingActivity } from "../types/processingActivity";
+import { LEGAL_BASIS_LABELS, LEGAL_REGIME_LABELS, type ProcessingActivity } from "../types/processingActivity";
 
 export function ProcessingActivitiesPage() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
@@ -88,6 +88,9 @@ export function ProcessingActivitiesPage() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <p className="font-medium text-[#1B2233]">{activity.processName}</p>
+                    <span className="text-[10px] font-mono uppercase tracking-wide bg-[#B8862B]/12 text-[#B8862B] rounded px-1.5 py-0.5">
+                      {LEGAL_REGIME_LABELS[activity.applicableRegime]}
+                    </span>
                     <span className="text-[10px] font-mono uppercase tracking-wide bg-[#14B8A6]/10 text-[#0d7a6d] rounded px-1.5 py-0.5">
                       {LEGAL_BASIS_LABELS[activity.legalBasis]}
                     </span>

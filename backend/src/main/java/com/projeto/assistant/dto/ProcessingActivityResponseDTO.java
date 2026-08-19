@@ -1,6 +1,7 @@
 package com.projeto.assistant.dto;
 
 import com.projeto.assistant.model.LegalBasis;
+import com.projeto.assistant.model.LegalRegime;
 import com.projeto.assistant.model.ProcessingActivity;
 
 import java.time.Instant;
@@ -9,6 +10,7 @@ import java.util.UUID;
 public record ProcessingActivityResponseDTO(
         UUID id,
         UUID workspaceId,
+        LegalRegime applicableRegime,
         String processName,
         String purpose,
         LegalBasis legalBasis,
@@ -26,6 +28,7 @@ public record ProcessingActivityResponseDTO(
         return new ProcessingActivityResponseDTO(
                 activity.getId(),
                 activity.getWorkspace().getId(),
+                activity.getApplicableRegime(),
                 activity.getProcessName(),
                 activity.getPurpose(),
                 activity.getLegalBasis(),

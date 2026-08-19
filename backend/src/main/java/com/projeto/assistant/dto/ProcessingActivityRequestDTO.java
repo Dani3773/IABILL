@@ -1,6 +1,7 @@
 package com.projeto.assistant.dto;
 
 import com.projeto.assistant.model.LegalBasis;
+import com.projeto.assistant.model.LegalRegime;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -9,6 +10,9 @@ import java.util.UUID;
 public record ProcessingActivityRequestDTO(
         @NotNull(message = "O workspace é obrigatório")
         UUID workspaceId,
+
+        @NotNull(message = "O regime legal aplicável é obrigatório")
+        LegalRegime applicableRegime,
 
         @NotBlank(message = "O nome do processo é obrigatório")
         String processName,

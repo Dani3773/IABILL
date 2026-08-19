@@ -39,15 +39,17 @@ public class ProcessingActivityController {
     public ProcessingActivityResponseDTO update(
             @PathVariable UUID id,
             @Valid @RequestBody ProcessingActivityRequestDTO request,
-            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId) {
-        return processingActivityService.update(id, request, authTenantId);
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return processingActivityService.update(id, request, authTenantId, authUserId);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
             @PathVariable UUID id,
-            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId) {
-        processingActivityService.delete(id, authTenantId);
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        processingActivityService.delete(id, authTenantId, authUserId);
     }
 }

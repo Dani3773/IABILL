@@ -13,6 +13,7 @@ export type LegalBasis =
 export interface ProcessingActivity {
   id: string
   workspaceId: string
+  applicableRegime: 'LGPD' | 'RGPD'
   processName: string
   purpose: string
   legalBasis: LegalBasis
@@ -29,6 +30,7 @@ export interface ProcessingActivity {
 
 export interface ProcessingActivityRequest {
   workspaceId: string
+  applicableRegime: 'LGPD' | 'RGPD'
   processName: string
   purpose: string
   legalBasis: LegalBasis
@@ -53,3 +55,20 @@ export const LEGAL_BASIS_LABELS: Record<LegalBasis, string> = {
   EXECUCAO_POLITICAS_PUBLICAS: 'Execução de políticas públicas',
   ESTUDOS_POR_ORGAO_PESQUISA: 'Estudos por órgão de pesquisa',
 }
+
+export const LEGAL_REGIME_LABELS: Record<'LGPD' | 'RGPD', string> = {
+  LGPD: 'LGPD (Brasil)',
+  RGPD: 'RGPD (União Europeia)',
+}
+
+// As 6 bases legais do Art. 6º do RGPD mapeiam para estas 6, das 10 hipóteses
+// da LGPD (Art. 7º/11) - as outras 4 (exercício de direitos, tutela da saúde,
+// proteção do crédito, estudos por órgão de pesquisa) são específicas da LGPD.
+export const RGPD_LEGAL_BASIS_OPTIONS: LegalBasis[] = [
+  'CONSENTIMENTO',
+  'EXECUCAO_CONTRATO',
+  'CUMPRIMENTO_OBRIGACAO_LEGAL',
+  'PROTECAO_DA_VIDA',
+  'EXECUCAO_POLITICAS_PUBLICAS',
+  'LEGITIMO_INTERESSE',
+]

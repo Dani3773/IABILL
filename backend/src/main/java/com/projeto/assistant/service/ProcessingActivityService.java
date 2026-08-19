@@ -38,6 +38,7 @@ public class ProcessingActivityService {
 
         ProcessingActivity activity = new ProcessingActivity();
         activity.setWorkspace(workspace);
+        activity.setApplicableRegime(request.applicableRegime());
         activity.setProcessName(request.processName());
         activity.setPurpose(request.purpose());
         activity.setLegalBasis(request.legalBasis());
@@ -80,7 +81,7 @@ public class ProcessingActivityService {
     }
 
     @Transactional
-    public ProcessingActivityResponseDTO update(UUID id, ProcessingActivityRequestDTO request, UUID authTenantId) {
+    public ProcessingActivityResponseDTO update(UUID id, ProcessingActivityRequestDTO request, UUID authTenantId, UUID authUserId) {
         ProcessingActivity activity = processingActivityRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Atividade de tratamento não encontrada: " + id));
 
@@ -88,6 +89,7 @@ public class ProcessingActivityService {
             throw new AccessDeniedException("Você não tem acesso a esta atividade de tratamento");
         }
 
+        activity.setApplicableRegime(request.applicableRegime());
         activity.setProcessName(request.processName());
         activity.setPurpose(request.purpose());
         activity.setLegalBasis(request.legalBasis());
@@ -99,17 +101,37 @@ public class ProcessingActivityService {
         activity.setInvolvesSensitiveData(request.involvesSensitiveData());
         activity.setObservations(request.observations());
 
-        return ProcessingActivityResponseDTO.fromEntity(processingActivityRepository.save(activity));
+        ProcessingActivity saved = processingActivityRepository.save(activity);
+
+        auditLogService.record(
+                authTenantId,
+                authUserId,
+                AuditAction.UPDATE,
+                AuditEntityType.PROCESSING_ACTIVITY,
+                saved.getId(),
+                Map.of("processName", saved.getProcessName())
+        );
+
+        return ProcessingActivityResponseDTO.fromEntity(saved);
     }
 
     @Transactional
-    public void delete(UUID id, UUID authTenantId) {
+    public void delete(UUID id, UUID authTenantId, UUID authUserId) {
         ProcessingActivity activity = processingActivityRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Atividade de tratamento não encontrada: " + id));
 
         if (!activity.getWorkspace().getTenant().getId().equals(authTenantId)) {
             throw new AccessDeniedException("Você não tem acesso a esta atividade de tratamento");
         }
+
+        auditLogService.record(
+                authTenantId,
+                authUserId,
+                AuditAction.DELETE,
+                AuditEntityType.PROCESSING_ACTIVITY,
+                activity.getId(),
+                Map.of("processName", activity.getProcessName())
+        );
 
         processingActivityRepository.delete(activity);
     }

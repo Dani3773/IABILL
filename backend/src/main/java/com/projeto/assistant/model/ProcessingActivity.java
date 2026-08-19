@@ -73,4 +73,8 @@ public class ProcessingActivity {
     protected void onUpdate() {
         updatedAt = Instant.now();
     }
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "applicable_regime", nullable = false)
+    private LegalRegime applicableRegime;
 }
