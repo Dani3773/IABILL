@@ -5,6 +5,7 @@ export type DocumentType =
   | 'RAT'
   | 'RIPD_DPIA'
   | 'POLITICA_SEGURANCA_INFORMACAO'
+  | 'MATERIAL_TREINAMENTO'
 
 export type DocumentStatus = 'DRAFT' | 'GENERATED' | 'REVIEWED' | 'APPROVED'
 

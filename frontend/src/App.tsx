@@ -25,6 +25,8 @@ import { ResetPasswordPage } from "./pages/ResetPasswordPage";
 import { PilaresPage } from "./pages/PilaresPage";
 import { ProcessingActivitiesPage } from "./pages/ProcessingActivitiesPage";
 import { VendorsPage } from "./pages/VendorsPage";
+import { EmployeesPage } from "./pages/EmployeesPage";
+import { TrainingsPage } from "./pages/TrainingsPage";
 
 
 function App() {
@@ -65,6 +67,8 @@ function App() {
                 <Route path="data-subject-requests" element={<DataSubjectRequestsPage />} />
                 <Route path="search" element={<SearchPage />} />
                 <Route path="pilares/fornecedores" element={<VendorsPage />} />
+                <Route path="pilares/treinamento" element={<TrainingsPage />} />
+                <Route path="pilares/treinamento/colaboradores" element={<EmployeesPage />} />
               </Route>
             </Route>
           </Route>

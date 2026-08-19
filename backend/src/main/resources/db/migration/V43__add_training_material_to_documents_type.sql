@@ -1,0 +1,9 @@
+ALTER TABLE documents
+DROP CONSTRAINT chk_documents_type;
+
+ALTER TABLE documents
+    ADD CONSTRAINT chk_documents_type
+        CHECK (type IN (
+                        'INVENTARIO_DADOS', 'POLITICA_PRIVACIDADE', 'RELATORIO_CONFORMIDADE',
+                        'RAT', 'RIPD_DPIA', 'POLITICA_SEGURANCA_INFORMACAO', 'MATERIAL_TREINAMENTO'
+            ));

@@ -10,5 +10,7 @@ public enum AuditEntityType {
     INCIDENT,
     DATA_SUBJECT_REQUEST,
     PROCESSING_ACTIVITY,
-    VENDOR
+    VENDOR,
+    EMPLOYEE,
+    TRAINING
 }

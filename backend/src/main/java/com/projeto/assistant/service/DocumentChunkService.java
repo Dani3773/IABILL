@@ -197,6 +197,21 @@ public class DocumentChunkService {
                 declare explicitamente qual tópico está incompleto - não invente conteúdo para preenchê-lo.
                 """;
         }
+        if (type == DocumentType.MATERIAL_TREINAMENTO) {
+            return """
+                Este documento é um material de apoio para treinamento e conscientização de
+                colaboradores sobre proteção de dados pessoais (LGPD/RGPD). Estruture o
+                conteúdo de forma didática, cobrindo, quando houver informação disponível no
+                contexto:
+                1. Explicação simples do que são dados pessoais e por que protegê-los importa.
+                2. Boas práticas no dia a dia relacionadas aos processos REAIS desta empresa
+                   (use os processos e categorias de dados do contexto, se disponíveis).
+                3. O que fazer em caso de suspeita de incidente/vazamento de dados.
+                4. Canais internos para dúvidas sobre proteção de dados.
+                Use linguagem acessível, evitando jargão jurídico excessivo - o público-alvo
+                são colaboradores sem formação técnica ou jurídica.
+                """;
+        }
         return "";
     }
 }
