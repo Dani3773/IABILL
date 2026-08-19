@@ -10,6 +10,7 @@ const TYPE_LABELS: Record<DataSubjectRequestType, string> = {
   DELETION: "Eliminação (exclusão) dos meus dados",
   PORTABILITY: "Portabilidade dos meus dados",
   ANONYMIZATION: "Anonimização dos meus dados",
+  CONSENT_REVOCATION: "Revogação de consentimento",
 };
 
 export function PublicDataSubjectRequestPage() {

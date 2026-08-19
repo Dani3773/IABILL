@@ -16,6 +16,7 @@ const TYPE_LABELS: Record<DataSubjectRequestType, string> = {
   DELETION: "Eliminação",
   PORTABILITY: "Portabilidade",
   ANONYMIZATION: "Anonimização",
+  CONSENT_REVOCATION: "Revogação de Consentimento",
 };
 
 const STATUS_LABELS: Record<DataSubjectRequestStatus, string> = {

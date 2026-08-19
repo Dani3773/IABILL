@@ -5,5 +5,6 @@ public enum DataSubjectRequestType {
     CORRECTION,
     DELETION,
     PORTABILITY,
-    ANONYMIZATION
+    ANONYMIZATION,
+    CONSENT_REVOCATION
 }

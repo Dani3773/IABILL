@@ -1,4 +1,4 @@
-export type DataSubjectRequestType = 'ACCESS' | 'CORRECTION' | 'DELETION' | 'PORTABILITY' | 'ANONYMIZATION'
+export type DataSubjectRequestType = 'ACCESS' | 'CORRECTION' | 'DELETION' | 'PORTABILITY' | 'ANONYMIZATION' | 'CONSENT_REVOCATION'
 export type DataSubjectRequestStatus = 'RECEIVED' | 'IN_PROGRESS' | 'COMPLETED' | 'REJECTED'
 
 export interface PublicWorkspaceInfo {
