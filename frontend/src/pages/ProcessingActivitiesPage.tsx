@@ -181,32 +181,33 @@ export function ProcessingActivitiesPage() {
                         {activity.retentionPeriod}
                       </p>
                     )}
-                    {activity.involvesSensitiveData &&
-                      !activity.ripdSuggestionDismissed && (
-                        <div className="flex items-center justify-between gap-2 mt-3 pt-3 border-t border-amber-200">
-                          <p className="text-xs text-amber-700">
-                            Esta atividade envolve dado sensível — considere
-                            criar um RIPD/DPIA para ela.
-                          </p>
-                          <div className="flex gap-3 shrink-0">
-                            <button
-                              onClick={() => handleCreateRipd(activity)}
-                              className="text-xs font-medium text-[#0d7a6d] hover:underline"
-                            >
-                              Criar RIPD/DPIA
-                            </button>
-                            <button
-                              onClick={() =>
-                                handleDismissRipdSuggestion(activity.id)
-                              }
-                              className="text-xs text-[#1B2233]/45 hover:text-[#1B2233]/70"
-                            >
-                              Dispensar
-                            </button>
-                          </div>
-                        </div>
-                      )}
                   </div>
+
+                  {activity.involvesSensitiveData &&
+                    !activity.ripdSuggestionDismissed && (
+                      <div className="flex items-center justify-between gap-2 mt-3 pt-3 border-t border-amber-200">
+                        <p className="text-xs text-amber-700">
+                          Esta atividade envolve dado sensível — considere
+                          criar um RIPD/DPIA para ela.
+                        </p>
+                        <div className="flex gap-3 shrink-0">
+                          <button
+                            onClick={() => handleCreateRipd(activity)}
+                            className="text-xs font-medium text-[#0d7a6d] hover:underline"
+                          >
+                            Criar RIPD/DPIA
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleDismissRipdSuggestion(activity.id)
+                            }
+                            className="text-xs text-[#1B2233]/45 hover:text-[#1B2233]/70"
+                          >
+                            Dispensar
+                          </button>
+                        </div>
+                      </div>
+                    )}
                 </div>
                 <div className="flex gap-2 shrink-0">
                   <button
