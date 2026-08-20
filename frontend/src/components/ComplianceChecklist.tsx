@@ -117,7 +117,7 @@ export function ComplianceChecklist({ workspaceId }: Props) {
         ))}
       </div>
       <p className="text-[11px] text-[#1B2233]/35 mt-4 pt-3 border-t border-[#1B2233]/8">
-        Resumo baseado nos dados cadastrados no sistema — não representa comparação com outras empresas.
+        Resumo baseado nos dados cadastrados no sistema, não representa comparação com outras empresas.
       </p>
     </div>
   );

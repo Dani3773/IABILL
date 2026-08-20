@@ -27,6 +27,10 @@ public class Vendor {
     @Column(nullable = false)
     private String name;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sector_id")
+    private Sector sector;
+
     @Column(name = "service_provided", nullable = false, columnDefinition = "TEXT")
     private String serviceProvided;
 

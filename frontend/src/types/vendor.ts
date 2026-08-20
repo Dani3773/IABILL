@@ -1,6 +1,8 @@
 export interface Vendor {
   id: string
   workspaceId: string
+  sectorId: string | null
+  sectorName: string | null
   name: string
   serviceProvided: string
   sharedDataCategories: string
@@ -14,6 +16,7 @@ export interface Vendor {
 
 export interface VendorRequest {
   workspaceId: string
+  sectorId?: string
   name: string
   serviceProvided: string
   sharedDataCategories: string

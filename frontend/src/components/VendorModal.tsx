@@ -1,4 +1,6 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+import { fetchSectors } from "../api/sectorService";
+import type { Sector } from "../types/sector";
 import { X, Truck } from "lucide-react";
 import { createVendor, updateVendor } from "../api/vendorService";
 import { getErrorMessage } from "../api/errorUtils";
@@ -13,11 +15,27 @@ interface Props {
 
 export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
   const [name, setName] = useState(editing?.name ?? "");
-  const [serviceProvided, setServiceProvided] = useState(editing?.serviceProvided ?? "");
-  const [sharedDataCategories, setSharedDataCategories] = useState(editing?.sharedDataCategories ?? "");
+  const [sectors, setSectors] = useState<Sector[]>([]);
+  const [sectorId, setSectorId] = useState(editing?.sectorId ?? "");
+
+  useEffect(() => {
+    fetchSectors(workspaceId)
+      .then(setSectors)
+      .catch(() => setSectors([]));
+  }, [workspaceId]);
+  const [serviceProvided, setServiceProvided] = useState(
+    editing?.serviceProvided ?? "",
+  );
+  const [sharedDataCategories, setSharedDataCategories] = useState(
+    editing?.sharedDataCategories ?? "",
+  );
   const [dpaSigned, setDpaSigned] = useState(editing?.dpaSigned ?? false);
-  const [dpaSignedAt, setDpaSignedAt] = useState(editing?.dpaSignedAt?.slice(0, 10) ?? "");
-  const [securityClausesConfirmed, setSecurityClausesConfirmed] = useState(editing?.securityClausesConfirmed ?? false);
+  const [dpaSignedAt, setDpaSignedAt] = useState(
+    editing?.dpaSignedAt?.slice(0, 10) ?? "",
+  );
+  const [securityClausesConfirmed, setSecurityClausesConfirmed] = useState(
+    editing?.securityClausesConfirmed ?? false,
+  );
   const [observations, setObservations] = useState(editing?.observations ?? "");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +47,7 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
     try {
       const payload = {
         workspaceId,
+        sectorId: sectorId || undefined,
         name,
         serviceProvided,
         sharedDataCategories,
@@ -37,7 +56,9 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
         securityClausesConfirmed,
         observations: observations || undefined,
       };
-      const saved = editing ? await updateVendor(editing.id, payload) : await createVendor(payload);
+      const saved = editing
+        ? await updateVendor(editing.id, payload)
+        : await createVendor(payload);
       onSaved(saved);
       onClose();
     } catch (err) {
@@ -63,12 +84,32 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
               {editing ? "Editar Fornecedor" : "Novo Fornecedor"}
             </h2>
           </div>
-          <button onClick={onClose} className="text-[#1B2233]/40 hover:text-[#1B2233] transition-colors">
+          <button
+            onClick={onClose}
+            className="text-[#1B2233]/40 hover:text-[#1B2233] transition-colors"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className={labelClass}>
+              Setor <span className="text-[#1B2233]/40">(opcional)</span>
+            </label>
+            <select
+              value={sectorId}
+              onChange={(e) => setSectorId(e.target.value)}
+              className={inputClass}
+            >
+              <option value="">Sem setor definido</option>
+              {sectors.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+          </div>
           <div>
             <label className={labelClass}>Nome do fornecedor</label>
             <input
@@ -94,7 +135,9 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
           </div>
 
           <div>
-            <label className={labelClass}>Categorias de dado compartilhado</label>
+            <label className={labelClass}>
+              Categorias de dado compartilhado
+            </label>
             <textarea
               value={sharedDataCategories}
               onChange={(e) => setSharedDataCategories(e.target.value)}
@@ -139,7 +182,9 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
           )}
 
           <div>
-            <label className={labelClass}>Observações <span className="text-[#1B2233]/40">(opcional)</span></label>
+            <label className={labelClass}>
+              Observações <span className="text-[#1B2233]/40">(opcional)</span>
+            </label>
             <textarea
               value={observations}
               onChange={(e) => setObservations(e.target.value)}
@@ -156,7 +201,11 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
               disabled={isLoading}
               className="flex-1 bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-colors"
             >
-              {isLoading ? "Salvando..." : editing ? "Salvar alterações" : "Adicionar fornecedor"}
+              {isLoading
+                ? "Salvando..."
+                : editing
+                  ? "Salvar alterações"
+                  : "Adicionar fornecedor"}
             </button>
             <button
               type="button"

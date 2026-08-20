@@ -8,7 +8,10 @@ import com.projeto.assistant.model.Employee;
 import com.projeto.assistant.model.Workspace;
 import com.projeto.assistant.repository.EmployeeRepository;
 import com.projeto.assistant.repository.WorkspaceRepository;
+import com.projeto.assistant.repository.SectorRepository;
+import com.projeto.assistant.model.Sector;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +27,12 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final WorkspaceRepository workspaceRepository;
     private final AuditLogService auditLogService;
+    private final SectorRepository sectorRepository;
+
+    private Sector resolveSector(UUID sectorId) {
+        if (sectorId == null) return null;
+        return sectorRepository.findById(sectorId).orElse(null);
+    }
 
     @Transactional
     public EmployeeResponseDTO create(EmployeeRequestDTO request, UUID authTenantId, UUID authUserId) {
@@ -38,7 +47,7 @@ public class EmployeeService {
         employee.setWorkspace(workspace);
         employee.setName(request.name());
         employee.setJobTitle(request.jobTitle());
-        employee.setDepartment(request.department());
+        employee.setSector(resolveSector(request.sectorId()));
         employee.setEmail(request.email());
         employee.setActive(request.active());
         employee.setCreatedBy(authUserId);
@@ -79,7 +88,7 @@ public class EmployeeService {
 
         employee.setName(request.name());
         employee.setJobTitle(request.jobTitle());
-        employee.setDepartment(request.department());
+        employee.setSector(resolveSector(request.sectorId()));
         employee.setEmail(request.email());
         employee.setActive(request.active());
 

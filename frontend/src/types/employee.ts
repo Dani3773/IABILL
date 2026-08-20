@@ -3,7 +3,8 @@ export interface Employee {
   workspaceId: string
   name: string
   jobTitle: string | null
-  department: string | null
+  sectorId: string | null
+  sectorName: string | null
   email: string | null
   active: boolean
   createdAt: string
@@ -13,7 +14,7 @@ export interface EmployeeRequest {
   workspaceId: string
   name: string
   jobTitle?: string
-  department?: string
+  sectorId?: string
   email?: string
   active: boolean
 }

@@ -1,8 +1,10 @@
-import { useState, type FormEvent } from "react";
 import { X, UserPlus } from "lucide-react";
 import { createEmployee, updateEmployee } from "../api/employeeService";
 import { getErrorMessage } from "../api/errorUtils";
 import type { Employee } from "../types/employee";
+import { useEffect, useState, type FormEvent } from "react";
+import { fetchSectors } from "../api/sectorService";
+import type { Sector } from "../types/sector";
 
 interface Props {
   workspaceId: string;
@@ -12,11 +14,16 @@ interface Props {
 }
 
 export function EmployeeModal({ workspaceId, editing, onClose, onSaved }: Props) {
+  const [sectors, setSectors] = useState<Sector[]>([]);
   const [name, setName] = useState(editing?.name ?? "");
   const [jobTitle, setJobTitle] = useState(editing?.jobTitle ?? "");
-  const [department, setDepartment] = useState(editing?.department ?? "");
+  const [sectorId, setSectorId] = useState(editing?.sectorId ?? "");
   const [email, setEmail] = useState(editing?.email ?? "");
   const [active, setActive] = useState(editing?.active ?? true);
+
+  useEffect(() => {
+    fetchSectors(workspaceId).then(setSectors).catch(() => setSectors([]));
+  }, [workspaceId]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,7 +36,7 @@ export function EmployeeModal({ workspaceId, editing, onClose, onSaved }: Props)
         workspaceId,
         name,
         jobTitle: jobTitle || undefined,
-        department: department || undefined,
+        sectorId: sectorId || undefined,
         email: email || undefined,
         active,
       };
@@ -75,8 +82,13 @@ export function EmployeeModal({ workspaceId, editing, onClose, onSaved }: Props)
               <input type="text" value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} className={inputClass} />
             </div>
             <div>
-              <label className={labelClass}>Departamento <span className="text-[#1B2233]/40">(opcional)</span></label>
-              <input type="text" value={department} onChange={(e) => setDepartment(e.target.value)} className={inputClass} />
+              <label className={labelClass}>Setor <span className="text-[#1B2233]/40">(opcional)</span></label>
+              <select value={sectorId} onChange={(e) => setSectorId(e.target.value)} className={inputClass}>
+                <option value="">Sem setor definido</option>
+                {sectors.map((s) => (
+                  <option key={s.id} value={s.id}>{s.name}</option>
+                ))}
+              </select>
             </div>
           </div>
           <div>

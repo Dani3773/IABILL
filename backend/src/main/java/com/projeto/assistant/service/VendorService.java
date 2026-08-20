@@ -8,7 +8,10 @@ import com.projeto.assistant.model.Vendor;
 import com.projeto.assistant.model.Workspace;
 import com.projeto.assistant.repository.VendorRepository;
 import com.projeto.assistant.repository.WorkspaceRepository;
+import com.projeto.assistant.repository.SectorRepository;
+import com.projeto.assistant.model.Sector;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +27,12 @@ public class VendorService {
     private final VendorRepository vendorRepository;
     private final WorkspaceRepository workspaceRepository;
     private final AuditLogService auditLogService;
+    private final SectorRepository sectorRepository;
+
+    private Sector resolveSector(UUID sectorId) {
+        if (sectorId == null) return null;
+        return sectorRepository.findById(sectorId).orElse(null);
+    }
 
     @Transactional
     public VendorResponseDTO create(VendorRequestDTO request, UUID authTenantId, UUID authUserId) {
@@ -36,6 +45,7 @@ public class VendorService {
 
         Vendor vendor = new Vendor();
         vendor.setWorkspace(workspace);
+        vendor.setSector(resolveSector(request.sectorId()));
         vendor.setName(request.name());
         vendor.setServiceProvided(request.serviceProvided());
         vendor.setSharedDataCategories(request.sharedDataCategories());
@@ -83,6 +93,7 @@ public class VendorService {
             throw new AccessDeniedException("Você não tem acesso a este fornecedor");
         }
 
+        vendor.setSector(resolveSector(request.sectorId()));
         vendor.setName(request.name());
         vendor.setServiceProvided(request.serviceProvided());
         vendor.setSharedDataCategories(request.sharedDataCategories());

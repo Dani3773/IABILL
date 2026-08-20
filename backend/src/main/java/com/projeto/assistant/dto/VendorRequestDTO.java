@@ -10,6 +10,8 @@ public record VendorRequestDTO(
         @NotNull(message = "O workspace é obrigatório")
         UUID workspaceId,
 
+        UUID sectorId,
+
         @NotBlank(message = "O nome do fornecedor é obrigatório")
         String name,
 

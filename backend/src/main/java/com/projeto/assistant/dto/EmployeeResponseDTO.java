@@ -10,7 +10,8 @@ public record EmployeeResponseDTO(
         UUID workspaceId,
         String name,
         String jobTitle,
-        String department,
+        UUID sectorId,
+        String sectorName,
         String email,
         boolean active,
         Instant createdAt
@@ -21,7 +22,8 @@ public record EmployeeResponseDTO(
                 employee.getWorkspace().getId(),
                 employee.getName(),
                 employee.getJobTitle(),
-                employee.getDepartment(),
+                employee.getSector() != null ? employee.getSector().getId() : null,
+                employee.getSector() != null ? employee.getSector().getName() : null,
                 employee.getEmail(),
                 employee.isActive(),
                 employee.getCreatedAt()

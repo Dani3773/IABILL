@@ -27,6 +27,7 @@ import { ProcessingActivitiesPage } from "./pages/ProcessingActivitiesPage";
 import { VendorsPage } from "./pages/VendorsPage";
 import { EmployeesPage } from "./pages/EmployeesPage";
 import { TrainingsPage } from "./pages/TrainingsPage";
+import { SectorsPage } from "./pages/SectorsPage";
 
 
 function App() {
@@ -69,6 +70,7 @@ function App() {
                 <Route path="pilares/fornecedores" element={<VendorsPage />} />
                 <Route path="pilares/treinamento" element={<TrainingsPage />} />
                 <Route path="pilares/treinamento/colaboradores" element={<EmployeesPage />} />
+                <Route path="pilares/setores" element={<SectorsPage />} />
               </Route>
             </Route>
           </Route>

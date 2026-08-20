@@ -11,6 +11,8 @@ public record ProcessingActivityRequestDTO(
         @NotNull(message = "O workspace é obrigatório")
         UUID workspaceId,
 
+        UUID sectorId,
+
         @NotNull(message = "O regime legal aplicável é obrigatório")
         LegalRegime applicableRegime,
 

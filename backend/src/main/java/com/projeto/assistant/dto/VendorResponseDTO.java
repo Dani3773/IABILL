@@ -9,6 +9,8 @@ import java.util.UUID;
 public record VendorResponseDTO(
         UUID id,
         UUID workspaceId,
+        UUID sectorId,
+        String sectorName,
         String name,
         String serviceProvided,
         String sharedDataCategories,
@@ -23,6 +25,8 @@ public record VendorResponseDTO(
         return new VendorResponseDTO(
                 vendor.getId(),
                 vendor.getWorkspace().getId(),
+                vendor.getSector() != null ? vendor.getSector().getId() : null,
+                vendor.getSector() != null ? vendor.getSector().getName() : null,
                 vendor.getName(),
                 vendor.getServiceProvided(),
                 vendor.getSharedDataCategories(),

@@ -13,7 +13,7 @@ public record EmployeeRequestDTO(
         String name,
 
         String jobTitle,
-        String department,
+        UUID sectorId,
         String email,
         boolean active
 ) {

@@ -92,7 +92,7 @@ export function EmployeesPage() {
                   )}
                 </div>
                 <p className="text-xs text-[#1B2233]/50">
-                  {[employee.jobTitle, employee.department].filter(Boolean).join(" · ") || "—"}
+                  {[employee.jobTitle, employee.sectorName].filter(Boolean).join(" · ") || "—"}
                 </p>
               </div>
               <div className="flex gap-2 shrink-0">

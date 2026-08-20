@@ -26,6 +26,10 @@ public class ProcessingActivity {
     @Column(name = "process_name", nullable = false)
     private String processName;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sector_id")
+    private Sector sector;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String purpose;
 

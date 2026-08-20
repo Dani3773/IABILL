@@ -8,6 +8,8 @@ import com.projeto.assistant.repository.ProcessingActivityRepository;
 import com.projeto.assistant.repository.WorkspaceRepository;
 import com.projeto.assistant.model.AuditAction;
 import com.projeto.assistant.model.AuditEntityType;
+import com.projeto.assistant.repository.SectorRepository;
+import com.projeto.assistant.model.Sector;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +28,12 @@ public class ProcessingActivityService {
     private final ProcessingActivityRepository processingActivityRepository;
     private final WorkspaceRepository workspaceRepository;
     private final AuditLogService auditLogService;
+    private final SectorRepository sectorRepository;
+
+    private Sector resolveSector(UUID sectorId) {
+        if (sectorId == null) return null;
+        return sectorRepository.findById(sectorId).orElse(null);
+    }
 
     @Transactional
     public ProcessingActivityResponseDTO create(ProcessingActivityRequestDTO request, UUID authTenantId, UUID authUserId) {
@@ -38,6 +46,7 @@ public class ProcessingActivityService {
 
         ProcessingActivity activity = new ProcessingActivity();
         activity.setWorkspace(workspace);
+        activity.setSector(resolveSector(request.sectorId()));
         activity.setApplicableRegime(request.applicableRegime());
         activity.setProcessName(request.processName());
         activity.setPurpose(request.purpose());
@@ -89,6 +98,7 @@ public class ProcessingActivityService {
             throw new AccessDeniedException("Você não tem acesso a esta atividade de tratamento");
         }
 
+        activity.setSector(resolveSector(request.sectorId()));
         activity.setApplicableRegime(request.applicableRegime());
         activity.setProcessName(request.processName());
         activity.setPurpose(request.purpose());

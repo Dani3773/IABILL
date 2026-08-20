@@ -150,6 +150,11 @@ export function ProcessingActivitiesPage() {
                     <p className="font-medium text-[#1B2233]">
                       {activity.processName}
                     </p>
+                    {activity.sectorName && (
+                      <span className="text-[10px] font-mono uppercase tracking-wide bg-[#1B2233]/8 text-[#1B2233]/60 rounded px-1.5 py-0.5">
+                        {activity.sectorName}
+                      </span>
+                    )}
                     <span className="text-[10px] font-mono uppercase tracking-wide bg-[#B8862B]/12 text-[#B8862B] rounded px-1.5 py-0.5">
                       {LEGAL_REGIME_LABELS[activity.applicableRegime]}
                     </span>

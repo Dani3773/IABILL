@@ -1,4 +1,6 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+import { fetchSectors } from "../api/sectorService";
+import type { Sector } from "../types/sector";
 import { X, ClipboardList } from "lucide-react";
 import {
   createProcessingActivity,
@@ -27,6 +29,14 @@ export function ProcessingActivityModal({
   onSaved,
 }: Props) {
   const [processName, setProcessName] = useState(editing?.processName ?? "");
+  const [sectors, setSectors] = useState<Sector[]>([]);
+  const [sectorId, setSectorId] = useState(editing?.sectorId ?? "");
+
+  useEffect(() => {
+    fetchSectors(workspaceId)
+      .then(setSectors)
+      .catch(() => setSectors([]));
+  }, [workspaceId]);
   const [purpose, setPurpose] = useState(editing?.purpose ?? "");
   const [legalBasis, setLegalBasis] = useState<LegalBasis>(
     editing?.legalBasis ?? "CUMPRIMENTO_OBRIGACAO_LEGAL",
@@ -61,6 +71,7 @@ export function ProcessingActivityModal({
     try {
       const payload = {
         workspaceId,
+        sectorId: sectorId || undefined,
         applicableRegime,
         processName,
         purpose,
@@ -139,7 +150,25 @@ export function ProcessingActivityModal({
             ))}
           </select>
         </div>
+
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className={labelClass}>
+              Setor <span className="text-[#1B2233]/40">(opcional)</span>
+            </label>
+            <select
+              value={sectorId}
+              onChange={(e) => setSectorId(e.target.value)}
+              className={inputClass}
+            >
+              <option value="">Sem setor definido</option>
+              {sectors.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+          </div>
           <div>
             <label className={labelClass}>Nome do processo</label>
             <input
@@ -172,7 +201,11 @@ export function ProcessingActivityModal({
               className={inputClass}
             >
               {Object.entries(LEGAL_BASIS_LABELS)
-                .filter(([value]) => applicableRegime === "LGPD" || RGPD_LEGAL_BASIS_OPTIONS.includes(value as LegalBasis))
+                .filter(
+                  ([value]) =>
+                    applicableRegime === "LGPD" ||
+                    RGPD_LEGAL_BASIS_OPTIONS.includes(value as LegalBasis),
+                )
                 .map(([value, label]) => (
                   <option key={value} value={value}>
                     {label}

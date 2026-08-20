@@ -12,5 +12,6 @@ public enum AuditEntityType {
     PROCESSING_ACTIVITY,
     VENDOR,
     EMPLOYEE,
-    TRAINING
+    TRAINING,
+    SECTOR
 }

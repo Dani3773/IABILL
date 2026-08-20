@@ -29,7 +29,9 @@ public class Employee {
     @Column(name = "job_title")
     private String jobTitle;
 
-    private String department;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sector_id")
+    private Sector sector;
 
     private String email;
 

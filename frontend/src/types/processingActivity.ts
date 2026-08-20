@@ -13,6 +13,8 @@ export type LegalBasis =
 export interface ProcessingActivity {
   id: string
   workspaceId: string
+  sectorId: string | null
+  sectorName: string | null
   applicableRegime: 'LGPD' | 'RGPD'
   processName: string
   purpose: string
@@ -31,6 +33,7 @@ export interface ProcessingActivity {
 
 export interface ProcessingActivityRequest {
   workspaceId: string
+  sectorId?: string
   applicableRegime: 'LGPD' | 'RGPD'
   processName: string
   purpose: string

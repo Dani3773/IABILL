@@ -10,6 +10,8 @@ import java.util.UUID;
 public record ProcessingActivityResponseDTO(
         UUID id,
         UUID workspaceId,
+        UUID sectorId,
+        String sectorName,
         LegalRegime applicableRegime,
         String processName,
         String purpose,
@@ -29,6 +31,8 @@ public record ProcessingActivityResponseDTO(
         return new ProcessingActivityResponseDTO(
                 activity.getId(),
                 activity.getWorkspace().getId(),
+                activity.getSector() != null ? activity.getSector().getId() : null,
+                activity.getSector() != null ? activity.getSector().getName() : null,
                 activity.getApplicableRegime(),
                 activity.getProcessName(),
                 activity.getPurpose(),
