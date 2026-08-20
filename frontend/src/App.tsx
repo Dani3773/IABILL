@@ -30,6 +30,7 @@ import { TrainingsPage } from "./pages/TrainingsPage";
 import { SectorsPage } from "./pages/SectorsPage";
 import { PublicPrivacyPolicyPage } from "./pages/PublicPrivacyPolicyPage";
 import { PublicConsentPage } from "./pages/PublicConsentPage";
+import { DiagnosticPage } from "./pages/DiagnosticPage";
 
 
 function App() {
@@ -75,6 +76,7 @@ function App() {
                 <Route path="pilares/treinamento" element={<TrainingsPage />} />
                 <Route path="pilares/treinamento/colaboradores" element={<EmployeesPage />} />
                 <Route path="pilares/setores" element={<SectorsPage />} />
+                <Route path="pilares/diagnostico" element={<DiagnosticPage />} />
               </Route>
             </Route>
           </Route>
