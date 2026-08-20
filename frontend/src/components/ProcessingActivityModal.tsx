@@ -63,6 +63,9 @@ export function ProcessingActivityModal({
   const [applicableRegime, setApplicableRegime] = useState<"LGPD" | "RGPD">(
     editing?.applicableRegime ?? "LGPD",
   );
+    const [retentionExpiresAt, setRetentionExpiresAt] = useState(
+    editing?.retentionExpiresAt?.slice(0, 10) ?? "",
+  );
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -81,6 +84,7 @@ export function ProcessingActivityModal({
         dataSharing: dataSharing || undefined,
         securityMeasures: securityMeasures || undefined,
         retentionPeriod: retentionPeriod || undefined,
+        retentionExpiresAt: retentionExpiresAt || undefined,
         involvesSensitiveData,
         observations: observations || undefined,
       };
@@ -267,7 +271,7 @@ export function ProcessingActivityModal({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3 items-start">
+          <div className="grid grid-cols-2 gap-3">
             <div>
               <label className={labelClass}>
                 Período de armazenamento{" "}
@@ -281,18 +285,28 @@ export function ProcessingActivityModal({
                 className={inputClass}
               />
             </div>
-            <div className="pt-6">
-              <label className="flex items-center gap-2 text-sm text-[#1B2233]/70 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={involvesSensitiveData}
-                  onChange={(e) => setInvolvesSensitiveData(e.target.checked)}
-                  className="rounded border-[#1B2233]/20 text-[#14B8A6] focus:ring-[#14B8A6]/30"
-                />
-                Envolve dado pessoal sensível
+            <div>
+              <label className={labelClass}>
+                Data limite de retenção{" "}
+                <span className="text-[#1B2233]/40">(opcional)</span>
               </label>
+              <input
+                type="date"
+                value={retentionExpiresAt}
+                onChange={(e) => setRetentionExpiresAt(e.target.value)}
+                className={inputClass}
+              />
             </div>
           </div>
+          <label className="flex items-center gap-2 text-sm text-[#1B2233]/70 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={involvesSensitiveData}
+              onChange={(e) => setInvolvesSensitiveData(e.target.checked)}
+              className="rounded border-[#1B2233]/20 text-[#14B8A6] focus:ring-[#14B8A6]/30"
+            />
+            Envolve dado pessoal sensível
+          </label>
 
           <div>
             <label className={labelClass}>

@@ -56,6 +56,7 @@ public class ProcessingActivityService {
         activity.setDataSharing(request.dataSharing());
         activity.setSecurityMeasures(request.securityMeasures());
         activity.setRetentionPeriod(request.retentionPeriod());
+        activity.setRetentionExpiresAt(request.retentionExpiresAt());
         activity.setInvolvesSensitiveData(request.involvesSensitiveData());
         activity.setObservations(request.observations());
         activity.setCreatedBy(authUserId);
@@ -108,6 +109,7 @@ public class ProcessingActivityService {
         activity.setDataSharing(request.dataSharing());
         activity.setSecurityMeasures(request.securityMeasures());
         activity.setRetentionPeriod(request.retentionPeriod());
+        activity.setRetentionExpiresAt(request.retentionExpiresAt());
         activity.setInvolvesSensitiveData(request.involvesSensitiveData());
         activity.setObservations(request.observations());
 

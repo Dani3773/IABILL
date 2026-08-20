@@ -24,6 +24,7 @@ export interface ProcessingActivity {
   dataSharing: string | null
   securityMeasures: string | null
   retentionPeriod: string | null
+  retentionExpiresAt: string | null
   involvesSensitiveData: boolean
   ripdSuggestionDismissed: boolean
   observations: string | null
@@ -43,6 +44,7 @@ export interface ProcessingActivityRequest {
   dataSharing?: string
   securityMeasures?: string
   retentionPeriod?: string
+  retentionExpiresAt?: string
   involvesSensitiveData: boolean
   observations?: string
 }

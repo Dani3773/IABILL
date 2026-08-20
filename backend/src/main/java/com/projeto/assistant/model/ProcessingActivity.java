@@ -52,6 +52,9 @@ public class ProcessingActivity {
     @Column(name = "retention_period")
     private String retentionPeriod;
 
+    @Column(name = "retention_expires_at")
+    private java.time.LocalDate retentionExpiresAt;
+
     @Column(name = "involves_sensitive_data", nullable = false)
     private boolean involvesSensitiveData = false;
 

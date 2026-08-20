@@ -7,6 +7,7 @@ import {
   Trash2,
   Pencil,
   ShieldCheck,
+  Clock,
 } from "lucide-react";
 import {
   fetchProcessingActivities,
@@ -93,7 +94,6 @@ export function ProcessingActivitiesPage() {
       },
     });
   }
-
 
   if (isLoading)
     return <LoadingSpinner label="Carregando registro de tratamento..." />;
@@ -192,6 +192,14 @@ export function ProcessingActivitiesPage() {
                       </p>
                     )}
                   </div>
+                  {activity.retentionExpiresAt &&
+                    new Date(activity.retentionExpiresAt) < new Date() && (
+                      <p className="flex items-center gap-1.5 text-xs text-blue-700 mt-2">
+                        <Clock className="w-3.5 h-3.5 shrink-0" />
+                        Prazo de retenção vencido desde{" "}
+                        {new Date(activity.retentionExpiresAt).toLocaleDateString("pt-BR")}
+                      </p>
+                    )}
 
                   {activity.involvesSensitiveData &&
                     !activity.ripdSuggestionDismissed && (
@@ -262,7 +270,7 @@ export function ProcessingActivitiesPage() {
         />
       )}
 
-            {consentActivity && (
+      {consentActivity && (
         <ConsentRecordsModal
           activityId={consentActivity.id}
           activityName={consentActivity.processName}

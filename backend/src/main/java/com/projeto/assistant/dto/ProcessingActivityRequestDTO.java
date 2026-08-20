@@ -34,6 +34,7 @@ public record ProcessingActivityRequestDTO(
         String dataSharing,
         String securityMeasures,
         String retentionPeriod,
+        java.time.LocalDate retentionExpiresAt,
         boolean involvesSensitiveData,
         String observations
 ) {
