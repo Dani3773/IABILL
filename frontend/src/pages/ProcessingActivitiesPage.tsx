@@ -94,15 +94,6 @@ export function ProcessingActivitiesPage() {
     });
   }
 
-  {
-    consentActivity && (
-      <ConsentRecordsModal
-        activityId={consentActivity.id}
-        activityName={consentActivity.processName}
-        onClose={() => setConsentActivity(null)}
-      />
-    );
-  }
 
   if (isLoading)
     return <LoadingSpinner label="Carregando registro de tratamento..." />;
@@ -268,6 +259,14 @@ export function ProcessingActivitiesPage() {
           editing={editing}
           onClose={() => setShowModal(false)}
           onSaved={handleSaved}
+        />
+      )}
+
+            {consentActivity && (
+        <ConsentRecordsModal
+          activityId={consentActivity.id}
+          activityName={consentActivity.processName}
+          onClose={() => setConsentActivity(null)}
         />
       )}
     </div>
