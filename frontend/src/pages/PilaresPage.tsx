@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { ClipboardList, Truck, GraduationCap, ArrowRight } from "lucide-react";
+import { ComplianceChecklist } from "../components/ComplianceChecklist";
 
 export function PilaresPage() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
@@ -10,6 +11,8 @@ export function PilaresPage() {
       <p className="text-sm text-[#1B2233]/55 mb-6">
         Visão geral do estado de adequação deste workspace, por pilar da LGPD/RGPD.
       </p>
+
+      {workspaceId && <ComplianceChecklist workspaceId={workspaceId} />}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <Link

@@ -1,0 +1,10 @@
+export interface ComplianceSummary {
+  ropaActivityCount: number
+  vendorsTotal: number
+  vendorsWithDpaSigned: number
+  employeesActiveTotal: number
+  employeesTrainedCount: number
+  documentsOverdueCount: number
+  incidentsOpenCount: number
+  dsrPendingCount: number
+}
