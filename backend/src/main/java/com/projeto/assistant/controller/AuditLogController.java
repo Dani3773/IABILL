@@ -2,14 +2,18 @@ package com.projeto.assistant.controller;
 
 import com.projeto.assistant.dto.AuditLogResponseDTO;
 import com.projeto.assistant.service.AuditLogService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.projeto.assistant.config.JwtAuthenticationFilter;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,5 +28,13 @@ public class AuditLogController {
     @PreAuthorize("hasRole('ADMIN')")
     public List<AuditLogResponseDTO> findByTenant(@RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId) {
         return auditLogService.findByTenant(authTenantId);
+    }
+
+    @GetMapping("/export")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void exportToCsv(
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
+            HttpServletResponse response) throws IOException {
+        auditLogService.exportToCsv(authTenantId, response);
     }
 }

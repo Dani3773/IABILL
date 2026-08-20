@@ -4,6 +4,7 @@ import { LoadingSpinner } from '../components/LoadingSpinner'
 import { Alert } from '../components/Alert'
 import { getErrorMessage } from '../api/errorUtils'
 import type { AuditLog, AuditAction } from '../types/auditLog'
+import { Download } from 'lucide-react'
 
 const ACTION_STYLES: Record<AuditAction, string> = {
   CREATE: 'bg-green-900 text-green-300',
@@ -16,6 +17,12 @@ const ACTION_STYLES: Record<AuditAction, string> = {
   EXPORT: 'bg-slate-700 text-slate-300',
   REJECT: 'bg-red-900 text-red-300',
 }
+
+  function handleExportCsv() {
+    // Link direto para o endpoint - o navegador trata a resposta como download
+    // por causa do header Content-Disposition que o backend ja envia.
+    window.open(`${import.meta.env.VITE_API_URL ?? ''}/api/v1/audit-logs/export`, '_blank')
+  }
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleString('pt-BR')
@@ -45,10 +52,21 @@ export function AuditLogsPage() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold text-white mb-1">Trilha de Auditoria</h2>
-      <p className="text-sm text-slate-400 mb-4">
-        Registro imutável de todas as ações realizadas no sistema.
-      </p>
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h2 className="text-xl font-semibold text-white mb-1">Trilha de Auditoria</h2>
+          <p className="text-sm text-slate-400">
+            Registro imutável de todas as ações realizadas no sistema.
+          </p>
+        </div>
+        <button
+          onClick={handleExportCsv}
+          className="flex items-center gap-2 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors shrink-0"
+        >
+          <Download className="w-4 h-4" />
+          Exportar CSV
+        </button>
+      </div>
 
       {logs.length === 0 ? (
         <p className="text-slate-400">Nenhum registro de auditoria ainda.</p>
