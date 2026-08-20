@@ -18,6 +18,8 @@ public record DocumentResponseDTO(
         boolean reviewRecommended,
         String reviewRecommendedReason,
         Instant reviewDueAt,
+        boolean isPublished,
+        Instant publishedAt,
         Instant createdAt
 ) {
     public static DocumentResponseDTO fromEntity(Document document) {
@@ -35,6 +37,8 @@ public record DocumentResponseDTO(
                 document.isReviewRecommended(),
                 document.getReviewRecommendedReason(),
                 document.getReviewDueAt(),
+                document.isPublished(),
+                document.getPublishedAt(),
                 document.getCreatedAt()
         );
     }

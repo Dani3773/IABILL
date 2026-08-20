@@ -4,6 +4,7 @@ import type {
   DocumentRequest,
   GenerationRequest,
   GenerationResponse,
+  PublicPrivacyPolicyResponse,
 } from '../types/document'
 
 export async function fetchDocumentsByWorkspace(workspaceId: string): Promise<Document[]> {
@@ -53,5 +54,20 @@ export async function updateDocumentContent(id: string, content: string): Promis
 
 export async function dismissReviewFlag(documentId: string): Promise<Document> {
   const response = await apiClient.put<Document>(`/documents/${documentId}/dismiss-review-flag`)
+  return response.data
+}
+
+export async function publishDocument(documentId: string): Promise<Document> {
+  const response = await apiClient.put<Document>(`/documents/${documentId}/publish`)
+  return response.data
+}
+
+export async function unpublishDocument(documentId: string): Promise<Document> {
+  const response = await apiClient.put<Document>(`/documents/${documentId}/unpublish`)
+  return response.data
+}
+
+export async function fetchPublicPrivacyPolicy(workspaceDocumentId: string): Promise<PublicPrivacyPolicyResponse> {
+  const response = await apiClient.get<PublicPrivacyPolicyResponse>(`/documents/public/privacy-policy/${workspaceDocumentId}`)
   return response.data
 }

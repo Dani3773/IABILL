@@ -12,6 +12,7 @@ import com.projeto.assistant.dto.DocumentGenerationRequestDTO;
 import com.projeto.assistant.dto.DocumentGenerationResponseDTO;
 import com.projeto.assistant.dto.DocumentContentUpdateRequestDTO;
 import com.projeto.assistant.dto.DocumentRejectionRequestDTO;
+import com.projeto.assistant.dto.PublicPrivacyPolicyResponseDTO;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -124,5 +125,28 @@ public class DocumentController {
             @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
             @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
         return documentService.dismissReviewFlag(documentId, authTenantId, authUserId);
+    }
+
+    @PutMapping("/{documentId}/publish")
+    @PreAuthorize("hasRole('ADMIN')")
+    public DocumentResponseDTO publish(
+            @PathVariable UUID documentId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return documentService.publish(documentId, authTenantId, authUserId);
+    }
+
+    @PutMapping("/{documentId}/unpublish")
+    @PreAuthorize("hasRole('ADMIN')")
+    public DocumentResponseDTO unpublish(
+            @PathVariable UUID documentId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return documentService.unpublish(documentId, authTenantId, authUserId);
+    }
+
+    @GetMapping("/public/privacy-policy/{workspaceDocumentId}")
+    public PublicPrivacyPolicyResponseDTO publicPrivacyPolicy(@PathVariable String workspaceDocumentId) {
+        return documentService.getPublishedPrivacyPolicy(workspaceDocumentId);
     }
 }

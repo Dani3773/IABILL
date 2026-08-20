@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/login", "/api/v1/auth/login/mfa", "/api/v1/auth/signup", "/api/v1/auth/logout", "/api/v1/auth/cnpj/**", "/api/v1/auth/cep/**", "/api/v1/auth/confirm-email/**", "/api/v1/auth/resend-confirmation", "/api/v1/auth/forgot-password", "/api/v1/auth/reset-password", "/api/v1/users/activate", "/api/v1/public/**").permitAll()
+                        .requestMatchers("/api/v1/auth/login", "/api/v1/auth/login/mfa", "/api/v1/auth/signup", "/api/v1/auth/logout", "/api/v1/auth/cnpj/**", "/api/v1/auth/cep/**", "/api/v1/auth/confirm-email/**", "/api/v1/auth/resend-confirmation", "/api/v1/auth/forgot-password", "/api/v1/auth/reset-password", "/api/v1/users/activate", "/api/v1/documents/public/**", "/api/v1/public/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))

@@ -11,6 +11,8 @@ import com.projeto.assistant.repository.WorkspaceRepository;
 import com.projeto.assistant.model.AuditAction;
 import com.projeto.assistant.model.AuditEntityType;
 import com.projeto.assistant.model.DocumentStatus;
+import com.projeto.assistant.dto.PublicPrivacyPolicyResponseDTO;
+import com.projeto.assistant.model.DocumentType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -203,6 +205,66 @@ public class DocumentService {
                 Map.of("field", "reviewRecommended", "value", "dismissed"));
 
         return DocumentResponseDTO.fromEntity(saved);
+    }
+
+    @Transactional
+    public DocumentResponseDTO publish(UUID documentId, UUID authTenantId, UUID authUserId) {
+        Document document = getValidatedDocument(documentId, authTenantId);
+
+        if (document.getType() != DocumentType.POLITICA_PRIVACIDADE) {
+            throw new IllegalArgumentException("Só é possível publicar documentos do tipo Política de Privacidade");
+        }
+        if (document.getStatus() != DocumentStatus.APPROVED) {
+            throw new IllegalArgumentException("Só é possível publicar documentos aprovados (atual: " + document.getStatus() + ")");
+        }
+
+        // Despublica qualquer outra Politica de Privacidade ja publicada no mesmo
+        // workspace - garante no maximo uma versao "oficial" publicada por vez,
+        // mesmo que a confirmacao do frontend falhe por qualquer motivo.
+        documentRepository.findFirstByWorkspaceIdAndTypeAndIsPublishedTrue(
+                document.getWorkspace().getId(), DocumentType.POLITICA_PRIVACIDADE
+        ).ifPresent(previous -> {
+            if (!previous.getId().equals(document.getId())) {
+                previous.setPublished(false);
+                previous.setPublishedAt(null);
+                documentRepository.save(previous);
+            }
+        });
+
+        document.setPublished(true);
+        document.setPublishedAt(Instant.now());
+        Document saved = documentRepository.save(document);
+
+        auditLogService.record(authTenantId, authUserId, AuditAction.UPDATE, AuditEntityType.DOCUMENT, documentId,
+                Map.of("event", "published"));
+
+        return DocumentResponseDTO.fromEntity(saved);
+    }
+
+    @Transactional
+    public DocumentResponseDTO unpublish(UUID documentId, UUID authTenantId, UUID authUserId) {
+        Document document = getValidatedDocument(documentId, authTenantId);
+        document.setPublished(false);
+        document.setPublishedAt(null);
+        Document saved = documentRepository.save(document);
+
+        auditLogService.record(authTenantId, authUserId, AuditAction.UPDATE, AuditEntityType.DOCUMENT, documentId,
+                Map.of("event", "unpublished"));
+
+        return DocumentResponseDTO.fromEntity(saved);
+    }
+
+    // Endpoint publico - sem authTenantId, ja que o titular nunca tem conta.
+    @Transactional(readOnly = true)
+    public PublicPrivacyPolicyResponseDTO getPublishedPrivacyPolicy(String workspaceDocumentId) {
+        Workspace workspace = workspaceRepository.findByDocumentId(workspaceDocumentId).orElse(null);
+        if (workspace == null) {
+            return new PublicPrivacyPolicyResponseDTO(false, null, null, null);
+        }
+
+        return documentRepository.findFirstByWorkspaceIdAndTypeAndIsPublishedTrue(workspace.getId(), DocumentType.POLITICA_PRIVACIDADE)
+                .map(doc -> new PublicPrivacyPolicyResponseDTO(true, workspace.getName(), doc.getGeneratedContent(), doc.getPublishedAt()))
+                .orElse(new PublicPrivacyPolicyResponseDTO(false, workspace.getName(), null, null));
     }
 
 }

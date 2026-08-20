@@ -28,6 +28,7 @@ import { VendorsPage } from "./pages/VendorsPage";
 import { EmployeesPage } from "./pages/EmployeesPage";
 import { TrainingsPage } from "./pages/TrainingsPage";
 import { SectorsPage } from "./pages/SectorsPage";
+import { PublicPrivacyPolicyPage } from "./pages/PublicPrivacyPolicyPage";
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
           <Route path="/ativar-conta/:token" element={<AccountActivationPage />} />
           <Route path="/esqueci-senha" element={<ForgotPasswordPage />} />
           <Route path="/redefinir-senha/:token" element={<ResetPasswordPage />} />
+          <Route path="/politica-privacidade/:workspaceDocumentId" element={<PublicPrivacyPolicyPage />} />
 
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>

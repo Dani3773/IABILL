@@ -19,8 +19,10 @@ export interface Document {
   generatedContent: string | null
   reviewRecommended: boolean
   reviewRecommendedReason: string | null
-  createdAt: string
   reviewDueAt: string | null
+  isPublished: boolean
+  publishedAt: string | null
+  createdAt: string
 }
 
 export interface DocumentRequest {
@@ -38,4 +40,11 @@ export interface GenerationResponse {
   documentId: string
   generatedContent: string
   status: DocumentStatus
+}
+
+export interface PublicPrivacyPolicyResponse {
+  found: boolean
+  workspaceName: string | null
+  content: string | null
+  publishedAt: string | null
 }

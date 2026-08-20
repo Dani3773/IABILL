@@ -49,6 +49,12 @@ public class Document {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    @Column(name = "is_published", nullable = false)
+    private boolean isPublished = false;
+
+    @Column(name = "published_at")
+    private Instant publishedAt;
+
     @Column(name = "generated_content", columnDefinition = "TEXT")
     private String generatedContent;
 
