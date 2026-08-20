@@ -6,6 +6,7 @@ import {
   AlertTriangle,
   Trash2,
   Pencil,
+  ShieldCheck,
 } from "lucide-react";
 import {
   fetchProcessingActivities,
@@ -22,6 +23,7 @@ import {
 } from "../types/processingActivity";
 import { useNavigate } from "react-router-dom";
 import { dismissRipdSuggestion } from "../api/processingActivityService";
+import { ConsentRecordsModal } from "../components/ConsentRecordsModal";
 
 export function ProcessingActivitiesPage() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
@@ -31,6 +33,8 @@ export function ProcessingActivitiesPage() {
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<ProcessingActivity | null>(null);
   const navigate = useNavigate();
+  const [consentActivity, setConsentActivity] =
+    useState<ProcessingActivity | null>(null);
 
   useEffect(() => {
     if (!workspaceId) return;
@@ -88,6 +92,16 @@ export function ProcessingActivitiesPage() {
         prefillTitle: `RIPD/DPIA - ${activity.processName}`,
       },
     });
+  }
+
+  {
+    consentActivity && (
+      <ConsentRecordsModal
+        activityId={consentActivity.id}
+        activityName={consentActivity.processName}
+        onClose={() => setConsentActivity(null)}
+      />
+    );
   }
 
   if (isLoading)
@@ -192,8 +206,8 @@ export function ProcessingActivitiesPage() {
                     !activity.ripdSuggestionDismissed && (
                       <div className="flex items-center justify-between gap-2 mt-3 pt-3 border-t border-amber-200">
                         <p className="text-xs text-amber-700">
-                          Esta atividade envolve dado sensível — considere
-                          criar um RIPD/DPIA para ela.
+                          Esta atividade envolve dado sensível — considere criar
+                          um RIPD/DPIA para ela.
                         </p>
                         <div className="flex gap-3 shrink-0">
                           <button
@@ -215,6 +229,15 @@ export function ProcessingActivitiesPage() {
                     )}
                 </div>
                 <div className="flex gap-2 shrink-0">
+                  {activity.legalBasis === "CONSENTIMENTO" && (
+                    <button
+                      onClick={() => setConsentActivity(activity)}
+                      className="text-[#1B2233]/40 hover:text-[#14B8A6] transition-colors"
+                      title="Prova de consentimento"
+                    >
+                      <ShieldCheck className="w-4 h-4" />
+                    </button>
+                  )}
                   <button
                     onClick={() => {
                       setEditing(activity);

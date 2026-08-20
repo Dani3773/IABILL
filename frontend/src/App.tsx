@@ -29,6 +29,7 @@ import { EmployeesPage } from "./pages/EmployeesPage";
 import { TrainingsPage } from "./pages/TrainingsPage";
 import { SectorsPage } from "./pages/SectorsPage";
 import { PublicPrivacyPolicyPage } from "./pages/PublicPrivacyPolicyPage";
+import { PublicConsentPage } from "./pages/PublicConsentPage";
 
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
           <Route path="/esqueci-senha" element={<ForgotPasswordPage />} />
           <Route path="/redefinir-senha/:token" element={<ResetPasswordPage />} />
           <Route path="/politica-privacidade/:workspaceDocumentId" element={<PublicPrivacyPolicyPage />} />
+          <Route path="/consentimento/:activityId" element={<PublicConsentPage />} />
 
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
