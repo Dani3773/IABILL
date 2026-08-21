@@ -107,6 +107,11 @@ const ENGINEERING_NOTES = [
   "Testes automatizados em três camadas: unitários, integração e avaliação de IA",
 ];
 
+// Vazio de proposito - usar nome/logo de empresa cliente aqui exige autorizacao
+// comercial explicita, separada da autorizacao academica ja obtida para o TCC.
+// Adicionar entradas aqui APENAS apos essa autorizacao especifica existir.
+const PARTNERS: string[] = [];
+
 // Selo circular em SVG puro - o texto segue um caminho circular real (textPath),
 // nao e uma imagem. Ancorado no proprio conceito do produto: nada vira "oficial"
 // sem um carimbo de aprovacao humana.
@@ -187,6 +192,17 @@ export function LandingPage() {
           <div className="flex items-center gap-2">
             <img src="/logo.png" alt="IABill" className="h-6 opacity-90" />
           </div>
+          <nav className="hidden md:flex items-center gap-6">
+            <a href="#sobre" className="text-sm text-[#9CA3AF] hover:text-white transition-colors">
+              Sobre
+            </a>
+            <a href="#faq" className="text-sm text-[#9CA3AF] hover:text-white transition-colors">
+              FAQ
+            </a>
+            <a href="#contato" className="text-sm text-[#9CA3AF] hover:text-white transition-colors">
+              Contato
+            </a>
+          </nav>
           <nav className="flex items-center gap-6">
             <Link
               to="/login"
@@ -253,6 +269,41 @@ export function LandingPage() {
             <div className="iabill-seal absolute -right-2 -bottom-4 sm:right-2 sm:bottom-0 drop-shadow-xl">
               <ApprovalSeal />
             </div>
+          </div>
+        </div>
+      </section>
+
+            {/* Sobre — ink */}
+      <section id="sobre" className="py-24 px-6 border-b border-white/10">
+        <div className="max-w-3xl mx-auto">
+          <p className="font-mono text-xs tracking-widest text-[#14B8A6] mb-5 uppercase">
+            Sobre
+          </p>
+          <h2 className="font-serif text-2xl sm:text-3xl text-white mb-6 leading-snug">
+            Nascido como pesquisa acadêmica rigorosa, construído para uso real.
+          </h2>
+          <div className="space-y-4 text-[#9CA3AF] text-base leading-relaxed">
+            <p>
+              O IABill começou como trabalho de conclusão de curso em Ciência da Computação, na
+              UNESC (Universidade do Extremo Sul Catarinense), desenvolvido por Daniel Felisberto
+              dos Santos. A pergunta de pesquisa era direta: é possível usar Inteligência
+              Artificial para apoiar a adequação de empresas à LGPD e ao RGPD, sem abrir mão de
+              rigor, rastreabilidade e supervisão humana?
+            </p>
+            <p>
+              Essa origem acadêmica não é um detalhe de rodapé, é o que molda cada decisão do
+              produto. Toda funcionalidade nasce corresponde a um dispositivo legal específico,
+              não a uma interpretação genérica de boas práticas. Todo comportamento de IA passa
+              por validação formal antes de virar recurso, incluindo testes automatizados que
+              medem, com números reais, se o sistema recusa corretamente gerar conteúdo quando não
+              tem base para isso.
+            </p>
+            <p>
+              O resultado é um sistema que trata inteligência artificial como ferramenta de apoio,
+              nunca como substituto de julgamento humano ou jurídico. Cada documento gerado nasce
+              como rascunho. Aprovar é sempre uma decisão de uma pessoa responsável pela sua
+              empresa, nunca do sistema sozinho.
+            </p>
           </div>
         </div>
       </section>
@@ -387,6 +438,113 @@ export function LandingPage() {
         </div>
       </section>
 
+            {/* FAQ — paper */}
+      <section id="faq" className="py-24 px-6 bg-[#EDEAE1]">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="font-serif text-2xl text-[#1B2233] mb-2">Perguntas frequentes</h2>
+          <p className="text-[#1B2233]/60 text-sm mb-12">
+            O que empresas normalmente perguntam antes de começar.
+          </p>
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-[#1B2233] font-medium mb-2">Meus dados ficam seguros?</h3>
+              <p className="text-[#1B2233]/60 text-sm leading-relaxed">
+                Sim. O acesso é protegido por autenticação em cookie inacessível a scripts do
+                navegador, controle de acesso por papel, criptografia em repouso no banco de
+                dados, e cada empresa cliente tem seus dados isolados dos demais clientes, tanto
+                em nível de aplicação quanto de banco de dados.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-[#1B2233] font-medium mb-2">
+                O IABill substitui um advogado ou Encarregado de Dados (DPO)?
+              </h3>
+              <p className="text-[#1B2233]/60 text-sm leading-relaxed">
+                Não. O IABill é uma ferramenta de apoio, ela organiza, estrutura e acelera o
+                processo de adequação, mas a decisão final e a responsabilidade jurídica continuam
+                sendo de pessoas, nunca do sistema. Recomendamos que documentos gerados sejam
+                revisados por quem responde formalmente pela conformidade da sua empresa.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-[#1B2233] font-medium mb-2">Funciona para empresa pequena?</h3>
+              <p className="text-[#1B2233]/60 text-sm leading-relaxed">
+                Sim, o IABill foi desenhado justamente pensando em empresas de pequeno e médio
+                porte, que costumam ter menos recursos técnicos e financeiros disponíveis para
+                consultoria especializada tradicional.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-[#1B2233] font-medium mb-2">Quanto custa?</h3>
+              <p className="text-[#1B2233]/60 text-sm leading-relaxed">
+                Nosso modelo de precificação ainda está em definição. Entre em contato pela seção
+                abaixo para conversar sobre o cenário da sua empresa.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-[#1B2233] font-medium mb-2">
+                Preciso entender de LGPD ou de tecnologia para usar?
+              </h3>
+              <p className="text-[#1B2233]/60 text-sm leading-relaxed">
+                Não. A plataforma foi construída para guiar o processo passo a passo, com
+                explicações e sugestões baseadas nos artigos reais da lei, não em jargão técnico
+                ou jurídico.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-[#1B2233] font-medium mb-2">
+                O conteúdo gerado por IA pode ser usado direto, sem revisão?
+              </h3>
+              <p className="text-[#1B2233]/60 text-sm leading-relaxed">
+                Não recomendamos. Todo conteúdo gerado nasce como rascunho, exatamente para
+                garantir que uma pessoa responsável revise e aprove antes de qualquer documento
+                virar oficial.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Parceiros — ink, so renderiza quando houver entradas reais autorizadas */}
+      {PARTNERS.length > 0 && (
+        <section className="py-24 px-6 border-b border-white/10">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="font-serif text-2xl text-white mb-8 text-center">
+              Empresas que confiam no IABill
+            </h2>
+            <div className="flex flex-wrap items-center justify-center gap-12">
+              {PARTNERS.map((partner) => (
+                <span key={partner} className="text-[#9CA3AF] text-sm font-mono">
+                  {partner}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Contato — ink */}
+      <section id="contato" className="py-24 px-6 border-b border-white/10">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="font-mono text-xs tracking-widest text-[#14B8A6] mb-5 uppercase">
+            Contato
+          </p>
+          <h2 className="font-serif text-2xl sm:text-3xl text-white mb-4 leading-snug">
+            Vamos conversar sobre a conformidade da sua empresa
+          </h2>
+          <p className="text-[#9CA3AF] text-sm mb-8">
+            Tire dúvidas, peça uma demonstração, ou entenda como o IABill se encaixa no seu
+            cenário.
+          </p>
+          
+            href="mailto:danielfelisberto3@gmail.com"
+            className="inline-flex items-center gap-2 bg-[#B8862B] hover:bg-[#A9791F] text-[#0E1220] text-sm font-semibold rounded-lg px-6 py-3 transition-colors"
+          <a>
+            danielfelisberto3@gmail.com
+          </a>
+        </div>
+      </section>
+
       {/* CTA final — paper */}
       <section className="py-24 px-6 bg-[#EDEAE1]">
         <div className="max-w-3xl mx-auto text-center">
@@ -406,11 +564,38 @@ export function LandingPage() {
       </section>
 
       {/* Footer — ink */}
-      <footer className="py-8 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <img src="/logo.png" alt="IABill" className="h-5 opacity-60" />
-          <p className="text-[#6B7280] text-xs text-center">
-            Trabalho de Conclusão de Curso — Ciência da Computação, UNESC
+      <footer className="py-10 px-6 border-t border-white/10">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-6">
+            <img src="/logo.png" alt="IABill" className="h-5 opacity-60" />
+            <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs">
+              <a href="#sobre" className="text-[#6B7280] hover:text-[#9CA3AF] transition-colors">
+                Sobre
+              </a>
+              <a href="#faq" className="text-[#6B7280] hover:text-[#9CA3AF] transition-colors">
+                FAQ
+              </a>
+              <a href="#contato" className="text-[#6B7280] hover:text-[#9CA3AF] transition-colors">
+                Contato
+              </a>
+              
+                href="https://iabill.com/politica-privacidade/11.222.333/0001-44"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#6B7280] hover:text-[#9CA3AF] transition-colors"
+              <a>
+                Política de Privacidade
+              </a>
+              
+                href="mailto:danielfelisberto3@gmail.com"
+                className="text-[#6B7280] hover:text-[#9CA3AF] transition-colors"
+              <a>
+                danielfelisberto3@gmail.com
+              </a>
+            </nav>
+          </div>
+          <p className="text-[#6B7280] text-xs text-center sm:text-left">
+            © 2026 IABill · Trabalho de Conclusão de Curso — Ciência da Computação, UNESC
           </p>
         </div>
       </footer>
