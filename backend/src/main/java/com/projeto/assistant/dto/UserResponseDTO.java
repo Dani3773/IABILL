@@ -14,6 +14,7 @@ public record UserResponseDTO(
         UserRole role,
         String jobTitle,
         String committeeRole,
+        boolean dpoSubstitute,
         Instant createdAt
 ) {
     public static UserResponseDTO fromEntity(User user) {
@@ -25,6 +26,7 @@ public record UserResponseDTO(
                 user.getRole(),
                 user.getJobTitle(),
                 user.getCommitteeRole(),
+                user.isDpoSubstitute(),
                 user.getCreatedAt()
         );
     }

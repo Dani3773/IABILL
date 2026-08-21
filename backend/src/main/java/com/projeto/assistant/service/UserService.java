@@ -51,6 +51,9 @@ public class UserService {
         user.setEmail(request.email());
         user.setJobTitle(request.jobTitle());
         user.setCommitteeRole(request.committeeRole());
+        // So faz sentido marcar substituto quando o papel escolhido e DPO - ignora
+        // silenciosamente se vier true para qualquer outro papel, em vez de lancar erro.
+        user.setDpoSubstitute(Boolean.TRUE.equals(request.dpoSubstitute()) && request.role() == com.projeto.assistant.model.UserRole.DPO);
         // Senha temporaria aleatoria, inutilizavel - ninguem (nem o ADMIN que convidou)
         // sabe esse valor. O usuario convidado define a senha real na ativacao.
         user.setPasswordHash(passwordEncoder.encode(generateToken()));

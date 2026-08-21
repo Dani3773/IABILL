@@ -8,6 +8,7 @@ export interface User {
   role: UserRole
   jobTitle: string | null
   committeeRole: string | null
+  dpoSubstitute: boolean
   createdAt: string
 }
 
@@ -18,8 +19,8 @@ export interface UserRequest {
   role: UserRole
   jobTitle?: string
   committeeRole?: string
+  dpoSubstitute?: boolean
 }
-
 export interface WorkspaceMembership {
   workspaceId: string
   workspaceName: string

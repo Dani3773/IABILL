@@ -23,6 +23,7 @@ public record UserRequestDTO(
         UserRole role,
 
         String jobTitle,
-        String committeeRole
+        String committeeRole,
+        Boolean dpoSubstitute
 ) {
 }

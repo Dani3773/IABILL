@@ -34,6 +34,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [jobTitle, setJobTitle] = useState("");
   const [committeeRole, setCommitteeRole] = useState("");
+  const [dpoSubstitute, setDpoSubstitute] = useState(false);
 
   const showDpoConflictWarning =
     role === "DPO" && jobTitle.trim().length > 0 && hasDpoConflict(jobTitle);
@@ -51,6 +52,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
         role,
         jobTitle: jobTitle || undefined,
         committeeRole: committeeRole || undefined,
+        dpoSubstitute: role === "DPO" ? dpoSubstitute : undefined,
       });
       onCreated(user);
       onClose();
@@ -133,13 +135,23 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
                 <p className="text-xs text-amber-700/90 leading-relaxed">
                   Segundo a ANPD, o Encarregado (DPO) não deveria acumular cargos de chefia/gerência em áreas
                   como TI, Marketing, RH ou Financeiro, responsáveis pela decisão sobre como os dados são
-                  tratados — isso pode comprometer a independência exigida do papel. Considere indicar outra
+                  tratados, isso pode comprometer a independência exigida do papel. Considere indicar outra
                   pessoa, ou avaliar um DPO terceirizado.
                 </p>
               </div>
             </div>
           )}
-
+          {role === "DPO" && (
+            <label className="flex items-center gap-2 text-sm text-[#1B2233]/70 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={dpoSubstitute}
+                onChange={(e) => setDpoSubstitute(e.target.checked)}
+                className="rounded border-[#1B2233]/20 text-[#14B8A6] focus:ring-[#14B8A6]/30"
+              />
+              É substituto do Encarregado (DPO), não o titular principal
+            </label>
+          )}
           <div>
             <label className={labelClass}>
               Cargo no comitê de LGPD <span className="text-[#1B2233]/40">(opcional)</span>

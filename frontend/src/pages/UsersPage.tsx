@@ -57,6 +57,11 @@ export function UsersPage() {
               <p className="text-xs text-[#1B2233]/50">{user.email}</p>
             </div>
             <div className="flex items-center gap-3">
+              {user.dpoSubstitute && (
+                <span className="text-xs px-2 py-1 rounded font-medium bg-[#14B8A6]/12 text-[#0d7a6d]">
+                  Substituto
+                </span>
+              )}
               <span
                 className={`text-xs px-2 py-1 rounded font-medium ${
                   user.role === 'ADMIN'

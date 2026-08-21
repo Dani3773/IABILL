@@ -8,6 +8,7 @@ public record PlatformUserSummaryDTO(
         UUID id,
         String username,
         String email,
-        UserRole role
+        UserRole role,
+        boolean dpoSubstitute
 ) {
 }

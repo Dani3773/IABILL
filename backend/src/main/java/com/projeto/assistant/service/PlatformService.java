@@ -38,7 +38,7 @@ public class PlatformService {
                 .orElseThrow(() -> new IllegalArgumentException("Tenant não encontrado: " + tenantId));
 
         List<PlatformUserSummaryDTO> users = userRepository.findByTenantId(tenantId).stream()
-                .map(u -> new PlatformUserSummaryDTO(u.getId(), u.getUsername(), u.getEmail(), u.getRole()))
+                .map(u -> new PlatformUserSummaryDTO(u.getId(), u.getUsername(), u.getEmail(), u.getRole(), u.isDpoSubstitute()))
                 .toList();
 
         List<PlatformWorkspaceSummaryDTO> workspaces = workspaceRepository.findByTenantId(tenantId).stream()
@@ -111,7 +111,7 @@ public class PlatformService {
                     Map.of("roleChange", previousRole + " -> " + newRole, "changedByPlatformAdmin", true));
         }
 
-        return new PlatformUserSummaryDTO(user.getId(), user.getUsername(), user.getEmail(), user.getRole());
+        return new PlatformUserSummaryDTO(user.getId(), user.getUsername(), user.getEmail(), user.getRole(), user.isDpoSubstitute());
     }
 
     @Transactional

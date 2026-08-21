@@ -217,6 +217,11 @@ export function PlatformTenantDetailPage() {
                   <p className="text-[#1B2233]/50 text-xs">{u.email}</p>
                 </div>
                 <div className="flex items-center gap-2">
+                  {u.dpoSubstitute && (
+                    <span className="text-xs px-2 py-1 rounded bg-[#14B8A6]/12 text-[#0d7a6d] font-medium">
+                      Substituto
+                    </span>
+                  )}
                   <span className="text-xs px-2 py-1 rounded bg-[#1B2233]/8 text-[#1B2233]/70 font-medium">
                     {u.role}
                   </span>

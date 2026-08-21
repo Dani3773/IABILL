@@ -15,6 +15,7 @@ export interface PlatformUser {
   username: string
   email: string
   role: 'ADMIN' | 'USER' | 'DPO' | 'SUPER_ADMIN'
+  dpoSubstitute: boolean
 }
 
 export interface PlatformWorkspace {

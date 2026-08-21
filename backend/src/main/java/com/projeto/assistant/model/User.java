@@ -75,6 +75,9 @@ public class User {
     @Column(name = "mfa_enabled", nullable = false)
     private boolean mfaEnabled = false;
 
+    @Column(name = "is_dpo_substitute", nullable = false)
+    private boolean dpoSubstitute = false;
+
     @PrePersist
     void onCreate() {
         Instant now = Instant.now();
