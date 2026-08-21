@@ -34,6 +34,7 @@ public class DocumentService {
     private final WorkspaceRepository workspaceRepository;
     private final UserRepository userRepository;
     private final AuditLogService auditLogService;
+    private final DocumentChunkService documentChunkService;
 
     @Transactional
     public DocumentResponseDTO create(DocumentRequestDTO request) {
@@ -126,22 +127,25 @@ public class DocumentService {
     @Transactional
     public DocumentResponseDTO approve(UUID documentId, UUID authTenantId, UUID authUserId) {
         Document document = getValidatedDocument(documentId, authTenantId);
-
         if (document.getStatus() != DocumentStatus.REVIEWED) {
             throw new IllegalArgumentException("Só é possível aprovar documentos com status REVIEWED (atual: " + document.getStatus() + ")");
         }
-
         document.setStatus(DocumentStatus.APPROVED);
         document.setReviewDueAt(Instant.now().plus(365, ChronoUnit.DAYS));
         Document saved = documentRepository.save(document);
-
         auditLogService.record(authTenantId, authUserId, AuditAction.APPROVE, AuditEntityType.DOCUMENT, documentId,
                 Map.of("statusChange", "REVIEWED -> APPROVED"));
-
         // Um documento recem-aprovado pode conter informacao que torna outros
         // documentos ja fechados desatualizados - sinaliza os demais para revisao.
         flagRelatedDocumentsForReview(document.getWorkspace().getId(), documentId, document.getTitle());
-
+        // So a partir da aprovacao o conteudo e considerado "oficial" o suficiente
+        // para servir de contexto RAG para outros documentos do workspace - ingere
+        // (ou reingere, se ja existia uma versao anterior) o conteudo em chunks agora.
+        // Sem isso, documentos aprovados pelo fluxo real da UI nunca ficavam
+        // pesquisaveis pelo RAG, mesmo depois de aprovados.
+        if (saved.getGeneratedContent() != null && !saved.getGeneratedContent().isBlank()) {
+            documentChunkService.processContent(documentId, saved.getGeneratedContent(), authUserId);
+        }
         return DocumentResponseDTO.fromEntity(saved);
     }
 
