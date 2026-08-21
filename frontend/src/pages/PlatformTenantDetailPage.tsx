@@ -188,21 +188,16 @@ export function PlatformTenantDetailPage() {
             </div>
           </form>
         ) : (
-          <>
-            <dl className="grid grid-cols-2 gap-3 text-sm">
-              <div>
-                <dt className="text-[#1B2233]/50">Nome</dt>
-                <dd className="text-[#1B2233]">{tenant.name}</dd>
-              </div>
-              <div>
-                <dt className="text-[#1B2233]/50">Cadastrada em</dt>
-                <dd className="text-[#1B2233]">{new Date(tenant.createdAt).toLocaleDateString("pt-BR")}</dd>
-              </div>
-            </dl>
-            <p className="text-xs text-[#1B2233]/40 mt-3">
-              CNPJ e endereço pertencem a cada Workspace individual, veja a lista abaixo.
-            </p>
-          </>
+          <dl className="grid grid-cols-2 gap-3 text-sm">
+            <div>
+              <dt className="text-[#1B2233]/50">Nome</dt>
+              <dd className="text-[#1B2233]">{tenant.name}</dd>
+            </div>
+            <div>
+              <dt className="text-[#1B2233]/50">Cadastrada em</dt>
+              <dd className="text-[#1B2233]">{new Date(tenant.createdAt).toLocaleDateString("pt-BR")}</dd>
+            </div>
+          </dl>
         )}
       </div>
 
