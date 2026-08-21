@@ -31,6 +31,7 @@ import { SectorsPage } from "./pages/SectorsPage";
 import { PublicPrivacyPolicyPage } from "./pages/PublicPrivacyPolicyPage";
 import { PublicConsentPage } from "./pages/PublicConsentPage";
 import { DiagnosticPage } from "./pages/DiagnosticPage";
+import { HelpPage } from "./pages/HelpPage";
 
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
               <Route path="/audit-logs" element={<AuditLogsPage />} />
               <Route path="/platform" element={<SuperAdminPage />} />
               <Route path="/platform/:tenantId" element={<PlatformTenantDetailPage />} />
+              <Route path="ajuda" element={<HelpPage />} />
 
               <Route
                 path="/workspaces/:workspaceId"
