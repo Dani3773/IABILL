@@ -67,7 +67,7 @@ export function DashboardPage() {
             return (
               <Link
                 key={workspace.id}
-                to={`/workspaces/${workspace.id}/documents`}
+                to={`/workspaces/${workspace.id}/pilares`}
                 className="bg-white rounded-xl p-5 border border-[#1B2233]/10 hover:border-[#14B8A6]/50 hover:shadow-md transition-all"
               >
                 <div className="flex items-center justify-between mb-3">

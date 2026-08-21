@@ -31,15 +31,15 @@ const SECTIONS: Section[] = [
     icon: Rocket,
     body: [
       {
-        text: "O IABill organiza a adequação da sua empresa à LGPD/RGPD em módulos (chamados de \"Pilares\"), mais um fluxo de geração assistida de documentos por IA. Nenhum conteúdo gerado por IA vira oficial sozinho — sempre passa por revisão humana antes de valer.",
+        text: "O IABill organiza a adequação da sua empresa à LGPD/RGPD em módulos (chamados de \"Pilares\"), mais um fluxo de geração assistida de documentos por IA. Nenhum conteúdo gerado por IA vira oficial sozinho, sempre passa por revisão humana antes de valer.",
       },
       {
         heading: "O ciclo de um documento",
-        text: "Todo documento nasce como Rascunho (DRAFT). Ao usar \"Gerar com IA\", ele vira Gerado (GENERATED). Alguém marca como Revisado (REVIEWED), e só então um Administrador pode Aprovar (APPROVED) — o único estado em que o conteúdo é considerado oficial e passa a servir de contexto para outros documentos.",
+        text: "Todo documento nasce como Rascunho (DRAFT). Ao usar \"Gerar com IA\", ele vira Gerado (GENERATED). Alguém marca como Revisado (REVIEWED), e só então um Administrador pode Aprovar (APPROVED), o único estado em que o conteúdo é considerado oficial e passa a servir de contexto para outros documentos.",
       },
       {
         heading: "Por onde começar",
-        text: "Recomendamos rodar o Diagnóstico Inicial (aba Pilares) primeiro — um questionário rápido que identifica lacunas reais e já cria as primeiras tarefas no Plano de Ação automaticamente.",
+        text: "Recomendamos rodar o Diagnóstico Inicial (aba Pilares) primeiro, um questionário rápido que identifica lacunas reais e já cria as primeiras tarefas no Plano de Ação automaticamente.",
       },
     ],
   },
@@ -63,11 +63,11 @@ const SECTIONS: Section[] = [
     icon: ClipboardList,
     body: [
       {
-        text: "Registro estruturado das atividades de tratamento de dados pessoais da empresa, no formato recomendado pela ANPD — mais completo que um documento de texto livre.",
+        text: "Registro estruturado das atividades de tratamento de dados pessoais da empresa, no formato recomendado pela ANPD, mais completo que um documento de texto livre.",
       },
       {
         heading: "Regime legal e hipótese legal",
-        text: "Cada atividade pode ser LGPD ou RGPD. O dropdown de hipótese legal se ajusta automaticamente ao regime escolhido — as 10 opções da LGPD, ou as 6 equivalentes do RGPD.",
+        text: "Cada atividade pode ser LGPD ou RGPD. O dropdown de hipótese legal se ajusta automaticamente ao regime escolhido, as 10 opções da LGPD, ou as 6 equivalentes do RGPD.",
       },
       {
         heading: "Dado sensível e RIPD",
@@ -75,7 +75,7 @@ const SECTIONS: Section[] = [
       },
       {
         heading: "Prova de consentimento",
-        text: "Quando a hipótese legal é \"Consentimento\", um ícone de escudo aparece no card da atividade — ele abre um QR code e um link público para coletar consentimento formal, com registro de nome, e-mail, IP e data.",
+        text: "Quando a hipótese legal é \"Consentimento\", um ícone de escudo aparece no card da atividade, ele abre um QR code e um link público para coletar consentimento formal, com registro de nome, e-mail, IP e data.",
       },
     ],
   },
@@ -85,7 +85,7 @@ const SECTIONS: Section[] = [
     icon: FileText,
     body: [
       {
-        text: "A IA só usa como base os documentos já aprovados dentro do mesmo workspace — nunca conhecimento genérico da internet. Se não houver contexto suficiente, o sistema recusa gerar conteúdo em vez de inventar informação sobre sua empresa.",
+        text: "A IA só usa como base os documentos já aprovados dentro do mesmo workspace, nunca conhecimento genérico da internet. Se não houver contexto suficiente, o sistema recusa gerar conteúdo em vez de inventar informação sobre sua empresa.",
       },
       {
         heading: "Tipos de documento disponíveis",
@@ -103,7 +103,7 @@ const SECTIONS: Section[] = [
     icon: Truck,
     body: [
       {
-        text: "Registro de fornecedores e operadores que têm acesso a dados pessoais em nome da sua empresa (Art. 39 da LGPD) — nuvem, folha de pagamento, ferramentas de IA, etc.",
+        text: "Registro de fornecedores e operadores que têm acesso a dados pessoais em nome da sua empresa (Art. 39 da LGPD), nuvem, folha de pagamento, ferramentas de IA, etc.",
       },
       {
         text: "Para cada fornecedor, registre o serviço prestado, quais categorias de dado são compartilhadas, e se existe um DPA (contrato de proteção de dados) assinado.",
@@ -116,7 +116,7 @@ const SECTIONS: Section[] = [
     icon: GraduationCap,
     body: [
       {
-        text: "Colaboradores são cadastrados separadamente de Usuários — a maioria da equipe recebe treinamento sobre proteção de dados, mas nunca precisa de acesso ao sistema.",
+        text: "Colaboradores são cadastrados separadamente de Usuários, a maioria da equipe recebe treinamento sobre proteção de dados, mas nunca precisa de acesso ao sistema.",
       },
       {
         heading: "Gerar material com IA",
@@ -130,7 +130,7 @@ const SECTIONS: Section[] = [
     icon: Building2,
     body: [
       {
-        text: "Campo opcional para organizar Colaboradores, Fornecedores e atividades do ROPA por área da empresa (ex: RH, TI, Financeiro). Não é obrigatório — deixe em branco se sua estrutura ainda não estiver definida.",
+        text: "Campo opcional para organizar Colaboradores, Fornecedores e atividades do ROPA por área da empresa (ex: RH, TI, Financeiro). Não é obrigatório, deixe em branco se sua estrutura ainda não estiver definida.",
       },
     ],
   },
@@ -164,7 +164,7 @@ const SECTIONS: Section[] = [
     icon: Inbox,
     body: [
       {
-        text: "Portal público (Art. 18 da LGPD) onde qualquer pessoa pode solicitar acesso, correção, eliminação, portabilidade, anonimização ou revogação de consentimento dos seus dados — sem precisar de conta no sistema.",
+        text: "Portal público (Art. 18 da LGPD) onde qualquer pessoa pode solicitar acesso, correção, eliminação, portabilidade, anonimização ou revogação de consentimento dos seus dados, sem precisar de conta no sistema.",
       },
       {
         text: "Toda solicitação recebida gera automaticamente uma tarefa vinculada no Plano de Ação da empresa.",
@@ -178,7 +178,7 @@ const SECTIONS: Section[] = [
     body: [
       {
         heading: "Verificação em duas etapas (MFA)",
-        text: "Ative em Perfil → Verificação em 2 Etapas. Escaneie o QR code com um aplicativo autenticador (Google Authenticator, Authy) e confirme com o código de 6 dígitos. O código é gerado inteiramente no seu navegador — o segredo nunca passa por nenhum serviço externo.",
+        text: "Ative em Perfil → Verificação em 2 Etapas. Escaneie o QR code com um aplicativo autenticador (Google Authenticator, Authy) e confirme com o código de 6 dígitos. O código é gerado inteiramente no seu navegador, o segredo nunca passa por nenhum serviço externo.",
       },
     ],
   },
@@ -192,7 +192,7 @@ const SECTIONS: Section[] = [
       },
       {
         heading: "Conflito de interesse do DPO",
-        text: "Ao atribuir o papel de DPO a alguém cujo cargo contenha termos como TI, Marketing, RH ou Financeiro, o sistema exibe um aviso — a ANPD orienta que o Encarregado não deve acumular cargos de chefia responsáveis por decidir como os dados são tratados.",
+        text: "Ao atribuir o papel de DPO a alguém cujo cargo contenha termos como TI, Marketing, RH ou Financeiro, o sistema exibe um aviso, a ANPD orienta que o Encarregado não deve acumular cargos de chefia responsáveis por decidir como os dados são tratados.",
       },
     ],
   },
