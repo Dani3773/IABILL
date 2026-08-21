@@ -32,6 +32,7 @@ import { PublicPrivacyPolicyPage } from "./pages/PublicPrivacyPolicyPage";
 import { PublicConsentPage } from "./pages/PublicConsentPage";
 import { DiagnosticPage } from "./pages/DiagnosticPage";
 import { HelpPage } from "./pages/HelpPage";
+import { SuspendedAccountPage } from "./pages/SuspendedAccountPage";
 
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
           <Route path="/redefinir-senha/:token" element={<ResetPasswordPage />} />
           <Route path="/politica-privacidade/:workspaceDocumentId" element={<PublicPrivacyPolicyPage />} />
           <Route path="/consentimento/:activityId" element={<PublicConsentPage />} />
+          <Route path="/conta-suspensa" element={<SuspendedAccountPage />} />
 
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
