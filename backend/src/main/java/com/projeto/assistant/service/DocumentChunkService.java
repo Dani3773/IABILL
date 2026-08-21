@@ -40,14 +40,13 @@ public class DocumentChunkService {
         Document document = documentRepository.findById(documentId)
                 .orElseThrow(() -> new IllegalArgumentException("Documento não encontrado: " + documentId));
 
-        // Remove chunks antigos, caso o conteudo esteja sendo reprocessado - flush()
-        // forca a exclusao a ser gravada no banco IMEDIATAMENTE, antes dos INSERTs
-        // novos abaixo. Sem isso, reaprovar um documento pela segunda vez pode tentar
-        // inserir chunks com os mesmos indices dos antigos antes de eles serem
-        // fisicamente removidos, violando a constraint de unicidade.
-        documentChunkRepository.deleteAll(document.getChunks());
+        // Remove QUALQUER chunk existente para este documento diretamente no banco,
+        // via DELETE nativo escopado por document_id - nao depende da colecao
+        // document.getChunks() em memoria, que pode estar dessincronizada do estado
+        // real do banco (foi a causa raiz confirmada de um erro de chave duplicada
+        // ao reaprovar um documento pela segunda vez).
+        documentChunkRepository.deleteByDocumentId(documentId);
         documentChunkRepository.flush();
-        document.getChunks().clear();
 
         List<String> pieces = textChunker.chunk(rawContent);
 
