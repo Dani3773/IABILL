@@ -10,3 +10,8 @@ export async function createWorkspace(request: WorkspaceRequest): Promise<Worksp
   const response = await apiClient.post<Workspace>('/workspaces', request)
   return response.data
 }
+
+export async function updateWorkspace(workspaceId: string, request: WorkspaceRequest): Promise<Workspace> {
+  const response = await apiClient.put<Workspace>(`/workspaces/${workspaceId}`, request)
+  return response.data
+}

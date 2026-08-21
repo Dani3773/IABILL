@@ -64,4 +64,34 @@ public class WorkspaceService {
                 .map(WorkspaceResponseDTO::fromEntity)
                 .toList();
     }
+
+    public WorkspaceResponseDTO update(UUID workspaceId, WorkspaceRequestDTO request, UUID authTenantId, UUID authUserId) {
+        Workspace workspace = workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new IllegalArgumentException("Workspace não encontrado, " + workspaceId));
+        if (!workspace.getTenant().getId().equals(authTenantId)) {
+            throw new org.springframework.security.access.AccessDeniedException("Você não tem acesso a este workspace");
+        }
+        workspace.setName(request.name());
+        workspace.setType(request.type());
+        workspace.setDocumentId(request.documentId());
+        workspace.setCountry(request.country());
+        workspace.setState(request.state());
+        workspace.setCity(request.city());
+        workspace.setNeighborhood(request.neighborhood());
+        workspace.setPostalCode(request.postalCode());
+        workspace.setStreet(request.street());
+        workspace.setAddressNumber(request.addressNumber());
+        workspace.setPhone(request.phone());
+        workspace.setLegalRegimes(request.legalRegimes());
+        Workspace saved = workspaceRepository.save(workspace);
+        auditLogService.record(
+                authTenantId,
+                authUserId,
+                AuditAction.UPDATE,
+                AuditEntityType.WORKSPACE,
+                saved.getId(),
+                Map.of("name", saved.getName())
+        );
+        return WorkspaceResponseDTO.fromEntity(saved);
+    }
 }

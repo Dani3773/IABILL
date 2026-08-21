@@ -39,4 +39,14 @@ public class WorkspaceController {
     public List<WorkspaceResponseDTO> findByTenant(@RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId) {
         return workspaceService.findByTenant(authTenantId);
     }
+
+    @PutMapping("/{workspaceId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public WorkspaceResponseDTO update(
+            @PathVariable UUID workspaceId,
+            @Valid @RequestBody WorkspaceRequestDTO request,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return workspaceService.update(workspaceId, request, authTenantId, authUserId);
+    }
 }

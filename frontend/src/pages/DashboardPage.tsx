@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Building2, MapPin } from 'lucide-react'
+import { Building2, MapPin, Pencil } from 'lucide-react'
 import { fetchWorkspaces } from '../api/workspaceService'
 import { CreateWorkspaceModal } from '../components/CreateWorkspaceModal'
 import { LoadingSpinner } from '../components/LoadingSpinner'
@@ -15,6 +15,8 @@ export function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [editing, setEditing] = useState<Workspace | null>(null)
+  
 
   useEffect(() => {
     loadWorkspaces()
@@ -29,7 +31,10 @@ export function DashboardPage() {
   }
 
   function handleCreated(newWorkspace: Workspace) {
-    setWorkspaces((prev) => [...prev, newWorkspace])
+    setWorkspaces((prev) => {
+      const exists = prev.some((w) => w.id === newWorkspace.id)
+      return exists ? prev.map((w) => (w.id === newWorkspace.id ? newWorkspace : w)) : [...prev, newWorkspace]
+    })
   }
 
   if (isLoading) return <LoadingSpinner label="Carregando workspaces..." />
@@ -68,8 +73,20 @@ export function DashboardPage() {
               <Link
                 key={workspace.id}
                 to={`/workspaces/${workspace.id}/pilares`}
-                className="bg-white rounded-xl p-5 border border-[#1B2233]/10 hover:border-[#14B8A6]/50 hover:shadow-md transition-all"
+                className="relative bg-white rounded-xl p-5 border border-[#1B2233]/10 hover:border-[#14B8A6]/50 hover:shadow-md transition-all"
               >
+                {(role === 'ADMIN' || role === 'SUPER_ADMIN') && (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setEditing(workspace)
+                    }}
+                    className="absolute top-4 right-4 text-[#1B2233]/30 hover:text-[#14B8A6] transition-colors"
+                    title="Editar workspace"
+                  >
+                    <Pencil className="w-3.5 h-3.5" />
+                  </button>
+                )}
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-9 h-9 rounded-lg bg-[#14B8A6]/10 flex items-center justify-center">
                     <Building2 className="w-4 h-4 text-[#14B8A6]" />
@@ -110,9 +127,13 @@ export function DashboardPage() {
         </div>
       )}
 
-      {showCreateModal && (
+      {(showCreateModal || editing) && (
         <CreateWorkspaceModal
-          onClose={() => setShowCreateModal(false)}
+          editing={editing}
+          onClose={() => {
+            setShowCreateModal(false)
+            setEditing(null)
+          }}
           onCreated={handleCreated}
         />
       )}

@@ -1,30 +1,31 @@
 import { useState, type FormEvent } from "react";
 import { X, Building2 } from "lucide-react";
-import { createWorkspace } from "../api/workspaceService";
+import { createWorkspace, updateWorkspace } from "../api/workspaceService";
 import { useAuth } from "../contexts/AuthContext";
 import type { Workspace } from "../types/workspace";
 import { getErrorMessage } from "../api/errorUtils";
 import { COUNTRIES, BRAZILIAN_STATES } from "../constants/locations";
 
 interface Props {
+  editing?: Workspace | null;
   onClose: () => void;
   onCreated: (workspace: Workspace) => void;
 }
 
-export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
+export function CreateWorkspaceModal({ editing, onClose, onCreated }: Props) {
   const { tenantId } = useAuth();
-  const [name, setName] = useState("");
-  const [type, setType] = useState<"MATRIZ" | "FILIAL">("FILIAL");
-  const [documentId, setDocumentId] = useState("");
-  const [country, setCountry] = useState("Brasil");
-  const [state, setState] = useState("");
-  const [city, setCity] = useState("");
-  const [neighborhood, setNeighborhood] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [street, setStreet] = useState("");
-  const [addressNumber, setAddressNumber] = useState("");
-  const [phone, setPhone] = useState("");
-  const [legalRegimes, setLegalRegimes] = useState<("LGPD" | "RGPD")[]>(["LGPD"]);
+  const [name, setName] = useState(editing?.name ?? "");
+  const [type, setType] = useState<"MATRIZ" | "FILIAL">(editing?.type ?? "FILIAL");
+  const [documentId, setDocumentId] = useState(editing?.documentId ?? "");
+  const [country, setCountry] = useState(editing?.country ?? "Brasil");
+  const [state, setState] = useState(editing?.state ?? "");
+  const [city, setCity] = useState(editing?.city ?? "");
+  const [neighborhood, setNeighborhood] = useState(editing?.neighborhood ?? "");
+  const [postalCode, setPostalCode] = useState(editing?.postalCode ?? "");
+  const [street, setStreet] = useState(editing?.street ?? "");
+  const [addressNumber, setAddressNumber] = useState(editing?.addressNumber ?? "");
+  const [phone, setPhone] = useState(editing?.phone ?? "");
+  const [legalRegimes, setLegalRegimes] = useState<("LGPD" | "RGPD")[]>(editing?.legalRegimes ?? ["LGPD"]);
   const [cepLookupLoading, setCepLookupLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -84,7 +85,7 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
     setError(null);
     setIsLoading(true);
     try {
-      const workspace = await createWorkspace({
+      const payload = {
         tenantId,
         name,
         type,
@@ -98,11 +99,14 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
         addressNumber: addressNumber || undefined,
         phone: phone || undefined,
         legalRegimes,
-      });
+      };
+      const workspace = editing
+        ? await updateWorkspace(editing.id, payload)
+        : await createWorkspace(payload);
       onCreated(workspace);
       onClose();
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível criar o workspace."));
+      setError(getErrorMessage(err, "Não foi possível salvar o workspace."));
     } finally {
       setIsLoading(false);
     }
@@ -120,7 +124,7 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
             <div className="w-8 h-8 rounded-lg bg-[#14B8A6]/10 flex items-center justify-center">
               <Building2 className="w-4 h-4 text-[#14B8A6]" />
             </div>
-            <h2 className="text-lg font-serif text-[#1B2233]">Novo Workspace</h2>
+            <h2 className="text-lg font-serif text-[#1B2233]">{editing ? "Editar Workspace" : "Novo Workspace"}</h2>
           </div>
           <button onClick={onClose} className="text-[#1B2233]/40 hover:text-[#1B2233] transition-colors">
             <X className="w-5 h-5" />
@@ -314,7 +318,7 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
               disabled={isLoading}
               className="flex-1 bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-colors"
             >
-              {isLoading ? "Criando..." : "Criar"}
+              {isLoading ? "Salvando..." : editing ? "Salvar alterações" : "Criar"}
             </button>
             <button
               type="button"
