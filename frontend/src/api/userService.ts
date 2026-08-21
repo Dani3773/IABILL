@@ -19,3 +19,8 @@ export async function fetchUserWorkspaces(userId: string): Promise<WorkspaceMemb
 export async function addUserToWorkspace(userId: string, workspaceId: string): Promise<void> {
   await apiClient.post(`/users/${userId}/workspaces/${workspaceId}`)
 }
+
+export async function toggleDpoSubstitute(userId: string): Promise<User> {
+  const response = await apiClient.put<User>(`/users/${userId}/dpo-substitute`)
+  return response.data
+}

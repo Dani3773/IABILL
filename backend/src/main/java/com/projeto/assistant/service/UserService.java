@@ -153,4 +153,27 @@ public class UserService {
                 .map(WorkspaceMembershipResponseDTO::fromEntity)
                 .toList();
     }
+
+    @Transactional
+    public UserResponseDTO toggleDpoSubstitute(UUID userId, UUID authTenantId, UUID authUserId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + userId));
+        if (user.getTenant() == null || !user.getTenant().getId().equals(authTenantId)) {
+            throw new org.springframework.security.access.AccessDeniedException("Você não tem acesso a este usuário");
+        }
+        if (user.getRole() != com.projeto.assistant.model.UserRole.DPO) {
+            throw new IllegalArgumentException("Somente usuários com papel DPO podem ser marcados como substituto");
+        }
+        user.setDpoSubstitute(!user.isDpoSubstitute());
+        User saved = userRepository.save(user);
+        auditLogService.record(
+                authTenantId,
+                authUserId,
+                AuditAction.UPDATE,
+                AuditEntityType.USER,
+                userId,
+                Map.of("dpoSubstitute", saved.isDpoSubstitute())
+        );
+        return UserResponseDTO.fromEntity(saved);
+    }
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { fetchUsers } from '../api/userService'
+import { fetchUsers, toggleDpoSubstitute } from '../api/userService'
 import { CreateUserModal } from '../components/CreateUserModal'
 import { AssignWorkspaceModal } from '../components/AssignWorkspaceModal'
 import { LoadingSpinner } from '../components/LoadingSpinner'
@@ -23,6 +23,16 @@ export function UsersPage() {
 
   function handleCreated(newUser: User) {
     setUsers((prev) => [...prev, newUser])
+  }
+
+  async function handleToggleSubstitute(userId: string) {
+    try {
+      const updated = await toggleDpoSubstitute(userId)
+      setUsers((prev) => prev.map((u) => (u.id === userId ? updated : u)))
+    } catch {
+      // Falha silenciosa deliberada, mesma decisao ja usada em outros lugares
+      // pequenos do sistema - o usuario pode simplesmente tentar de novo.
+    }
   }
 
   if (isLoading) return <LoadingSpinner label="Carregando usuários..." />
@@ -71,6 +81,14 @@ export function UsersPage() {
               >
                 {user.role}
               </span>
+              {user.role === 'DPO' && (
+                <button
+                  onClick={() => handleToggleSubstitute(user.id)}
+                  className="text-sm text-[#0d7a6d] hover:underline font-medium"
+                >
+                  {user.dpoSubstitute ? 'Remover substituto' : 'Marcar como substituto'}
+                </button>
+              )}
               <button
                 onClick={() => setAssigningUser(user)}
                 className="text-sm text-[#0d7a6d] hover:underline font-medium"

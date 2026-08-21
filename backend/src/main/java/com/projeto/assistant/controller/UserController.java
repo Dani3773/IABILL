@@ -67,4 +67,13 @@ public class UserController {
             @Valid @RequestBody com.projeto.assistant.dto.UserActivationRequestDTO request) {
         return userService.activateAccount(request);
     }
+
+    @PutMapping("/{userId}/dpo-substitute")
+    @PreAuthorize("hasRole('ADMIN')")
+    public UserResponseDTO toggleDpoSubstitute(
+            @PathVariable UUID userId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return userService.toggleDpoSubstitute(userId, authTenantId, authUserId);
+    }
 }
