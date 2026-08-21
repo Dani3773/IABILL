@@ -74,6 +74,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponseDTO> handleDataIntegrityViolation(DataIntegrityViolationException ex, HttpServletRequest request) {
+        log.error("Violação de integridade em {}: ", request.getRequestURI(), ex);
         return buildResponse(HttpStatus.CONFLICT, "Já existe um registro com esses dados (verifique CNPJ/e-mail duplicado)", request);
     }
 
