@@ -591,7 +591,7 @@ export function LandingPage() {
               </a>
               <button
                 type="button"
-                onClick={() => window.open("https://iabill.com/politica-privacidade/11.222.333/0001-44", "_blank", "noopener,noreferrer")}
+                onClick={() => window.open("https://iabill.com/politica-privacidade/11222333000144", "_blank", "noopener,noreferrer")}
                 className="text-[#6B7280] hover:text-[#9CA3AF] transition-colors"
               >
                 Política de Privacidade
