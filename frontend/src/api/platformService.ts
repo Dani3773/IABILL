@@ -1,9 +1,7 @@
 import { apiClient } from './client'
 import type { PlatformTenantSummary } from '../types/platform'
 import type { PlatformTenantDetail, PlatformTenantUpdateRequest } from '../types/platform'
-import type { PlatformUserRoleUpdateRequest, PlatformPasswordResetResponse } from '../types/platform'
-
-
+import type { PlatformUserRoleUpdateRequest, PlatformPasswordResetResponse, PlatformWorkspace, PlatformWorkspaceUpdateRequest } from '../types/platform'
 
 export async function fetchAllTenants(): Promise<PlatformTenantSummary[]> {
   const response = await apiClient.get<PlatformTenantSummary[]>('/platform/tenants')
@@ -31,4 +29,9 @@ export async function resetUserPassword(userId: string): Promise<PlatformPasswor
 
 export async function setTenantActive(id: string, active: boolean): Promise<void> {
   await apiClient.put(`/platform/tenants/${id}/active`, null, { params: { active } })
+}
+
+export async function updateWorkspace(workspaceId: string, request: PlatformWorkspaceUpdateRequest): Promise<PlatformWorkspace> {
+  const response = await apiClient.put<PlatformWorkspace>(`/platform/workspaces/${workspaceId}`, request)
+  return response.data
 }

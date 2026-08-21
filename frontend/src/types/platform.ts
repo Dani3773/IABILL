@@ -37,6 +37,10 @@ export interface PlatformTenantDetail {
 
 export interface PlatformTenantUpdateRequest {
   name: string
+}
+
+export interface PlatformWorkspaceUpdateRequest {
+  name: string
   documentId: string
   country: string
 }

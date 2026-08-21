@@ -1,12 +1,13 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Pencil } from "lucide-react";
 import {
   fetchTenantDetail,
   updateTenant,
   updateUserRole,
   resetUserPassword,
   setTenantActive,
+  updateWorkspace,
 } from "../api/platformService";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Alert } from "../components/Alert";
@@ -21,12 +22,15 @@ export function PlatformTenantDetailPage() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState("");
-  const [documentId, setDocumentId] = useState("");
-  const [country, setCountry] = useState("");
   const [saving, setSaving] = useState(false);
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
   const [newRole, setNewRole] = useState<"ADMIN" | "USER" | "DPO" | "SUPER_ADMIN">("USER");
   const [tempPassword, setTempPassword] = useState<string | null>(null);
+  const [editingWorkspaceId, setEditingWorkspaceId] = useState<string | null>(null);
+  const [workspaceName, setWorkspaceName] = useState("");
+  const [workspaceDocumentId, setWorkspaceDocumentId] = useState("");
+  const [workspaceCountry, setWorkspaceCountry] = useState("");
+  const [savingWorkspace, setSavingWorkspace] = useState(false);
 
   useEffect(() => {
     if (!tenantId) return;
@@ -39,8 +43,6 @@ export function PlatformTenantDetailPage() {
       .then((data) => {
         setTenant(data);
         setName(data.name);
-        setDocumentId(data.documentId);
-        setCountry(data.country);
       })
       .catch((err) => setError(getErrorMessage(err, "Não foi possível carregar o tenant.")))
       .finally(() => setIsLoading(false));
@@ -52,7 +54,7 @@ export function PlatformTenantDetailPage() {
     setSaving(true);
     setError(null);
     try {
-      const updated = await updateTenant(tenantId, { name, documentId, country });
+      const updated = await updateTenant(tenantId, { name });
       setTenant(updated);
       setIsEditing(false);
       setSuccessMessage("Dados da empresa atualizados.");
@@ -99,6 +101,32 @@ export function PlatformTenantDetailPage() {
       setSuccessMessage(newStatus ? "Empresa reativada." : "Empresa desativada.");
     } catch (err) {
       setError(getErrorMessage(err, "Não foi possível alterar o status da empresa."));
+    }
+  }
+
+  function startEditingWorkspace(workspaceId: string, currentName: string, currentDocumentId: string) {
+    setEditingWorkspaceId(workspaceId);
+    setWorkspaceName(currentName);
+    setWorkspaceDocumentId(currentDocumentId);
+    setWorkspaceCountry("Brasil");
+  }
+
+  async function handleSaveWorkspace(workspaceId: string) {
+    setSavingWorkspace(true);
+    setError(null);
+    try {
+      await updateWorkspace(workspaceId, {
+        name: workspaceName,
+        documentId: workspaceDocumentId,
+        country: workspaceCountry,
+      });
+      if (tenantId) load(tenantId);
+      setEditingWorkspaceId(null);
+      setSuccessMessage("Workspace atualizado.");
+    } catch (err) {
+      setError(getErrorMessage(err, "Não foi possível salvar o workspace."));
+    } finally {
+      setSavingWorkspace(false);
     }
   }
 
@@ -149,26 +177,11 @@ export function PlatformTenantDetailPage() {
             )}
           </div>
         </div>
-
         {isEditing ? (
           <form onSubmit={handleSave} className="space-y-3">
             <div>
               <label className="block text-xs font-medium text-[#1B2233]/60 mb-1">Nome</label>
               <input value={name} onChange={(e) => setName(e.target.value)} required className={inputClass} />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-[#1B2233]/60 mb-1">CNPJ</label>
-              <input value={documentId} onChange={(e) => setDocumentId(e.target.value)} required className={inputClass} />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-[#1B2233]/60 mb-1">País</label>
-              <input
-                value={country}
-                onChange={(e) => setCountry(e.target.value.toUpperCase())}
-                maxLength={2}
-                required
-                className={inputClass}
-              />
             </div>
             <div className="flex gap-2 pt-1">
               <button
@@ -288,14 +301,69 @@ export function PlatformTenantDetailPage() {
         <h2 className="text-lg font-serif text-[#1B2233] mb-3">Workspaces ({tenant.workspaces.length})</h2>
         <div className="space-y-2">
           {tenant.workspaces.map((w) => (
-            <div key={w.id} className="flex items-center justify-between bg-[#F5F2EA] rounded-lg px-3 py-2 text-sm">
-              <div>
-                <p className="text-[#1B2233]">{w.name}</p>
-                <p className="text-[#1B2233]/45 text-xs font-mono">{w.documentId}</p>
-              </div>
-              <span className="text-xs px-2 py-1 rounded bg-[#B8862B]/12 text-[#B8862B] font-medium">
-                {w.type}
-              </span>
+            <div key={w.id} className="bg-[#F5F2EA] rounded-lg px-3 py-2.5 text-sm">
+              {editingWorkspaceId === w.id ? (
+                <div className="space-y-2">
+                  <div>
+                    <label className="block text-xs font-medium text-[#1B2233]/60 mb-1">Nome</label>
+                    <input
+                      value={workspaceName}
+                      onChange={(e) => setWorkspaceName(e.target.value)}
+                      className="w-full rounded bg-white text-[#1B2233] text-xs px-2 py-1.5 border border-[#1B2233]/10 focus:outline-none focus:border-[#14B8A6]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-[#1B2233]/60 mb-1">CNPJ</label>
+                    <input
+                      value={workspaceDocumentId}
+                      onChange={(e) => setWorkspaceDocumentId(e.target.value)}
+                      className="w-full rounded bg-white text-[#1B2233] text-xs px-2 py-1.5 border border-[#1B2233]/10 focus:outline-none focus:border-[#14B8A6]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-[#1B2233]/60 mb-1">País</label>
+                    <input
+                      value={workspaceCountry}
+                      onChange={(e) => setWorkspaceCountry(e.target.value)}
+                      className="w-full rounded bg-white text-[#1B2233] text-xs px-2 py-1.5 border border-[#1B2233]/10 focus:outline-none focus:border-[#14B8A6]"
+                    />
+                  </div>
+                  <div className="flex gap-2 pt-1">
+                    <button
+                      onClick={() => handleSaveWorkspace(w.id)}
+                      disabled={savingWorkspace}
+                      className="text-xs bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] font-semibold rounded px-3 py-1 transition-colors"
+                    >
+                      {savingWorkspace ? "Salvando..." : "Salvar"}
+                    </button>
+                    <button
+                      onClick={() => setEditingWorkspaceId(null)}
+                      className="text-xs text-[#1B2233]/50 hover:text-[#1B2233]/75 px-2"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-[#1B2233]">{w.name}</p>
+                    <p className="text-[#1B2233]/45 text-xs font-mono">{w.documentId}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs px-2 py-1 rounded bg-[#B8862B]/12 text-[#B8862B] font-medium">
+                      {w.type}
+                    </span>
+                    <button
+                      onClick={() => startEditingWorkspace(w.id, w.name, w.documentId)}
+                      className="text-[#1B2233]/40 hover:text-[#14B8A6] transition-colors"
+                      title="Editar"
+                    >
+                      <Pencil className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
