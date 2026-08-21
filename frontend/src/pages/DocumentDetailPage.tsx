@@ -60,7 +60,8 @@ export function DocumentDetailPage() {
       .then((workspaces) => {
         const ws = workspaces.find((w) => w.id === document.workspaceId);
         if (!ws) return;
-        const url = `https://iabill.com/politica-privacidade/${ws.documentId}`;
+        const digitsOnly = ws.documentId.replace(/\D/g, "");
+        const url = `https://iabill.com/politica-privacidade/${digitsOnly}`;
         setPublicUrl(url);
         return QRCode.toDataURL(url);
       })

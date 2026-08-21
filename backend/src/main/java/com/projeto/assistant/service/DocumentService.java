@@ -264,7 +264,11 @@ public class DocumentService {
     // Endpoint publico - sem authTenantId, ja que o titular nunca tem conta.
     @Transactional(readOnly = true)
     public PublicPrivacyPolicyResponseDTO getPublishedPrivacyPolicy(String workspaceDocumentId) {
-        Workspace workspace = workspaceRepository.findByDocumentId(workspaceDocumentId).orElse(null);
+        // Aceita tanto digitos puros (formato correto para URL publica) quanto o CNPJ
+        // formatado (compatibilidade, caso algum link antigo/externo ainda use o formato
+        // com pontuacao) - normaliza para digitos antes de comparar.
+        String digitsOnly = workspaceDocumentId.replaceAll("\\D", "");
+        Workspace workspace = workspaceRepository.findByDocumentIdDigitsOnly(digitsOnly).orElse(null);
         if (workspace == null) {
             return new PublicPrivacyPolicyResponseDTO(false, null, null, null);
         }

@@ -28,7 +28,12 @@ public class DataSubjectRequestService {
     // mesmo padrao ja usado no CnpjLookupService.
     @Transactional(readOnly = true)
     public PublicWorkspaceInfoDTO lookupWorkspaceByDocumentId(String documentId) {
-        return workspaceRepository.findByDocumentId(documentId)
+        // Normaliza para digitos - CNPJ formatado (com pontos/barra) usado cru numa URL
+        // publica quebra o roteamento client-side (a barra e interpretada como nivel de
+        // caminho, nao como parte do parametro). Ver Politica de Privacidade publica,
+        // mesmo bug corrigido la.
+        String digitsOnly = documentId.replaceAll("\\D", "");
+        return workspaceRepository.findByDocumentIdDigitsOnly(digitsOnly)
                 .map(w -> new PublicWorkspaceInfoDTO(true, w.getName()))
                 .orElse(new PublicWorkspaceInfoDTO(false, null));
     }
@@ -38,7 +43,8 @@ public class DataSubjectRequestService {
     // que a solicitacao apareca no Plano de Acao normal da empresa.
     @Transactional
     public DataSubjectRequestResponseDTO submit(String documentId, DataSubjectRequestSubmissionDTO request) {
-        Workspace workspace = workspaceRepository.findByDocumentId(documentId)
+        String digitsOnly = documentId.replaceAll("\\D", "");
+        Workspace workspace = workspaceRepository.findByDocumentIdDigitsOnly(digitsOnly)
                 .orElseThrow(() -> new IllegalArgumentException("Empresa não encontrada"));
 
         DataSubjectRequest dsr = new DataSubjectRequest();

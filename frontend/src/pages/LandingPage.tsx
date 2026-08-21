@@ -1,5 +1,6 @@
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { useState } from "react";
 import {
   ArrowRight,
   FileText,
@@ -106,6 +107,14 @@ const ENGINEERING_NOTES = [
   "Deploy contínuo com credenciais dinâmicas — sem chaves de acesso permanentes",
   "Testes automatizados em três camadas: unitários, integração e avaliação de IA",
 ];
+
+  const [emailCopied, setEmailCopied] = useState(false);
+
+  function handleCopyEmail() {
+    navigator.clipboard.writeText("danielfelisberto3@gmail.com");
+    setEmailCopied(true);
+    setTimeout(() => setEmailCopied(false), 2000);
+  }
 
 // Vazio de proposito - usar nome/logo de empresa cliente aqui exige autorizacao
 // comercial explicita, separada da autorizacao academica ja obtida para o TCC.
@@ -541,10 +550,10 @@ export function LandingPage() {
           </p>
           <button
             type="button"
-            onClick={() => { window.location.href = "mailto:danielfelisberto3@gmail.com"; }}
+            onClick={handleCopyEmail}
             className="inline-flex items-center gap-2 bg-[#B8862B] hover:bg-[#A9791F] text-[#0E1220] text-sm font-semibold rounded-lg px-6 py-3 transition-colors"
           >
-            danielfelisberto3@gmail.com
+            {emailCopied ? "E-mail copiado!" : "danielfelisberto3@gmail.com"}
           </button>
         </div>
       </section>
