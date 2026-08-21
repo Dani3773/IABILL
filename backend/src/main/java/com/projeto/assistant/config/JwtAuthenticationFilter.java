@@ -47,23 +47,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // esperar o token expirar (ate 24h). Super-Admin sem tenant
             // (tenantId == null) nunca e bloqueado por essa checagem.
             boolean tenantBlocked = tenantId != null && !tenantStatusCacheService.isActive(tenantId);
-
-            if (!tenantBlocked) {
-                request.setAttribute(ATTR_USER_ID, userId);
-                request.setAttribute(ATTR_TENANT_ID, tenantId);
-                request.setAttribute(ATTR_ROLE, role);
-
-                var authentication = new UsernamePasswordAuthenticationToken(
-                        userId,
-                        null,
-                        buildAuthorities(role)
-                );
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+            if (tenantBlocked) {
+                // Resposta especifica em vez de cair no 401 generico, permite ao
+                // frontend distinguir "empresa desativada" de "sessao expirada",
+                // ao inves de mostrar o mesmo erro confuso nos dois casos.
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write("{\"error\":\"TENANT_SUSPENDED\",\"message\":\"Esta empresa foi desativada, entre em contato com o suporte.\"}");
+                return;
             }
-            // Se tenantBlocked=true, simplesmente NAO autentica - a requisicao
-            // segue sem autenticacao, e cai no fluxo normal de 401 (mesmo
-            // comportamento de "sem token nenhum").
+            request.setAttribute(ATTR_USER_ID, userId);
+            request.setAttribute(ATTR_TENANT_ID, tenantId);
+            request.setAttribute(ATTR_ROLE, role);
+            var authentication = new UsernamePasswordAuthenticationToken(
+                    userId,
+                    null,
+                    buildAuthorities(role)
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         filterChain.doFilter(request, response);
