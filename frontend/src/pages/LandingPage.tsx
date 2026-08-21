@@ -108,14 +108,6 @@ const ENGINEERING_NOTES = [
   "Testes automatizados em três camadas: unitários, integração e avaliação de IA",
 ];
 
-  const [emailCopied, setEmailCopied] = useState(false);
-
-  function handleCopyEmail() {
-    navigator.clipboard.writeText("danielfelisberto3@gmail.com");
-    setEmailCopied(true);
-    setTimeout(() => setEmailCopied(false), 2000);
-  }
-
 // Vazio de proposito - usar nome/logo de empresa cliente aqui exige autorizacao
 // comercial explicita, separada da autorizacao academica ja obtida para o TCC.
 // Adicionar entradas aqui APENAS apos essa autorizacao especifica existir.
@@ -172,11 +164,17 @@ function ApprovalSeal() {
 
 export function LandingPage() {
   const { isAuthenticated, tenantId } = useAuth();
+  const [emailCopied, setEmailCopied] = useState(false);
+
+  function handleCopyEmail() {
+    navigator.clipboard.writeText("danielfelisberto3@gmail.com");
+    setEmailCopied(true);
+    setTimeout(() => setEmailCopied(false), 2000);
+  }
 
   if (isAuthenticated) {
     return <Navigate to={tenantId ? "/dashboard" : "/platform"} replace />;
   }
-
   return (
     <div className="bg-[#0E1220]">
       <style>{`
