@@ -39,6 +39,14 @@ export function PublicDataSubjectRequestPage() {
       .finally(() => setLoadingCompany(false));
   }, [documentId]);
 
+    function formatCpf(value: string): string {
+    const digits = value.replace(/\D/g, "").slice(0, 11);
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `${digits.slice(0, 3)}.${digits.slice(3)}`;
+    if (digits.length <= 9) return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`;
+    return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`;
+  }
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!documentId) return;
@@ -138,8 +146,10 @@ export function PublicDataSubjectRequestPage() {
             <label className="block text-sm text-[#1B2233]/70 mb-1">CPF (opcional, ajuda a empresa a te localizar)</label>
             <input
               type="text"
+              inputMode="numeric"
               value={requesterDocumentId}
-              onChange={(e) => setRequesterDocumentId(e.target.value)}
+              onChange={(e) => setRequesterDocumentId(formatCpf(e.target.value))}
+              placeholder="000.000.000-00"
               className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6]"
             />
           </div>
