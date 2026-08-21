@@ -313,7 +313,7 @@ export function PlatformTenantDetailPage() {
             </div>
           ))}
         </div>
-      </div>
+      </div> 
 
             {editingWorkspace && (
         <CreateWorkspaceModal
