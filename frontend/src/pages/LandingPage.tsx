@@ -184,6 +184,9 @@ export function LandingPage() {
         @media (prefers-reduced-motion: reduce) {
           .iabill-log-track, .iabill-seal { animation: none; }
         }
+        html {
+          scroll-behavior: smooth;
+        }
       `}</style>
 
       {/* Nav */}
@@ -536,12 +539,13 @@ export function LandingPage() {
             Tire dúvidas, peça uma demonstração, ou entenda como o IABill se encaixa no seu
             cenário.
           </p>
-          
-            href="mailto:danielfelisberto3@gmail.com"
+          <button
+            type="button"
+            onClick={() => { window.location.href = "mailto:danielfelisberto3@gmail.com"; }}
             className="inline-flex items-center gap-2 bg-[#B8862B] hover:bg-[#A9791F] text-[#0E1220] text-sm font-semibold rounded-lg px-6 py-3 transition-colors"
-          <a>
+          >
             danielfelisberto3@gmail.com
-          </a>
+          </button>
         </div>
       </section>
 
@@ -578,20 +582,20 @@ export function LandingPage() {
               <a href="#contato" className="text-[#6B7280] hover:text-[#9CA3AF] transition-colors">
                 Contato
               </a>
-              
-                href="https://iabill.com/politica-privacidade/11.222.333/0001-44"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={() => window.open("https://iabill.com/politica-privacidade/11.222.333/0001-44", "_blank", "noopener,noreferrer")}
                 className="text-[#6B7280] hover:text-[#9CA3AF] transition-colors"
-              <a>
+              >
                 Política de Privacidade
-              </a>
-              
-                href="mailto:danielfelisberto3@gmail.com"
+              </button>
+              <button
+                type="button"
+                onClick={() => { window.location.href = "mailto:danielfelisberto3@gmail.com"; }}
                 className="text-[#6B7280] hover:text-[#9CA3AF] transition-colors"
-              <a>
+              >
                 danielfelisberto3@gmail.com
-              </a>
+              </button>
             </nav>
           </div>
           <p className="text-[#6B7280] text-xs text-center sm:text-left">
