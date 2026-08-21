@@ -21,7 +21,7 @@ export interface PlatformWorkspace {
   id: string
   name: string
   type: 'MATRIZ' | 'FILIAL'
-  documentId: BigIntToLocaleStringOptions
+  documentId: string
 }
 
 export interface PlatformTenantDetail {

@@ -188,24 +188,21 @@ export function PlatformTenantDetailPage() {
             </div>
           </form>
         ) : (
-          <dl className="grid grid-cols-2 gap-3 text-sm">
-            <div>
-              <dt className="text-[#1B2233]/50">Nome</dt>
-              <dd className="text-[#1B2233]">{tenant.name}</dd>
-            </div>
-            <div>
-              <dt className="text-[#1B2233]/50">CNPJ</dt>
-              <dd className="text-[#1B2233]">{tenant.documentId}</dd>
-            </div>
-            <div>
-              <dt className="text-[#1B2233]/50">País</dt>
-              <dd className="text-[#1B2233]">{tenant.country}</dd>
-            </div>
-            <div>
-              <dt className="text-[#1B2233]/50">Cadastrada em</dt>
-              <dd className="text-[#1B2233]">{new Date(tenant.createdAt).toLocaleDateString("pt-BR")}</dd>
-            </div>
-          </dl>
+          <>
+            <dl className="grid grid-cols-2 gap-3 text-sm">
+              <div>
+                <dt className="text-[#1B2233]/50">Nome</dt>
+                <dd className="text-[#1B2233]">{tenant.name}</dd>
+              </div>
+              <div>
+                <dt className="text-[#1B2233]/50">Cadastrada em</dt>
+                <dd className="text-[#1B2233]">{new Date(tenant.createdAt).toLocaleDateString("pt-BR")}</dd>
+              </div>
+            </dl>
+            <p className="text-xs text-[#1B2233]/40 mt-3">
+              CNPJ e endereço pertencem a cada Workspace individual, veja a lista abaixo.
+            </p>
+          </>
         )}
       </div>
 
@@ -297,7 +294,10 @@ export function PlatformTenantDetailPage() {
         <div className="space-y-2">
           {tenant.workspaces.map((w) => (
             <div key={w.id} className="flex items-center justify-between bg-[#F5F2EA] rounded-lg px-3 py-2 text-sm">
-              <p className="text-[#1B2233]">{w.name}</p>
+              <div>
+                <p className="text-[#1B2233]">{w.name}</p>
+                <p className="text-[#1B2233]/45 text-xs font-mono">{w.documentId}</p>
+              </div>
               <span className="text-xs px-2 py-1 rounded bg-[#B8862B]/12 text-[#B8862B] font-medium">
                 {w.type}
               </span>
