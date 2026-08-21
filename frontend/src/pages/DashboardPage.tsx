@@ -81,7 +81,7 @@ export function DashboardPage() {
                       e.preventDefault()
                       setEditing(workspace)
                     }}
-                    className="absolute top-4 right-4 text-[#1B2233]/30 hover:text-[#14B8A6] transition-colors"
+                    className="absolute top-4 right-16 text-[#1B2233]/30 hover:text-[#14B8A6] transition-colors"
                     title="Editar workspace"
                   >
                     <Pencil className="w-3.5 h-3.5" />
