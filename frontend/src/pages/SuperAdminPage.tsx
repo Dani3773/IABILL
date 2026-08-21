@@ -35,8 +35,6 @@ export function SuperAdminPage() {
           <thead>
             <tr className="text-left text-[#1B2233]/50 border-b border-[#1B2233]/10">
               <th className="py-3 px-4">Empresa</th>
-              <th className="py-3 px-4">CNPJ</th>
-              <th className="py-3 px-4">País</th>
               <th className="py-3 px-4">Cadastrada em</th>
               <th className="py-3 px-4 text-center">Usuários</th>
               <th className="py-3 px-4 text-center">Workspaces</th>
@@ -52,8 +50,6 @@ export function SuperAdminPage() {
                 className="border-b border-[#1B2233]/8 last:border-0 hover:bg-[#F5F2EA] cursor-pointer transition-colors"
               >
                 <td className="py-3 px-4 text-[#1B2233] font-medium">{t.name}</td>
-                <td className="py-3 px-4 text-[#1B2233]/60">{t.documentId}</td>
-                <td className="py-3 px-4 text-[#1B2233]/60">{t.country}</td>
                 <td className="py-3 px-4 text-[#1B2233]/60 whitespace-nowrap">
                   {new Date(t.createdAt).toLocaleDateString('pt-BR')}
                 </td>
