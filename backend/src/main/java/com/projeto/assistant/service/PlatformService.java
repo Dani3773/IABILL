@@ -54,21 +54,34 @@ public class PlatformService {
     public PlatformTenantDetailDTO updateTenant(UUID tenantId, PlatformTenantUpdateRequestDTO request, UUID authUserId) {
         Tenant tenant = tenantRepository.findById(tenantId)
                 .orElseThrow(() -> new IllegalArgumentException("Tenant não encontrado: " + tenantId));
-
-        String before = tenant.getName() + " / " + tenant.getDocumentId() + " / " + tenant.getCountry();
-
+        String before = tenant.getName();
         tenant.setName(request.name());
-        tenant.setDocumentId(request.documentId());
-        tenant.setCountry(request.country());
         tenantRepository.save(tenant);
-
         // Auditoria registrada NO TENANT AFETADO (nao no tenant do super-admin) -
         // garante transparencia: a propria empresa consegue ver, na sua trilha de
         // auditoria, que um administrador de plataforma editou seus dados.
         auditLogService.record(tenantId, authUserId, AuditAction.UPDATE, AuditEntityType.TENANT, tenantId,
-                Map.of("before", before, "after", request.name() + " / " + request.documentId() + " / " + request.country()));
-
+                Map.of("before", before, "after", request.name()));
         return getTenantDetail(tenantId);
+    }
+
+    // Acao curada de Super-Admin, separada do endpoint normal de update de
+    // Workspace (que exige o tenantId do proprio token, e por isso bloquearia
+    // um Super-Admin editando o workspace de OUTRO tenant). Segue o mesmo
+    // padrao ja usado em resetUserPassword/setTenantActive - acao especifica,
+    // nao um editor generico de tabela.
+    @Transactional
+    public PlatformWorkspaceSummaryDTO updateWorkspace(UUID workspaceId, PlatformWorkspaceUpdateRequestDTO request, UUID authUserId) {
+        Workspace workspace = workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new IllegalArgumentException("Workspace não encontrado: " + workspaceId));
+        String before = workspace.getName() + " / " + workspace.getDocumentId() + " / " + workspace.getCountry();
+        workspace.setName(request.name());
+        workspace.setDocumentId(request.documentId());
+        workspace.setCountry(request.country());
+        workspaceRepository.save(workspace);
+        auditLogService.record(workspace.getTenant().getId(), authUserId, AuditAction.UPDATE, AuditEntityType.WORKSPACE, workspaceId,
+                Map.of("before", before, "after", request.name() + " / " + request.documentId() + " / " + request.country(), "changedByPlatformAdmin", true));
+        return new PlatformWorkspaceSummaryDTO(workspace.getId(), workspace.getName(), workspace.getType(), workspace.getDocumentId());
     }
 
     @Transactional

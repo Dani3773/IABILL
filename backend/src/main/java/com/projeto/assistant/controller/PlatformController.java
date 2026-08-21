@@ -65,4 +65,13 @@ public class PlatformController {
             @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
         return platformService.setTenantActive(id, active, authUserId);
     }
+
+    @PutMapping("/workspaces/{workspaceId}")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    public PlatformWorkspaceSummaryDTO updateWorkspace(
+            @PathVariable UUID workspaceId,
+            @Valid @RequestBody PlatformWorkspaceUpdateRequestDTO request,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return platformService.updateWorkspace(workspaceId, request, authUserId);
+    }
 }
