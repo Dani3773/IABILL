@@ -6,7 +6,17 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Alert } from "../components/Alert";
 import { getErrorMessage } from "../api/errorUtils";
 import { useLocation } from "react-router-dom";
-import type { Document, DocumentStatus } from "../types/document";
+import type { Document, DocumentStatus, DocumentType } from "../types/document";
+
+const DOCUMENT_TYPE_LABELS: Record<DocumentType, string> = {
+  INVENTARIO_DADOS: "Inventário de Dados",
+  POLITICA_PRIVACIDADE: "Política de Privacidade",
+  RELATORIO_CONFORMIDADE: "Relatório de Conformidade",
+  RAT: "RAT (Registro de Atividades de Tratamento)",
+  RIPD_DPIA: "RIPD/DPIA (Relatório de Impacto à Proteção de Dados)",
+  POLITICA_SEGURANCA_INFORMACAO: "Política de Segurança da Informação (PSI)",
+  MATERIAL_TREINAMENTO: "Material de Treinamento/Conscientização",
+};
 import {
   fetchDocumentsByWorkspace,
   dismissReviewFlag,
@@ -113,7 +123,7 @@ export function DocumentsPage() {
                     </div>
                     <div className="min-w-0">
                       <p className="font-medium text-[#1B2233] truncate">{doc.title}</p>
-                      <p className="text-xs font-mono text-[#1B2233]/65">{doc.type}</p>
+                      <p className="text-xs font-mono text-[#1B2233]/65">{DOCUMENT_TYPE_LABELS[doc.type]}</p>
                     </div>
                   </div>
                   <span className={`text-xs px-2 py-1 rounded shrink-0 ${STATUS_STYLES[doc.status]}`}>

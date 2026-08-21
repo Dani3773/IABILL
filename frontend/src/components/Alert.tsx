@@ -16,9 +16,9 @@ export function Alert({ type, message }: Props) {
       }`}
     >
       {isError ? (
-        <AlertCircle className="w-4 h-4 flex-shrink-0" />
+        <AlertCircle className="w-4 h-4 shrink-0" />
       ) : (
-        <CheckCircle className="w-4 h-4 flex-shrink-0" />
+        <CheckCircle className="w-4 h-4 shrink-0" />
       )}
       <span>{message}</span>
     </div>

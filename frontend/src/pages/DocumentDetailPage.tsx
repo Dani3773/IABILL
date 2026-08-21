@@ -15,7 +15,7 @@ import { getErrorMessage } from "../api/errorUtils";
 import { useAuth } from "../contexts/AuthContext";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Alert } from "../components/Alert";
-import type { Document } from "../types/document";
+import type { Document, DocumentType } from "../types/document";
 import QRCode from "qrcode";
 import { fetchWorkspaces } from "../api/workspaceService";
 import { ArrowLeft } from "lucide-react";
@@ -34,6 +34,16 @@ export function DocumentDetailPage() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [publicUrl, setPublicUrl] = useState<string | null>(null);
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+
+  const DOCUMENT_TYPE_LABELS: Record<DocumentType, string> = {
+  INVENTARIO_DADOS: "Inventário de Dados",
+  POLITICA_PRIVACIDADE: "Política de Privacidade",
+  RELATORIO_CONFORMIDADE: "Relatório de Conformidade",
+  RAT: "RAT (Registro de Atividades de Tratamento)",
+  RIPD_DPIA: "RIPD/DPIA (Relatório de Impacto à Proteção de Dados)",
+  POLITICA_SEGURANCA_INFORMACAO: "Política de Segurança da Informação (PSI)",
+  MATERIAL_TREINAMENTO: "Material de Treinamento/Conscientização",
+};
 
   useEffect(() => {
     if (!documentId) return;
@@ -228,7 +238,7 @@ export function DocumentDetailPage() {
           {document.status}
         </span>
       </div>
-      <p className="text-sm text-[#1B2233]/55 mb-6">{document.type}</p>
+      <p className="text-sm text-[#1B2233]/55 mb-6">{DOCUMENT_TYPE_LABELS[document.type]}</p>
 
       <div className="space-y-3 mb-4">
         {error && <Alert type="error" message={error} />}
@@ -255,27 +265,29 @@ export function DocumentDetailPage() {
         </div>
       )}
 
-      {document.generatedContent !== null && (
+      {document.status !== "APPROVED" && (
         <div className="bg-white rounded-xl p-4 border border-[#1B2233]/10 mb-4">
-          <label className="block text-sm text-[#1B2233]/70 mb-2">
-            Conteúdo {document.status === "APPROVED" ? "(aprovado, somente leitura)" : ""}
-          </label>
+          <label className="block text-sm text-[#1B2233]/70 mb-2">Conteúdo</label>
           <textarea
             value={editedContent}
             onChange={(e) => setEditedContent(e.target.value)}
             rows={10}
-            readOnly={document.status === "APPROVED"}
-            className={inputClass + " disabled:opacity-70"}
+            placeholder="Digite o conteúdo manualmente, ou use 'Gerar com IA' acima"
+            className={inputClass}
           />
-          {document.status !== "APPROVED" && (
-            <button
-              onClick={handleSaveContent}
-              disabled={isActionLoading || editedContent === document.generatedContent}
-              className="bg-[#1B2233]/8 hover:bg-[#1B2233]/15 disabled:opacity-50 text-[#1B2233] text-sm font-medium rounded-lg px-4 py-2 transition-colors"
-            >
-              Salvar edição manual
-            </button>
-          )}
+          <button
+            onClick={handleSaveContent}
+            disabled={isActionLoading || editedContent === (document.generatedContent ?? "")}
+            className="bg-[#1B2233]/8 hover:bg-[#1B2233]/15 disabled:opacity-50 text-[#1B2233] text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+          >
+            Salvar edição manual
+          </button>
+        </div>
+      )}
+      {document.status === "APPROVED" && document.generatedContent !== null && (
+        <div className="bg-white rounded-xl p-4 border border-[#1B2233]/10 mb-4">
+          <label className="block text-sm text-[#1B2233]/70 mb-2">Conteúdo (aprovado, somente leitura)</label>
+          <textarea value={document.generatedContent} readOnly rows={10} className={inputClass + " opacity-70"} />
         </div>
       )}
 

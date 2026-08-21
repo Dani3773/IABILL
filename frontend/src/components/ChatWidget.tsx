@@ -116,7 +116,7 @@ export function ChatWidget({ workspaceId }: Props) {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 w-96 h-[32rem] bg-white rounded-2xl shadow-2xl border border-[#1B2233]/10 flex flex-col z-40">
+    <div className="fixed bottom-6 right-6 w-96 h-128 bg-white rounded-2xl shadow-2xl border border-[#1B2233]/10 flex flex-col z-40">
       <div className="flex items-center justify-between px-4 py-3 border-b border-[#1B2233]/10">
         <div className="flex items-center gap-2">
           {view === 'conversation' && (

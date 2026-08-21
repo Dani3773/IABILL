@@ -93,13 +93,16 @@ public class DocumentService {
     @Transactional
     public DocumentResponseDTO updateContent(UUID documentId, String content, UUID authTenantId, UUID authUserId) {
         Document document = getValidatedDocument(documentId, authTenantId);
-
         document.setGeneratedContent(content);
+        // Documento so com conteudo manual (sem nunca passar pela IA) tambem precisa
+        // avancar de DRAFT para GENERATED, senao fica preso sem caminho de aprovacao -
+        // "Marcar como Revisado" exige status GENERATED independente da origem do conteudo.
+        if (document.getStatus() == DocumentStatus.DRAFT) {
+            document.setStatus(DocumentStatus.GENERATED);
+        }
         Document saved = documentRepository.save(document);
-
         auditLogService.record(authTenantId, authUserId, AuditAction.UPDATE, AuditEntityType.DOCUMENT, documentId,
                 Map.of("field", "generatedContent"));
-
         return DocumentResponseDTO.fromEntity(saved);
     }
 
