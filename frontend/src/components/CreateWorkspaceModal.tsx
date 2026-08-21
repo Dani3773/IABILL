@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { X, Building2 } from "lucide-react";
 import { createWorkspace } from "../api/workspaceService";
 import { useAuth } from "../contexts/AuthContext";
 import type { Workspace } from "../types/workspace";
@@ -52,13 +53,11 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
   async function handleCepBlur() {
     const sanitized = postalCode.replace(/\D/g, "");
     if (sanitized.length !== 8) return;
-
     setCepLookupLoading(true);
     try {
       const response = await fetch(`/api/v1/auth/cep/${sanitized}`);
       const stillSameCep = postalCode.replace(/\D/g, "") === sanitized;
       if (!stillSameCep) return;
-
       if (response.ok) {
         const data = await response.json();
         if (data.found) {
@@ -109,43 +108,48 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
     }
   }
 
+  const inputClass =
+    "w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] text-sm px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] placeholder:text-[#1B2233]/40";
+  const labelClass = "block text-xs font-medium text-[#1B2233]/60 mb-1.5";
+
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center px-4 z-50">
-      <div className="w-full max-w-md bg-slate-800 rounded-xl p-6 shadow-xl border border-slate-700 max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-white">Novo Workspace</h2>
-          <button
-            onClick={onClose}
-            className="text-slate-400 hover:text-white text-xl leading-none"
-          >
-            ×
+    <div className="fixed inset-0 bg-[#1B2233]/40 backdrop-blur-sm flex items-center justify-center px-4 z-50 py-8">
+      <div className="w-full max-w-md bg-white rounded-xl p-6 shadow-2xl border border-[#1B2233]/10 max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-[#14B8A6]/10 flex items-center justify-center">
+              <Building2 className="w-4 h-4 text-[#14B8A6]" />
+            </div>
+            <h2 className="text-lg font-serif text-[#1B2233]">Novo Workspace</h2>
+          </div>
+          <button onClick={onClose} className="text-[#1B2233]/40 hover:text-[#1B2233] transition-colors">
+            <X className="w-5 h-5" />
           </button>
         </div>
+
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Nome</label>
+            <label className={labelClass}>Nome</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
               placeholder="Ex: Filial São Paulo"
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
+              className={inputClass}
             />
           </div>
+
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Tipo</label>
-            <select
-              value={type}
-              onChange={(e) => setType(e.target.value as "MATRIZ" | "FILIAL")}
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
-            >
+            <label className={labelClass}>Tipo</label>
+            <select value={type} onChange={(e) => setType(e.target.value as "MATRIZ" | "FILIAL")} className={inputClass}>
               <option value="FILIAL">Filial</option>
               <option value="MATRIZ">Matriz</option>
             </select>
           </div>
+
           <div>
-            <label className="block text-sm text-slate-300 mb-1">CNPJ</label>
+            <label className={labelClass}>CNPJ</label>
             <input
               type="text"
               value={documentId}
@@ -153,23 +157,24 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
               required
               autoComplete="off"
               placeholder="Somente números"
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
+              className={inputClass}
             />
           </div>
+
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Telefone</label>
+            <label className={labelClass}>Telefone</label>
             <input
               type="text"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               autoComplete="off"
               placeholder="Opcional"
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
+              className={inputClass}
             />
           </div>
 
           <div>
-            <label className="block text-sm text-slate-300 mb-1">País</label>
+            <label className={labelClass}>País</label>
             <select
               value={country}
               onChange={(e) => {
@@ -177,7 +182,7 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
                 setState("");
               }}
               required
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
+              className={inputClass}
             >
               {COUNTRIES.map((c) => (
                 <option key={c.code} value={c.name}>
@@ -188,9 +193,7 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
           </div>
 
           <div>
-            <label className="block text-sm text-slate-300 mb-1">
-              {country === "Brasil" ? "CEP" : "Código postal"}
-            </label>
+            <label className={labelClass}>{country === "Brasil" ? "CEP" : "Código postal"}</label>
             <div className="relative">
               <input
                 type="text"
@@ -200,10 +203,10 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
                 onBlur={country === "Brasil" ? handleCepBlur : undefined}
                 autoComplete="off"
                 placeholder={country === "Brasil" ? "00000-000" : "Código postal"}
-                className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
+                className={inputClass}
               />
               {cepLookupLoading && (
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-cyan-400">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#0d7a6d]">
                   buscando...
                 </span>
               )}
@@ -212,13 +215,9 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="block text-sm text-slate-300 mb-1">Estado</label>
+              <label className={labelClass}>Estado</label>
               {country === "Brasil" ? (
-                <select
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
-                  className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
-                >
+                <select value={state} onChange={(e) => setState(e.target.value)} className={inputClass}>
                   <option value="">Selecione</option>
                   {BRAZILIAN_STATES.map((s) => (
                     <option key={s} value={s}>
@@ -233,93 +232,94 @@ export function CreateWorkspaceModal({ onClose, onCreated }: Props) {
                   onChange={(e) => setState(e.target.value)}
                   autoComplete="off"
                   placeholder="Estado/Região"
-                  className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
+                  className={inputClass}
                 />
               )}
             </div>
             <div>
-              <label className="block text-sm text-slate-300 mb-1">Cidade</label>
+              <label className={labelClass}>Cidade</label>
               <input
                 type="text"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 autoComplete="off"
-                className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
+                className={inputClass}
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Bairro</label>
+            <label className={labelClass}>Bairro</label>
             <input
               type="text"
               value={neighborhood}
               onChange={(e) => setNeighborhood(e.target.value)}
               autoComplete="off"
-              className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
+              className={inputClass}
             />
           </div>
 
           <div className="grid grid-cols-3 gap-2">
             <div className="col-span-2">
-              <label className="block text-sm text-slate-300 mb-1">Rua</label>
+              <label className={labelClass}>Rua</label>
               <input
                 type="text"
                 value={street}
                 onChange={(e) => setStreet(e.target.value)}
                 autoComplete="off"
-                className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
+                className={inputClass}
               />
             </div>
             <div>
-              <label className="block text-sm text-slate-300 mb-1">Número</label>
+              <label className={labelClass}>Número</label>
               <input
                 type="text"
                 value={addressNumber}
                 onChange={(e) => setAddressNumber(e.target.value)}
                 autoComplete="off"
-                className="w-full rounded-lg bg-slate-700 text-white px-3 py-2 border border-slate-600 focus:outline-none focus:border-cyan-500"
+                className={inputClass}
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Regime legal aplicável</label>
+            <label className={labelClass}>Regime legal aplicável</label>
             <div className="flex gap-4">
-              <label className="flex items-center gap-1.5 text-sm text-slate-300">
+              <label className="flex items-center gap-1.5 text-sm text-[#1B2233]/70">
                 <input
                   type="checkbox"
                   checked={legalRegimes.includes("LGPD")}
                   onChange={() => toggleLegalRegime("LGPD")}
-                  className="accent-cyan-500"
+                  className="rounded border-[#1B2233]/20 text-[#14B8A6] focus:ring-[#14B8A6]/30"
                 />
                 LGPD
               </label>
-              <label className="flex items-center gap-1.5 text-sm text-slate-300">
+              <label className="flex items-center gap-1.5 text-sm text-[#1B2233]/70">
                 <input
                   type="checkbox"
                   checked={legalRegimes.includes("RGPD")}
                   onChange={() => toggleLegalRegime("RGPD")}
-                  className="accent-cyan-500"
+                  className="rounded border-[#1B2233]/20 text-[#14B8A6] focus:ring-[#14B8A6]/30"
                 />
                 RGPD
               </label>
             </div>
           </div>
 
-          {error && <p className="text-red-400 text-sm">{error}</p>}
+          {error && <p className="text-red-600 text-sm">{error}</p>}
+
           <div className="flex gap-3 pt-2">
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 bg-cyan-600 hover:bg-cyan-700 disabled:opacity-50 text-white font-medium rounded-lg py-2 transition-colors"
+              className="flex-1 bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-colors"
             >
               {isLoading ? "Criando..." : "Criar"}
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-medium rounded-lg py-2 transition-colors"
+              className="flex-1 bg-[#1B2233]/5 hover:bg-[#1B2233]/10 text-[#1B2233] text-sm font-medium rounded-lg py-2.5 transition-colors"
             >
               Cancelar
             </button>

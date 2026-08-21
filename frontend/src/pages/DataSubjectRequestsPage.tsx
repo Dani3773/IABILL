@@ -29,8 +29,8 @@ const STATUS_LABELS: Record<DataSubjectRequestStatus, string> = {
 const STATUS_STYLES: Record<DataSubjectRequestStatus, string> = {
   RECEIVED: "bg-[#1B2233]/8 text-[#1B2233]/70",
   IN_PROGRESS: "bg-[#B8862B]/12 text-[#B8862B]",
-  COMPLETED: "bg-green-100 text-green-700",
-  REJECTED: "bg-red-100 text-red-700",
+  COMPLETED: "bg-[#14B8A6]/12 text-[#0d7a6d]",
+  REJECTED: "bg-red-50 text-red-700",
 };
 
 export function DataSubjectRequestsPage() {

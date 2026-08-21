@@ -11,8 +11,8 @@ export function Alert({ type, message }: Props) {
     <div
       className={`flex items-center gap-2 rounded-lg px-3.5 py-2.5 text-sm ${
         isError
-          ? 'bg-red-950/50 border border-red-900/50 text-red-400'
-          : 'bg-green-950/50 border border-green-900/50 text-green-400'
+          ? 'bg-red-50 border border-red-200 text-red-700'
+          : 'bg-[#14B8A6]/10 border border-[#14B8A6]/20 text-[#0d7a6d]'
       }`}
     >
       {isError ? (

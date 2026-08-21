@@ -44,6 +44,10 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
+    if (dpaSigned && !dpaSignedAt) {
+      setError("Informe a data de assinatura do DPA, ou desmarque a opção \"DPA assinado\".");
+      return;
+    }
     try {
       const payload = {
         workspaceId,
@@ -176,6 +180,7 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
                 type="date"
                 value={dpaSignedAt}
                 onChange={(e) => setDpaSignedAt(e.target.value)}
+                required
                 className={inputClass}
               />
             </div>

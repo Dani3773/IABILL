@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { confirmEmail } from "../api/authService";
+import { CheckCircle2, XCircle } from "lucide-react";
 
 export function EmailConfirmationPage() {
   const { token } = useParams<{ token: string }>();
@@ -35,7 +36,7 @@ export function EmailConfirmationPage() {
           {status === "success" && (
             <>
               <div className="w-14 h-14 rounded-full bg-[#14B8A6]/15 flex items-center justify-center mx-auto mb-4">
-                <span className="text-[#14B8A6] text-2xl">✓</span>
+                <CheckCircle2 className="w-7 h-7 text-[#14B8A6]" />
               </div>
               <h1 className="text-white text-lg font-semibold mb-2">E-mail confirmado</h1>
               <p className="text-slate-400 text-sm mb-6">{message}</p>
@@ -51,7 +52,7 @@ export function EmailConfirmationPage() {
           {status === "error" && (
             <>
               <div className="w-14 h-14 rounded-full bg-red-900/30 flex items-center justify-center mx-auto mb-4">
-                <span className="text-red-400 text-2xl">✕</span>
+                <XCircle className="w-7 h-7 text-red-400" />
               </div>
               <h1 className="text-white text-lg font-semibold mb-2">Não foi possível confirmar</h1>
               <p className="text-slate-400 text-sm mb-6">{message}</p>

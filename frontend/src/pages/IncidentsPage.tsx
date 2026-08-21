@@ -13,6 +13,30 @@ import { Alert } from '../components/Alert'
 import { getErrorMessage } from '../api/errorUtils'
 import type { Incident, IncidentSeverity, IncidentStatus } from '../types/incident'
 
+// Soma N dias UTEIS a uma data, pulando sabados e domingos - usado pro prazo
+// de notificacao a ANPD (3 dias uteis, Resolucao CD/ANPD 15/2024).
+function addBusinessDays(start: Date, days: number): Date {
+  const result = new Date(start)
+  let added = 0
+  while (added < days) {
+    result.setDate(result.getDate() + 1)
+    const day = result.getDay()
+    if (day !== 0 && day !== 6) added++
+  }
+  return result
+}
+
+function getAnpdDeadlineInfo(incident: Incident): { text: string; urgent: boolean } | null {
+  if (incident.anpdNotifiedAt) return null
+  const deadline = addBusinessDays(new Date(incident.discoveredAt), 3)
+  const now = new Date()
+  const formattedDeadline = deadline.toLocaleDateString('pt-BR')
+  if (now > deadline) {
+    return { text: `Prazo de notificação à ANPD vencido desde ${formattedDeadline}`, urgent: true }
+  }
+  return { text: `Notificar a ANPD até ${formattedDeadline} (3 dias úteis)`, urgent: false }
+}
+
 const SEVERITY_LABELS: Record<IncidentSeverity, string> = {
   LOW: 'Baixa',
   MEDIUM: 'Média',
@@ -40,7 +64,7 @@ const STATUS_STYLES: Record<IncidentStatus, string> = {
   ASSESSING: 'bg-[#B8862B]/12 text-[#B8862B]',
   ANPD_NOTIFIED: 'bg-blue-100 text-blue-700',
   DATA_SUBJECTS_NOTIFIED: 'bg-[#14B8A6]/12 text-[#0d7a6d]',
-  RESOLVED: 'bg-green-100 text-green-700',
+  RESOLVED: 'bg-[#14B8A6]/12 text-[#0d7a6d]',
 }
 
 // Status selecionaveis manualmente no dropdown - ANPD_NOTIFIED e DATA_SUBJECTS_NOTIFIED
@@ -279,9 +303,20 @@ export function IncidentsPage() {
                     ANPD notificada em {new Date(incident.anpdNotifiedAt).toLocaleString('pt-BR')}
                   </span>
                 ) : (
-                  <button onClick={() => handleNotifyAnpd(incident.id)} className="text-blue-700 hover:underline font-medium">
-                    Registrar notificação à ANPD
-                  </button>
+                  <div className="flex flex-col gap-0.5">
+                    <button onClick={() => handleNotifyAnpd(incident.id)} className="text-blue-700 hover:underline font-medium text-left">
+                      Registrar notificação à ANPD
+                    </button>
+                    {(() => {
+                      const deadlineInfo = getAnpdDeadlineInfo(incident)
+                      if (!deadlineInfo) return null
+                      return (
+                        <span className={deadlineInfo.urgent ? "text-red-600 font-medium" : "text-[#1B2233]/45"}>
+                          {deadlineInfo.text}
+                        </span>
+                      )
+                    })()}
+                  </div>
                 )}
                 {incident.dataSubjectsNotifiedAt ? (
                   <span className="text-[#0d7a6d]">

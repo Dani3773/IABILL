@@ -23,25 +23,25 @@ export function SuperAdminPage() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold text-white mb-1">Visão Geral da Plataforma</h2>
-      <p className="text-sm text-slate-400 mb-6">
+      <h2 className="text-xl font-serif text-[#1B2233] mb-1">Visão Geral da Plataforma</h2>
+      <p className="text-sm text-[#1B2233]/55 mb-6">
         Todas as empresas cadastradas no IABill ({tenants.length} no total).
       </p>
 
       {error && <div className="mb-4"><Alert type="error" message={error} /></div>}
 
-      <div className="overflow-x-auto">
+      <div className="bg-white rounded-xl border border-[#1B2233]/10 overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-slate-400 border-b border-slate-700">
-              <th className="py-2 pr-4">Empresa</th>
-              <th className="py-2 pr-4">CNPJ</th>
-              <th className="py-2 pr-4">País</th>
-              <th className="py-2 pr-4">Status</th>
-              <th className="py-2 pr-4">Cadastrada em</th>
-              <th className="py-2 pr-4 text-center">Usuários</th>
-              <th className="py-2 pr-4 text-center">Workspaces</th>
-              <th className="py-2 pr-4 text-center">Documentos</th>
+            <tr className="text-left text-[#1B2233]/50 border-b border-[#1B2233]/10">
+              <th className="py-3 px-4">Empresa</th>
+              <th className="py-3 px-4">CNPJ</th>
+              <th className="py-3 px-4">País</th>
+              <th className="py-3 px-4">Cadastrada em</th>
+              <th className="py-3 px-4 text-center">Usuários</th>
+              <th className="py-3 px-4 text-center">Workspaces</th>
+              <th className="py-3 px-4 text-center">Documentos</th>
+              <th className="py-3 px-4 text-center">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -49,24 +49,27 @@ export function SuperAdminPage() {
               <tr
                 key={t.id}
                 onClick={() => navigate(`/platform/${t.id}`)}
-                className="border-b border-slate-800 hover:bg-slate-800/50 cursor-pointer transition-colors"
+                className="border-b border-[#1B2233]/8 last:border-0 hover:bg-[#F5F2EA] cursor-pointer transition-colors"
               >
-                <td className="py-3 pr-4 text-white font-medium">{t.name}</td>
-                <td className="py-3 pr-4 text-slate-400">{t.documentId}</td>
-                <td className="py-3 pr-4 text-slate-400">{t.country}</td>
-                <td className="py-3 pr-4 text-slate-400 whitespace-nowrap">
+                <td className="py-3 px-4 text-[#1B2233] font-medium">{t.name}</td>
+                <td className="py-3 px-4 text-[#1B2233]/60">{t.documentId}</td>
+                <td className="py-3 px-4 text-[#1B2233]/60">{t.country}</td>
+                <td className="py-3 px-4 text-[#1B2233]/60 whitespace-nowrap">
                   {new Date(t.createdAt).toLocaleDateString('pt-BR')}
                 </td>
-                <td className="py-3 pr-4 text-center text-slate-300">{t.userCount}</td>
-                <td className="py-3 pr-4 text-center text-slate-300">{t.workspaceCount}</td>
-                <td className="py-3 pr-4 text-center text-slate-300">{t.documentCount}</td>
-                <td className="py-3 pr-4 text-center">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${t.active ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                <td className="py-3 px-4 text-center text-[#1B2233]/70">{t.userCount}</td>
+                <td className="py-3 px-4 text-center text-[#1B2233]/70">{t.workspaceCount}</td>
+                <td className="py-3 px-4 text-center text-[#1B2233]/70">{t.documentCount}</td>
+                <td className="py-3 px-4 text-center">
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      t.active ? 'bg-[#14B8A6]/12 text-[#0d7a6d]' : 'bg-red-50 text-red-700'
+                    }`}
+                  >
                     {t.active ? 'Ativo' : 'Inativo'}
                   </span>
                 </td>
               </tr>
-              
             ))}
           </tbody>
         </table>

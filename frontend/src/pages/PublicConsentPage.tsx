@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useParams } from "react-router-dom";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, CheckCircle2 } from "lucide-react";
 import { fetchPublicConsentInfo, submitConsent } from "../api/consentService";
 import { getErrorMessage } from "../api/errorUtils";
 
@@ -73,7 +73,7 @@ export function PublicConsentPage() {
       <div className="min-h-screen bg-[#F5F2EA] flex items-center justify-center px-4">
         <div className="max-w-md text-center">
           <div className="w-14 h-14 rounded-full bg-[#14B8A6]/15 flex items-center justify-center mx-auto mb-4">
-            <span className="text-[#0d7a6d] text-2xl">✓</span>
+            <CheckCircle2 className="w-7 h-7 text-[#0d7a6d]" />
           </div>
           <h1 className="text-[#1B2233] text-lg font-semibold mb-2">Consentimento registrado</h1>
           <p className="text-[#1B2233]/55 text-sm">

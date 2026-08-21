@@ -29,11 +29,16 @@ export function UsersPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold text-white">Usuários</h2>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="text-xl font-serif text-[#1B2233]">Usuários</h2>
+          <p className="text-sm text-[#1B2233]/50 mt-0.5">
+            {users.length} {users.length === 1 ? "usuário cadastrado" : "usuários cadastrados"}
+          </p>
+        </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+          className="bg-[#14B8A6] hover:bg-[#10a595] text-[#0A0D16] text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors"
         >
           + Novo Usuário
         </button>
@@ -45,25 +50,25 @@ export function UsersPage() {
         {users.map((user) => (
           <div
             key={user.id}
-            className="flex items-center justify-between bg-slate-800 rounded-lg p-4 border border-slate-700"
+            className="flex items-center justify-between bg-white rounded-xl p-4 border border-[#1B2233]/10"
           >
             <div>
-              <p className="font-medium text-white">{user.username}</p>
-              <p className="text-xs text-slate-400">{user.email}</p>
+              <p className="font-medium text-[#1B2233]">{user.username}</p>
+              <p className="text-xs text-[#1B2233]/50">{user.email}</p>
             </div>
             <div className="flex items-center gap-3">
               <span
-                className={`text-xs px-2 py-1 rounded ${
+                className={`text-xs px-2 py-1 rounded font-medium ${
                   user.role === 'ADMIN'
-                    ? 'bg-blue-900 text-blue-300'
-                    : 'bg-slate-700 text-slate-300'
+                    ? 'bg-[#B8862B]/12 text-[#B8862B]'
+                    : 'bg-[#1B2233]/8 text-[#1B2233]/70'
                 }`}
               >
                 {user.role}
               </span>
               <button
                 onClick={() => setAssigningUser(user)}
-                className="text-sm text-cyan-400 hover:underline"
+                className="text-sm text-[#0d7a6d] hover:underline font-medium"
               >
                 Gerenciar workspaces
               </button>
@@ -75,7 +80,6 @@ export function UsersPage() {
       {showCreateModal && (
         <CreateUserModal onClose={() => setShowCreateModal(false)} onCreated={handleCreated} />
       )}
-
       {assigningUser && (
         <AssignWorkspaceModal
           userId={assigningUser.id}

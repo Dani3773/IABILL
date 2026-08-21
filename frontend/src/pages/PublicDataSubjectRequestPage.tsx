@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { lookupWorkspace, submitDataSubjectRequest } from "../api/dataSubjectRequestService";
 import { getErrorMessage } from "../api/errorUtils";
 import type { DataSubjectRequestType } from "../types/dataSubjectRequest";
+import { CheckCircle2 } from "lucide-react";
 
 const TYPE_LABELS: Record<DataSubjectRequestType, string> = {
   ACCESS: "Acesso aos meus dados",
@@ -89,7 +90,7 @@ export function PublicDataSubjectRequestPage() {
       <div className="min-h-screen bg-[#F5F2EA] flex items-center justify-center px-4">
         <div className="max-w-md text-center">
           <div className="w-14 h-14 rounded-full bg-[#14B8A6]/15 flex items-center justify-center mx-auto mb-4">
-            <span className="text-[#0d7a6d] text-2xl">✓</span>
+            <CheckCircle2 className="w-7 h-7 text-[#0d7a6d]" />
           </div>
           <h1 className="text-[#1B2233] text-lg font-semibold mb-2">Solicitação enviada</h1>
           <p className="text-[#1B2233]/55 text-sm">

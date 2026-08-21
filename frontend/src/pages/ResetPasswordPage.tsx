@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { resetPassword } from "../api/authService";
 import { getErrorMessage } from "../api/errorUtils";
 import { Alert } from "../components/Alert";
+import { CheckCircle2 } from "lucide-react";
 
 export function ResetPasswordPage() {
   const { token } = useParams<{ token: string }>();
@@ -51,7 +52,7 @@ export function ResetPasswordPage() {
         {status === "success" ? (
           <div className="text-center">
             <div className="w-14 h-14 rounded-full bg-[#14B8A6]/15 flex items-center justify-center mx-auto mb-4">
-              <span className="text-[#14B8A6] text-2xl">✓</span>
+              <CheckCircle2 className="w-7 h-7 text-[#14B8A6]" />
             </div>
             <h1 className="text-white text-lg font-semibold mb-2">Senha redefinida</h1>
             <p className="text-slate-400 text-sm">Redirecionando para o login...</p>

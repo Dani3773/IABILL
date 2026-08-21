@@ -130,32 +130,31 @@ export function ProcessingActivityModal({
             <X className="w-5 h-5" />
           </button>
         </div>
-        <div>
-          <label className={labelClass}>Regime legal aplicável</label>
-          <select
-            value={applicableRegime}
-            onChange={(e) => {
-              const regime = e.target.value as "LGPD" | "RGPD";
-              setApplicableRegime(regime);
-              // Se a hipotese legal atual nao existe no RGPD, reseta para a primeira opcao valida
-              if (
-                regime === "RGPD" &&
-                !RGPD_LEGAL_BASIS_OPTIONS.includes(legalBasis)
-              ) {
-                setLegalBasis(RGPD_LEGAL_BASIS_OPTIONS[0]);
-              }
-            }}
-            className={inputClass}
-          >
-            {Object.entries(LEGAL_REGIME_LABELS).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </div>
-
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className={labelClass}>Regime legal aplicável</label>
+            <select
+              value={applicableRegime}
+              onChange={(e) => {
+                const regime = e.target.value as "LGPD" | "RGPD";
+                setApplicableRegime(regime);
+                // Se a hipotese legal atual nao existe no RGPD, reseta para a primeira opcao valida
+                if (
+                  regime === "RGPD" &&
+                  !RGPD_LEGAL_BASIS_OPTIONS.includes(legalBasis)
+                ) {
+                  setLegalBasis(RGPD_LEGAL_BASIS_OPTIONS[0]);
+                }
+              }}
+              className={inputClass}
+            >
+              {Object.entries(LEGAL_REGIME_LABELS).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </div>
           <div>
             <label className={labelClass}>
               Setor <span className="text-[#1B2233]/40">(opcional)</span>
