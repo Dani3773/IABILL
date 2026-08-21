@@ -74,4 +74,10 @@ public class PlatformController {
             @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
         return platformService.updateWorkspace(workspaceId, request, authUserId);
     }
+
+    @GetMapping("/workspaces/{workspaceId}")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    public WorkspaceResponseDTO getWorkspaceDetail(@PathVariable UUID workspaceId) {
+        return platformService.getWorkspaceDetail(workspaceId);
+    }
 }

@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { X, Building2 } from "lucide-react";
 import { createWorkspace, updateWorkspace } from "../api/workspaceService";
 import { useAuth } from "../contexts/AuthContext";
-import type { Workspace } from "../types/workspace";
+import type { Workspace, WorkspaceRequest } from "../types/workspace";
 import { getErrorMessage } from "../api/errorUtils";
 import { COUNTRIES, BRAZILIAN_STATES } from "../constants/locations";
 
@@ -10,9 +10,10 @@ interface Props {
   editing?: Workspace | null;
   onClose: () => void;
   onCreated: (workspace: Workspace) => void;
+  saveOverride?: (payload: WorkspaceRequest) => Promise<Workspace>;
 }
 
-export function CreateWorkspaceModal({ editing, onClose, onCreated }: Props) {
+export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride }: Props) {
   const { tenantId } = useAuth();
   const [name, setName] = useState(editing?.name ?? "");
   const [type, setType] = useState<"MATRIZ" | "FILIAL">(editing?.type ?? "FILIAL");
@@ -100,9 +101,11 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated }: Props) {
         phone: phone || undefined,
         legalRegimes,
       };
-      const workspace = editing
-        ? await updateWorkspace(editing.id, payload)
-        : await createWorkspace(payload);
+      const workspace = saveOverride
+        ? await saveOverride(payload)
+        : editing
+          ? await updateWorkspace(editing.id, payload)
+          : await createWorkspace(payload);
       onCreated(workspace);
       onClose();
     } catch (err) {

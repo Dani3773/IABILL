@@ -65,22 +65,33 @@ public class PlatformService {
         return getTenantDetail(tenantId);
     }
 
-    // Acao curada de Super-Admin, separada do endpoint normal de update de
-    // Workspace (que exige o tenantId do proprio token, e por isso bloquearia
-    // um Super-Admin editando o workspace de OUTRO tenant). Segue o mesmo
-    // padrao ja usado em resetUserPassword/setTenantActive - acao especifica,
-    // nao um editor generico de tabela.
+    @Transactional(readOnly = true)
+    public WorkspaceResponseDTO getWorkspaceDetail(UUID workspaceId) {
+        Workspace workspace = workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new IllegalArgumentException("Workspace não encontrado: " + workspaceId));
+        return WorkspaceResponseDTO.fromEntity(workspace);
+    }
+
     @Transactional
     public PlatformWorkspaceSummaryDTO updateWorkspace(UUID workspaceId, PlatformWorkspaceUpdateRequestDTO request, UUID authUserId) {
         Workspace workspace = workspaceRepository.findById(workspaceId)
                 .orElseThrow(() -> new IllegalArgumentException("Workspace não encontrado: " + workspaceId));
-        String before = workspace.getName() + " / " + workspace.getDocumentId() + " / " + workspace.getCountry();
+        String before = workspace.getName() + " / " + workspace.getDocumentId();
         workspace.setName(request.name());
+        workspace.setType(request.type());
         workspace.setDocumentId(request.documentId());
         workspace.setCountry(request.country());
+        workspace.setState(request.state());
+        workspace.setCity(request.city());
+        workspace.setNeighborhood(request.neighborhood());
+        workspace.setPostalCode(request.postalCode());
+        workspace.setStreet(request.street());
+        workspace.setAddressNumber(request.addressNumber());
+        workspace.setPhone(request.phone());
+        workspace.setLegalRegimes(request.legalRegimes());
         workspaceRepository.save(workspace);
         auditLogService.record(workspace.getTenant().getId(), authUserId, AuditAction.UPDATE, AuditEntityType.WORKSPACE, workspaceId,
-                Map.of("before", before, "after", request.name() + " / " + request.documentId() + " / " + request.country(), "changedByPlatformAdmin", true));
+                Map.of("before", before, "after", request.name() + " / " + request.documentId(), "changedByPlatformAdmin", true));
         return new PlatformWorkspaceSummaryDTO(workspace.getId(), workspace.getName(), workspace.getType(), workspace.getDocumentId());
     }
 

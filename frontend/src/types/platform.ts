@@ -41,8 +41,17 @@ export interface PlatformTenantUpdateRequest {
 
 export interface PlatformWorkspaceUpdateRequest {
   name: string
+  type: 'MATRIZ' | 'FILIAL'
   documentId: string
   country: string
+  state?: string
+  city?: string
+  neighborhood?: string
+  postalCode?: string
+  street?: string
+  addressNumber?: string
+  phone?: string
+  legalRegimes: ('LGPD' | 'RGPD')[]
 }
 
 export interface PlatformUserRoleUpdateRequest {
