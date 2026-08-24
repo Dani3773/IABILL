@@ -57,9 +57,13 @@ public class GeminiGenerationService {
         Map<String, Object> usageMetadata = (Map<String, Object>) response.get("usageMetadata");
         int promptTokens = extractTokenCount(usageMetadata, "promptTokenCount");
         int candidatesTokens = extractTokenCount(usageMetadata, "candidatesTokenCount");
+        // Tokens de raciocinio interno do modelo (Gemini 2.5), consumidos antes da
+        // resposta final, contam no totalTokenCount mas nao aparecem em prompt nem
+        // em candidates - por isso a soma dos dois nunca bate com o total sozinha.
+        int thoughtsTokens = extractTokenCount(usageMetadata, "thoughtsTokenCount");
         int totalTokens = extractTokenCount(usageMetadata, "totalTokenCount");
 
-        return new GeminiGenerationResultDTO(text, promptTokens, candidatesTokens, totalTokens);
+        return new GeminiGenerationResultDTO(text, promptTokens, candidatesTokens, thoughtsTokens, totalTokens);
     }
 
     private int extractTokenCount(Map<String, Object> usageMetadata, String key) {

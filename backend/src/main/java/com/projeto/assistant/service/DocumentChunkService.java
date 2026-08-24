@@ -162,6 +162,7 @@ public class DocumentChunkService {
                         "generationLatencyMs", generationLatencyMs,
                         "promptTokens", result.promptTokenCount(),
                         "candidatesTokens", result.candidatesTokenCount(),
+                        "thoughtsTokens", result.thoughtsTokenCount(),
                         "totalTokens", result.totalTokenCount()
                 )
         );

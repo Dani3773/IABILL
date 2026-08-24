@@ -4,6 +4,7 @@ public record GeminiGenerationResultDTO(
         String text,
         int promptTokenCount,
         int candidatesTokenCount,
+        int thoughtsTokenCount,
         int totalTokenCount
 ) {
 }
