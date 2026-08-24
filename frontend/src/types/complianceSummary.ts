@@ -9,4 +9,7 @@ export interface ComplianceSummary {
   dsrPendingCount: number
   dpoDesignated: boolean
   dpoName: string | null
+  consentActivitiesTotal: number
+  consentActivitiesMissingProof: number
+  retentionOverdueCount: number
 }

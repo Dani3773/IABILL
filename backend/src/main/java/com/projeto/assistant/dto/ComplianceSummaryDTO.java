@@ -10,6 +10,9 @@ public record ComplianceSummaryDTO(
         int incidentsOpenCount,
         int dsrPendingCount,
         boolean dpoDesignated,
-        String dpoName
+        String dpoName,
+        int consentActivitiesTotal,
+        int consentActivitiesMissingProof,
+        int retentionOverdueCount
 ) {
 }

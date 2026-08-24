@@ -31,7 +31,22 @@ function buildRows(s: ComplianceSummary): Row[] {
       ? `${s.ropaActivityCount} atividade${s.ropaActivityCount !== 1 ? "s" : ""} de tratamento cadastrada${s.ropaActivityCount !== 1 ? "s" : ""}`
       : "Nenhuma atividade cadastrada ainda",
   });
-
+  if (s.consentActivitiesTotal > 0) {
+    rows.push({
+      label: "Prova de Consentimento",
+      status: s.consentActivitiesMissingProof > 0 ? "warning" : "ok",
+      detail: s.consentActivitiesMissingProof > 0
+        ? `${s.consentActivitiesMissingProof} de ${s.consentActivitiesTotal} atividade${s.consentActivitiesTotal !== 1 ? "s" : ""} sem prova coletada ainda`
+        : `${s.consentActivitiesTotal} atividade${s.consentActivitiesTotal !== 1 ? "s" : ""} com base em Consentimento, todas com prova coletada`,
+    });
+  }
+  rows.push({
+    label: "Prazo de Retenção",
+    status: s.retentionOverdueCount > 0 ? "warning" : "neutral",
+    detail: s.retentionOverdueCount > 0
+      ? `${s.retentionOverdueCount} atividade${s.retentionOverdueCount !== 1 ? "s" : ""} com prazo de retenção vencido`
+      : "Nenhuma atividade com prazo de retenção vencido cadastrado",
+  });
   const vendorsMissingDpa = s.vendorsTotal - s.vendorsWithDpaSigned;
   rows.push({
     label: "Fornecedores / DPA",

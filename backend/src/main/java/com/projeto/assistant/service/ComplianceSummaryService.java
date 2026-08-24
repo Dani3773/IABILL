@@ -27,6 +27,7 @@ public class ComplianceSummaryService {
     private final DocumentRepository documentRepository;
     private final DataSubjectRequestRepository dataSubjectRequestRepository;
     private final UserRepository userRepository;
+    private final ConsentRecordRepository consentRecordRepository;
 
     @Transactional(readOnly = true)
     public ComplianceSummaryDTO getSummary(UUID workspaceId, UUID authTenantId) {
@@ -37,7 +38,21 @@ public class ComplianceSummaryService {
             throw new AccessDeniedException("Você não tem acesso a este workspace");
         }
 
-        int ropaCount = processingActivityRepository.findByWorkspaceId(workspaceId).size();
+        List<ProcessingActivity> activities = processingActivityRepository.findByWorkspaceId(workspaceId);
+        int ropaCount = activities.size();
+
+        List<ProcessingActivity> consentActivities = activities.stream()
+                .filter(a -> a.getLegalBasis() == LegalBasis.CONSENTIMENTO)
+                .toList();
+        int consentActivitiesMissingProof = (int) consentActivities.stream()
+                .filter(a -> consentRecordRepository.findByProcessingActivityIdOrderByConsentedAtDesc(a.getId()).isEmpty())
+                .count();
+
+        Instant nowForRetention = Instant.now();
+        int retentionOverdueCount = (int) activities.stream()
+                .filter(a -> a.getRetentionExpiresAt() != null
+                        && a.getRetentionExpiresAt().isBefore(nowForRetention.atZone(java.time.ZoneId.systemDefault()).toLocalDate()))
+                .count();
 
         List<Vendor> vendors = vendorRepository.findByWorkspaceId(workspaceId);
         int vendorsTotal = vendors.size();
@@ -80,7 +95,8 @@ public class ComplianceSummaryService {
         return new ComplianceSummaryDTO(
                 ropaCount, vendorsTotal, vendorsWithDpa, employeesActive,
                 trainedIds.size(), documentsOverdue, incidentsOpen, dsrPending,
-                dpo != null, dpo != null ? dpo.getUsername() : null
+                dpo != null, dpo != null ? dpo.getUsername() : null,
+                consentActivities.size(), consentActivitiesMissingProof, retentionOverdueCount
         );
     }
 }
