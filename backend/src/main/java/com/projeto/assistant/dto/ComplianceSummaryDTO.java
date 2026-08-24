@@ -8,6 +8,8 @@ public record ComplianceSummaryDTO(
         int employeesTrainedCount,
         int documentsOverdueCount,
         int incidentsOpenCount,
-        int dsrPendingCount
+        int dsrPendingCount,
+        boolean dpoDesignated,
+        String dpoName
 ) {
 }

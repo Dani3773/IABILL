@@ -26,6 +26,7 @@ public class ComplianceSummaryService {
     private final IncidentRepository incidentRepository;
     private final DocumentRepository documentRepository;
     private final DataSubjectRequestRepository dataSubjectRequestRepository;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public ComplianceSummaryDTO getSummary(UUID workspaceId, UUID authTenantId) {
@@ -68,9 +69,18 @@ public class ComplianceSummaryService {
                         || r.getStatus() == DataSubjectRequestStatus.IN_PROGRESS)
                 .count();
 
+        // DPO e escopado por Tenant, nao por Workspace (o mesmo Encarregado responde
+        // por todos os workspaces da empresa) - por isso a busca aqui usa authTenantId,
+        // nao workspaceId, diferente de todo o resto deste metodo.
+        User dpo = userRepository.findByTenantId(authTenantId).stream()
+                .filter(u -> u.getRole() == UserRole.DPO && !u.isDpoSubstitute())
+                .findFirst()
+                .orElse(null);
+
         return new ComplianceSummaryDTO(
                 ropaCount, vendorsTotal, vendorsWithDpa, employeesActive,
-                trainedIds.size(), documentsOverdue, incidentsOpen, dsrPending
+                trainedIds.size(), documentsOverdue, incidentsOpen, dsrPending,
+                dpo != null, dpo != null ? dpo.getUsername() : null
         );
     }
 }

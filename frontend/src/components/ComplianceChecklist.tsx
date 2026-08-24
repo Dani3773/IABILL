@@ -17,7 +17,13 @@ interface Row {
 
 function buildRows(s: ComplianceSummary): Row[] {
   const rows: Row[] = [];
-
+  rows.push({
+    label: "Encarregado (DPO)",
+    status: s.dpoDesignated ? "ok" : "warning",
+    detail: s.dpoDesignated
+      ? `${s.dpoName} designado como Encarregado`
+      : "Nenhum Encarregado designado, item priorizado na fiscalização da ANPD",
+  });
   rows.push({
     label: "Inventário / ROPA",
     status: s.ropaActivityCount > 0 ? "ok" : "neutral",

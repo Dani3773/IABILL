@@ -7,4 +7,6 @@ export interface ComplianceSummary {
   documentsOverdueCount: number
   incidentsOpenCount: number
   dsrPendingCount: number
+  dpoDesignated: boolean
+  dpoName: string | null
 }
