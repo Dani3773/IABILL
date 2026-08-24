@@ -34,12 +34,16 @@ const SECTIONS: Section[] = [
         text: "O IABill organiza a adequação da sua empresa à LGPD/RGPD em módulos (chamados de \"Pilares\"), mais um fluxo de geração assistida de documentos por IA. Nenhum conteúdo gerado por IA vira oficial sozinho, sempre passa por revisão humana antes de valer.",
       },
       {
+        heading: "Um caminho recomendado, passo a passo",
+        text: "1. Rode o Diagnóstico Inicial (aba Pilares), ele identifica lacunas reais e já cria as primeiras tarefas no Plano de Ação sozinho. 2. Abra o Plano de Ação e comece pelas tarefas mais simples, cada uma já aponta pro módulo certo do sistema. 3. Cadastre pelo menos um Fornecedor e um Colaborador, mesmo que poucos, isso deixa o sistema com dado real suficiente pra IA gerar conteúdo confiável depois. 4. Gere seu primeiro documento (recomendamos começar pelo Inventário de Dados), esse documento aprovado vira a base de contexto pra todos os outros. 5. Só depois disso gere a Política de Segurança da Informação e a Política de Privacidade, elas dependem do Inventário já existir e estar aprovado. 6. Ative a Verificação em 2 Etapas na sua própria conta.",
+      },
+      {
         heading: "O ciclo de um documento",
         text: "Todo documento nasce como Rascunho (DRAFT). Ao usar \"Gerar com IA\", ele vira Gerado (GENERATED). Alguém marca como Revisado (REVIEWED), e só então um Administrador pode Aprovar (APPROVED), o único estado em que o conteúdo é considerado oficial e passa a servir de contexto para outros documentos.",
       },
       {
-        heading: "Por onde começar",
-        text: "Recomendamos rodar o Diagnóstico Inicial (aba Pilares) primeiro, um questionário rápido que identifica lacunas reais e já cria as primeiras tarefas no Plano de Ação automaticamente.",
+        heading: "Tem uma dúvida específica no meio do caminho?",
+        text: "Use o assistente de chat, disponível em qualquer tela do sistema (ícone no canto inferior direito). Ele consegue consultar seus documentos e tarefas reais e responder com base no que já existe no seu workspace, além de poder criar documentos e tarefas diretamente pela conversa.",
       },
     ],
   },
@@ -179,6 +183,32 @@ const SECTIONS: Section[] = [
       {
         heading: "Verificação em duas etapas (MFA)",
         text: "Ative em Perfil → Verificação em 2 Etapas. Escaneie o QR code com um aplicativo autenticador (Google Authenticator, Authy) e confirme com o código de 6 dígitos. O código é gerado inteiramente no seu navegador, o segredo nunca passa por nenhum serviço externo.",
+      },
+    ],
+  },
+    {
+    id: "anpd-contato",
+    title: "Se a ANPD Entrar em Contato",
+    icon: ShieldAlert,
+    body: [
+      {
+        text: "A ANPD tem intensificado a fiscalização em 2026, com foco especial em empresas sem Encarregado de Dados designado. Se sua empresa receber uma notificação, pedido de esclarecimento, ou for alvo de fiscalização, mantenha a calma e reúna a documentação disponível no sistema.",
+      },
+      {
+        heading: "O que a ANPD costuma pedir",
+        text: "Evidência de que a empresa possui um Encarregado designado, registro estruturado das atividades de tratamento (ROPA), política de segurança da informação, registro de treinamento de colaboradores, e, se aplicável, registro do incidente de segurança em questão, incluindo as notificações já feitas.",
+      },
+      {
+        heading: "Onde encontrar cada coisa no sistema",
+        text: "Papel de DPO: aba Usuários, filtrando pelo papel Encarregado. ROPA: aba Pilares > Inventário/ROPA. Política de Segurança da Informação: aba Documentos, tipo PSI, já aprovada. Treinamentos: aba Pilares > Treinamento, com a lista de participantes de cada um. Incidentes: aba Incidentes, com as datas de notificação à ANPD e aos titulares já registradas separadamente.",
+      },
+      {
+        heading: "Como compartilhar",
+        text: "Hoje é possível compartilhar o conteúdo diretamente das telas do sistema, ou exportar a trilha de auditoria completa em CSV (aba Auditoria) como evidência complementar de rastreabilidade. A exportação de documentos individuais em PDF ainda não está disponível, é um item já mapeado para desenvolvimento futuro.",
+      },
+      {
+        heading: "Importante",
+        text: "O sistema organiza e reúne a documentação, mas não substitui orientação jurídica formal. Em qualquer contato oficial da ANPD, especialmente durante um processo de fiscalização, recomenda-se acompanhamento de um advogado especializado antes de qualquer resposta formal.",
       },
     ],
   },
