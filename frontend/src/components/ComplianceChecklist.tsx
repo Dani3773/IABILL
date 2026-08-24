@@ -84,7 +84,20 @@ function buildRows(s: ComplianceSummary): Row[] {
       ? `${s.incidentsOpenCount} incidente${s.incidentsOpenCount !== 1 ? "s" : ""} em aberto`
       : "Nenhum incidente em aberto",
   });
-
+  if (s.incidentNotificationOverdueCount > 0) {
+    rows.push({
+      label: "Prazo de Notificação",
+      status: "warning",
+      detail: `${s.incidentNotificationOverdueCount} incidente${s.incidentNotificationOverdueCount !== 1 ? "s" : ""} com prazo de notificação à ANPD vencido`,
+    });
+  }
+  rows.push({
+    label: "Política de Privacidade",
+    status: s.privacyPolicyPublished ? "ok" : "neutral",
+    detail: s.privacyPolicyPublished
+      ? "Publicada e acessível publicamente"
+      : "Ainda não publicada externamente",
+  });
   rows.push({
     label: "Solicitações de Titulares",
     status: s.dsrPendingCount > 0 ? "warning" : "ok",

@@ -78,6 +78,18 @@ public class ComplianceSummaryService {
                 .filter(i -> i.getStatus() != IncidentStatus.RESOLVED)
                 .count();
 
+        // Mesmo prazo de 3 dias uteis usado na tela de Incidentes (Resolucao CD/ANPD
+        // 15/2024) - recalculado aqui em memoria, ja que essa logica so existia no
+        // frontend ate agora, sem equivalente no backend.
+        Instant nowForIncidents = Instant.now();
+        int incidentNotificationOverdue = (int) incidents.stream()
+                .filter(i -> i.getAnpdNotifiedAt() == null)
+                .filter(i -> addBusinessDays(i.getDiscoveredAt(), 3).isBefore(nowForIncidents))
+                .count();
+
+        boolean privacyPolicyPublished = documents.stream()
+                .anyMatch(d -> d.getType() == DocumentType.POLITICA_PRIVACIDADE && d.isPublished());
+
         List<DataSubjectRequest> requests = dataSubjectRequestRepository.findByWorkspaceId(workspaceId);
         int dsrPending = (int) requests.stream()
                 .filter(r -> r.getStatus() == DataSubjectRequestStatus.RECEIVED
@@ -96,7 +108,19 @@ public class ComplianceSummaryService {
                 ropaCount, vendorsTotal, vendorsWithDpa, employeesActive,
                 trainedIds.size(), documentsOverdue, incidentsOpen, dsrPending,
                 dpo != null, dpo != null ? dpo.getUsername() : null,
-                consentActivities.size(), consentActivitiesMissingProof, retentionOverdueCount
+                consentActivities.size(), consentActivitiesMissingProof, retentionOverdueCount,
+                incidentNotificationOverdue, privacyPolicyPublished
         );
+    }
+
+    private Instant addBusinessDays(Instant start, int days) {
+        java.time.ZonedDateTime date = start.atZone(java.time.ZoneId.systemDefault());
+        int added = 0;
+        while (added < days) {
+            date = date.plusDays(1);
+            java.time.DayOfWeek day = date.getDayOfWeek();
+            if (day != java.time.DayOfWeek.SATURDAY && day != java.time.DayOfWeek.SUNDAY) added++;
+        }
+        return date.toInstant();
     }
 }

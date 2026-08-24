@@ -13,6 +13,8 @@ public record ComplianceSummaryDTO(
         String dpoName,
         int consentActivitiesTotal,
         int consentActivitiesMissingProof,
-        int retentionOverdueCount
+        int retentionOverdueCount,
+        int incidentNotificationOverdueCount,
+        boolean privacyPolicyPublished
 ) {
 }

@@ -12,4 +12,6 @@ export interface ComplianceSummary {
   consentActivitiesTotal: number
   consentActivitiesMissingProof: number
   retentionOverdueCount: number
+  incidentNotificationOverdueCount: number
+  privacyPolicyPublished: boolean
 }
