@@ -83,14 +83,6 @@ export function PilaresPage() {
             "Toda atividade de tratamento precisa se apoiar numa das hipóteses legais previstas em lei, consentimento, execução de contrato, cumprimento de obrigação legal, entre outras. É o primeiro dado que o ROPA pede de cada atividade.",
         },
         {
-          to: `/workspaces/${workspaceId}/data-subject-requests`,
-          icon: Inbox,
-          title: "Direitos do Titular",
-          legalBasis: "Art. 18",
-          description:
-            "Qualquer pessoa cujo dado a empresa trata tem direito de pedir acesso, correção, ou eliminação desses dados. O sistema já mantém um portal público pronto para receber essas solicitações.",
-        },
-        {
           to: `/workspaces/${workspaceId}/pilares/sancoes`,
           icon: AlertTriangle,
           title: "O que Acontece se Não Cumprir",
@@ -114,6 +106,30 @@ export function PilaresPage() {
           legalBasis: "Art. 37",
           description:
             "Registro estruturado de todas as atividades de tratamento de dados da empresa, quem trata o quê, com qual finalidade, e com base em qual hipótese legal. É o documento mais consultado pela ANPD em fiscalização.",
+        },
+                {
+          to: `/workspaces/${workspaceId}/pilares/ropa`,
+          icon: ClipboardList,
+          title: "Inventário / ROPA",
+          legalBasis: "Art. 37",
+          description:
+            "Registro estruturado de todas as atividades de tratamento de dados da empresa, quem trata o quê, com qual finalidade, e com base em qual hipótese legal. É o documento mais consultado pela ANPD em fiscalização.",
+        },
+        {
+          to: `/workspaces/${workspaceId}/data-subject-requests`,
+          icon: Inbox,
+          title: "Direitos do Titular",
+          legalBasis: "Art. 18",
+          description:
+            "Qualquer pessoa cujo dado a empresa trata tem direito de pedir acesso, correção, ou eliminação desses dados. O sistema já mantém um portal público pronto para receber essas solicitações.",
+        },
+        {
+          to: `/workspaces/${workspaceId}/documents`,
+          icon: ShieldCheck,
+          title: "Segurança da Informação",
+          legalBasis: "Art. 46/49",
+          description:
+            "Medidas técnicas e administrativas para proteger os dados, controle de acesso, criptografia, backup. No sistema, vira um documento do tipo Política de Segurança da Informação (PSI), gerado com IA a partir do que já existe cadastrado.",
         },
         {
           to: `/workspaces/${workspaceId}/documents`,

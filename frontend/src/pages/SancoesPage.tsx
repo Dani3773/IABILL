@@ -32,7 +32,7 @@ export function SancoesPage() {
           </p>
         </div>
 
-        <div className="bg-white rounded-xl p-5 border border-amber-200 bg-amber-50">
+        <div className="bg-white rounded-xl p-5 border border-amber-200">
           <h3 className="font-medium text-[#1B2233] mb-2">Não é mais teórico, é fiscalização real</h3>
           <p className="text-sm text-[#1B2233]/70 leading-relaxed">
             Em fevereiro de 2026, a ANPD deixou de ser só uma autoridade orientadora e virou uma agência reguladora plena,
