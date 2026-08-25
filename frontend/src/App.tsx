@@ -33,6 +33,8 @@ import { PublicConsentPage } from "./pages/PublicConsentPage";
 import { DiagnosticPage } from "./pages/DiagnosticPage";
 import { HelpPage } from "./pages/HelpPage";
 import { SuspendedAccountPage } from "./pages/SuspendedAccountPage";
+import { PrincipiosPage } from "./pages/PrincipiosPage";
+import { BaseLegalPage } from "./pages/BaseLegalPage";
 
 
 function App() {
@@ -81,6 +83,8 @@ function App() {
                 <Route path="pilares/treinamento/colaboradores" element={<EmployeesPage />} />
                 <Route path="pilares/setores" element={<SectorsPage />} />
                 <Route path="pilares/diagnostico" element={<DiagnosticPage />} />
+                <Route path="pilares/principios" element={<PrincipiosPage />} />
+                <Route path="pilares/base-legal" element={<BaseLegalPage />} />
               </Route>
             </Route>
           </Route>
