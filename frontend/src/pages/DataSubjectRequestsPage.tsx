@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Inbox } from "lucide-react";
+import { Inbox, Search } from "lucide-react";
 import {
   fetchDataSubjectRequests,
   updateDataSubjectRequestStatus,
@@ -33,6 +33,8 @@ const STATUS_STYLES: Record<DataSubjectRequestStatus, string> = {
   REJECTED: "bg-red-50 text-red-700",
 };
 
+type SortOrder = "recent" | "oldest";
+
 export function DataSubjectRequestsPage() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const [requests, setRequests] = useState<DataSubjectRequest[]>([]);
@@ -40,6 +42,11 @@ export function DataSubjectRequestsPage() {
   const [error, setError] = useState<string | null>(null);
   const [rejectingId, setRejectingId] = useState<string | null>(null);
   const [rejectionReason, setRejectionReason] = useState("");
+
+  const [typeFilter, setTypeFilter] = useState<DataSubjectRequestType | "ALL">("ALL");
+  const [statusFilter, setStatusFilter] = useState<DataSubjectRequestStatus | "ALL">("ALL");
+  const [search, setSearch] = useState("");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("recent");
 
   useEffect(() => {
     if (!workspaceId) return;
@@ -82,33 +89,108 @@ export function DataSubjectRequestsPage() {
     }
   }
 
+  const filtered = requests
+    .filter((r) => typeFilter === "ALL" || r.requestType === typeFilter)
+    .filter((r) => statusFilter === "ALL" || r.status === statusFilter)
+    .filter((r) => {
+      if (!search.trim()) return true;
+      const q = search.toLowerCase();
+      return r.requesterName.toLowerCase().includes(q) || r.requesterEmail.toLowerCase().includes(q);
+    })
+    .sort((a, b) => {
+      const diff = new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      return sortOrder === "recent" ? diff : -diff;
+    });
+
+  const pendingCount = requests.filter((r) => r.status === "RECEIVED" || r.status === "IN_PROGRESS").length;
+
   if (isLoading) return <LoadingSpinner label="Carregando solicitações..." />;
 
   return (
     <div>
-
-      <h1 className="text-xl font-serif text-[#1B2233] mb-1">Solicitações de Titulares</h1>
-      <p className="text-sm text-[#1B2233]/55 mb-6">
+      <h1 className="text-xl font-serif text-[#1B2233] mb-1">Direitos do Titular</h1>
+      <p className="text-sm text-[#1B2233]/55 mb-2">
         Solicitações recebidas via portal público, conforme Art. 18 da LGPD.
       </p>
+      <div className="bg-white rounded-xl p-4 border border-[#1B2233]/10 mb-6 text-xs text-[#1B2233]/60 leading-relaxed">
+        A LGPD garante a qualquer titular o direito de solicitar <span className="font-medium text-[#1B2233]">acesso</span> aos
+        seus dados, <span className="font-medium text-[#1B2233]">correção</span> de dados incorretos,{" "}
+        <span className="font-medium text-[#1B2233]">eliminação</span> quando aplicável,{" "}
+        <span className="font-medium text-[#1B2233]">portabilidade</span> para outro fornecedor,{" "}
+        <span className="font-medium text-[#1B2233]">anonimização</span>, e{" "}
+        <span className="font-medium text-[#1B2233]">revogação de consentimento</span> a qualquer momento. Toda solicitação
+        recebida aqui já gera automaticamente uma tarefa vinculada no Plano de Ação, e não existe prazo legal fixo único para
+        resposta, recomenda-se atender dentro de um prazo razoável, geralmente interpretado como até 15 dias.
+      </div>
 
       {error && <div className="mb-4"><Alert type="error" message={error} /></div>}
 
-      {requests.length === 0 ? (
+      <div className="bg-white rounded-xl p-4 border border-[#1B2233]/10 mb-6 flex flex-wrap items-center gap-3">
+        <div className="relative flex-1 min-w-48">
+          <Search className="w-3.5 h-3.5 text-[#1B2233]/35 absolute left-3 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Buscar por nome ou e-mail"
+            className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] text-sm pl-8 pr-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] placeholder:text-[#1B2233]/40"
+          />
+        </div>
+        <select
+          value={typeFilter}
+          onChange={(e) => setTypeFilter(e.target.value as DataSubjectRequestType | "ALL")}
+          className="text-sm rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:border-[#14B8A6]"
+        >
+          <option value="ALL">Todos os tipos</option>
+          {Object.entries(TYPE_LABELS).map(([value, label]) => (
+            <option key={value} value={value}>{label}</option>
+          ))}
+        </select>
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value as DataSubjectRequestStatus | "ALL")}
+          className="text-sm rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:border-[#14B8A6]"
+        >
+          <option value="ALL">Todos os status</option>
+          {Object.entries(STATUS_LABELS).map(([value, label]) => (
+            <option key={value} value={value}>{label}</option>
+          ))}
+        </select>
+        <select
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value as SortOrder)}
+          className="text-sm rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:border-[#14B8A6]"
+        >
+          <option value="recent">Mais recentes primeiro</option>
+          <option value="oldest">Mais antigas primeiro</option>
+        </select>
+      </div>
+
+      <p className="text-xs text-[#1B2233]/45 mb-3">
+        {filtered.length} de {requests.length} solicitaç{requests.length !== 1 ? "ões" : "ão"}
+        {pendingCount > 0 && `, ${pendingCount} pendente${pendingCount !== 1 ? "s" : ""}`}
+      </p>
+
+      {filtered.length === 0 ? (
         <div className="bg-white rounded-xl border border-[#1B2233]/10 p-10 text-center">
           <Inbox className="w-8 h-8 text-[#1B2233]/25 mx-auto mb-3" />
-          <p className="text-[#1B2233]/55 text-sm">Nenhuma solicitação recebida ainda.</p>
+          <p className="text-[#1B2233]/55 text-sm">
+            {requests.length === 0 ? "Nenhuma solicitação recebida ainda." : "Nenhuma solicitação corresponde aos filtros."}
+          </p>
         </div>
       ) : (
         <div className="space-y-3">
-          {requests.map((r) => (
+          {filtered.map((r) => (
             <div key={r.id} className="bg-white rounded-xl p-4 border border-[#1B2233]/10">
               <div className="flex items-start justify-between gap-4 mb-2">
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <p className="font-medium text-[#1B2233] text-sm">{r.requesterName}</p>
                     <span className="text-xs px-2 py-0.5 rounded bg-[#B8862B]/12 text-[#B8862B] font-medium">
                       {TYPE_LABELS[r.requestType]}
+                    </span>
+                    <span className="text-[10px] text-[#1B2233]/40">
+                      {new Date(r.createdAt).toLocaleDateString("pt-BR")}
                     </span>
                   </div>
                   <p className="text-xs text-[#1B2233]/60">{r.requesterEmail}</p>
@@ -120,9 +202,7 @@ export function DataSubjectRequestsPage() {
                   className={`text-xs rounded px-2 py-1 border-0 focus:outline-none focus:ring-1 focus:ring-[#14B8A6] font-medium ${STATUS_STYLES[r.status]}`}
                 >
                   {Object.entries(STATUS_LABELS).map(([value, label]) => (
-                    <option key={value} value={value}>
-                      {label}
-                    </option>
+                    <option key={value} value={value}>{label}</option>
                   ))}
                 </select>
               </div>
