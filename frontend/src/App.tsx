@@ -35,6 +35,9 @@ import { HelpPage } from "./pages/HelpPage";
 import { SuspendedAccountPage } from "./pages/SuspendedAccountPage";
 import { PrincipiosPage } from "./pages/PrincipiosPage";
 import { BaseLegalPage } from "./pages/BaseLegalPage";
+import { GlossarioPage } from "./pages/GlossarioPage";
+import { QuemEQuemPage } from "./pages/QuemEQuemPage";
+import { SancoesPage } from "./pages/SancoesPage";
 
 
 function App() {
@@ -85,6 +88,9 @@ function App() {
                 <Route path="pilares/diagnostico" element={<DiagnosticPage />} />
                 <Route path="pilares/principios" element={<PrincipiosPage />} />
                 <Route path="pilares/base-legal" element={<BaseLegalPage />} />
+                <Route path="pilares/glossario" element={<GlossarioPage />} />
+                <Route path="pilares/quem-e-quem" element={<QuemEQuemPage />} />
+                <Route path="pilares/sancoes" element={<SancoesPage />} />
               </Route>
             </Route>
           </Route>

@@ -14,6 +14,9 @@ import {
   UserCog,
   Shield,
   Globe,
+  BookOpen,
+  Users2,
+  AlertTriangle,
 } from "lucide-react";
 import { ComplianceChecklist } from "../components/ComplianceChecklist";
 
@@ -48,6 +51,22 @@ export function PilaresPage() {
       bg: "bg-[#14B8A6]/10",
       cards: [
         {
+          to: `/workspaces/${workspaceId}/pilares/glossario`,
+          icon: BookOpen,
+          title: "Glossário de Termos",
+          legalBasis: "Art. 5º",
+          description:
+            "Dado pessoal, dado sensível, titular, anonimização, e outros termos que aparecem em várias telas do sistema, explicados em linguagem simples.",
+        },
+        {
+          to: `/workspaces/${workspaceId}/pilares/quem-e-quem`,
+          icon: Users2,
+          title: "Quem é Quem",
+          legalBasis: "Art. 5º",
+          description:
+            "Controlador, Operador, Encarregado, Titular, ANPD, os papéis que a lei define, e como cada um aparece dentro do próprio sistema.",
+        },
+        {
           to: `/workspaces/${workspaceId}/pilares/principios`,
           icon: Scale,
           title: "Princípios da LGPD",
@@ -70,6 +89,14 @@ export function PilaresPage() {
           legalBasis: "Art. 18",
           description:
             "Qualquer pessoa cujo dado a empresa trata tem direito de pedir acesso, correção, ou eliminação desses dados. O sistema já mantém um portal público pronto para receber essas solicitações.",
+        },
+        {
+          to: `/workspaces/${workspaceId}/pilares/sancoes`,
+          icon: AlertTriangle,
+          title: "O que Acontece se Não Cumprir",
+          legalBasis: "Art. 52",
+          description:
+            "Sanções previstas em lei, e o cenário real de fiscalização da ANPD em 2026, que já se tornou muito mais ativo do que era antes.",
         },
       ],
     },
