@@ -53,6 +53,10 @@ public class VendorService {
         vendor.setDpaSignedAt(request.dpaSignedAt());
         vendor.setSecurityClausesConfirmed(request.securityClausesConfirmed());
         vendor.setObservations(request.observations());
+        vendor.setInvolvesInternationalTransfer(request.involvesInternationalTransfer());
+        vendor.setDestinationCountry(request.destinationCountry());
+        vendor.setTransferSafeguard(request.transferSafeguard());
+        vendor.setTransferSafeguardDetails(request.transferSafeguardDetails());
         vendor.setCreatedBy(authUserId);
 
         Vendor saved = vendorRepository.save(vendor);
@@ -101,7 +105,10 @@ public class VendorService {
         vendor.setDpaSignedAt(request.dpaSignedAt());
         vendor.setSecurityClausesConfirmed(request.securityClausesConfirmed());
         vendor.setObservations(request.observations());
-
+        vendor.setInvolvesInternationalTransfer(request.involvesInternationalTransfer());
+        vendor.setDestinationCountry(request.destinationCountry());
+        vendor.setTransferSafeguard(request.transferSafeguard());
+        vendor.setTransferSafeguardDetails(request.transferSafeguardDetails());
         Vendor saved = vendorRepository.save(vendor);
 
         auditLogService.record(

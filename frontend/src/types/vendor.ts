@@ -1,3 +1,5 @@
+export type TransferSafeguard = 'DECISAO_ADEQUACAO' | 'CLAUSULAS_CONTRATUAIS_PADRAO' | 'CONSENTIMENTO_ESPECIFICO' | 'OUTRO'
+
 export interface Vendor {
   id: string
   workspaceId: string
@@ -10,10 +12,13 @@ export interface Vendor {
   dpaSignedAt: string | null
   securityClausesConfirmed: boolean
   observations: string | null
+  involvesInternationalTransfer: boolean
+  destinationCountry: string | null
+  transferSafeguard: TransferSafeguard | null
+  transferSafeguardDetails: string | null
   createdAt: string
   updatedAt: string
 }
-
 export interface VendorRequest {
   workspaceId: string
   sectorId?: string
@@ -24,4 +29,8 @@ export interface VendorRequest {
   dpaSignedAt?: string
   securityClausesConfirmed: boolean
   observations?: string
+  involvesInternationalTransfer: boolean
+  destinationCountry?: string
+  transferSafeguard?: TransferSafeguard
+  transferSafeguardDetails?: string
 }

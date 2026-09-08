@@ -201,13 +201,12 @@ export function PilaresPage() {
             "Relatório de Impacto à Proteção de Dados, exigido quando uma atividade envolve dado sensível ou alto risco. O sistema já sugere automaticamente a criação desse relatório quando uma atividade do ROPA é marcada como sensível.",
         },
         {
-          to: `/workspaces/${workspaceId}/pilares/transferencia-internacional`,
+          to: `/workspaces/${workspaceId}/pilares/fornecedores`,
           icon: Globe,
           title: "Transferência Internacional",
           legalBasis: "Art. 33",
           description:
-            "Envio de dados pessoais para fora do Brasil, inclusive para provedores de nuvem ou IA sediados em outro país, precisa seguir regras específicas de garantia de proteção equivalente.",
-          comingSoon: true,
+            "Envio de dados pessoais para fora do Brasil, inclusive para provedores de nuvem ou IA sediados em outro país, precisa seguir regras específicas de garantia de proteção equivalente. Marque isso ao cadastrar o fornecedor responsável.",
         },
       ],
     },

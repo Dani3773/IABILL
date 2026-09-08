@@ -24,6 +24,10 @@ public record VendorRequestDTO(
         boolean dpaSigned,
         LocalDate dpaSignedAt,
         boolean securityClausesConfirmed,
-        String observations
+        String observations,
+        boolean involvesInternationalTransfer,
+        String destinationCountry,
+        com.projeto.assistant.model.TransferSafeguard transferSafeguard,
+        String transferSafeguardDetails
 ) {
 }

@@ -18,6 +18,10 @@ public record VendorResponseDTO(
         LocalDate dpaSignedAt,
         boolean securityClausesConfirmed,
         String observations,
+        boolean involvesInternationalTransfer,
+        String destinationCountry,
+        com.projeto.assistant.model.TransferSafeguard transferSafeguard,
+        String transferSafeguardDetails,
         Instant createdAt,
         Instant updatedAt
 ) {
@@ -34,6 +38,10 @@ public record VendorResponseDTO(
                 vendor.getDpaSignedAt(),
                 vendor.isSecurityClausesConfirmed(),
                 vendor.getObservations(),
+                vendor.isInvolvesInternationalTransfer(),
+                vendor.getDestinationCountry(),
+                vendor.getTransferSafeguard(),
+                vendor.getTransferSafeguardDetails(),
                 vendor.getCreatedAt(),
                 vendor.getUpdatedAt()
         );

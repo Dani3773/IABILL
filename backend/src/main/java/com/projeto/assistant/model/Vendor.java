@@ -49,6 +49,19 @@ public class Vendor {
     @Column(columnDefinition = "TEXT")
     private String observations;
 
+    @Column(name = "involves_international_transfer", nullable = false)
+    private boolean involvesInternationalTransfer = false;
+
+    @Column(name = "destination_country")
+    private String destinationCountry;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "transfer_safeguard", length = 50)
+    private TransferSafeguard transferSafeguard;
+
+    @Column(name = "transfer_safeguard_details", columnDefinition = "TEXT")
+    private String transferSafeguardDetails;
+
     @Column(name = "created_by")
     private UUID createdBy;
 

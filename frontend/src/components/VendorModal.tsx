@@ -5,6 +5,14 @@ import { X, Truck } from "lucide-react";
 import { createVendor, updateVendor } from "../api/vendorService";
 import { getErrorMessage } from "../api/errorUtils";
 import type { Vendor } from "../types/vendor";
+import type { TransferSafeguard } from "../types/vendor";
+
+const TRANSFER_SAFEGUARD_LABELS: Record<TransferSafeguard, string> = {
+  DECISAO_ADEQUACAO: "Decisão de Adequação",
+  CLAUSULAS_CONTRATUAIS_PADRAO: "Cláusulas Contratuais Padrão",
+  CONSENTIMENTO_ESPECIFICO: "Consentimento Específico do Titular",
+  OUTRO: "Outro",
+};
 
 interface Props {
   workspaceId: string;
@@ -40,12 +48,26 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [involvesInternationalTransfer, setInvolvesInternationalTransfer] =
+    useState(editing?.involvesInternationalTransfer ?? false);
+  const [destinationCountry, setDestinationCountry] = useState(
+    editing?.destinationCountry ?? "",
+  );
+  const [transferSafeguard, setTransferSafeguard] = useState<
+    TransferSafeguard | ""
+  >(editing?.transferSafeguard ?? "");
+  const [transferSafeguardDetails, setTransferSafeguardDetails] = useState(
+    editing?.transferSafeguardDetails ?? "",
+  );
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
     if (dpaSigned && !dpaSignedAt) {
-      setError("Informe a data de assinatura do DPA, ou desmarque a opção \"DPA assinado\".");
+      setError(
+        'Informe a data de assinatura do DPA, ou desmarque a opção "DPA assinado".',
+      );
       return;
     }
     try {
@@ -59,6 +81,10 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
         dpaSignedAt: dpaSignedAt || undefined,
         securityClausesConfirmed,
         observations: observations || undefined,
+        involvesInternationalTransfer,
+        destinationCountry: involvesInternationalTransfer ? destinationCountry || undefined : undefined,
+        transferSafeguard: involvesInternationalTransfer && transferSafeguard ? transferSafeguard : undefined,
+        transferSafeguardDetails: involvesInternationalTransfer ? transferSafeguardDetails || undefined : undefined,
       };
       const saved = editing
         ? await updateVendor(editing.id, payload)
@@ -171,6 +197,60 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
               />
               Cláusulas de segurança confirmadas
             </label>
+          </div>
+
+                    <div className="border-t border-[#1B2233]/8 pt-4">
+            <label className="flex items-center gap-2 text-sm text-[#1B2233]/70 cursor-pointer mb-1">
+              <input
+                type="checkbox"
+                checked={involvesInternationalTransfer}
+                onChange={(e) => setInvolvesInternationalTransfer(e.target.checked)}
+                className="rounded border-[#1B2233]/20 text-[#14B8A6] focus:ring-[#14B8A6]/30"
+              />
+              Envolve transferência internacional de dados
+            </label>
+            <p className="text-xs text-[#1B2233]/45 mb-3">
+              Marque se este fornecedor está sediado fora do Brasil, ou processa dado em servidor fora do país.
+            </p>
+            {involvesInternationalTransfer && (
+              <div className="space-y-3">
+                <div>
+                  <label className={labelClass}>País de destino</label>
+                  <input
+                    type="text"
+                    value={destinationCountry}
+                    onChange={(e) => setDestinationCountry(e.target.value)}
+                    placeholder="Ex: Estados Unidos, Irlanda"
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label className={labelClass}>Garantia de proteção usada</label>
+                  <select
+                    value={transferSafeguard}
+                    onChange={(e) => setTransferSafeguard(e.target.value as TransferSafeguard)}
+                    className={inputClass}
+                  >
+                    <option value="">Selecione</option>
+                    {Object.entries(TRANSFER_SAFEGUARD_LABELS).map(([value, label]) => (
+                      <option key={value} value={value}>{label}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className={labelClass}>
+                    Detalhes da garantia <span className="text-[#1B2233]/40">(opcional)</span>
+                  </label>
+                  <textarea
+                    value={transferSafeguardDetails}
+                    onChange={(e) => setTransferSafeguardDetails(e.target.value)}
+                    rows={2}
+                    placeholder="Ex: qual cláusula específica, ou detalhe da decisão de adequação aplicável"
+                    className={inputClass}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           {dpaSigned && (
