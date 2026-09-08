@@ -17,6 +17,9 @@ import {
   BookOpen,
   Users2,
   AlertTriangle,
+  Archive,
+  ScrollText,
+  Users,
 } from "lucide-react";
 import { ComplianceChecklist } from "../components/ComplianceChecklist";
 
@@ -100,6 +103,14 @@ export function PilaresPage() {
       bg: "bg-[#1B2233]/6",
       cards: [
         {
+          to: `/workspaces/${workspaceId}/pilares/retencao-descarte`,
+          icon: Archive,
+          title: "Retenção e Descarte",
+          legalBasis: "Art. 15/16",
+          description:
+            "Dado pessoal não pode ser guardado para sempre. Definir por quanto tempo manter, e o que fazer quando o prazo vence, é parte real da adequação.",
+        },
+        {
           to: `/workspaces/${workspaceId}/pilares/ropa`,
           icon: ClipboardList,
           title: "Inventário / ROPA",
@@ -107,7 +118,7 @@ export function PilaresPage() {
           description:
             "Registro estruturado de todas as atividades de tratamento de dados da empresa, quem trata o quê, com qual finalidade, e com base em qual hipótese legal. É o documento mais consultado pela ANPD em fiscalização.",
         },
-                {
+        {
           to: `/workspaces/${workspaceId}/pilares/ropa`,
           icon: ClipboardList,
           title: "Inventário / ROPA",
@@ -163,6 +174,14 @@ export function PilaresPage() {
           description:
             "Conscientização sobre proteção de dados não é opcional na prática, é o que evita o erro humano, que continua sendo a causa mais comum de incidente de segurança.",
         },
+        {
+          to: `/workspaces/${workspaceId}/pilares/evidencias-monitoramento`,
+          icon: ScrollText,
+          title: "Evidências e Monitoramento",
+          legalBasis: "Accountability",
+          description:
+            "Cumprir a lei não basta, é preciso conseguir provar. A trilha de auditoria imutável do sistema registra quem fez o quê, e quando.",
+        },
       ],
     },
     {
@@ -171,7 +190,15 @@ export function PilaresPage() {
       subtitle: "O que sustenta a adequação no longo prazo",
       accent: "text-[#B8862B]",
       bg: "bg-[#B8862B]/10",
-      cards: [
+       cards: [
+        {
+          to: `/workspaces/${workspaceId}/pilares/comite`,
+          icon: Users,
+          title: "Comitê de LGPD",
+          legalBasis: "Boa prática",
+          description:
+            "Formar um comitê com representantes de cada setor costuma ser o primeiro passo real de qualquer empresa que leva a adequação a sério.",
+        },
         {
           to: `/workspaces/${workspaceId}/users`,
           icon: UserCog,
@@ -204,9 +231,12 @@ export function PilaresPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-serif text-[#1B2233] mb-1">Pilares de Conformidade</h1>
+      <h1 className="text-xl font-serif text-[#1B2233] mb-1">
+        Pilares de Conformidade
+      </h1>
       <p className="text-sm text-[#1B2233]/55 mb-6">
-        O caminho que sua empresa deve seguir para se manter adequada à LGPD/RGPD, organizado em três estágios.
+        O caminho que sua empresa deve seguir para se manter adequada à
+        LGPD/RGPD, organizado em três estágios.
       </p>
 
       {workspaceId && <ComplianceChecklist workspaceId={workspaceId} />}
@@ -232,8 +262,12 @@ export function PilaresPage() {
         {stages.map((stage) => (
           <div key={stage.id}>
             <div className={`rounded-xl ${stage.bg} px-5 py-4 mb-4`}>
-              <h2 className={`font-serif text-lg ${stage.accent}`}>{stage.title}</h2>
-              <p className="text-xs text-[#1B2233]/50 mt-0.5">{stage.subtitle}</p>
+              <h2 className={`font-serif text-lg ${stage.accent}`}>
+                {stage.title}
+              </h2>
+              <p className="text-xs text-[#1B2233]/50 mt-0.5">
+                {stage.subtitle}
+              </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {stage.cards.map((card) => {
@@ -257,7 +291,9 @@ export function PilaresPage() {
                         <span className="text-[10px] font-mono uppercase tracking-wide text-[#B8862B]">
                           {card.legalBasis}
                         </span>
-                        {!card.comingSoon && <ArrowRight className="w-4 h-4 text-[#1B2233]/25" />}
+                        {!card.comingSoon && (
+                          <ArrowRight className="w-4 h-4 text-[#1B2233]/25" />
+                        )}
                       </div>
                     </div>
                     <h3 className="font-medium text-[#1B2233] mb-1">
@@ -268,7 +304,9 @@ export function PilaresPage() {
                         </span>
                       )}
                     </h3>
-                    <p className="text-xs text-[#1B2233]/55 leading-relaxed">{card.description}</p>
+                    <p className="text-xs text-[#1B2233]/55 leading-relaxed">
+                      {card.description}
+                    </p>
                     {card.note && (
                       <p className="text-xs text-[#B8862B] leading-relaxed mt-2 pt-2 border-t border-[#B8862B]/15">
                         {card.note}

@@ -38,6 +38,9 @@ import { BaseLegalPage } from "./pages/BaseLegalPage";
 import { GlossarioPage } from "./pages/GlossarioPage";
 import { QuemEQuemPage } from "./pages/QuemEQuemPage";
 import { SancoesPage } from "./pages/SancoesPage";
+import { RetencaoDescartePage } from "./pages/RetencaoDescartePage";
+import { EvidenciasMonitoramentoPage } from "./pages/EvidenciasMonitoramentoPage";
+import { ComiteLgpdPage } from "./pages/ComiteLgpdPage";
 
 
 function App() {
@@ -75,12 +78,12 @@ function App() {
                 element={<WorkspaceLayout />}
               >
                 <Route path="pilares" element={<PilaresPage />} />
-                <Route path="pilares/ropa" element={<ProcessingActivitiesPage />} />
                 <Route path="documents" element={<DocumentsPage />} />
                 <Route path="action-plan" element={<ActionPlanPage />} />
                 <Route path="incidents" element={<IncidentsPage />} />
                 <Route path="data-subject-requests" element={<DataSubjectRequestsPage />} />
                 <Route path="search" element={<SearchPage />} />
+                <Route path="pilares/ropa" element={<ProcessingActivitiesPage />} />
                 <Route path="pilares/fornecedores" element={<VendorsPage />} />
                 <Route path="pilares/treinamento" element={<TrainingsPage />} />
                 <Route path="pilares/treinamento/colaboradores" element={<EmployeesPage />} />
@@ -91,6 +94,9 @@ function App() {
                 <Route path="pilares/glossario" element={<GlossarioPage />} />
                 <Route path="pilares/quem-e-quem" element={<QuemEQuemPage />} />
                 <Route path="pilares/sancoes" element={<SancoesPage />} />
+                <Route path="pilares/retencao-descarte" element={<RetencaoDescartePage />} />
+                <Route path="pilares/evidencias-monitoramento" element={<EvidenciasMonitoramentoPage />} />
+                <Route path="pilares/comite" element={<ComiteLgpdPage />} />
               </Route>
             </Route>
           </Route>
