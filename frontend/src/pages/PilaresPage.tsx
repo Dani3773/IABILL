@@ -54,6 +54,14 @@ export function PilaresPage() {
       bg: "bg-[#14B8A6]/10",
       cards: [
         {
+          to: `/workspaces/${workspaceId}/pilares/comite`,
+          icon: Users,
+          title: "Comitê de LGPD",
+          legalBasis: "Boa prática",
+          description:
+            "Formar um comitê com representantes de cada setor costuma ser o primeiro passo real de qualquer empresa que leva a adequação a sério.",
+        },
+        {
           to: `/workspaces/${workspaceId}/pilares/glossario`,
           icon: BookOpen,
           title: "Glossário de Termos",
@@ -86,6 +94,22 @@ export function PilaresPage() {
             "Toda atividade de tratamento precisa se apoiar numa das hipóteses legais previstas em lei, consentimento, execução de contrato, cumprimento de obrigação legal, entre outras. É o primeiro dado que o ROPA pede de cada atividade.",
         },
         {
+          to: `/workspaces/${workspaceId}/pilares/retencao-descarte`,
+          icon: Archive,
+          title: "Retenção e Descarte",
+          legalBasis: "Art. 15/16",
+          description:
+            "Dado pessoal não pode ser guardado para sempre. Definir por quanto tempo manter, e o que fazer quando o prazo vence, é parte real da adequação.",
+        },
+        {
+          to: `/workspaces/${workspaceId}/pilares/evidencias-monitoramento`,
+          icon: ScrollText,
+          title: "Evidências e Monitoramento",
+          legalBasis: "Accountability",
+          description:
+            "Cumprir a lei não basta, é preciso conseguir provar. A trilha de auditoria imutável do sistema registra quem fez o quê, e quando.",
+        },
+        {
           to: `/workspaces/${workspaceId}/pilares/sancoes`,
           icon: AlertTriangle,
           title: "O que Acontece se Não Cumprir",
@@ -103,22 +127,6 @@ export function PilaresPage() {
       bg: "bg-[#1B2233]/6",
       cards: [
         {
-          to: `/workspaces/${workspaceId}/pilares/retencao-descarte`,
-          icon: Archive,
-          title: "Retenção e Descarte",
-          legalBasis: "Art. 15/16",
-          description:
-            "Dado pessoal não pode ser guardado para sempre. Definir por quanto tempo manter, e o que fazer quando o prazo vence, é parte real da adequação.",
-        },
-        {
-          to: `/workspaces/${workspaceId}/pilares/ropa`,
-          icon: ClipboardList,
-          title: "Inventário / ROPA",
-          legalBasis: "Art. 37",
-          description:
-            "Registro estruturado de todas as atividades de tratamento de dados da empresa, quem trata o quê, com qual finalidade, e com base em qual hipótese legal. É o documento mais consultado pela ANPD em fiscalização.",
-        },
-        {
           to: `/workspaces/${workspaceId}/pilares/ropa`,
           icon: ClipboardList,
           title: "Inventário / ROPA",
@@ -133,14 +141,6 @@ export function PilaresPage() {
           legalBasis: "Art. 18",
           description:
             "Qualquer pessoa cujo dado a empresa trata tem direito de pedir acesso, correção, ou eliminação desses dados. O sistema já mantém um portal público pronto para receber essas solicitações.",
-        },
-        {
-          to: `/workspaces/${workspaceId}/documents`,
-          icon: ShieldCheck,
-          title: "Segurança da Informação",
-          legalBasis: "Art. 46/49",
-          description:
-            "Medidas técnicas e administrativas para proteger os dados, controle de acesso, criptografia, backup. No sistema, vira um documento do tipo Política de Segurança da Informação (PSI), gerado com IA a partir do que já existe cadastrado.",
         },
         {
           to: `/workspaces/${workspaceId}/documents`,
@@ -174,14 +174,6 @@ export function PilaresPage() {
           description:
             "Conscientização sobre proteção de dados não é opcional na prática, é o que evita o erro humano, que continua sendo a causa mais comum de incidente de segurança.",
         },
-        {
-          to: `/workspaces/${workspaceId}/pilares/evidencias-monitoramento`,
-          icon: ScrollText,
-          title: "Evidências e Monitoramento",
-          legalBasis: "Accountability",
-          description:
-            "Cumprir a lei não basta, é preciso conseguir provar. A trilha de auditoria imutável do sistema registra quem fez o quê, e quando.",
-        },
       ],
     },
     {
@@ -190,15 +182,7 @@ export function PilaresPage() {
       subtitle: "O que sustenta a adequação no longo prazo",
       accent: "text-[#B8862B]",
       bg: "bg-[#B8862B]/10",
-       cards: [
-        {
-          to: `/workspaces/${workspaceId}/pilares/comite`,
-          icon: Users,
-          title: "Comitê de LGPD",
-          legalBasis: "Boa prática",
-          description:
-            "Formar um comitê com representantes de cada setor costuma ser o primeiro passo real de qualquer empresa que leva a adequação a sério.",
-        },
+      cards: [
         {
           to: `/workspaces/${workspaceId}/users`,
           icon: UserCog,
@@ -238,9 +222,7 @@ export function PilaresPage() {
         O caminho que sua empresa deve seguir para se manter adequada à
         LGPD/RGPD, organizado em três estágios.
       </p>
-
       {workspaceId && <ComplianceChecklist workspaceId={workspaceId} />}
-
       <div className="flex gap-3 mb-8">
         <Link
           to={`/workspaces/${workspaceId}/pilares/diagnostico`}
@@ -257,7 +239,6 @@ export function PilaresPage() {
           Setores
         </Link>
       </div>
-
       <div className="space-y-10">
         {stages.map((stage) => (
           <div key={stage.id}>
