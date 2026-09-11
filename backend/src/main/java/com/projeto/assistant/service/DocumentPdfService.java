@@ -90,9 +90,7 @@ public class DocumentPdfService {
                              String approvedBy, String approvedAt) {
         // Paragrafos separados por linha em branco no texto original viram
         // paragrafos HTML reais - preserva a formatacao legivel do conteudo.
-        String contentHtml = java.util.Arrays.stream(content.split("\n\n"))
-                .map(p -> "<p>" + escapeHtml(p).replace("\n", "<br/>") + "</p>")
-                .reduce("", String::concat);
+        String contentHtml = markdownToHtml(content);
 
         return """
             <html>
@@ -122,7 +120,10 @@ public class DocumentPdfService {
                 .cover .company { font-size: 14px; color: #1B2233; margin-bottom: 3cm; }
                 .cover .meta { font-size: 10px; color: #666666; border-top: 1px solid #dddddd; padding-top: 0.5cm; display: inline-block; text-align: left; }
                 .cover .meta div { margin-bottom: 0.2cm; }
-                h2 { font-size: 14px; margin-top: 1cm; }
+                h2 { font-size: 13px; margin-top: 0.8cm; margin-bottom: 0.3cm; color: #1B2233; }
+                ul { margin-bottom: 0.4cm; padding-left: 1cm; }
+                li { margin-bottom: 0.15cm; text-align: justify; }
+                hr { border: none; border-top: 1px solid #dddddd; margin: 0.5cm 0; }
                 p { text-align: justify; margin-bottom: 0.4cm; }
                 .disclaimer { font-size: 8px; color: #999999; margin-top: 2cm; border-top: 1px solid #eeeeee; padding-top: 0.3cm; }
             </style>
@@ -155,5 +156,70 @@ public class DocumentPdfService {
     private String escapeHtml(String text) {
         if (text == null) return "";
         return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+    }
+
+    // Conversor simples de Markdown para HTML, cobre o subconjunto que a IA
+    // realmente produz (negrito, linhas em negrito puro como pseudo-titulo,
+    // listas com marcador), sem depender de uma biblioteca externa completa.
+    private String markdownToHtml(String markdown) {
+        String[] lines = markdown.split("\n");
+        StringBuilder html = new StringBuilder();
+        boolean inList = false;
+
+        for (String rawLine : lines) {
+            String line = rawLine.trim();
+
+            if (line.isEmpty()) {
+                if (inList) {
+                    html.append("</ul>");
+                    inList = false;
+                }
+                continue;
+            }
+
+            boolean isBullet = line.startsWith("* ") || line.startsWith("- ");
+            if (isBullet) {
+                if (!inList) {
+                    html.append("<ul>");
+                    inList = true;
+                }
+                String itemText = line.substring(2).trim();
+                html.append("<li>").append(applyInlineFormatting(itemText)).append("</li>");
+                continue;
+            }
+
+            if (inList) {
+                html.append("</ul>");
+                inList = false;
+            }
+
+            // Linha inteira em negrito (ex: "**1. Visão Geral**") vira subtitulo,
+            // padrao comum de como a IA estrutura secoes dentro do texto gerado.
+            boolean isWholeLineBold = line.startsWith("**") && line.endsWith("**") && line.length() > 4;
+            if (isWholeLineBold) {
+                String headingText = line.substring(2, line.length() - 2).trim();
+                html.append("<h2>").append(escapeHtml(headingText)).append("</h2>");
+            } else if (line.equals("---")) {
+                html.append("<hr/>");
+            } else {
+                html.append("<p>").append(applyInlineFormatting(line)).append("</p>");
+            }
+        }
+
+        if (inList) {
+            html.append("</ul>");
+        }
+
+        return html.toString();
+    }
+
+    // Aplica negrito e italico dentro de uma linha ja destinada a virar <p> ou <li> -
+    // escapa o HTML primeiro, so depois reintroduz as tags de formatacao, evitando
+    // que o proprio conteudo do documento seja interpretado como marcacao HTML real.
+    private String applyInlineFormatting(String text) {
+        String escaped = escapeHtml(text);
+        escaped = escaped.replaceAll("\\*\\*(.+?)\\*\\*", "<strong>$1</strong>");
+        escaped = escaped.replaceAll("(?<!\\*)\\*([^*]+?)\\*(?!\\*)", "<em>$1</em>");
+        return escaped;
     }
 }
