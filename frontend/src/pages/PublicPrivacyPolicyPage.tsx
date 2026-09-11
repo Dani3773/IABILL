@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fetchPublicPrivacyPolicy } from "../api/documentService";
+import { renderMarkdown } from "../utils/markdown";
 
 export function PublicPrivacyPolicyPage() {
   const { workspaceDocumentId } = useParams<{ workspaceDocumentId: string }>();
@@ -63,9 +64,10 @@ export function PublicPrivacyPolicyPage() {
             Publicada em {new Date(publishedAt).toLocaleDateString("pt-BR")}
           </p>
         )}
-        <div className="bg-white rounded-xl p-6 border border-[#1B2233]/10">
-          <p className="text-[#1B2233]/80 text-sm leading-relaxed whitespace-pre-wrap">{content}</p>
-        </div>
+        <div
+          className="bg-white rounded-xl p-6 border border-[#1B2233]/10 text-[#1B2233]/80 text-sm leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
+        />
       </div>
     </div>
   );
