@@ -71,3 +71,15 @@ export async function fetchPublicPrivacyPolicy(workspaceDocumentId: string): Pro
   const response = await apiClient.get<PublicPrivacyPolicyResponse>(`/documents/public/privacy-policy/${workspaceDocumentId}`)
   return response.data
 }
+
+export async function downloadDocumentPdf(id: string, title: string): Promise<void> {
+  const response = await apiClient.get(`/documents/${id}/pdf`, { responseType: 'blob' })
+  const url = window.URL.createObjectURL(new Blob([response.data]))
+  const link = document.createElement('a')
+  link.href = url
+  link.setAttribute('download', `${title.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`)
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  window.URL.revokeObjectURL(url)
+}

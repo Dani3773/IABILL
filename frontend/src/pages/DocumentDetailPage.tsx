@@ -10,6 +10,7 @@ import {
   publishDocument,
   unpublishDocument,
   fetchDocumentsByWorkspace,
+  downloadDocumentPdf,
 } from "../api/documentService";
 import { getErrorMessage } from "../api/errorUtils";
 import { useAuth } from "../contexts/AuthContext";
@@ -18,7 +19,7 @@ import { Alert } from "../components/Alert";
 import type { Document, DocumentType } from "../types/document";
 import QRCode from "qrcode";
 import { fetchWorkspaces } from "../api/workspaceService";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Download } from "lucide-react";
 
 export function DocumentDetailPage() {
   const { documentId } = useParams<{ documentId: string }>();
@@ -36,14 +37,14 @@ export function DocumentDetailPage() {
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
 
   const DOCUMENT_TYPE_LABELS: Record<DocumentType, string> = {
-  INVENTARIO_DADOS: "Inventário de Dados",
-  POLITICA_PRIVACIDADE: "Política de Privacidade",
-  RELATORIO_CONFORMIDADE: "Relatório de Conformidade",
-  RAT: "RAT (Registro de Atividades de Tratamento)",
-  RIPD_DPIA: "RIPD/DPIA (Relatório de Impacto à Proteção de Dados)",
-  POLITICA_SEGURANCA_INFORMACAO: "Política de Segurança da Informação (PSI)",
-  MATERIAL_TREINAMENTO: "Material de Treinamento/Conscientização",
-};
+    INVENTARIO_DADOS: "Inventário de Dados",
+    POLITICA_PRIVACIDADE: "Política de Privacidade",
+    RELATORIO_CONFORMIDADE: "Relatório de Conformidade",
+    RAT: "RAT (Registro de Atividades de Tratamento)",
+    RIPD_DPIA: "RIPD/DPIA (Relatório de Impacto à Proteção de Dados)",
+    POLITICA_SEGURANCA_INFORMACAO: "Política de Segurança da Informação (PSI)",
+    MATERIAL_TREINAMENTO: "Material de Treinamento/Conscientização",
+  };
 
   useEffect(() => {
     if (!documentId) return;
@@ -217,6 +218,19 @@ export function DocumentDetailPage() {
     }
   }
 
+  async function handleDownloadPdf() {
+    if (!documentId || !document) return;
+    setIsActionLoading(true);
+    clearMessages();
+    try {
+      await downloadDocumentPdf(documentId, document.title);
+    } catch (err) {
+      setError(getErrorMessage(err, "Não foi possível gerar o PDF."));
+    } finally {
+      setIsActionLoading(false);
+    }
+  }
+
   if (isLoading) return <LoadingSpinner label="Carregando documento..." />;
   if (!document) return <Alert type="error" message="Documento não encontrado." />;
 
@@ -239,7 +253,18 @@ export function DocumentDetailPage() {
           {document.status}
         </span>
       </div>
-      <p className="text-sm text-[#1B2233]/55 mb-6">{DOCUMENT_TYPE_LABELS[document.type]}</p>
+      <p className="text-sm text-[#1B2233]/55 mb-4">{DOCUMENT_TYPE_LABELS[document.type]}</p>
+
+      {document.status === "APPROVED" && (
+        <button
+          onClick={handleDownloadPdf}
+          disabled={isActionLoading}
+          className="flex items-center gap-1.5 bg-[#1B2233]/8 hover:bg-[#1B2233]/15 disabled:opacity-50 text-[#1B2233] text-sm font-medium rounded-lg px-4 py-2 transition-colors mb-4"
+        >
+          <Download className="w-3.5 h-3.5" />
+          Baixar PDF
+        </button>
+      )}
 
       <div className="space-y-3 mb-4">
         {error && <Alert type="error" message={error} />}

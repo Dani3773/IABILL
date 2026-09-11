@@ -7,6 +7,10 @@ import { Alert } from "../components/Alert";
 import { getErrorMessage } from "../api/errorUtils";
 import { useLocation } from "react-router-dom";
 import type { Document, DocumentStatus, DocumentType } from "../types/document";
+import {
+  fetchDocumentsByWorkspace,
+  dismissReviewFlag,
+} from "../api/documentService";
 
 const DOCUMENT_TYPE_LABELS: Record<DocumentType, string> = {
   INVENTARIO_DADOS: "Inventário de Dados",
@@ -17,10 +21,6 @@ const DOCUMENT_TYPE_LABELS: Record<DocumentType, string> = {
   POLITICA_SEGURANCA_INFORMACAO: "Política de Segurança da Informação (PSI)",
   MATERIAL_TREINAMENTO: "Material de Treinamento/Conscientização",
 };
-import {
-  fetchDocumentsByWorkspace,
-  dismissReviewFlag,
-} from "../api/documentService";
 
 const STATUS_STYLES: Record<DocumentStatus, string> = {
   DRAFT: "bg-[#1B2233]/8 text-[#1B2233]/60",
@@ -55,7 +55,7 @@ export function DocumentsPage() {
       .finally(() => setIsLoading(false));
   }, [workspaceId]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (prefill?.prefillType) {
       setShowCreateModal(true);
       // Limpa o state da navegacao para nao reabrir o modal se a pessoa

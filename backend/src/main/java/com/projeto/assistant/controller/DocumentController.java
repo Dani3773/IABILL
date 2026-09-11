@@ -13,6 +13,7 @@ import com.projeto.assistant.dto.DocumentGenerationResponseDTO;
 import com.projeto.assistant.dto.DocumentContentUpdateRequestDTO;
 import com.projeto.assistant.dto.DocumentRejectionRequestDTO;
 import com.projeto.assistant.dto.PublicPrivacyPolicyResponseDTO;
+import com.projeto.assistant.service.DocumentPdfService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
-
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,6 +36,7 @@ public class DocumentController {
 
     private final DocumentService documentService;
     private final DocumentChunkService documentChunkService;
+    private final DocumentPdfService documentPdfService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -148,5 +152,16 @@ public class DocumentController {
     @GetMapping("/public/privacy-policy/{workspaceDocumentId}")
     public PublicPrivacyPolicyResponseDTO publicPrivacyPolicy(@PathVariable String workspaceDocumentId) {
         return documentService.getPublishedPrivacyPolicy(workspaceDocumentId);
+    }
+
+    @GetMapping("/{documentId}/pdf")
+    public ResponseEntity<byte[]> exportPdf(
+            @PathVariable UUID documentId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId) {
+        byte[] pdfBytes = documentPdfService.generatePdf(documentId, authTenantId);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=documento.pdf")
+                .body(pdfBytes);
     }
 }
