@@ -47,6 +47,28 @@ const SECTIONS: Section[] = [
       },
     ],
   },
+    {
+    id: "estrutura-pilares",
+    title: "Como os Pilares Estão Organizados",
+    icon: ClipboardList,
+    body: [
+      {
+        text: "A aba Pilares é o mapa geral da adequação da sua empresa, organizada em três estágios, do conteúdo que se estuda até o que se opera no dia a dia.",
+      },
+      {
+        heading: "1. Fundamentos Legais",
+        text: "Conteúdo de estudo, sem tela de gestão própria, Comitê de LGPD, Glossário de Termos, Quem é Quem, Princípios da LGPD, Base Legal, Retenção e Descarte, Evidências e Monitoramento, e O que Acontece se Não Cumprir. Vale começar por aqui se você ainda não conhece bem a LGPD.",
+      },
+      {
+        heading: "2. Operação do Dia a Dia",
+        text: "As telas onde o trabalho real acontece, Inventário/ROPA, Direitos do Titular, Segurança da Informação, Incidentes, Fornecedores, e Treinamento de Colaboradores.",
+      },
+      {
+        heading: "3. Governança Avançada",
+        text: "Encarregado (DPO), RIPD/DPIA, e Transferência Internacional de Dados, este último cadastrado direto no fornecedor responsável, quando ele está sediado fora do Brasil ou processa dado em servidor no exterior.",
+      },
+    ],
+  },
   {
     id: "diagnostico",
     title: "Diagnóstico Inicial",
@@ -111,6 +133,10 @@ const SECTIONS: Section[] = [
       },
       {
         text: "Para cada fornecedor, registre o serviço prestado, quais categorias de dado são compartilhadas, e se existe um DPA (contrato de proteção de dados) assinado.",
+      },
+      {
+        heading: "Transferência internacional",
+        text: "Se o fornecedor está sediado fora do Brasil, ou processa dado em servidor no exterior, marque \"Envolve transferência internacional de dados\", e registre o país de destino e a garantia de proteção usada, decisão de adequação, cláusulas contratuais padrão, ou consentimento específico do titular.",
       },
     ],
   },
