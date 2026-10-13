@@ -84,6 +84,7 @@ class DocumentServiceTest {
                 .isInstanceOf(AccessDeniedException.class);
     }
 
+    @Test
     void reject_whenStatusIsDraft_shouldThrowIllegalArgumentException() {
         document.setStatus(DocumentStatus.DRAFT);
         when(documentRepository.findById(document.getId())).thenReturn(Optional.of(document));

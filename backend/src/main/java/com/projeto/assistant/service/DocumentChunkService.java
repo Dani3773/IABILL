@@ -174,9 +174,9 @@ public class DocumentChunkService {
         if (type == DocumentType.RIPD_DPIA) {
             return """
                 Este documento é um Relatório de Impacto à Proteção de Dados (RIPD/DPIA),
-                conforme Art. 38 da LGPD. Estruture o conteúdo cobrindo obrigatoriamente,
+                conforme Art. 38 da LGPD (conteúdo mínimo) e Art. 35 do RGPD. Estruture o conteúdo cobrindo obrigatoriamente,
                 quando houver informação disponível no contexto, os seguintes elementos:
-                1. Descrição do tratamento de dados pessoais avaliado (finalidade, dados envolvidos, titulares afetados).
+                1. Descrição do tratamento de dados pessoais avaliado (finalidade, tipos de dados pessoais coletados, metodologia de coleta, garantias de segurança das informações, titulares afetados).
                 2. Avaliação de necessidade e proporcionalidade do tratamento em relação à finalidade.
                 3. Riscos identificados aos direitos e liberdades dos titulares dos dados.
                 4. Medidas de mitigação e salvaguardas adotadas ou recomendadas para reduzir os riscos identificados.

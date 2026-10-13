@@ -178,9 +178,11 @@ export function DataSubjectRequestsPage() {
           revogação de consentimento
         </span>{" "}
         a qualquer momento. Toda solicitação recebida aqui já gera
-        automaticamente uma tarefa vinculada no Plano de Ação, e não existe
-        prazo legal fixo único para resposta, recomenda-se atender dentro de um
-        prazo razoável, geralmente interpretado como até 15 dias.
+        automaticamente uma tarefa vinculada no Plano de Ação. Pelo Art. 19 da
+        LGPD, a declaração completa de confirmação de existência ou de acesso
+        aos dados deve ser fornecida em até 15 dias, e os demais direitos
+        seguem os prazos previstos em regulamento, recomendando-se atender sem
+        demora.
       </div>
 
       {error && (

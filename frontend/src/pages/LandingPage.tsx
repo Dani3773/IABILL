@@ -68,7 +68,7 @@ const FEATURES = [
     citation: "§ Art. 38",
     title: "Relatório de Impacto (RIPD/DPIA)",
     description:
-      "Estrutura jurídica própria cobrindo os quatro elementos exigidos para tratamentos de alto risco.",
+      "Estrutura jurídica própria que contempla o conteúdo mínimo do Art. 38 da LGPD e acompanha os elementos do Art. 35 do RGPD.",
   },
   {
     icon: Radio,

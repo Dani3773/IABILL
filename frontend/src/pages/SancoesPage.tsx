@@ -26,20 +26,23 @@ export function SancoesPage() {
         <div className="bg-white rounded-xl p-5 border border-[#1B2233]/10">
           <h3 className="font-medium text-[#1B2233] mb-2">As sanções previstas em lei</h3>
           <p className="text-sm text-[#1B2233]/65 leading-relaxed">
-            Advertência com prazo para adoção de medidas corretivas, multa de até 2% do faturamento da empresa no Brasil,
-            limitada a 50 milhões de reais por infração, publicização da infração, bloqueio dos dados pessoais envolvidos, e
-            em casos graves, eliminação dos dados pessoais.
+            Entre as sanções previstas estão a advertência com prazo para adoção de medidas corretivas, a multa simples de até
+            2% do faturamento da empresa no Brasil em seu último exercício, limitada a 50 milhões de reais por infração, a multa
+            diária, a publicização da infração, o bloqueio e a eliminação dos dados pessoais envolvidos, e a suspensão parcial
+            do funcionamento do banco de dados ou do exercício da atividade de tratamento.
           </p>
         </div>
 
         <div className="bg-white rounded-xl p-5 border border-amber-200">
           <h3 className="font-medium text-[#1B2233] mb-2">Não é mais teórico, é fiscalização real</h3>
           <p className="text-sm text-[#1B2233]/70 leading-relaxed">
-            Em fevereiro de 2026, a ANPD deixou de ser só uma autoridade orientadora e virou uma agência reguladora plena,
-            com mais autonomia e poder de fiscalização. Em junho de 2026, a ANPD concluiu o monitoramento de 56 agentes de
-            tratamento, com foco justamente nas obrigações básicas de conformidade, tendo Encarregado designado, registro de
-            atividades, e resposta a incidente. A primeira multa da história da ANPD foi aplicada a uma microempresa,
-            confirmando que porte pequeno reduz o valor da sanção, mas não afasta a sanção em si.
+            Em fevereiro de 2026, a Lei 15.352 transformou a ANPD na Agência Nacional de Proteção de Dados, com autonomia
+            funcional, técnica, decisória, administrativa e financeira. Em 2026, a ANPD concluiu o monitoramento de 56 agentes
+            de tratamento (39 órgãos públicos e 17 empresas privadas) sobre duas obrigações básicas, a indicação formal de um
+            Encarregado e a disponibilização de um canal de comunicação com os titulares, e 21 deles, que não responderam
+            aos ofícios, foram encaminhados à área de sanções, que pode abrir processos sancionadores. A primeira sanção com
+            multa da ANPD, em 2023, atingiu uma microempresa (R$ 14.400,00 no total), o que mostra que o porte pequeno não
+            afasta a sanção.
           </p>
         </div>
 
