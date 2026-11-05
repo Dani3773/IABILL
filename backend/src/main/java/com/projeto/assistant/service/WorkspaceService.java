@@ -3,8 +3,11 @@ package com.projeto.assistant.service;
 import com.projeto.assistant.dto.WorkspaceRequestDTO;
 import com.projeto.assistant.dto.WorkspaceResponseDTO;
 import com.projeto.assistant.model.Tenant;
+import com.projeto.assistant.model.User;
+import com.projeto.assistant.model.UserRole;
 import com.projeto.assistant.model.Workspace;
 import com.projeto.assistant.repository.TenantRepository;
+import com.projeto.assistant.repository.UserRepository;
 import com.projeto.assistant.repository.WorkspaceRepository;
 import com.projeto.assistant.model.AuditAction;
 import com.projeto.assistant.model.AuditEntityType;
@@ -23,11 +26,20 @@ public class WorkspaceService {
 
     private final WorkspaceRepository workspaceRepository;
     private final TenantRepository tenantRepository;
+    private final UserRepository userRepository;
     private final AuditLogService auditLogService;
 
     public WorkspaceResponseDTO create(WorkspaceRequestDTO request, UUID authUserId) {
-        Tenant tenant = tenantRepository.findById(request.tenantId())
-                .orElseThrow(() -> new IllegalArgumentException("Tenant não encontrado: " + request.tenantId()));
+        // Super-Admin nao tem tenant proprio e escolhe o destino no corpo; os demais
+        // papeis so criam workspaces no proprio tenant, ignorando o valor recebido.
+        User creator = userRepository.findById(authUserId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + authUserId));
+        UUID targetTenantId = creator.getRole() == UserRole.SUPER_ADMIN
+                ? request.tenantId()
+                : creator.getTenant().getId();
+
+        Tenant tenant = tenantRepository.findById(targetTenantId)
+                .orElseThrow(() -> new IllegalArgumentException("Tenant não encontrado: " + targetTenantId));
 
         Workspace workspace = new Workspace();
         workspace.setTenant(tenant);

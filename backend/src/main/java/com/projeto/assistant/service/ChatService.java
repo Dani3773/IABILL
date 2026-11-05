@@ -164,13 +164,18 @@ public class ChatService {
             case "criar_documento" -> {
                 String title = (String) args.get("title");
                 DocumentType type = DocumentType.valueOf((String) args.get("type"));
-                var doc = documentService.create(new DocumentRequestDTO(workspaceId, authUserId, type, title));
+                var doc = documentService.create(new DocumentRequestDTO(workspaceId, type, title), authTenantId, authUserId);
                 actionsTaken.add("Criou o documento \"" + title + "\"");
                 yield doc;
             }
             case "gerar_conteudo_documento" -> {
                 UUID documentId = UUID.fromString((String) args.get("documentId"));
                 String instruction = (String) args.get("instruction");
+                // Checagem previa: uma excecao aqui desfaria a transacao da conversa
+                // inteira, e o modelo precisa receber o motivo para explicar ao usuario.
+                if (documentService.findById(documentId, authTenantId).status() == DocumentStatus.APPROVED) {
+                    yield Map.of("erro", "Documento aprovado não pode ser alterado");
+                }
                 var generation = documentChunkService.generateAssistedContent(documentId, instruction, authTenantId, authUserId);
                 actionsTaken.add("Gerou conteúdo para o documento com IA");
                 yield generation;

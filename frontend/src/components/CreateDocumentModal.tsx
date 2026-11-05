@@ -2,7 +2,6 @@ import { useState, type FormEvent } from "react";
 import { FileText, X } from "lucide-react";
 import { createDocument } from "../api/documentService";
 import type { Document, DocumentType } from "../types/document";
-import { useAuth } from "../contexts/AuthContext";
 import { getErrorMessage } from "../api/errorUtils";
 
 interface Props {
@@ -24,7 +23,6 @@ const DOCUMENT_TYPE_LABELS: Record<DocumentType, string> = {
 };
 
 export function CreateDocumentModal({ workspaceId, onClose, onCreated, initialType, initialTitle }: Props) {
-  const { userId } = useAuth();
   const [title, setTitle] = useState(initialTitle ?? "");
   const [type, setType] = useState<DocumentType>(initialType ?? "INVENTARIO_DADOS");
   const [error, setError] = useState<string | null>(null);
@@ -32,13 +30,11 @@ export function CreateDocumentModal({ workspaceId, onClose, onCreated, initialTy
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!userId) return;
     setError(null);
     setIsLoading(true);
     try {
       const document = await createDocument({
         workspaceId,
-        createdByUserId: userId,
         type,
         title,
       });

@@ -27,7 +27,6 @@ import org.springframework.http.HttpHeaders;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/documents")
@@ -40,8 +39,11 @@ public class DocumentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public DocumentResponseDTO create(@Valid @RequestBody DocumentRequestDTO request) {
-        return documentService.create(request);
+    public DocumentResponseDTO create(
+            @Valid @RequestBody DocumentRequestDTO request,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return documentService.create(request, authTenantId, authUserId);
     }
 
     @GetMapping
@@ -49,15 +51,6 @@ public class DocumentController {
             @RequestParam UUID workspaceId,
             @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId) {
         return documentService.findByWorkspace(workspaceId, authTenantId);
-    }
-
-    @PostMapping("/{documentId}/content")
-    public Map<String, Object> processContent(
-            @PathVariable UUID documentId,
-            @RequestBody String rawContent,
-            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
-        int chunksCreated = documentChunkService.processContent(documentId, rawContent, authUserId);
-        return Map.of("chunksCreated", chunksCreated);
     }
 
     @PostMapping("/search")

@@ -11,9 +11,6 @@ public record DocumentRequestDTO(
         @NotNull(message = "O workspace é obrigatório")
         UUID workspaceId,
 
-        @NotNull(message = "O usuário criador é obrigatório")
-        UUID createdByUserId,
-
         @NotNull(message = "O tipo de documento é obrigatório")
         DocumentType type,
 

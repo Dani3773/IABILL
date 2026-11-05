@@ -29,9 +29,13 @@ public class VendorService {
     private final AuditLogService auditLogService;
     private final SectorRepository sectorRepository;
 
-    private Sector resolveSector(UUID sectorId) {
+    private Sector resolveSector(UUID sectorId, Workspace workspace) {
         if (sectorId == null) return null;
-        return sectorRepository.findById(sectorId).orElse(null);
+        Sector sector = sectorRepository.findById(sectorId).orElse(null);
+        if (sector != null && !sector.getWorkspace().getId().equals(workspace.getId())) {
+            throw new AccessDeniedException("O setor não pertence a este workspace");
+        }
+        return sector;
     }
 
     @Transactional
@@ -45,7 +49,7 @@ public class VendorService {
 
         Vendor vendor = new Vendor();
         vendor.setWorkspace(workspace);
-        vendor.setSector(resolveSector(request.sectorId()));
+        vendor.setSector(resolveSector(request.sectorId(), workspace));
         vendor.setName(request.name());
         vendor.setServiceProvided(request.serviceProvided());
         vendor.setSharedDataCategories(request.sharedDataCategories());
@@ -97,7 +101,7 @@ public class VendorService {
             throw new AccessDeniedException("Você não tem acesso a este fornecedor");
         }
 
-        vendor.setSector(resolveSector(request.sectorId()));
+        vendor.setSector(resolveSector(request.sectorId(), vendor.getWorkspace()));
         vendor.setName(request.name());
         vendor.setServiceProvided(request.serviceProvided());
         vendor.setSharedDataCategories(request.sharedDataCategories());

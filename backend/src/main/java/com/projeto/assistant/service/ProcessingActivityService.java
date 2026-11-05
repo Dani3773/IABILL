@@ -30,9 +30,13 @@ public class ProcessingActivityService {
     private final AuditLogService auditLogService;
     private final SectorRepository sectorRepository;
 
-    private Sector resolveSector(UUID sectorId) {
+    private Sector resolveSector(UUID sectorId, Workspace workspace) {
         if (sectorId == null) return null;
-        return sectorRepository.findById(sectorId).orElse(null);
+        Sector sector = sectorRepository.findById(sectorId).orElse(null);
+        if (sector != null && !sector.getWorkspace().getId().equals(workspace.getId())) {
+            throw new AccessDeniedException("O setor não pertence a este workspace");
+        }
+        return sector;
     }
 
     @Transactional
@@ -46,7 +50,7 @@ public class ProcessingActivityService {
 
         ProcessingActivity activity = new ProcessingActivity();
         activity.setWorkspace(workspace);
-        activity.setSector(resolveSector(request.sectorId()));
+        activity.setSector(resolveSector(request.sectorId(), workspace));
         activity.setApplicableRegime(request.applicableRegime());
         activity.setProcessName(request.processName());
         activity.setPurpose(request.purpose());
@@ -99,7 +103,7 @@ public class ProcessingActivityService {
             throw new AccessDeniedException("Você não tem acesso a esta atividade de tratamento");
         }
 
-        activity.setSector(resolveSector(request.sectorId()));
+        activity.setSector(resolveSector(request.sectorId(), activity.getWorkspace()));
         activity.setApplicableRegime(request.applicableRegime());
         activity.setProcessName(request.processName());
         activity.setPurpose(request.purpose());

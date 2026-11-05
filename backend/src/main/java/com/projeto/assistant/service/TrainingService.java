@@ -36,6 +36,11 @@ public class TrainingService {
         }
 
         Set<Employee> attendees = new HashSet<>(employeeRepository.findAllById(request.attendeeIds()));
+        boolean hasForeignAttendee = attendees.stream()
+                .anyMatch(employee -> !employee.getWorkspace().getId().equals(workspace.getId()));
+        if (hasForeignAttendee) {
+            throw new AccessDeniedException("Há participantes que não pertencem a este workspace");
+        }
 
         Training training = new Training();
         training.setWorkspace(workspace);

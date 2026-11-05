@@ -29,9 +29,13 @@ public class EmployeeService {
     private final AuditLogService auditLogService;
     private final SectorRepository sectorRepository;
 
-    private Sector resolveSector(UUID sectorId) {
+    private Sector resolveSector(UUID sectorId, Workspace workspace) {
         if (sectorId == null) return null;
-        return sectorRepository.findById(sectorId).orElse(null);
+        Sector sector = sectorRepository.findById(sectorId).orElse(null);
+        if (sector != null && !sector.getWorkspace().getId().equals(workspace.getId())) {
+            throw new AccessDeniedException("O setor não pertence a este workspace");
+        }
+        return sector;
     }
 
     @Transactional
@@ -47,7 +51,7 @@ public class EmployeeService {
         employee.setWorkspace(workspace);
         employee.setName(request.name());
         employee.setJobTitle(request.jobTitle());
-        employee.setSector(resolveSector(request.sectorId()));
+        employee.setSector(resolveSector(request.sectorId(), workspace));
         employee.setEmail(request.email());
         employee.setActive(request.active());
         employee.setCreatedBy(authUserId);
@@ -88,7 +92,7 @@ public class EmployeeService {
 
         employee.setName(request.name());
         employee.setJobTitle(request.jobTitle());
-        employee.setSector(resolveSector(request.sectorId()));
+        employee.setSector(resolveSector(request.sectorId(), employee.getWorkspace()));
         employee.setEmail(request.email());
         employee.setActive(request.active());
 

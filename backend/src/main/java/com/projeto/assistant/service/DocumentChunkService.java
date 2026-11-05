@@ -35,10 +35,14 @@ public class DocumentChunkService {
     // Recebe o texto bruto de um documento, quebra em pedacos, gera embedding
     // de cada um via Gemini, e salva tudo vinculado ao Document.
     @Transactional
-    public int processContent(UUID documentId, String rawContent, UUID authUserId) {
+    public int processContent(UUID documentId, String rawContent, UUID authTenantId, UUID authUserId) {
         rateLimiterService.checkAiUsageLimit(authUserId);
         Document document = documentRepository.findById(documentId)
                 .orElseThrow(() -> new IllegalArgumentException("Documento não encontrado: " + documentId));
+
+        if (!document.getWorkspace().getTenant().getId().equals(authTenantId)) {
+            throw new AccessDeniedException("Você não tem acesso a este documento");
+        }
 
         // Remove QUALQUER chunk existente para este documento diretamente no banco,
         // via DELETE nativo escopado por document_id - nao depende da colecao
@@ -107,6 +111,9 @@ public class DocumentChunkService {
         UUID workspaceId = document.getWorkspace().getId();
         if (!document.getWorkspace().getTenant().getId().equals(authTenantId)) {
             throw new AccessDeniedException("Você não tem acesso a este documento");
+        }
+        if (document.getStatus() == DocumentStatus.APPROVED) {
+            throw new IllegalArgumentException("Documento aprovado não pode ser alterado");
         }
         // Passo 1 (Retrieval): busca os trechos mais relevantes do proprio workspace,
         // medindo a latencia dessa etapa separada da geracao.

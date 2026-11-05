@@ -37,12 +37,16 @@ public class DocumentService {
     private final DocumentChunkService documentChunkService;
 
     @Transactional
-    public DocumentResponseDTO create(DocumentRequestDTO request) {
+    public DocumentResponseDTO create(DocumentRequestDTO request, UUID authTenantId, UUID authUserId) {
         Workspace workspace = workspaceRepository.findById(request.workspaceId())
                 .orElseThrow(() -> new IllegalArgumentException("Workspace não encontrado: " + request.workspaceId()));
 
-        User createdBy = userRepository.findById(request.createdByUserId())
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + request.createdByUserId()));
+        if (!workspace.getTenant().getId().equals(authTenantId)) {
+            throw new AccessDeniedException("Você não tem acesso a este workspace");
+        }
+
+        User createdBy = userRepository.findById(authUserId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + authUserId));
 
         Document document = new Document();
         document.setWorkspace(workspace);
@@ -94,6 +98,9 @@ public class DocumentService {
     @Transactional
     public DocumentResponseDTO updateContent(UUID documentId, String content, UUID authTenantId, UUID authUserId) {
         Document document = getValidatedDocument(documentId, authTenantId);
+        if (document.getStatus() == DocumentStatus.APPROVED) {
+            throw new IllegalArgumentException("Documento aprovado não pode ser alterado");
+        }
         document.setGeneratedContent(content);
         // Documento so com conteudo manual (sem nunca passar pela IA) tambem precisa
         // avancar de DRAFT para GENERATED, senao fica preso sem caminho de aprovacao -
@@ -144,7 +151,7 @@ public class DocumentService {
         // Sem isso, documentos aprovados pelo fluxo real da UI nunca ficavam
         // pesquisaveis pelo RAG, mesmo depois de aprovados.
         if (saved.getGeneratedContent() != null && !saved.getGeneratedContent().isBlank()) {
-            documentChunkService.processContent(documentId, saved.getGeneratedContent(), authUserId);
+            documentChunkService.processContent(documentId, saved.getGeneratedContent(), authTenantId, authUserId);
         }
         return DocumentResponseDTO.fromEntity(saved);
     }

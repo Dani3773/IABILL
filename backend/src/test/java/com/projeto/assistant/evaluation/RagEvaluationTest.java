@@ -117,7 +117,7 @@ class RagEvaluationTest extends IntegrationTestBase {
             document.setTitle(fixtureDoc.get("title").asText());
             document = documentRepository.save(document);
 
-            int chunkCount = documentChunkService.processContent(document.getId(), rawContent, authUserId);
+            int chunkCount = documentChunkService.processContent(document.getId(), rawContent, tenantId, authUserId);
 
             // Assuncao critica: cada texto de fixture deve virar exatamente 1 chunk.
             // Se o TextChunker dividir diferente, este assert falha com mensagem clara

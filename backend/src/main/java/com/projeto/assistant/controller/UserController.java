@@ -43,8 +43,10 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserResponseDTO findById(@PathVariable UUID id) {
-        return userService.findById(id);
+    public UserResponseDTO findById(
+            @PathVariable UUID id,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return userService.findById(id, authUserId);
     }
 
     @PostMapping("/{userId}/workspaces/{workspaceId}")
@@ -58,8 +60,10 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/workspaces")
-    public List<WorkspaceMembershipResponseDTO> findWorkspaces(@PathVariable UUID userId) {
-        return userService.findWorkspacesOfUser(userId);
+    public List<WorkspaceMembershipResponseDTO> findWorkspaces(
+            @PathVariable UUID userId,
+            @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
+        return userService.findWorkspacesOfUser(userId, authUserId);
     }
 
     @PostMapping("/activate")

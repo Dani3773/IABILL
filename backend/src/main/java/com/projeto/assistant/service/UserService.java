@@ -4,6 +4,7 @@ import com.projeto.assistant.dto.UserRequestDTO;
 import com.projeto.assistant.dto.UserResponseDTO;
 import com.projeto.assistant.model.Tenant;
 import com.projeto.assistant.model.User;
+import com.projeto.assistant.model.UserRole;
 import com.projeto.assistant.repository.TenantRepository;
 import com.projeto.assistant.repository.UserRepository;
 import com.projeto.assistant.dto.WorkspaceMembershipResponseDTO;
@@ -16,6 +17,7 @@ import com.projeto.assistant.dto.EmailConfirmationResponseDTO;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,8 +42,22 @@ public class UserService {
 
     @Transactional
     public UserResponseDTO create(UserRequestDTO request, UUID authUserId) {
-        Tenant tenant = tenantRepository.findById(request.tenantId())
-                .orElseThrow(() -> new IllegalArgumentException("Tenant não encontrado: " + request.tenantId()));
+        // Papel e tenant de quem cria vem do banco, nunca da requisicao: o cadastro
+        // publico gera ADMIN, entao confiar no corpo permitiria a qualquer conta
+        // virar SUPER_ADMIN ou criar usuarios dentro de outra organizacao.
+        User creator = userRepository.findById(authUserId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + authUserId));
+        boolean creatorIsPlatformAdmin = creator.getRole() == UserRole.SUPER_ADMIN;
+
+        if (request.role() == UserRole.SUPER_ADMIN && !creatorIsPlatformAdmin) {
+            throw new AccessDeniedException("Somente um Super-Administrador pode criar outro Super-Administrador");
+        }
+
+        // Super-Admin nao tem tenant proprio e por isso escolhe o destino no corpo;
+        // os demais papeis so criam usuarios no proprio tenant.
+        UUID targetTenantId = creatorIsPlatformAdmin ? request.tenantId() : creator.getTenant().getId();
+        Tenant tenant = tenantRepository.findById(targetTenantId)
+                .orElseThrow(() -> new IllegalArgumentException("Tenant não encontrado: " + targetTenantId));
 
         String invitationToken = generateToken();
 
@@ -115,9 +131,25 @@ public class UserService {
                 .toList();
     }
 
-    public UserResponseDTO findById(UUID id) {
+    // Super-Admin atua em qualquer tenant; os demais papeis so no proprio. O papel vem
+    // do banco porque o Super-Admin nao tem tenant no token para comparar.
+    private void assertTenantAccess(User target, UUID authUserId) {
+        User requester = userRepository.findById(authUserId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + authUserId));
+
+        if (requester.getRole() == UserRole.SUPER_ADMIN) {
+            return;
+        }
+        if (target.getTenant() == null || !target.getTenant().getId().equals(requester.getTenant().getId())) {
+            throw new AccessDeniedException("Você não tem acesso a este usuário");
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public UserResponseDTO findById(UUID id, UUID authUserId) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + id));
+        assertTenantAccess(user, authUserId);
         return UserResponseDTO.fromEntity(user);
     }
 
@@ -125,9 +157,14 @@ public class UserService {
     public void addUserToWorkspace(UUID userId, UUID workspaceId, UUID authUserId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + userId));
+        assertTenantAccess(user, authUserId);
 
         Workspace workspace = workspaceRepository.findById(workspaceId)
                 .orElseThrow(() -> new IllegalArgumentException("Workspace não encontrado: " + workspaceId));
+
+        if (user.getTenant() == null || !workspace.getTenant().getId().equals(user.getTenant().getId())) {
+            throw new AccessDeniedException("O workspace não pertence ao tenant deste usuário");
+        }
 
         user.getWorkspaces().add(workspace);
 
@@ -144,9 +181,10 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<WorkspaceMembershipResponseDTO> findWorkspacesOfUser(UUID userId) {
+    public List<WorkspaceMembershipResponseDTO> findWorkspacesOfUser(UUID userId, UUID authUserId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + userId));
+        assertTenantAccess(user, authUserId);
 
         return user.getWorkspaces()
                 .stream()
