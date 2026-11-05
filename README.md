@@ -216,17 +216,3 @@ O comando regrava `backend/rag-evaluation-results.csv`. Depois, gere o resumo e 
 pip install pandas matplotlib
 python scripts/rag-evaluation/evaluate_rag_metrics.py backend/rag-evaluation-results.csv
 ```
-
-## Limitações
-
-- A avaliação usa corpus sintético, poucas consultas e um único modelo generativo.
-- A recusa foi medida, mas a ocorrência de alucinações em documentos gerados com contexto suficiente não foi.
-- Não houve estudo com usuários reais nem medição de ganho de tempo.
-- As métricas operacionais vêm de apenas 11 gerações, o que não permite inferir o comportamento sob carga.
-- Os testes automatizados não cobrem a permissão por papel do Encarregado nem o isolamento da busca vetorial.
-- A mesma pessoa pode revisar e aprovar um documento, e não há fluxo de nova versão para documentos aprovados.
-- O aviso de prazo de incidentes não considera feriados nem a contagem em dobro para agentes de pequeno porte.
-
-## Licença
-
-Trabalho acadêmico. Nenhuma licença de código aberto foi definida até o momento.
