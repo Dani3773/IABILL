@@ -35,6 +35,7 @@ class DocumentApprovalLockIntegrationTest extends IntegrationTestBase {
     @Autowired private DocumentService documentService;
     @Autowired private DocumentChunkService documentChunkService;
     @Autowired private ChatService chatService;
+    @Autowired private AuditLogService auditLogService;
 
     @Autowired private TenantRepository tenantRepository;
     @Autowired private WorkspaceRepository workspaceRepository;
@@ -106,6 +107,18 @@ class DocumentApprovalLockIntegrationTest extends IntegrationTestBase {
         var updated = documentService.updateContent(documentId, "alterado", tenantId, userId);
 
         assertThat(updated.generatedContent()).isEqualTo("alterado");
+    }
+
+    @Test
+    void updateContent_whenDocumentIsReviewed_shouldReturnToGeneratedAndAuditTransition() {
+        UUID documentId = newDocument(DocumentStatus.REVIEWED);
+
+        var updated = documentService.updateContent(documentId, "alterado depois da revisao", tenantId, userId);
+
+        assertThat(updated.status()).isEqualTo(DocumentStatus.GENERATED);
+        assertThat(auditLogService.findByTenant(tenantId))
+                .anyMatch(log -> log.entityId().equals(documentId)
+                        && "REVIEWED -> GENERATED".equals(log.metadata().get("statusChange")));
     }
 
     @Test

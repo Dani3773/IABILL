@@ -101,16 +101,21 @@ public class DocumentService {
         if (document.getStatus() == DocumentStatus.APPROVED) {
             throw new IllegalArgumentException("Documento aprovado não pode ser alterado");
         }
+        DocumentStatus previousStatus = document.getStatus();
         document.setGeneratedContent(content);
         // Documento so com conteudo manual (sem nunca passar pela IA) tambem precisa
         // avancar de DRAFT para GENERATED, senao fica preso sem caminho de aprovacao -
         // "Marcar como Revisado" exige status GENERATED independente da origem do conteudo.
-        if (document.getStatus() == DocumentStatus.DRAFT) {
+        // Texto alterado depois da revisao volta a GENERATED: a aprovacao so pode
+        // recair sobre a versao que foi de fato revisada.
+        if (previousStatus == DocumentStatus.DRAFT || previousStatus == DocumentStatus.REVIEWED) {
             document.setStatus(DocumentStatus.GENERATED);
         }
         Document saved = documentRepository.save(document);
-        auditLogService.record(authTenantId, authUserId, AuditAction.UPDATE, AuditEntityType.DOCUMENT, documentId,
-                Map.of("field", "generatedContent"));
+        Map<String, Object> metadata = previousStatus == saved.getStatus()
+                ? Map.of("field", "generatedContent")
+                : Map.of("field", "generatedContent", "statusChange", previousStatus + " -> " + saved.getStatus());
+        auditLogService.record(authTenantId, authUserId, AuditAction.UPDATE, AuditEntityType.DOCUMENT, documentId, metadata);
         return DocumentResponseDTO.fromEntity(saved);
     }
 
