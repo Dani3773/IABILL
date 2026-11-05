@@ -46,6 +46,14 @@
         "kind": "refuse",
         "a": "There is not enough data in the context to answer if the company has ever suffered a data breach."
       }
+    ],
+    "stamp": "NO RECORD",
+    "records": [
+      "Retention policy",
+      "Data inventory",
+      "Privacy policy",
+      "Team training",
+      "Incident response plan"
     ]
   },
   "how": {
@@ -69,7 +77,8 @@
         "call": "Review, reject, or approve.",
         "response": "Once approved, the text is locked. Who did what remains in the audit trail, which the database prevents from being altered."
       }
-    ]
+    ],
+    "archive": "Only what is approved gets filed."
   },
   "states": {
     "title": "One document, three stages.",

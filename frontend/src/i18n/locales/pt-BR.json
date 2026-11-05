@@ -46,6 +46,14 @@
         "kind": "refuse",
         "a": "Não há dados suficientes no contexto para responder se a empresa já sofreu algum vazamento de dados."
       }
+    ],
+    "stamp": "SEM REGISTRO",
+    "records": [
+      "Política de retenção",
+      "Inventário de dados",
+      "Política de privacidade",
+      "Treinamento da equipe",
+      "Plano de resposta a incidentes"
     ]
   },
   "how": {
@@ -69,7 +77,8 @@
         "call": "Revisar, rejeitar ou aprovar.",
         "response": "Aprovado, o texto é bloqueado. Quem fez o quê fica na trilha de auditoria, que o banco de dados não deixa alterar."
       }
-    ]
+    ],
+    "archive": "Só o aprovado vira arquivo."
   },
   "states": {
     "title": "Um documento, três momentos.",

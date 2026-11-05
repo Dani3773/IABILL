@@ -1,4 +1,4 @@
-import { type FormEvent, useEffect, useRef, useState } from "react";
+import { type CSSProperties, type FormEvent, useEffect, useRef, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
@@ -14,6 +14,9 @@ interface DemoQuestion {
   a: string;
   source?: string;
 }
+
+// Índice do registro que sustenta cada pergunta; -1 quando nada aprovado sustenta.
+const QUESTION_RECORD = [-1, 0, 1, -1];
 
 interface HowStep {
   lead: string;
@@ -38,8 +41,10 @@ function AskDemo() {
   const { t } = useTranslation();
   const questions = t("demo.questions", { returnObjects: true }) as DemoQuestion[];
   const [selected, setSelected] = useState(0);
+  const records = t("demo.records", { returnObjects: true }) as string[];
   const current = questions[selected];
   const refused = current.kind === "refuse";
+  const activeRecord = QUESTION_RECORD[selected] ?? -1;
 
   return (
     <section className="demo" data-ui aria-label={t("demo.title")}>
@@ -60,6 +65,22 @@ function AskDemo() {
             {question.q}
           </button>
         ))}
+      </div>
+      <div className="drawer" aria-hidden="true">
+        {records.map((record, index) => (
+          <div
+            key={record}
+            className={index === activeRecord ? "drawer__card drawer__card--active" : "drawer__card"}
+            style={{ "--i": index } as CSSProperties}
+          >
+            <span>{record}</span>
+          </div>
+        ))}
+        {refused && (
+          <strong className="drawer__stamp" key={selected}>
+            {t("demo.stamp")}
+          </strong>
+        )}
       </div>
       <div className="demo__result" aria-live="polite" key={selected}>
         <span className={refused ? "demo__status demo__status--refused" : "demo__status"}>
@@ -127,11 +148,45 @@ function useReveal() {
   return ref;
 }
 
+// Abre a foto do arquivo com a rolagem: progresso de 0 a 1 enquanto a cena está presa.
+function useArchiveScene() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const scene = ref.current;
+    if (!scene || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const rect = scene.getBoundingClientRect();
+      const travel = rect.height - window.innerHeight;
+      const progress = travel > 0 ? Math.min(1, Math.max(0, -rect.top / travel)) : 1;
+      scene.style.setProperty("--p", progress.toFixed(3));
+    };
+    const request = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", request, { passive: true });
+    window.addEventListener("resize", request);
+    return () => {
+      window.removeEventListener("scroll", request);
+      window.removeEventListener("resize", request);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  return ref;
+}
+
 export function LandingPage() {
   const { isAuthenticated, tenantId } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const pageRef = useReveal();
+  const archiveRef = useArchiveScene();
   const [email, setEmail] = useState("");
 
   if (isAuthenticated) {
@@ -191,20 +246,21 @@ export function LandingPage() {
           <AskDemo />
         </section>
 
-        <section className="how" id="como-funciona">
-          <div className="how__intro">
-            <h2 className="lp-heading" data-reveal>
-              {t("how.title")}
-            </h2>
-            <img
-              src="/landing/arquivo.webp"
-              alt={t("images.archive")}
-              width="1500"
-              height="969"
-              loading="lazy"
-              data-reveal
-            />
+        <section className="archive" aria-labelledby="archive-title">
+          <h2 id="archive-title" className="lp-heading" data-reveal>
+            {t("how.archive")}
+          </h2>
+          <div className="archive__track" ref={archiveRef}>
+            <div className="archive__stage">
+              <img src="/landing/arquivo.webp" alt={t("images.archive")} width="1920" height="1241" />
+            </div>
           </div>
+        </section>
+
+        <section className="how" id="como-funciona">
+          <h2 className="lp-heading" data-reveal>
+            {t("how.title")}
+          </h2>
           <ol className="how__list">
             {steps.map((step) => (
               <li key={step.lead} data-reveal>
@@ -267,7 +323,7 @@ export function LandingPage() {
                     {t("states.doc")} · {t("states.s3Meta")}
                   </span>
                 </div>
-                <em className="doc-row__status">{t("states.s3")}</em>
+                <strong className="doc-row__stamp">{t("states.s3")}</strong>
               </div>
               <figcaption>{t("states.s3Note")}</figcaption>
             </figure>
