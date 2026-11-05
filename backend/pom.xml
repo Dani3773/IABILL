@@ -28,6 +28,8 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<!-- Propriedade, e nao configuracao do plugin, para poder ser sobrescrita ao rodar a avaliacao do RAG -->
+		<excludedGroups>evaluation</excludedGroups>
 	</properties>
 
 	<dependencyManagement>
@@ -221,13 +223,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<excludedGroups>evaluation</excludedGroups>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

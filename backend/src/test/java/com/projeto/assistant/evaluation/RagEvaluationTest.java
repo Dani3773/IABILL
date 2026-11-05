@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * por isso este teste esta marcado com @Tag("evaluation") e deve ser EXCLUIDO do
  * gate padrao de CI/CD (./mvnw test), rodando manualmente via:
  *
- *   ./mvnw test -Dgroups=evaluation -Dtest=RagEvaluationTest
+ *   ./mvnw test -Dgroups=evaluation -DexcludedGroups=none -Dtest=RagEvaluationTest
  *
  * Consome dezenas de chamadas de IA por execucao (40 embeddings de ingestao +
  * embeddings de busca para cada consulta positiva + geracoes para os casos

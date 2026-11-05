@@ -185,7 +185,14 @@ Esses números valem apenas para esse conjunto controlado. O corpus é sintétic
 
 ### Como reproduzir
 
-A classe `RagEvaluationTest` chama a API real do Gemini e pertence ao grupo `evaluation`, que o `pom.xml` exclui do Maven. Execute essa classe pela IDE, com o Docker ligado e `GEMINI_API_KEY` definida. Depois, gere o resumo e os gráficos:
+A classe `RagEvaluationTest` chama a API real do Gemini e pertence ao grupo `evaluation`, excluído da suíte padrão. Com o Docker ligado e `GEMINI_API_KEY` definida, execute:
+
+```bash
+cd backend
+./mvnw test -Dgroups=evaluation -DexcludedGroups=none -Dtest=RagEvaluationTest
+```
+
+O comando regrava `backend/rag-evaluation-results.csv`. Depois, gere o resumo e os gráficos a partir da raiz do repositório:
 
 ```bash
 pip install pandas matplotlib
