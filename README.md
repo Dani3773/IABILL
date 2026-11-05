@@ -17,11 +17,11 @@ O IABill está disponível em **[iabill.com](https://iabill.com)**. Para usar o 
 
 As contas abaixo pertencem à NexTech, empresa fictícia usada na demonstração. Todas usam a senha `NexTech@2026`.
 
-| E-mail |
-| --- |
-| `ana.silva@nextech.com.br` |
-| `carlos.mendes@nextech.com.br` |
-| `juliana.rocha@nextech.com.br` |
+| E-mail | Papel |
+| --- | --- |
+| `ana.silva@nextech.com.br` | Administrador |
+| `carlos.mendes@nextech.com.br` | Encarregado de Dados (DPO) |
+| `juliana.rocha@nextech.com.br` | Usuário |
 
 Não insira dados pessoais reais nessas contas, porque elas são públicas.
 
