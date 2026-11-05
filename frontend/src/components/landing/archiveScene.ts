@@ -1,10 +1,15 @@
 import {
   ACESFilmicToneMapping,
+  AdditiveBlending,
   BoxGeometry,
+  BufferAttribute,
+  BufferGeometry,
   CanvasTexture,
   Color,
   CylinderGeometry,
+  DoubleSide,
   FogExp2,
+  Group,
   HemisphereLight,
   InstancedMesh,
   Material,
@@ -15,6 +20,8 @@ import {
   PerspectiveCamera,
   PlaneGeometry,
   PointLight,
+  Points,
+  PointsMaterial,
   RepeatWrapping,
   SRGBColorSpace,
   Scene,
@@ -24,8 +31,18 @@ import {
   WebGLRenderer,
 } from "three";
 
+export interface ArchiveOptions {
+  records: string[];
+  stamp: string;
+  document: string;
+  compact: boolean;
+  onSlow: () => void;
+}
+
 export interface ArchiveScene {
   setProgress(progress: number): void;
+  // Progresso em que cada um dos três passos fica no centro da tela.
+  setBeats(beats: number[]): void;
   // Índice do registro que sustenta a resposta; -1 acende a vaga vazia.
   show(record: number): void;
   resize(): void;
@@ -47,6 +64,15 @@ const EMPTY_SLOT = new Vector3(2, RECORD_LEVEL + 0.24, -6.2);
 const CAMERA_START = 4;
 const CAMERA_END = -35.2;
 const RECORD_PULLED = new Vector3(0.16, 1.62, 0.8);
+const BEAT_Z = [-16, -23, -30];
+const BEAT_WINDOW = 0.06;
+const BEAT_DISTANCE = 3.3;
+const SOURCE_SLOTS = [
+  { level: 1.3, z: -22.5 },
+  { level: 1.3, z: -23.3 },
+  { level: 1.85, z: -22.9 },
+  { level: 0.75, z: -23.3 },
+];
 const SLOW_SAMPLES = 40;
 const SLOW_FRAME = 0.1;
 
@@ -121,16 +147,58 @@ function drawRecordLabel(text: string, stamp: string): HTMLCanvasElement {
   return canvas;
 }
 
+function drawDocument(title: string): HTMLCanvasElement {
+  const canvas = document.createElement("canvas");
+  canvas.width = 560;
+  canvas.height = 760;
+  const ctx = canvas.getContext("2d")!;
+  ctx.fillStyle = "#fbf5e6";
+  ctx.fillRect(0, 0, 560, 760);
+  ctx.fillStyle = "#17130e";
+  ctx.font = '800 50px "Archivo", "Switzer", sans-serif';
+  const lines = wrapLines(ctx, title.toUpperCase(), 470);
+  lines.forEach((line, index) => ctx.fillText(line, 44, 92 + index * 56));
+  ctx.fillStyle = "#b8ad97";
+  for (let index = 0; index < 11; index += 1) {
+    ctx.fillRect(44, 150 + lines.length * 56 + index * 34, index % 4 === 3 ? 300 : 472, 12);
+  }
+  return canvas;
+}
+
+function drawInk(text: string): HTMLCanvasElement {
+  const canvas = document.createElement("canvas");
+  canvas.width = 560;
+  canvas.height = 220;
+  const ctx = canvas.getContext("2d")!;
+  ctx.translate(280, 110);
+  ctx.rotate(-0.09);
+  ctx.strokeStyle = ctx.fillStyle = "#c4241b";
+  ctx.font = '800 76px "Archivo", "Switzer", sans-serif';
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  const width = ctx.measureText(text).width;
+  ctx.lineWidth = 12;
+  ctx.strokeRect(-width / 2 - 26, -58, width + 52, 116);
+  ctx.fillText(text, 0, 4);
+  return canvas;
+}
+
+function clamp01(value: number): number {
+  return Math.min(1, Math.max(0, value));
+}
+
+function smooth(value: number): number {
+  const t = clamp01(value);
+  return t * t * (3 - 2 * t);
+}
+
 function ease(current: number, target: number, rate: number): number {
   return current + (target - current) * rate;
 }
 
 export function createArchiveScene(
   canvas: HTMLCanvasElement,
-  records: string[],
-  stamp: string,
-  compact: boolean,
-  onSlow: () => void,
+  { records, stamp, document: documentTitle, compact, onSlow }: ArchiveOptions,
 ): ArchiveScene {
   const renderer = new WebGLRenderer({ canvas, antialias: !compact, powerPreference: "high-performance" });
   renderer.toneMapping = ACESFilmicToneMapping;
@@ -171,9 +239,11 @@ export function createArchiveScene(
         for (let slot = 0; slot < perBay; slot += 1) {
           const z = bayZ - boxLength * (slot + 0.5);
           const isReserved =
-            level === RECORD_LEVEL &&
-            (recordSpots.some((spot) => spot.side === side && Math.abs(spot.z - z) < 0.3) ||
-              (side === 1 && Math.abs(EMPTY_SLOT.z - z) < 0.3));
+            (level === RECORD_LEVEL &&
+              (recordSpots.some((spot) => spot.side === side && Math.abs(spot.z - z) < 0.3) ||
+                (side === 1 && Math.abs(EMPTY_SLOT.z - z) < 0.3) ||
+                (side === 1 && Math.abs(BEAT_Z[0] - z) < 0.3))) ||
+            (side === -1 && SOURCE_SLOTS.some((spot) => spot.level === level && Math.abs(spot.z - z) < 0.3));
           if (isReserved) continue;
           const height = 0.4 + Math.random() * 0.08;
           matrix.makeScale(1, height, 0.9);
@@ -294,6 +364,92 @@ export function createArchiveScene(
     return mesh;
   });
 
+  // Passo 1: um registro novo entra na prateleira.
+  const newLabel = new MeshStandardMaterial({ map: texture(drawRecordLabel(records[2] ?? "", stamp)), roughness: 0.75 });
+  recordMaterials.push(newLabel);
+  const newRecord = new Mesh(recordGeometry, [plain, newLabel, plain, plain, plain, plain]);
+  scene.add(newRecord);
+
+  // Passo 2: a busca puxa só os registros que sustentam o pedido.
+  const sources = SOURCE_SLOTS.map((slot, index) => {
+    const label = new MeshStandardMaterial({
+      map: texture(drawRecordLabel(records[(index + 1) % records.length] ?? "", stamp)),
+      roughness: 0.75,
+    });
+    recordMaterials.push(label);
+    const mesh = new Mesh(recordGeometry, [label, plain, plain, plain, plain, plain]);
+    mesh.position.set(-2, slot.level + 0.26, slot.z);
+    scene.add(mesh);
+    return mesh;
+  });
+
+  // Passo 3: o documento sobre o suporte recebe o carimbo.
+  const standGeometry = new BoxGeometry(0.5, 0.66, 0.4);
+  const stand = new Mesh(standGeometry, postMaterial);
+  stand.position.set(compact ? 0.2 : 0.72, 0.33, BEAT_Z[2]);
+  scene.add(stand);
+
+  const documentGroup = new Group();
+  documentGroup.position.set(compact ? 0.2 : 0.72, 1.12, BEAT_Z[2]);
+  documentGroup.rotation.x = -0.72;
+  documentGroup.scale.setScalar(1.35);
+  scene.add(documentGroup);
+
+  const sheetGeometry = new PlaneGeometry(0.62, 0.84);
+  const sheetMaterial = new MeshStandardMaterial({
+    map: texture(drawDocument(documentTitle)),
+    roughness: 0.8,
+    side: DoubleSide,
+  });
+  documentGroup.add(new Mesh(sheetGeometry, sheetMaterial));
+
+  const deskGeometry = new BoxGeometry(0.74, 0.96, 0.04);
+  const desk = new Mesh(deskGeometry, postMaterial);
+  desk.position.z = -0.026;
+  documentGroup.add(desk);
+
+  const inkGeometry = new PlaneGeometry(0.54, 0.21);
+  const inkMaterial = new MeshBasicMaterial({ map: texture(drawInk(stamp)), transparent: true, opacity: 0, fog: false });
+  const ink = new Mesh(inkGeometry, inkMaterial);
+  ink.position.set(0, -0.2, 0.004);
+  documentGroup.add(ink);
+
+  const baseGeometry = new CylinderGeometry(0.16, 0.16, 0.05, 32);
+  const handleGeometry = new CylinderGeometry(0.05, 0.075, 0.26, 24);
+  const knobGeometry = new CylinderGeometry(0.085, 0.085, 0.07, 24);
+  const stampBaseMaterial = new MeshStandardMaterial({ color: 0xd92b21, roughness: 0.45 });
+  const stampWoodMaterial = new MeshStandardMaterial({ color: 0x4a2c17, roughness: 0.5 });
+  const stampTool = new Group();
+  const toolBase = new Mesh(baseGeometry, stampBaseMaterial);
+  const toolHandle = new Mesh(handleGeometry, stampWoodMaterial);
+  toolHandle.position.y = 0.15;
+  const toolKnob = new Mesh(knobGeometry, stampWoodMaterial);
+  toolKnob.position.y = 0.3;
+  stampTool.add(toolBase, toolHandle, toolKnob);
+  stampTool.rotation.x = Math.PI / 2;
+  documentGroup.add(stampTool);
+
+  // Poeira no feixe de luz, que dá profundidade ao corredor.
+  const dustCount = compact ? 320 : 800;
+  const dustPositions = new Float32Array(dustCount * 3);
+  for (let index = 0; index < dustCount; index += 1) {
+    dustPositions[index * 3] = (Math.random() - 0.5) * 2.8;
+    dustPositions[index * 3 + 1] = 0.15 + Math.random() * 3;
+    dustPositions[index * 3 + 2] = AISLE_END + Math.random() * (AISLE_START - AISLE_END);
+  }
+  const dustGeometry = new BufferGeometry();
+  dustGeometry.setAttribute("position", new BufferAttribute(dustPositions, 3));
+  const dustMaterial = new PointsMaterial({
+    blending: AdditiveBlending,
+    color: 0xfff0d2,
+    depthWrite: false,
+    opacity: 0.32,
+    size: 0.014,
+    transparent: true,
+  });
+  const dust = new Points(dustGeometry, dustMaterial);
+  scene.add(dust);
+
   scene.add(new HemisphereLight(0xcfe0d0, 0x20150a, 0.2));
   const aisleLights = [0, 1, 2].map(() => {
     const light = new PointLight(0xfff0d2, 20, 9, 1.8);
@@ -302,10 +458,14 @@ export function createArchiveScene(
   });
   const focus = new PointLight(0xff3a28, 0, 7, 1.6);
   scene.add(focus);
+  const beatLight = new PointLight(0xffe4b0, 0, 6, 1.6);
+  scene.add(beatLight);
 
   let targetProgress = 0;
   let progress = 0;
   let selected = -1;
+  let beats: number[] = [];
+  let anchors: [number, number][] = [[0, CAMERA_START], [1, CAMERA_END]];
   let focusLevel = 0;
   let lookX = 0;
   let running = true;
@@ -330,6 +490,22 @@ export function createArchiveScene(
     camera.updateProjectionMatrix();
   };
 
+  // A câmera percorre o corredor e quase para diante de cada passo.
+  const cameraZ = (value: number) => {
+    for (let index = 1; index < anchors.length; index += 1) {
+      const [startAt, startZ] = anchors[index - 1];
+      const [endAt, endZ] = anchors[index];
+      if (value <= endAt) {
+        const span = endAt - startAt;
+        return startZ + (endZ - startZ) * (span > 0 ? (value - startAt) / span : 1);
+      }
+    }
+    return CAMERA_END;
+  };
+
+  const beatProgress = (index: number) =>
+    beats[index] === undefined ? 0 : clamp01((progress - beats[index] + BEAT_WINDOW) / (BEAT_WINDOW * 2));
+
   const draw = () => {
     frame = 0;
     if (!running) return;
@@ -353,7 +529,7 @@ export function createArchiveScene(
     const rate = (speed: number) => 1 - Math.exp(-elapsed * speed);
 
     progress = ease(progress, targetProgress, rate(7));
-    const z = CAMERA_START + (CAMERA_END - CAMERA_START) * progress;
+    const z = cameraZ(progress);
     const nearDoor = Math.min(1, progress * 1.2);
     const swayX = Math.sin(progress * Math.PI * 3) * 0.16 * (1 - nearDoor * nearDoor);
 
@@ -363,7 +539,9 @@ export function createArchiveScene(
     lookX = ease(lookX, targetLook, rate(3));
 
     camera.position.set(swayX + pointer.x * 0.1 * (1 - nearDoor), 1.5 + pointer.y * 0.05, z);
-    camera.lookAt(swayX * 0.3 + lookX, 1.5, z - 6);
+    const inBeat = Math.max(...[0, 1, 2].map((index) => Math.sin(beatProgress(index) * Math.PI)));
+    // No celular a ficha ocupa a metade de baixo: a câmera abaixa e a cena sobe.
+    camera.lookAt(swayX * 0.3 + lookX, 1.5 - (compact ? inBeat * 1.5 : 0), z - 6);
 
     aisleLights.forEach((light, index) => {
       light.position.set(0, 3, Math.max(AISLE_END + 1, z - 2 - index * 6));
@@ -389,6 +567,30 @@ export function createArchiveScene(
     focus.color.copy(focusColor);
     focus.intensity = focusLevel * (active ? 9 : 14);
 
+    const entering = smooth(beatProgress(0) * 1.3);
+    newRecord.position.set(0.5 + 1.5 * entering, RECORD_LEVEL + 0.26, BEAT_Z[0]);
+    newRecord.rotation.y = (1 - entering) * 1.3;
+
+    const searching = beatProgress(1);
+    sources.forEach((mesh, index) => {
+      const pulled = smooth(searching * 1.7 - index * 0.22);
+      mesh.position.x = -2 + pulled * 0.5;
+    });
+
+    const stamping = beatProgress(2);
+    const down = smooth((stamping - 0.2) / 0.28);
+    const up = smooth((stamping - 0.62) / 0.3);
+    stampTool.position.set(up * 0.62, -0.2 + up * 0.3, 0.62 - down * 0.585 + up * 0.585);
+    inkMaterial.opacity = stamping > 0.46 ? 1 : 0;
+
+    const beatZ = stamping > 0 ? BEAT_Z[2] : searching > 0 ? BEAT_Z[1] : BEAT_Z[0];
+    const beatSide = stamping > 0 ? 0.7 : searching > 0 ? -1.2 : 1.2;
+    beatLight.position.set(beatSide, 1.9, beatZ + 0.9);
+    beatLight.intensity = inBeat * 12;
+
+    dust.position.y = Math.sin(now * 0.00012) * 0.12;
+    dust.position.x = Math.cos(now * 0.00009) * 0.08;
+
     renderer.render(scene, camera);
   };
 
@@ -404,6 +606,15 @@ export function createArchiveScene(
   return {
     setProgress(value) {
       targetProgress = value;
+    },
+    setBeats(next) {
+      beats = next;
+      anchors = [[0, CAMERA_START]];
+      next.forEach((value, index) => {
+        const stop = BEAT_Z[index] + BEAT_DISTANCE;
+        anchors.push([value - BEAT_WINDOW, stop + 0.3], [value + BEAT_WINDOW, stop - 0.3]);
+      });
+      anchors.push([1, CAMERA_END]);
     },
     show(record) {
       selected = record;
@@ -422,10 +633,12 @@ export function createArchiveScene(
       cancelAnimationFrame(frame);
       window.removeEventListener("pointermove", handlePointer);
       const geometries = [
+        standGeometry, deskGeometry, sheetGeometry, inkGeometry, baseGeometry, handleGeometry, knobGeometry, dustGeometry,
         boxGeometry, shelfGeometry, postGeometry, planeGeometry, ceiling.geometry, stripGeometry,
         door.geometry, wheelGeometry, spokeGeometry, recordGeometry,
       ];
       const materials: Material[] = [
+        sheetMaterial, inkMaterial, stampBaseMaterial, stampWoodMaterial, dustMaterial,
         boxMaterial, shelfMaterial, postMaterial, floorMaterial, ceilingMaterial, stripMaterial,
         doorMaterial, wheelMaterial, ...recordMaterials,
       ];

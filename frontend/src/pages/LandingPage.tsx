@@ -203,8 +203,21 @@ function useArchiveVault() {
     const request = () => {
       if (!tick) tick = requestAnimationFrame(update);
     };
+    // Cada passo marca o ponto da rolagem em que a cena encena aquele momento.
+    const measureBeats = () => {
+      const travel = vault.offsetHeight - window.innerHeight;
+      const compact = window.innerWidth < 860;
+      const beats = Array.from(vault.querySelectorAll(".how__list > li")).map((step) => {
+        const box = step.getBoundingClientRect();
+        const top = box.top - vault.getBoundingClientRect().top;
+        const anchor = compact ? top - window.innerHeight * 0.52 : top + box.height / 2 - window.innerHeight / 2;
+        return Math.min(1, Math.max(0, anchor / travel));
+      });
+      scene?.setBeats(beats);
+    };
     const handleResize = () => {
       scene?.resize();
+      measureBeats();
       request();
     };
     const observer = new IntersectionObserver(([entry]) => scene?.setRunning(entry.isIntersecting));
@@ -231,7 +244,14 @@ function useArchiveVault() {
               sceneRef.current = null;
             });
           };
-          scene = createArchiveScene(canvas, records, t("states.s3").toUpperCase(), window.innerWidth < 860, giveUp);
+          scene = createArchiveScene(canvas, {
+            records,
+            stamp: t("states.s3").toUpperCase(),
+            document: t("states.doc"),
+            compact: window.innerWidth < 860,
+            onSlow: giveUp,
+          });
+          measureBeats();
           scene.show(recordRef.current);
           sceneRef.current = scene;
           observer.observe(vault);
