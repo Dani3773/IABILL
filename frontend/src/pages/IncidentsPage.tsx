@@ -26,15 +26,20 @@ function addBusinessDays(start: Date, days: number): Date {
   return result
 }
 
-function getAnpdDeadlineInfo(incident: Incident): { text: string; urgent: boolean } | null {
-  if (incident.anpdNotifiedAt) return null
+// ANPD e titulares têm o mesmo prazo de 3 dias úteis (Resolução CD/ANPD 15/2024, Arts. 6º e 9º).
+function getNotificationDeadlineInfo(
+  incident: Incident,
+  notifiedAt: string | null,
+  target: string,
+): { text: string; urgent: boolean } | null {
+  if (notifiedAt) return null
   const deadline = addBusinessDays(new Date(incident.discoveredAt), 3)
   const now = new Date()
   const formattedDeadline = deadline.toLocaleDateString('pt-BR')
   if (now > deadline) {
-    return { text: `Prazo de notificação à ANPD vencido desde ${formattedDeadline}`, urgent: true }
+    return { text: `Prazo para notificar ${target} vencido desde ${formattedDeadline}`, urgent: true }
   }
-  return { text: `Notificar a ANPD até ${formattedDeadline} (3 dias úteis)`, urgent: false }
+  return { text: `Notificar ${target} até ${formattedDeadline} (3 dias úteis)`, urgent: false }
 }
 
 const SEVERITY_LABELS: Record<IncidentSeverity, string> = {
@@ -308,7 +313,7 @@ export function IncidentsPage() {
                       Registrar notificação à ANPD
                     </button>
                     {(() => {
-                      const deadlineInfo = getAnpdDeadlineInfo(incident)
+                      const deadlineInfo = getNotificationDeadlineInfo(incident, incident.anpdNotifiedAt, 'a ANPD')
                       if (!deadlineInfo) return null
                       return (
                         <span className={deadlineInfo.urgent ? "text-red-600 font-medium" : "text-[#1B2233]/45"}>
@@ -323,12 +328,23 @@ export function IncidentsPage() {
                     Titulares notificados em {new Date(incident.dataSubjectsNotifiedAt).toLocaleString('pt-BR')}
                   </span>
                 ) : (
-                  <button
-                    onClick={() => handleNotifyDataSubjects(incident.id)}
-                    className="text-[#0d7a6d] hover:underline font-medium"
-                  >
-                    Registrar notificação aos titulares
-                  </button>
+                  <div className="flex flex-col gap-0.5">
+                    <button
+                      onClick={() => handleNotifyDataSubjects(incident.id)}
+                      className="text-[#0d7a6d] hover:underline font-medium text-left"
+                    >
+                      Registrar notificação aos titulares
+                    </button>
+                    {(() => {
+                      const deadlineInfo = getNotificationDeadlineInfo(incident, incident.dataSubjectsNotifiedAt, 'os titulares')
+                      if (!deadlineInfo) return null
+                      return (
+                        <span className={deadlineInfo.urgent ? "text-red-600 font-medium" : "text-[#1B2233]/45"}>
+                          {deadlineInfo.text}
+                        </span>
+                      )
+                    })()}
+                  </div>
                 )}
               </div>
             </div>

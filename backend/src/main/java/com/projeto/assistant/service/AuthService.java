@@ -34,6 +34,7 @@ public class AuthService {
     private final com.projeto.assistant.repository.WorkspaceRepository workspaceRepository;
     private final EmailService emailService;
     private final MfaService mfaService;
+    private final RateLimiterService rateLimiterService;
 
     // Cria o Tenant (conta), o primeiro Workspace (a empresa de verdade, com CNPJ/
     // endereco/regime legal) e o primeiro usuario (ADMIN), tudo de forma atomica, e
@@ -112,6 +113,7 @@ public class AuthService {
         }
 
         if (!mfaService.verifyCode(matchedUser, request.code())) {
+            rateLimiterService.recordFailedLogin(request.email());
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Código de verificação inválido.");
         }
 
@@ -121,11 +123,16 @@ public class AuthService {
     // Centraliza a validacao de credenciais + confirmacao de e-mail, reaproveitada
     // tanto pelo login normal quanto pelo login com MFA (segunda etapa).
     private User findAndValidateCredentials(String email, String password) {
+        rateLimiterService.checkLoginAllowed(email);
+
         List<User> candidates = userRepository.findByEmail(email);
         User matchedUser = candidates.stream()
                 .filter(u -> passwordEncoder.matches(password, u.getPasswordHash()))
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos"));
+                .orElseThrow(() -> {
+                    rateLimiterService.recordFailedLogin(email);
+                    return new ResponseStatusException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos");
+                });
 
         if (!matchedUser.isEmailVerified()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Confirme seu e-mail antes de entrar. Verifique sua caixa de entrada.");
@@ -135,6 +142,7 @@ public class AuthService {
     }
 
     private LoginResponseDTO buildLoginResponse(User user) {
+        rateLimiterService.clearFailedLogins(user.getEmail());
         UUID tenantId = user.getTenant() != null ? user.getTenant().getId() : null;
         String token = jwtService.generateToken(user.getId(), tenantId, user.getRole().name());
         return new LoginResponseDTO(token, user.getId(), tenantId, user.getRole().name(),

@@ -22,7 +22,7 @@ public class TenantController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     public TenantResponseDTO create(@Valid @RequestBody TenantRequestDTO request) {
         return tenantService.create(request);
     }

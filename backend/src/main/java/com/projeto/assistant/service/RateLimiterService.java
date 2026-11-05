@@ -1,11 +1,14 @@
 package com.projeto.assistant.service;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,7 +25,17 @@ public class RateLimiterService {
     @Value("${app.rate-limit.ai-actions-per-hour:30}")
     private int maxAiActionsPerHour;
 
+    private static final int MAX_FAILED_LOGINS = 10;
+    private static final Duration FAILED_LOGIN_WINDOW = Duration.ofMinutes(15);
+
     private final ConcurrentHashMap<UUID, Bucket> buckets = new ConcurrentHashMap<>();
+
+    // O login e publico: com expiracao e teto de tamanho, e-mails inventados em
+    // massa nao fazem a memoria crescer sem limite.
+    private final Cache<String, Bucket> failedLoginBuckets = Caffeine.newBuilder()
+            .expireAfterAccess(FAILED_LOGIN_WINDOW.multipliedBy(2))
+            .maximumSize(100_000)
+            .build();
 
     // Cada chamada consome 1 "token" do usuario. Se nao houver token disponivel,
     // lanca excecao - a acao de IA (geracao, chat, embeddings) NAO e executada.
@@ -33,6 +46,37 @@ public class RateLimiterService {
             throw new RateLimitExceededException(
                     "Limite de uso de IA atingido (" + maxAiActionsPerHour + " ações por hora). Tente novamente mais tarde.");
         }
+    }
+
+    // Conta apenas tentativas que falharam, por e-mail, e o token volta aos poucos:
+    // terceiros nao conseguem manter uma conta bloqueada por muito tempo.
+    public void checkLoginAllowed(String email) {
+        Bucket bucket = failedLoginBuckets.getIfPresent(normalize(email));
+
+        if (bucket != null && bucket.getAvailableTokens() <= 0) {
+            throw new RateLimitExceededException("Muitas tentativas de login. Aguarde alguns minutos e tente novamente.");
+        }
+    }
+
+    public void recordFailedLogin(String email) {
+        failedLoginBuckets.get(normalize(email), key -> createFailedLoginBucket()).tryConsume(1);
+    }
+
+    public void clearFailedLogins(String email) {
+        failedLoginBuckets.invalidate(normalize(email));
+    }
+
+    private String normalize(String email) {
+        return email.trim().toLowerCase(Locale.ROOT);
+    }
+
+    private Bucket createFailedLoginBucket() {
+        Bandwidth limit = Bandwidth.builder()
+                .capacity(MAX_FAILED_LOGINS)
+                .refillGreedy(MAX_FAILED_LOGINS, FAILED_LOGIN_WINDOW)
+                .build();
+
+        return Bucket.builder().addLimit(limit).build();
     }
 
     private Bucket createNewBucket() {

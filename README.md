@@ -48,7 +48,7 @@ O IABill organiza o processo de adequação e limita o uso da IA com cinco mecan
 | Direitos e consentimento | Canal público para solicitações de titulares e registro público de consentimento |
 | Incidentes | Registro com marcos separados para notificação à ANPD e aos titulares |
 | Pessoas e controle | Colaboradores, treinamentos, comitê LGPD, plano de ação e diagnóstico |
-| Acesso | Papéis `USER`, `ADMIN`, `DPO` e `SUPER_ADMIN`, JWT em cookie `httpOnly`, MFA por TOTP e limite de uso de IA por usuário |
+| Acesso | Papéis `USER`, `ADMIN`, `DPO` e `SUPER_ADMIN`, JWT em cookie `httpOnly`, MFA por TOTP, limite de tentativas de login e limite de uso de IA por usuário |
 | Conteúdo de apoio | Pilares, princípios, bases legais, sanções, glossário e Central de Ajuda |
 
 ## Arquitetura
@@ -161,7 +161,7 @@ Nunca coloque chaves ou senhas reais em arquivos versionados.
 
 ## Testes
 
-A suíte padrão tem 55 testes, entre unitários e de integração. Os testes de integração usam um PostgreSQL real em contêiner, portanto o Docker precisa estar em execução.
+A suíte padrão tem 59 testes, entre unitários e de integração. Os testes de integração usam um PostgreSQL real em contêiner, portanto o Docker precisa estar em execução.
 
 ```bash
 cd backend

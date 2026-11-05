@@ -30,7 +30,7 @@ const PAPEIS: Papel[] = [
   },
   {
     nome: "ANPD",
-    explicacao: "Autoridade Nacional de Proteção de Dados, o órgão do governo responsável por fiscalizar e aplicar a LGPD. Virou agência reguladora plena em 2026, com fiscalização ativa.",
+    explicacao: "Agência Nacional de Proteção de Dados, a agência reguladora responsável por fiscalizar e aplicar a LGPD no Brasil, com fiscalização ativa.",
     noSistema: "Não interage diretamente com o sistema, mas várias funcionalidades existem para produzir a documentação que ela pode exigir.",
   },
 ];
