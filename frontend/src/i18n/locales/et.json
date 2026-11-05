@@ -1,0 +1,168 @@
+{
+  "nav": {
+    "how": "Kuidas see töötab",
+    "states": "Kinnitamine",
+    "law": "Seadus",
+    "faq": "Küsimused",
+    "login": "Logi sisse",
+    "signup": "Registreeri ettevõte",
+    "language": "Keel"
+  },
+  "hero": {
+    "line1": "Kirjeta pole,",
+    "line2": "vastust pole.",
+    "lead": "IABill koostab teie ettevõtte LGPD ja isikuandmete kaitse üldmääruse dokumendid, kasutades ainult seda, mille olete juba heaks kiitnud. Kui alus puudub, keeldub tehisintellekt vastamast, selle asemel et midagi välja mõelda.",
+    "cta": "Registreeri ettevõte",
+    "secondary": "Mul on juba konto"
+  },
+  "demo": {
+    "title": "Küsi IABillilt",
+    "note": "Näide fiktiivse ettevõtte NexTechiga",
+    "choose": "Vali küsimus",
+    "answered": "Vastatud allikaga",
+    "refused": "Keeldutud",
+    "source": "Kinnitatud allikas",
+    "noSource": "Ükski kinnitatud kirje ei toeta seda vastust.",
+    "questions": [
+      {
+        "q": "Milline oli ettevõtte käive 2025. aastal?",
+        "kind": "refuse",
+        "a": "Kontekstis puuduvad piisavad andmed, et määrata ettevõtte aastakäive 2025. aastal."
+      },
+      {
+        "q": "Kui kaua me klientide andmeid säilitame?",
+        "kind": "answer",
+        "a": "Kliendiandmeid säilitatakse viis aastat São Paulo piirkonna serverites, puhkeolekus krüpteerituna.",
+        "source": "Säilituspoliitika, kinnitanud Ana Silva"
+      },
+      {
+        "q": "Kes pääseb ligi tugiteenuse kõnedele?",
+        "kind": "answer",
+        "a": "Ainult tugimeeskond, rollipõhise piiratud ligipääsuga. Kõned sisaldavad kliendi nime, e-posti ja telefoninumbrit.",
+        "source": "Andmete inventuur, kinnitanud Carlos Mendes"
+      },
+      {
+        "q": "Kas ettevõte on juba kannatanud andmelekke all?",
+        "kind": "refuse",
+        "a": "Kontekstis puuduvad piisavad andmed, et vastata, kas ettevõte on kannatanud andmelekke all."
+      }
+    ]
+  },
+  "how": {
+    "title": "Teie kinnitate, tehisintellekt kirjutab, teie otsustate.",
+    "steps": [
+      {
+        "lead": "Esmalt registreerige, mida teie ettevõte teeb.",
+        "callLabel": "Teie registreerite",
+        "call": "Klienditeenindus kogub nime, e-posti ja telefoni. Säilitamine viis aastat. Õiguslik alus: lepingu täitmine.",
+        "response": "Pärast kinnitamist muutub kirje ainult teie tööruumi kontekstiks."
+      },
+      {
+        "lead": "Seejärel küsige puuduvat dokumenti.",
+        "callLabel": "Teie küsite",
+        "call": "Koostage klienditeeninduse mõjuhinnang.",
+        "response": "Tehisintellekt otsib kinnitatud lõigud ja koostab teksti ainult neid kasutades. Aluseta element deklareeritakse mittetäielikuks."
+      },
+      {
+        "lead": "Lõpuks otsustage, mis saab ametlikuks.",
+        "callLabel": "Teie otsustate",
+        "call": "Vaadata üle, tagasi lükata või kinnitada.",
+        "response": "Kinnitatuna on tekst blokeeritud. Kes mida tegi, jääb auditi jäljele, mida andmebaas ei luba muuta."
+      }
+    ]
+  },
+  "states": {
+    "title": "Üks dokument, kolm etappi.",
+    "lead": "Miski ei muutu ametlikuks ilma inimeste heakskiiduta. Kui keegi pärast ülevaatamist muudab, läheb dokument uuesti ülevaatamisele.",
+    "docTitle": "Mõjuhinnang: klienditeenindus",
+    "doc": "RIPD/DPIA",
+    "s1": "Loodud tehisintellekti poolt",
+    "s1Meta": "Ametliku väärtuseta, ootab ülevaatamist",
+    "s1Note": "Niipea kui saabub",
+    "s2": "Üle vaadatud",
+    "s2Meta": "Üle vaadanud Juliana Rocha",
+    "s2Note": "Valmis kinnitamiseks või tagasilükkamiseks",
+    "approve": "Kinnita",
+    "reject": "Lükka tagasi",
+    "s3": "Kinnitatud",
+    "s3Meta": "Kinnitanud Ana Silva, sisu blokeeritud",
+    "s3Note": "Ametlik ja valmis PDF-ina eksportimiseks",
+    "pdf": "Laadi alla PDF"
+  },
+  "law": {
+    "title": "Iga funktsiooni taga on artikkel.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Töötlemistoimingute register"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Andmekaitse mõjuhinnang"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Andmekaitsespetsialisti (DPO) oma roll"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Rollipõhine ligipääsu piiramine ja kontroll"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Intsidendid ANPD-le ja andmesubjektidele teatamise tähtaegadega"
+      },
+      {
+        "mark": "Art. 6 lg 1 p X",
+        "text": "Auditi jälg vastutuse tagamiseks"
+      },
+      {
+        "mark": "GDPR 35",
+        "text": "Euroopa mõjuhinnangu elemendid"
+      }
+    ]
+  },
+  "proof": {
+    "value": "36/36",
+    "title": "Õiged vastused kontrollitud testis.",
+    "text": "30 otsingut leidsid õige lõigu ja 6 aluseta küsimust lükati tagasi. Testis kasutati 40 sünteetilist dokumenti, seega mõõdab see mehhanismi ega taga tulemust reaalsete andmetega."
+  },
+  "faq": {
+    "title": "Mida tavaliselt küsitakse.",
+    "items": [
+      {
+        "q": "Kas tehisintellekt võib infot välja mõelda?",
+        "a": "Mudel on juhendatud kasutama ainult kinnitatud lõike ja keelduma, kui need ei ole piisavad. See vähendab riski, kuid ei kõrvalda seda. Seepärast läbib iga loodud tekst inimliku ülevaatuse ja kinnituse."
+      },
+      {
+        "q": "Kas IABill asendab advokaati või andmekaitsespetsialisti (DPO)?",
+        "a": "Ei. See korraldab protsessi ja valmistab ette dokumendid. Loodud tekstidel puudub ametlik juriidiline kinnitus ja lõplik otsus on alati teie ettevõtte teha."
+      },
+      {
+        "q": "Kas teine ettevõte saab minu andmeid näha?",
+        "a": "Iga toiming kontrollib, kas ressurss kuulub teie organisatsioonile, ja tehisintellekti otsing piirdub teie tööruumiga. See isoleerimine on osa automatiseeritud testidest."
+      },
+      {
+        "q": "Kas see sobib Euroopa ettevõtetele?",
+        "a": "Jah. Iga tööruum määratleb kohaldatavad režiimid, LGPD, isikuandmete kaitse üldmääruse või mõlemad, ja mõjuhinnang sisaldab isikuandmete kaitse üldmääruse artikli 35 elemente."
+      },
+      {
+        "q": "Kes saab dokumendi kinnitada?",
+        "a": "Iga kasutaja saab üle vaadata ja kinnitamine jääb administraatori profiilile. Pärast kinnitamist ei saa sisu enam muuta ega uuesti genereerida."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Alustage sellest, mis on juba tõsi.",
+    "lead": "Looge oma ettevõtte konto ja tehke oma esimene registreering.",
+    "emailLabel": "Teie töö e-posti aadress",
+    "placeholder": "sina@ettevote.com",
+    "button": "Registreeri ettevõte"
+  },
+  "footer": {
+    "about": "Vastavus LGPD-le ja isikuandmete kaitse üldmäärusele",
+    "madeBy": "Arendanud",
+    "contact": "Kontakt",
+    "academic": "Akadeemiline prototüüp. Ei asenda õigusnõuannet."
+  }
+}

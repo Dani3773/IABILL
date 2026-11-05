@@ -1,0 +1,168 @@
+{
+  "nav": {
+    "how": "Wie es funktioniert",
+    "states": "Genehmigung",
+    "law": "Gesetz",
+    "faq": "Fragen",
+    "login": "Anmelden",
+    "signup": "Unternehmen registrieren",
+    "language": "Sprache"
+  },
+  "hero": {
+    "line1": "Kein Eintrag,",
+    "line2": "keine Antwort.",
+    "lead": "IABill erstellt die LGPD- und DSGVO-Dokumente Ihres Unternehmens nur auf Basis Ihrer genehmigten Inhalte. Fehlt eine Grundlage, lehnt die KI ab, anstatt zu erfinden.",
+    "cta": "Unternehmen registrieren",
+    "secondary": "Ich habe bereits ein Konto"
+  },
+  "demo": {
+    "title": "Fragen Sie IABill",
+    "note": "Beispiel mit NexTech, einem fiktiven Unternehmen",
+    "choose": "Wählen Sie eine Frage",
+    "answered": "Mit Quelle beantwortet",
+    "refused": "Abgelehnt",
+    "source": "Genehmigte Quelle",
+    "noSource": "Kein genehmigter Eintrag stützt diese Antwort.",
+    "questions": [
+      {
+        "q": "Wie hoch war der Umsatz des Unternehmens im Jahr 2025?",
+        "kind": "refuse",
+        "a": "Es liegen im Kontext keine ausreichenden Daten vor, um den Jahresumsatz des Unternehmens im Jahr 2025 zu bestimmen."
+      },
+      {
+        "q": "Wie lange speichern wir Kundendaten?",
+        "kind": "answer",
+        "a": "Kundendaten werden fünf Jahre lang auf Servern in der Region São Paulo mit Verschlüsselung im Ruhezustand gespeichert.",
+        "source": "Aufbewahrungsrichtlinie, genehmigt von Ana Silva"
+      },
+      {
+        "q": "Wer greift auf Support-Anfragen zu?",
+        "kind": "answer",
+        "a": "Nur das Support-Team, mit rollenbasiertem Zugriff. Die Anfragen speichern Name, E-Mail und Telefonnummer des Kunden.",
+        "source": "Dateninventar, genehmigt von Carlos Mendes"
+      },
+      {
+        "q": "Hat das Unternehmen bereits eine Datenpanne erlitten?",
+        "kind": "refuse",
+        "a": "Es liegen im Kontext keine ausreichenden Daten vor, um zu beantworten, ob das Unternehmen bereits eine Datenpanne erlitten hat."
+      }
+    ]
+  },
+  "how": {
+    "title": "Sie genehmigen, die KI schreibt, Sie entscheiden.",
+    "steps": [
+      {
+        "lead": "Registrieren Sie zuerst, was Ihr Unternehmen tut.",
+        "callLabel": "Sie registrieren",
+        "call": "Kundenservice erfasst Name, E-Mail und Telefonnummer. Aufbewahrung fünf Jahre. Rechtsgrundlage: Vertragserfüllung.",
+        "response": "Nach Genehmigung wird der Eintrag zum Kontext nur Ihres Workspaces."
+      },
+      {
+        "lead": "Fordern Sie danach das fehlende Dokument an.",
+        "callLabel": "Sie fordern an",
+        "call": "Erstellen Sie den Datenschutz-Folgenabschätzung für den Kundenservice.",
+        "response": "Die KI sucht die genehmigten Abschnitte und erstellt den Text ausschließlich mit ihnen. Ein Element ohne Grundlage wird als unvollständig deklariert."
+      },
+      {
+        "lead": "Entscheiden Sie schließlich, was offiziell wird.",
+        "callLabel": "Sie entscheiden",
+        "call": "Überprüfen, ablehnen oder genehmigen.",
+        "response": "Nach Genehmigung wird der Text gesperrt. Wer was getan hat, bleibt im Audit-Trail, der von der Datenbank nicht geändert werden kann."
+      }
+    ]
+  },
+  "states": {
+    "title": "Ein Dokument, drei Zustände.",
+    "lead": "Nichts wird offiziell, ohne von Personen geprüft zu werden. Wenn jemand nach der Überprüfung Änderungen vornimmt, geht das Dokument zur erneuten Überprüfung zurück.",
+    "docTitle": "Datenschutz-Folgenabschätzung: Kundenservice",
+    "doc": "DSFA/DPIA",
+    "s1": "Von der KI generiert",
+    "s1Meta": "Ohne offiziellen Wert, wartet auf Überprüfung",
+    "s1Note": "Sobald es ankommt",
+    "s2": "Überprüft",
+    "s2Meta": "Überprüft von Juliana Rocha",
+    "s2Note": "Bereit zur Genehmigung oder Ablehnung",
+    "approve": "Genehmigen",
+    "reject": "Ablehnen",
+    "s3": "Genehmigt",
+    "s3Meta": "Genehmigt von Ana Silva, Inhalt gesperrt",
+    "s3Note": "Offiziell und bereit für den PDF-Export",
+    "pdf": "PDF herunterladen"
+  },
+  "law": {
+    "title": "Jede Funktion hat einen Artikel als Grundlage.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Verzeichnis von Verarbeitungstätigkeiten"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Datenschutz-Folgenabschätzung"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Eigene Rolle für den Datenschutzbeauftragten"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Trennung und rollenbasierte Zugriffskontrolle"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Vorfälle mit Fristen für ANPD und Betroffene"
+      },
+      {
+        "mark": "Art. 6º, X",
+        "text": "Audit-Trail zur Rechenschaftspflicht"
+      },
+      {
+        "mark": "DSGVO 35",
+        "text": "Elemente der europäischen Datenschutz-Folgenabschätzung"
+      }
+    ]
+  },
+  "proof": {
+    "value": "36 von 36",
+    "title": "Korrekte Antworten im kontrollierten Test.",
+    "text": "30 Suchen fanden den richtigen Abschnitt und 6 Fragen ohne Grundlage wurden abgelehnt. Der Test verwendete 40 synthetische Dokumente, misst also den Mechanismus und garantiert keine Ergebnisse mit realen Daten."
+  },
+  "faq": {
+    "title": "Häufig gestellte Fragen.",
+    "items": [
+      {
+        "q": "Kann die KI Informationen erfinden?",
+        "a": "Das Modell ist angewiesen, nur die genehmigten Abschnitte zu verwenden und abzulehnen, wenn diese nicht ausreichen. Dies reduziert das Risiko, eliminiert es aber nicht. Daher durchläuft jeder generierte Text eine menschliche Überprüfung und Genehmigung."
+      },
+      {
+        "q": "Ersetzt IABill einen Anwalt oder einen DSB?",
+        "a": "Nein. Es organisiert den Prozess und bereitet Dokumente vor. Die generierten Texte haben keine formale rechtliche Validierung, und die endgültige Entscheidung liegt immer bei Ihrem Unternehmen."
+      },
+      {
+        "q": "Kann ein anderes Unternehmen meine Daten sehen?",
+        "a": "Jeder Vorgang überprüft, ob die Ressource zu Ihrer Organisation gehört, und die KI-Suche ist auf Ihren Workspace beschränkt. Diese Isolation ist Teil der automatisierten Tests."
+      },
+      {
+        "q": "Ist es für Unternehmen in Europa geeignet?",
+        "a": "Ja. Jeder Workspace definiert die anwendbaren Regelungen, LGPD, DSGVO oder beides, und die Datenschutz-Folgenabschätzung berücksichtigt die Elemente des Art. 35 der DSGVO."
+      },
+      {
+        "q": "Wer kann ein Dokument genehmigen?",
+        "a": "Jeder Benutzer kann überprüfen, und die Genehmigung obliegt dem Administratorprofil. Nach der Genehmigung kann der Inhalt weder bearbeitet noch neu generiert werden."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Beginnen Sie mit dem, was bereits wahr ist.",
+    "lead": "Erstellen Sie das Konto Ihres Unternehmens und machen Sie Ihren ersten Eintrag.",
+    "emailLabel": "Ihre Geschäfts-E-Mail",
+    "placeholder": "sie@unternehmen.com",
+    "button": "Unternehmen registrieren"
+  },
+  "footer": {
+    "about": "Einhaltung von LGPD und DSGVO",
+    "madeBy": "Entwickelt von",
+    "contact": "Kontakt",
+    "academic": "Akademischer Prototyp. Ersetzt keine Rechtsberatung."
+  }
+}

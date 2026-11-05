@@ -1,0 +1,168 @@
+{
+  "nav": {
+    "how": "Sådan fungerer det",
+    "states": "Stadier",
+    "law": "Lovgivning",
+    "faq": "Ofte stillede spørgsmål",
+    "login": "Log ind",
+    "signup": "Registrer virksomhed",
+    "language": "Sprog"
+  },
+  "hero": {
+    "line1": "Ingen data,",
+    "line2": "intet svar.",
+    "lead": "IABill udarbejder din virksomheds LGPD- og GDPR-dokumenter udelukkende baseret på det, du allerede har godkendt. Hvis der mangler grundlag, afviser AI'en i stedet for at opfinde.",
+    "cta": "Registrer virksomhed",
+    "secondary": "Har allerede en konto"
+  },
+  "demo": {
+    "title": "Spørg IABill",
+    "note": "Eksempel med NexTech, en fiktiv virksomhed",
+    "choose": "Vælg et spørgsmål",
+    "answered": "Besvaret med kilde",
+    "refused": "Afvist",
+    "source": "Godkendt kilde",
+    "noSource": "Ingen godkendt registrering understøtter dette svar.",
+    "questions": [
+      {
+        "q": "Hvad var virksomhedens omsætning i 2025?",
+        "kind": "refuse",
+        "a": "Der er ikke tilstrækkelige data i konteksten til at fastslå virksomhedens årlige omsætning i 2025."
+      },
+      {
+        "q": "Hvor længe opbevarer vi kundedata?",
+        "kind": "answer",
+        "a": "Kundedata opbevares i fem år på servere i São Paulo-regionen med kryptering i hvile.",
+        "source": "Opbevaringspolitik, godkendt af Ana Silva"
+      },
+      {
+        "q": "Hvem har adgang til supporthenvendelser?",
+        "kind": "answer",
+        "a": "Kun supportteamet, med rollebaseret adgangsbegrænsning. Henvendelserne indeholder kundens navn, e-mail og telefonnummer.",
+        "source": "Dataregister, godkendt af Carlos Mendes"
+      },
+      {
+        "q": "Har virksomheden oplevet et datalæk?",
+        "kind": "refuse",
+        "a": "Der er ikke tilstrækkelige data i konteksten til at besvare, om virksomheden har oplevet et datalæk."
+      }
+    ]
+  },
+  "how": {
+    "title": "Du godkender, AI'en skriver, du bestemmer.",
+    "steps": [
+      {
+        "lead": "Først, registrer hvad din virksomhed gør.",
+        "callLabel": "Du registrerer",
+        "call": "Kundeservice indsamler navn, e-mail og telefonnummer. Opbevaring i fem år. Retsgrundlag: opfyldelse af kontrakt.",
+        "response": "Når det er godkendt, bliver registreringen udelukkende kontekst for dit workspace."
+      },
+      {
+        "lead": "Dernæst, anmod om det manglende dokument.",
+        "callLabel": "Du anmoder",
+        "call": "Udarbejd konsekvensanalysen for kundeservice.",
+        "response": "AI'en søger efter de godkendte passager og udarbejder teksten udelukkende ved brug af disse. Elementer uden grundlag erklæres som ufuldstændige."
+      },
+      {
+        "lead": "Til sidst, beslut hvad der bliver officielt.",
+        "callLabel": "Du beslutter",
+        "call": "Gennemgå, afvis eller godkend.",
+        "response": "Når teksten er godkendt, låses den. Hvem der gjorde hvad, registreres i revisionssporet, som databasen ikke tillader at ændre."
+      }
+    ]
+  },
+  "states": {
+    "title": "Ét dokument, tre stadier.",
+    "lead": "Intet bliver officielt uden menneskelig godkendelse. Hvis nogen redigerer efter gennemgang, sendes dokumentet tilbage til revision.",
+    "docTitle": "Konsekvensanalyse: kundeservice",
+    "doc": "RIPD/DPIA",
+    "s1": "Genereret af AI",
+    "s1Meta": "Ingen officiel værdi, afventer gennemgang",
+    "s1Note": "Ved modtagelse",
+    "s2": "Gennemgået",
+    "s2Meta": "Gennemgået af Juliana Rocha",
+    "s2Note": "Klar til godkendelse eller afvisning",
+    "approve": "Godkend",
+    "reject": "Afvis",
+    "s3": "Godkendt",
+    "s3Meta": "Godkendt af Ana Silva, indhold låst",
+    "s3Note": "Officiel og klar til eksport som PDF",
+    "pdf": "Download PDF"
+  },
+  "law": {
+    "title": "Hver funktion har en underliggende artikel.",
+    "items": [
+      {
+        "mark": "Artikel 37",
+        "text": "Register over behandlingsaktiviteter"
+      },
+      {
+        "mark": "Artikel 38",
+        "text": "Konsekvensanalyse vedrørende databeskyttelse"
+      },
+      {
+        "mark": "Artikel 41",
+        "text": "Særlig rolle for databeskyttelsesrådgiveren"
+      },
+      {
+        "mark": "Artikel 46",
+        "text": "Isolering og rollebaseret adgangskontrol"
+      },
+      {
+        "mark": "Artikel 48",
+        "text": "Datalækage med frister for ANPD og registrerede"
+      },
+      {
+        "mark": "Artikel 6, X",
+        "text": "Revisionsspor for ansvarlighed"
+      },
+      {
+        "mark": "GDPR 35",
+        "text": "Elementer af den europæiske konsekvensanalyse"
+      }
+    ]
+  },
+  "proof": {
+    "value": "36 ud af 36",
+    "title": "Korrekte svar i den kontrollerede test.",
+    "text": "30 søgninger fandt den korrekte passage, og 6 spørgsmål uden grundlag blev afvist. Testen brugte 40 syntetiske dokumenter og måler derfor mekanismen og garanterer ikke resultatet med reelle data."
+  },
+  "faq": {
+    "title": "Hvad der ofte spørges om.",
+    "items": [
+      {
+        "q": "Kan AI'en opfinde information?",
+        "a": "Modellen er instrueret i kun at bruge de godkendte passager og at afvise, når disse ikke er tilstrækkelige. Dette reducerer risikoen, men eliminerer den ikke. Derfor gennemgår al genereret tekst menneskelig revision og godkendelse."
+      },
+      {
+        "q": "Erstatter IABill en advokat eller en DPO?",
+        "a": "Nej. Den organiserer processen og udarbejder dokumenter. De genererede tekster har ikke formel juridisk validering, og den endelige beslutning er altid din virksomheds."
+      },
+      {
+        "q": "Kan en anden virksomhed se mine data?",
+        "a": "Hver operation verificerer, om ressourcen tilhører din organisation, og AI'ens søgning er begrænset til dit workspace. Denne isolation er en del af de automatiserede tests."
+      },
+      {
+        "q": "Er det egnet til virksomheder i Europa?",
+        "a": "Ja. Hvert workspace definerer de gældende regimer, LGPD, GDPR eller begge, og konsekvensanalysen følger elementerne i GDPR artikel 35."
+      },
+      {
+        "q": "Hvem kan godkende et dokument?",
+        "a": "Enhver bruger kan gennemgå, og godkendelsen ligger hos administratorprofilen. Når indholdet er godkendt, kan det ikke længere redigeres eller genereres igen."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Start med det, der allerede er sandt.",
+    "lead": "Opret din virksomheds konto og foretag din første registrering.",
+    "emailLabel": "Din arbejds-e-mail",
+    "placeholder": "du@virksomhed.com",
+    "button": "Registrer virksomhed"
+  },
+  "footer": {
+    "about": "Overholdelse af LGPD og GDPR",
+    "madeBy": "Udviklet af",
+    "contact": "Kontakt",
+    "academic": "Akademisk prototype. Erstatter ikke juridisk rådgivning."
+  }
+}

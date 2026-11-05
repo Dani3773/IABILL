@@ -1,0 +1,174 @@
+{
+  "nav": {
+    "how": "Como funciona",
+    "states": "Aprovação",
+    "law": "Lei",
+    "faq": "Perguntas",
+    "login": "Entrar",
+    "signup": "Cadastrar empresa",
+    "language": "Idioma"
+  },
+  "hero": {
+    "line1": "Sem registro,",
+    "line2": "sem resposta.",
+    "lead": "O IABill escreve os documentos de LGPD e RGPD da sua empresa usando só o que você já aprovou. Quando falta base, a IA recusa em vez de inventar.",
+    "cta": "Cadastrar empresa",
+    "secondary": "Já tenho conta"
+  },
+  "demo": {
+    "title": "Pergunte ao IABill",
+    "note": "Exemplo com a NexTech, empresa fictícia",
+    "choose": "Escolha uma pergunta",
+    "answered": "Respondido com fonte",
+    "refused": "Recusado",
+    "source": "Fonte aprovada",
+    "noSource": "Nenhum registro aprovado sustenta esta resposta.",
+    "questions": [
+      {
+        "q": "Qual foi o faturamento da empresa em 2025?",
+        "kind": "refuse",
+        "a": "Não há dados suficientes no contexto para determinar o faturamento anual da empresa em 2025."
+      },
+      {
+        "q": "Por quanto tempo guardamos dados de clientes?",
+        "kind": "answer",
+        "a": "Os dados de clientes ficam armazenados por cinco anos, em servidores na região de São Paulo, com criptografia em repouso.",
+        "source": "Política de retenção, aprovada por Ana Silva"
+      },
+      {
+        "q": "Quem acessa os chamados de suporte?",
+        "kind": "answer",
+        "a": "Somente a equipe de suporte, com acesso restrito por papel. Os chamados guardam nome, e-mail e telefone do cliente.",
+        "source": "Inventário de dados, aprovado por Carlos Mendes"
+      },
+      {
+        "q": "A empresa já sofreu algum vazamento?",
+        "kind": "refuse",
+        "a": "Não há dados suficientes no contexto para responder se a empresa já sofreu algum vazamento de dados."
+      }
+    ]
+  },
+  "how": {
+    "title": "A IA escreve, você decide.",
+    "steps": [
+      {
+        "lead": "Primeiro, registre o que sua empresa faz.",
+        "callLabel": "Você registra",
+        "call": "Atendimento coleta nome, e-mail e telefone. Retenção de cinco anos. Base legal: execução de contrato.",
+        "response": "Depois de aprovado, o registro vira contexto só do seu workspace."
+      },
+      {
+        "lead": "Depois, peça o documento que falta.",
+        "callLabel": "Você pede",
+        "call": "Redija o relatório de impacto do atendimento ao cliente.",
+        "response": "A IA busca os trechos aprovados e redige usando somente eles. Elemento sem base é declarado como incompleto."
+      },
+      {
+        "lead": "Por fim, decida o que vira oficial.",
+        "callLabel": "Você decide",
+        "call": "Revisar, rejeitar ou aprovar.",
+        "response": "Aprovado, o texto é bloqueado. Quem fez o quê fica na trilha de auditoria, que o banco de dados não deixa alterar."
+      }
+    ]
+  },
+  "states": {
+    "title": "Um documento, três momentos.",
+    "lead": "Nada vira oficial sem passar por pessoas. Se alguém editar depois da revisão, o documento volta para ser revisado.",
+    "docTitle": "Relatório de impacto: atendimento ao cliente",
+    "doc": "RIPD/DPIA",
+    "s1": "Gerado pela IA",
+    "s1Meta": "Sem valor oficial, aguardando revisão",
+    "s1Note": "Assim que chega",
+    "s2": "Revisado",
+    "s2Meta": "Revisado por Juliana Rocha",
+    "s2Note": "Pronto para aprovar ou rejeitar",
+    "approve": "Aprovar",
+    "reject": "Rejeitar",
+    "s3": "Aprovado",
+    "s3Meta": "Aprovado por Ana Silva, conteúdo bloqueado",
+    "s3Note": "Oficial e pronto para exportar em PDF",
+    "pdf": "Baixar PDF"
+  },
+  "law": {
+    "title": "Cada função tem um artigo por trás.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Inventário das operações de tratamento"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Relatório de impacto à proteção de dados"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Papel próprio para o Encarregado"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Isolamento e controle de acesso por papel"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Incidentes com prazos para ANPD e titulares"
+      },
+      {
+        "mark": "Art. 6º, X",
+        "text": "Trilha de auditoria para prestação de contas"
+      },
+      {
+        "mark": "RGPD 35",
+        "text": "Elementos da avaliação de impacto europeia"
+      }
+    ]
+  },
+  "proof": {
+    "value": "36 de 36",
+    "title": "Respostas corretas no teste controlado.",
+    "text": "30 buscas encontraram o trecho certo e 6 perguntas sem base foram recusadas. O teste usou 40 documentos sintéticos, então mede o mecanismo e não garante o resultado com dados reais."
+  },
+  "faq": {
+    "title": "O que costumam perguntar.",
+    "items": [
+      {
+        "q": "A IA pode inventar informação?",
+        "a": "O modelo é instruído a usar apenas os trechos aprovados e a recusar quando eles não bastam. Isso reduz o risco, mas não o elimina. Por isso todo texto gerado passa por revisão e aprovação humanas."
+      },
+      {
+        "q": "O IABill substitui um advogado ou um DPO?",
+        "a": "Não. Ele organiza o processo e prepara documentos. Os textos gerados não têm validação jurídica formal, e a decisão final é sempre da sua empresa."
+      },
+      {
+        "q": "Outra empresa pode ver meus dados?",
+        "a": "Cada operação verifica se o recurso pertence à sua organização, e a busca da IA fica restrita ao seu workspace. Esse isolamento faz parte dos testes automatizados."
+      },
+      {
+        "q": "Serve para empresas na Europa?",
+        "a": "Sim. Cada workspace define os regimes aplicáveis, LGPD, RGPD ou ambos, e o relatório de impacto acompanha os elementos do Art. 35 do RGPD."
+      },
+      {
+        "q": "Quem pode aprovar um documento?",
+        "a": "Qualquer usuário pode revisar, e a aprovação fica com o perfil de administrador. Depois de aprovado, o conteúdo não pode mais ser editado nem gerado de novo."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Comece pelo que já é verdade.",
+    "lead": "Crie a conta da sua empresa e faça seu primeiro registro.",
+    "emailLabel": "Seu e-mail de trabalho",
+    "placeholder": "voce@empresa.com",
+    "button": "Cadastrar empresa"
+  },
+  "footer": {
+    "about": "Adequação à LGPD e ao RGPD",
+    "madeBy": "Desenvolvido por",
+    "contact": "Contato",
+    "academic": "Protótipo acadêmico. Não substitui orientação jurídica.",
+    "photos": "Fotos"
+  },
+  "images": {
+    "archive": "Corredor de um arquivo com prateleiras cheias de caixas de documentos numeradas",
+    "ledger": "Livro antigo de registros, aberto, com lançamentos escritos à mão",
+    "cabinet": "Mão abrindo uma gaveta de fichário com fichas organizadas por nome"
+  }
+}

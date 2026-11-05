@@ -1,0 +1,168 @@
+{
+  "nav": {
+    "how": "Jak to funguje",
+    "states": "Schválení",
+    "law": "Zákon",
+    "faq": "Časté dotazy",
+    "login": "Přihlásit se",
+    "signup": "Registrovat firmu",
+    "language": "Jazyk"
+  },
+  "hero": {
+    "line1": "Bez záznamu,",
+    "line2": "bez odpovědi.",
+    "lead": "IABill vytváří dokumenty LGPD a GDPR pro vaši společnost pouze z toho, co jste již schválili. Pokud chybí podklad, AI odmítne, místo aby si vymýšlela.",
+    "cta": "Registrovat firmu",
+    "secondary": "Již mám účet"
+  },
+  "demo": {
+    "title": "Zeptejte se IABill",
+    "note": "Příklad s NexTech, fiktivní společností",
+    "choose": "Vyberte otázku",
+    "answered": "Odpovězeno se zdrojem",
+    "refused": "Odmítnuto",
+    "source": "Schválený zdroj",
+    "noSource": "Žádný schválený záznam tuto odpověď nepodporuje.",
+    "questions": [
+      {
+        "q": "Jaký byl obrat společnosti v roce 2025?",
+        "kind": "refuse",
+        "a": "V kontextu nejsou dostatečné údaje k určení ročního obratu společnosti v roce 2025."
+      },
+      {
+        "q": "Jak dlouho uchováváme údaje o klientech?",
+        "kind": "answer",
+        "a": "Údaje o klientech jsou uchovávány po dobu pěti let na serverech v regionu São Paulo, s šifrováním v klidu.",
+        "source": "Zásady uchovávání dat, schváleno Anou Silva"
+      },
+      {
+        "q": "Kdo má přístup k požadavkům podpory?",
+        "kind": "answer",
+        "a": "Pouze tým podpory, s omezeným přístupem na základě role. Požadavky obsahují jméno, e-mail a telefon klienta.",
+        "source": "Inventář dat, schváleno Carlosem Mendesem"
+      },
+      {
+        "q": "Utrpěla společnost již nějaký únik dat?",
+        "kind": "refuse",
+        "a": "V kontextu nejsou dostatečné údaje k zodpovězení, zda společnost utrpěla únik dat."
+      }
+    ]
+  },
+  "how": {
+    "title": "Vy schválíte, AI napíše, vy rozhodnete.",
+    "steps": [
+      {
+        "lead": "Nejprve zaznamenejte, co vaše společnost dělá.",
+        "callLabel": "Vy zaznamenáváte",
+        "call": "Zákaznická podpora shromažďuje jméno, e-mail a telefon. Uchovávání po dobu pěti let. Právní základ: plnění smlouvy.",
+        "response": "Po schválení se záznam stane kontextem pouze pro váš pracovní prostor."
+      },
+      {
+        "lead": "Poté si vyžádejte chybějící dokument.",
+        "callLabel": "Vy žádáte",
+        "call": "Vypracujte zprávu o dopadu pro zákaznickou podporu.",
+        "response": "AI vyhledá schválené pasáže a vypracuje dokument pouze s jejich použitím. Prvek bez podkladu je označen jako neúplný."
+      },
+      {
+        "lead": "Nakonec rozhodněte, co se stane oficiálním.",
+        "callLabel": "Vy rozhodujete",
+        "call": "Zkontrolovat, zamítnout nebo schválit.",
+        "response": "Po schválení je text uzamčen. Kdo co udělal, zůstává v auditní stopě, kterou databáze neumožňuje změnit."
+      }
+    ]
+  },
+  "states": {
+    "title": "Jeden dokument, tři stavy.",
+    "lead": "Nic se nestane oficiálním, aniž by to prošlo lidmi. Pokud někdo provede úpravy po revizi, dokument se vrátí k opětovné revizi.",
+    "docTitle": "Zpráva o dopadu: zákaznická podpora",
+    "doc": "RIPD/DPIA",
+    "s1": "Vygenerováno AI",
+    "s1Meta": "Bez oficiální platnosti, čeká na revizi",
+    "s1Note": "Ihned po doručení",
+    "s2": "Revidováno",
+    "s2Meta": "Revidováno Julianou Rocha",
+    "s2Note": "Připraveno ke schválení nebo zamítnutí",
+    "approve": "Schválit",
+    "reject": "Zamítnout",
+    "s3": "Schváleno",
+    "s3Meta": "Schváleno Anou Silva, obsah uzamčen",
+    "s3Note": "Oficiální a připraveno k exportu do PDF",
+    "pdf": "Stáhnout PDF"
+  },
+  "law": {
+    "title": "Každá funkce má za sebou článek.",
+    "items": [
+      {
+        "mark": "Čl. 37",
+        "text": "Záznamy o činnostech zpracování"
+      },
+      {
+        "mark": "Čl. 38",
+        "text": "Posouzení dopadu na ochranu osobních údajů"
+      },
+      {
+        "mark": "Čl. 41",
+        "text": "Vlastní role pro pověřence"
+      },
+      {
+        "mark": "Čl. 46",
+        "text": "Izolace a kontrola přístupu na základě role"
+      },
+      {
+        "mark": "Čl. 48",
+        "text": "Incidenty s lhůtami pro ANPD a subjekty údajů"
+      },
+      {
+        "mark": "Čl. 6, X",
+        "text": "Auditní stopa pro doložení souladu"
+      },
+      {
+        "mark": "GDPR 35",
+        "text": "Prvky evropského posouzení dopadu"
+      }
+    ]
+  },
+  "proof": {
+    "value": "36 z 36",
+    "title": "Správné odpovědi v kontrolovaném testu.",
+    "text": "30 vyhledávání našlo správnou pasáž a 6 otázek bez podkladu bylo odmítnuto. Test použil 40 syntetických dokumentů, takže měří mechanismus a nezaručuje výsledek s reálnými daty."
+  },
+  "faq": {
+    "title": "Často kladené otázky.",
+    "items": [
+      {
+        "q": "Může AI vymýšlet informace?",
+        "a": "Model je instruován, aby používal pouze schválené pasáže a odmítl odpovědět, pokud nejsou dostatečné. To snižuje riziko, ale zcela ho neodstraňuje. Proto každý vygenerovaný text prochází lidskou revizí a schválením."
+      },
+      {
+        "q": "Nahrazuje IABill právníka nebo DPO?",
+        "a": "Ne. Organizuje proces a připravuje dokumenty. Vygenerované texty nemají formální právní validaci a konečné rozhodnutí je vždy na vaší společnosti."
+      },
+      {
+        "q": "Může jiná společnost vidět moje data?",
+        "a": "Každá operace ověřuje, zda zdroj patří vaší organizaci, a vyhledávání AI je omezeno na váš pracovní prostor. Tato izolace je součástí automatizovaných testů."
+      },
+      {
+        "q": "Je to vhodné pro společnosti v Evropě?",
+        "a": "Ano. Každý pracovní prostor definuje použitelné režimy, LGPD, GDPR nebo obojí, a zpráva o dopadu zahrnuje prvky článku 35 GDPR."
+      },
+      {
+        "q": "Kdo může schválit dokument?",
+        "a": "Kterýkoli uživatel může provést revizi a schválení je v kompetenci profilu administrátora. Po schválení nelze obsah dále upravovat ani znovu generovat."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Začněte tím, co je již pravda.",
+    "lead": "Vytvořte si účet pro vaši společnost a proveďte svůj první záznam.",
+    "emailLabel": "Váš pracovní e-mail",
+    "placeholder": "voce@empresa.com",
+    "button": "Registrovat firmu"
+  },
+  "footer": {
+    "about": "Soulad s LGPD a GDPR",
+    "madeBy": "Vyvinuto společností",
+    "contact": "Kontakt",
+    "academic": "Akademický prototyp. Nenahrazuje právní poradenství."
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "nav": {
+    "how": "How it works",
+    "states": "Approval",
+    "law": "Law",
+    "faq": "FAQ",
+    "login": "Log in",
+    "signup": "Register company",
+    "language": "Language"
+  },
+  "hero": {
+    "line1": "No record,",
+    "line2": "no answer.",
+    "lead": "IABill writes your company's LGPD and GDPR documents using only what you've already approved. When there's no basis, the AI refuses instead of inventing.",
+    "cta": "Register company",
+    "secondary": "I already have an account"
+  },
+  "demo": {
+    "title": "Ask IABill",
+    "note": "Example with NexTech, a fictional company",
+    "choose": "Choose a question",
+    "answered": "Answered with source",
+    "refused": "Refused",
+    "source": "Approved source",
+    "noSource": "No approved record supports this answer.",
+    "questions": [
+      {
+        "q": "What was the company's revenue in 2025?",
+        "kind": "refuse",
+        "a": "There is not enough data in the context to determine the company's annual revenue in 2025."
+      },
+      {
+        "q": "How long do we store customer data?",
+        "kind": "answer",
+        "a": "Customer data is stored for five years, on servers in the São Paulo region, with encryption at rest.",
+        "source": "Retention policy, approved by Ana Silva"
+      },
+      {
+        "q": "Who accesses support tickets?",
+        "kind": "answer",
+        "a": "Only the support team, with role-based restricted access. Tickets store the customer's name, email, and phone number.",
+        "source": "Data inventory, approved by Carlos Mendes"
+      },
+      {
+        "q": "Has the company ever suffered a data breach?",
+        "kind": "refuse",
+        "a": "There is not enough data in the context to answer if the company has ever suffered a data breach."
+      }
+    ]
+  },
+  "how": {
+    "title": "You approve, the AI writes, you decide.",
+    "steps": [
+      {
+        "lead": "First, record what your company does.",
+        "callLabel": "You record",
+        "call": "Customer service collects name, email, and phone number. Five-year retention. Legal basis: contract performance.",
+        "response": "Once approved, the record becomes context only for your workspace."
+      },
+      {
+        "lead": "Next, request the missing document.",
+        "callLabel": "You request",
+        "call": "Draft the customer service impact assessment report.",
+        "response": "The AI searches for approved excerpts and drafts using only them. Any element without a basis is declared incomplete."
+      },
+      {
+        "lead": "Finally, decide what becomes official.",
+        "callLabel": "You decide",
+        "call": "Review, reject, or approve.",
+        "response": "Once approved, the text is locked. Who did what remains in the audit trail, which the database prevents from being altered."
+      }
+    ]
+  },
+  "states": {
+    "title": "One document, three stages.",
+    "lead": "Nothing becomes official without human review. If someone edits after review, the document returns for re-review.",
+    "docTitle": "Impact Assessment Report: Customer Service",
+    "doc": "RIPD/DPIA",
+    "s1": "AI-generated",
+    "s1Meta": "No official value, awaiting review",
+    "s1Note": "Upon arrival",
+    "s2": "Reviewed",
+    "s2Meta": "Reviewed by Juliana Rocha",
+    "s2Note": "Ready for approval or rejection",
+    "approve": "Approve",
+    "reject": "Reject",
+    "s3": "Approved",
+    "s3Meta": "Approved by Ana Silva, content locked",
+    "s3Note": "Official and ready for PDF export",
+    "pdf": "Download PDF"
+  },
+  "law": {
+    "title": "Each function is backed by an article.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Record of processing activities"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Data protection impact assessment"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Specific role for the Data Protection Officer"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Isolation and role-based access control"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Incidents with deadlines for ANPD and data subjects"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Audit trail for accountability"
+      },
+      {
+        "mark": "GDPR 35",
+        "text": "Elements of the European impact assessment"
+      }
+    ]
+  },
+  "proof": {
+    "value": "36 of 36",
+    "title": "Correct answers in controlled test.",
+    "text": "30 searches found the correct excerpt, and 6 questions without a basis were refused. The test used 40 synthetic documents, thus measuring the mechanism and not guaranteeing results with real data."
+  },
+  "faq": {
+    "title": "Frequently asked questions.",
+    "items": [
+      {
+        "q": "Can the AI invent information?",
+        "a": "The model is instructed to use only approved excerpts and to refuse when they are insufficient. This reduces the risk but does not eliminate it. Therefore, all generated text undergoes human review and approval."
+      },
+      {
+        "q": "Does IABill replace a lawyer or a DPO?",
+        "a": "No. It organizes the process and prepares documents. The generated texts do not have formal legal validation, and the final decision always rests with your company."
+      },
+      {
+        "q": "Can another company see my data?",
+        "a": "Each operation verifies if the resource belongs to your organization, and the AI's search is restricted to your workspace. This isolation is part of the automated tests."
+      },
+      {
+        "q": "Is it suitable for companies in Europe?",
+        "a": "Yes. Each workspace defines the applicable regimes, LGPD, GDPR, or both, and the impact assessment report includes the elements of Art. 35 of the GDPR."
+      },
+      {
+        "q": "Who can approve a document?",
+        "a": "Any user can review, and approval is reserved for the administrator profile. Once approved, the content can no longer be edited or regenerated."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Start with what is already true.",
+    "lead": "Create your company account and make your first record.",
+    "emailLabel": "Your work email",
+    "placeholder": "you@company.com",
+    "button": "Register company"
+  },
+  "footer": {
+    "about": "LGPD and GDPR compliance",
+    "madeBy": "Developed by",
+    "contact": "Contact",
+    "academic": "Academic prototype. Does not substitute legal advice."
+  }
+}
