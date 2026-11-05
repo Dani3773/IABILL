@@ -1,15 +1,15 @@
 .lp {
-  --bg: #ffffff;
-  --surface: #f2f2f2;
-  --ink: #0a0a0a;
-  --muted: #6b6b6b;
+  --bg: #efdcae;
+  --surface: #e4cd97;
+  --ink: #17130e;
+  --muted: #5f5540;
   --accent: #d92b21;
   --accent-press: #b4201a;
   --accent-ink: #ffffff;
-  --field: #000000;
-  --field-ink: #ffffff;
-  --field-soft: #a8a8a8;
-  --field-surface: #1a1a1a;
+  --field: #103a2c;
+  --field-ink: #f7ecd0;
+  --field-soft: #bcc9b4;
+  --field-surface: #0a2a1f;
   --margin: clamp(20px, 4vw, 64px);
   --gap: clamp(120px, 13vw, 200px);
   --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
@@ -944,7 +944,7 @@
   }
 
   .lp-nav .lp-language {
-    max-width: 124px;
+    max-width: 146px;
   }
 
   .lp-nav__actions .lp-button {
@@ -1002,4 +1002,172 @@
   .demo__question:active {
     transform: none;
   }
+}
+
+/* Cor por seção: a paleta vem do próprio arquivo, papel manilha, caixa kraft,
+   prateleira verde, porta amarela e tinta vermelha de carimbo. */
+.lp {
+  --yellow: #f3c32b;
+  --kraft: #c9985c;
+  --card: #fffaf0;
+  --card-line: #d9c89f;
+}
+
+.lp .lp-nav,
+.lp .hero {
+  --field: #efdcae;
+  --field-ink: #17130e;
+  --field-soft: #5f5540;
+}
+
+.lp .demo,
+.lp .demo__question {
+  background: var(--card);
+}
+
+.lp .demo__question {
+  border-color: var(--card-line);
+}
+
+.lp .demo__question[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.lp .demo__head {
+  --muted: var(--field-soft);
+  background: #103a2c;
+  color: #f7ecd0;
+}
+
+.lp .demo__head strong {
+  color: inherit;
+}
+
+.lp .demo__head span {
+  color: #bcc9b4;
+}
+
+.lp .drawer {
+  background: #103a2c;
+}
+
+.lp .drawer__card {
+  background: #efdcae;
+}
+
+.lp .drawer__card:nth-child(even) {
+  background: #c9985c;
+}
+
+.lp .drawer__card--active,
+.lp .drawer__card--active:nth-child(even) {
+  background: var(--accent);
+}
+
+.lp .drawer__stamp {
+  background: var(--card);
+}
+
+.lp .archive {
+  background: #103a2c;
+}
+
+.lp .archive .lp-heading {
+  color: var(--yellow);
+}
+
+.lp .how {
+  --muted: #4d3c00;
+  background: var(--yellow);
+}
+
+.lp .how__call {
+  --muted: #c9b98e;
+  background: var(--ink);
+  color: #f7ecd0;
+}
+
+.lp .states {
+  --muted: #bcc9b4;
+  background: #103a2c;
+  color: #f7ecd0;
+}
+
+.lp .doc-row {
+  --muted: #5f5540;
+  background: var(--card);
+  border-color: var(--card-line);
+  color: var(--ink);
+}
+
+.lp .doc-row--active {
+  border-color: var(--yellow);
+}
+
+.lp .doc-row__status {
+  background: #efdcae;
+}
+
+.lp .doc-row__ghost {
+  border-color: var(--card-line);
+}
+
+.lp .law {
+  background: var(--kraft);
+}
+
+.lp .law__board {
+  row-gap: 26px;
+}
+
+.lp .law__tile {
+  background: #efdcae;
+  border-radius: 0 6px 6px 6px;
+  color: var(--ink);
+  position: relative;
+}
+
+.lp .law__tile::before {
+  background: inherit;
+  border-radius: 6px 6px 0 0;
+  bottom: 100%;
+  content: "";
+  height: 14px;
+  left: 0;
+  position: absolute;
+  width: 42%;
+}
+
+.lp .law__tile:nth-child(4n + 3) {
+  background: var(--yellow);
+}
+
+.lp .law__tile:nth-child(4n) {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.lp .law__tile:nth-child(4n + 1) {
+  background: #103a2c;
+  color: #f7ecd0;
+}
+
+.lp .law__tile:hover {
+  background: var(--ink);
+  color: #f7ecd0;
+}
+
+.lp .law__tile p {
+  color: inherit;
+}
+
+.lp .faq__question[aria-expanded="true"]::before {
+  background: var(--accent);
+}
+
+.lp .lp-footer {
+  --field: #17130e;
+  --field-ink: #f7ecd0;
+  --field-soft: #b5a98f;
 }
