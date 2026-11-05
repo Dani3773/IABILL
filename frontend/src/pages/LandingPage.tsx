@@ -1,8 +1,9 @@
-import { type CSSProperties, type FormEvent, useEffect, useRef, useState } from "react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
 import { Logo } from "../components/brand/Logo";
+import type { ArchiveScene } from "../components/landing/archiveScene";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import "./landing.css";
 
@@ -37,14 +38,12 @@ interface FaqItem {
 
 // A demonstração é o argumento da página: a mesma interface responde com fonte
 // aprovada ou recusa, como o gerador real faz quando falta contexto.
-function AskDemo() {
+function AskDemo({ onChoose }: { onChoose: (record: number) => void }) {
   const { t } = useTranslation();
   const questions = t("demo.questions", { returnObjects: true }) as DemoQuestion[];
   const [selected, setSelected] = useState(0);
-  const records = t("demo.records", { returnObjects: true }) as string[];
   const current = questions[selected];
   const refused = current.kind === "refuse";
-  const activeRecord = QUESTION_RECORD[selected] ?? -1;
 
   return (
     <section className="demo" data-ui aria-label={t("demo.title")}>
@@ -60,27 +59,14 @@ function AskDemo() {
             type="button"
             className="demo__question"
             aria-pressed={index === selected}
-            onClick={() => setSelected(index)}
+            onClick={() => {
+              setSelected(index);
+              onChoose(QUESTION_RECORD[index] ?? -1);
+            }}
           >
             {question.q}
           </button>
         ))}
-      </div>
-      <div className="drawer" aria-hidden="true">
-        {records.map((record, index) => (
-          <div
-            key={record}
-            className={index === activeRecord ? "drawer__card drawer__card--active" : "drawer__card"}
-            style={{ "--i": index } as CSSProperties}
-          >
-            <span>{record}</span>
-          </div>
-        ))}
-        {refused && (
-          <strong className="drawer__stamp" key={selected}>
-            {t("demo.stamp")}
-          </strong>
-        )}
       </div>
       <div className="demo__result" aria-live="polite" key={selected}>
         <span className={refused ? "demo__status demo__status--refused" : "demo__status"}>
@@ -88,6 +74,7 @@ function AskDemo() {
         </span>
         <p>{current.a}</p>
         <small>{refused ? t("demo.noSource") : `${t("demo.source")}: ${current.source}`}</small>
+        {refused && <strong className="demo__stamp">{t("demo.stamp")}</strong>}
       </div>
     </section>
   );
@@ -148,37 +135,93 @@ function useReveal() {
   return ref;
 }
 
-// Abre a foto do arquivo com a rolagem: progresso de 0 a 1 enquanto a cena está presa.
-function useArchiveScene() {
-  const ref = useRef<HTMLDivElement>(null);
+// O corredor 3D acompanha a rolagem. Sem WebGL ou com movimento reduzido, fica a foto.
+function useArchiveVault() {
+  const { t, i18n } = useTranslation();
+  const vaultRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const sceneRef = useRef<ArchiveScene | null>(null);
+  const recordRef = useRef(-1);
 
   useEffect(() => {
-    const scene = ref.current;
-    if (!scene || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const vault = vaultRef.current;
+    const canvas = canvasRef.current;
+    if (!vault || !canvas) return;
 
-    let frame = 0;
+    let cancelled = false;
+    let scene: ArchiveScene | null = null;
+    let tick = 0;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     const update = () => {
-      frame = 0;
-      const rect = scene.getBoundingClientRect();
+      tick = 0;
+      const rect = vault.getBoundingClientRect();
       const travel = rect.height - window.innerHeight;
-      const progress = travel > 0 ? Math.min(1, Math.max(0, -rect.top / travel)) : 1;
-      scene.style.setProperty("--p", progress.toFixed(3));
+      const progress = travel > 0 ? Math.min(1, Math.max(0, -rect.top / travel)) : 0;
+      vault.style.setProperty("--door", Math.max(0, (progress - 0.95) / 0.05).toFixed(3));
+      vault.style.setProperty("--scrim", (progress < 0.85 ? 0.55 : Math.max(0, 0.55 - (progress - 0.85) * 8)).toFixed(3));
+      scene?.setProgress(progress);
     };
     const request = () => {
-      if (!frame) frame = requestAnimationFrame(update);
+      if (!tick) tick = requestAnimationFrame(update);
     };
+    const handleResize = () => {
+      scene?.resize();
+      request();
+    };
+    const observer = new IntersectionObserver(([entry]) => scene?.setRunning(entry.isIntersecting));
 
     update();
     window.addEventListener("scroll", request, { passive: true });
-    window.addEventListener("resize", request);
-    return () => {
-      window.removeEventListener("scroll", request);
-      window.removeEventListener("resize", request);
-      cancelAnimationFrame(frame);
-    };
-  }, []);
+    window.addEventListener("resize", handleResize);
 
-  return ref;
+    if (!reduced) {
+      void (async () => {
+        try {
+          const [{ createArchiveScene }] = await Promise.all([
+            import("../components/landing/archiveScene"),
+            document.fonts?.ready,
+            new Promise((resolve) => setTimeout(resolve, 1200)),
+          ]);
+          if (cancelled) return;
+          const records = t("demo.records", { returnObjects: true }) as string[];
+          const giveUp = () => {
+            canvas.classList.remove("is-ready");
+            window.setTimeout(() => {
+              scene?.dispose();
+              scene = null;
+              sceneRef.current = null;
+            });
+          };
+          scene = createArchiveScene(canvas, records, t("states.s3").toUpperCase(), window.innerWidth < 860, giveUp);
+          scene.show(recordRef.current);
+          sceneRef.current = scene;
+          observer.observe(vault);
+          update();
+          canvas.classList.add("is-ready");
+        } catch {
+          canvas.remove();
+        }
+      })();
+    }
+
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+      window.removeEventListener("scroll", request);
+      window.removeEventListener("resize", handleResize);
+      cancelAnimationFrame(tick);
+      scene?.dispose();
+      sceneRef.current = null;
+    };
+  }, [t, i18n.resolvedLanguage]);
+
+  const choose = (record: number) => {
+    recordRef.current = record;
+    sceneRef.current?.show(record);
+  };
+
+  return { vaultRef, canvasRef, choose };
 }
 
 export function LandingPage() {
@@ -186,7 +229,7 @@ export function LandingPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const pageRef = useReveal();
-  const archiveRef = useArchiveScene();
+  const { vaultRef, canvasRef, choose } = useArchiveVault();
   const [email, setEmail] = useState("");
 
   if (isAuthenticated) {
@@ -223,6 +266,16 @@ export function LandingPage() {
       </header>
 
       <main>
+        <div className="vault" ref={vaultRef}>
+          <div className="vault__backdrop" aria-hidden="true">
+            <div className="vault__stage">
+              <img src="/landing/arquivo.webp" alt="" width="1920" height="1241" />
+              <canvas ref={canvasRef} />
+              <div className="vault__scrim" />
+              <div className="vault__door" />
+            </div>
+          </div>
+
         <section className="hero">
           <div className="hero__copy">
             <h1 className="hero__title">
@@ -243,18 +296,13 @@ export function LandingPage() {
               </Link>
             </div>
           </div>
-          <AskDemo />
+          <AskDemo onChoose={choose} />
         </section>
 
         <section className="archive" aria-labelledby="archive-title">
           <h2 id="archive-title" className="lp-heading" data-reveal>
             {t("how.archive")}
           </h2>
-          <div className="archive__track" ref={archiveRef}>
-            <div className="archive__stage">
-              <img src="/landing/arquivo.webp" alt={t("images.archive")} width="1920" height="1241" />
-            </div>
-          </div>
         </section>
 
         <section className="how" id="como-funciona">
@@ -274,6 +322,9 @@ export function LandingPage() {
             ))}
           </ol>
         </section>
+
+          <div className="vault__end" />
+        </div>
 
         <section className="states" id="aprovacao">
           <div className="states__intro" data-reveal>
