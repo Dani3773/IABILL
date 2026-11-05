@@ -16,8 +16,6 @@
   "demo": {
     "title": "Fragen Sie IABill",
     "choose": "Wählen Sie eine Frage",
-    "answered": "Mit Quelle beantwortet",
-    "refused": "Abgelehnt",
     "source": "Genehmigte Quelle",
     "noSource": "Kein genehmigter Eintrag stützt diese Antwort.",
     "questions": [

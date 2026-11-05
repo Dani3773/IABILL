@@ -16,8 +16,6 @@
   "demo": {
     "title": "Spørg IABill",
     "choose": "Vælg et spørgsmål",
-    "answered": "Besvaret med kilde",
-    "refused": "Afvist",
     "source": "Godkendt kilde",
     "noSource": "Ingen godkendt registrering understøtter dette svar.",
     "questions": [

@@ -16,8 +16,6 @@
   "demo": {
     "title": "Küsi IABillilt",
     "choose": "Vali küsimus",
-    "answered": "Vastatud allikaga",
-    "refused": "Keeldutud",
     "source": "Kinnitatud allikas",
     "noSource": "Ükski kinnitatud kirje ei toeta seda vastust.",
     "questions": [

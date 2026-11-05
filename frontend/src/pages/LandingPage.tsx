@@ -36,44 +36,79 @@ interface FaqItem {
   a: string;
 }
 
-// A demonstração é o argumento da página: a mesma interface responde com fonte
-// aprovada ou recusa, como o gerador real faz quando falta contexto.
+// A resposta sai como uma ficha de arquivo: carimbada quando há registro aprovado
+// ou recusada quando não há, como o gerador real faz quando falta contexto.
+function AnswerSlip({
+  question,
+  leaving,
+  onGone,
+}: {
+  question: DemoQuestion;
+  leaving?: boolean;
+  onGone?: () => void;
+}) {
+  const { t } = useTranslation();
+  const refused = question.kind === "refuse";
+
+  return (
+    <article
+      className={leaving ? "slip slip--leaving" : "slip"}
+      aria-hidden={leaving}
+      onAnimationEnd={(event) => {
+        if (leaving && event.target === event.currentTarget) onGone?.();
+      }}
+    >
+      <p>{question.a}</p>
+      <footer>
+        <small>{refused ? t("demo.noSource") : `${t("demo.source")}: ${question.source}`}</small>
+        <strong className={refused ? "slip__stamp" : "slip__stamp slip__stamp--approved"}>
+          {refused ? t("demo.stamp") : t("states.s3")}
+        </strong>
+      </footer>
+    </article>
+  );
+}
+
 function AskDemo({ onChoose }: { onChoose: (record: number) => void }) {
   const { t } = useTranslation();
   const questions = t("demo.questions", { returnObjects: true }) as DemoQuestion[];
   const [selected, setSelected] = useState(0);
-  const current = questions[selected];
-  const refused = current.kind === "refuse";
+  const [leaving, setLeaving] = useState<number | null>(null);
+
+  const choose = (index: number) => {
+    if (index === selected) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setLeaving(reduced ? null : selected);
+    setSelected(index);
+    onChoose(QUESTION_RECORD[index] ?? -1);
+  };
 
   return (
     <section className="demo" data-ui aria-label={t("demo.title")}>
-      <header className="demo__head">
-        <strong>{t("demo.title")}</strong>
-      </header>
-      <div className="demo__questions" role="group" aria-labelledby="demo-choose">
-        <p id="demo-choose">{t("demo.choose")}</p>
+      <h2 className="demo__title">{t("demo.title")}</h2>
+      <div className="demo__questions" role="group" aria-label={t("demo.choose")}>
         {questions.map((question, index) => (
           <button
             key={question.q}
             type="button"
             className="demo__question"
             aria-pressed={index === selected}
-            onClick={() => {
-              setSelected(index);
-              onChoose(QUESTION_RECORD[index] ?? -1);
-            }}
+            onClick={() => choose(index)}
           >
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <path d={question.kind === "refuse" ? "M3 3l10 10M13 3 3 13" : "M2 9l4 4 8-10"} />
+            </svg>
             {question.q}
           </button>
         ))}
       </div>
-      <div className="demo__result" aria-live="polite" key={selected}>
-        <span className={refused ? "demo__status demo__status--refused" : "demo__status"}>
-          {t(refused ? "demo.refused" : "demo.answered")}
-        </span>
-        <p>{current.a}</p>
-        <small>{refused ? t("demo.noSource") : `${t("demo.source")}: ${current.source}`}</small>
-        {refused && <strong className="demo__stamp">{t("demo.stamp")}</strong>}
+      <div className="demo__slips">
+        {leaving !== null && leaving < questions.length && (
+          <AnswerSlip key={`out-${leaving}`} question={questions[leaving]} leaving onGone={() => setLeaving(null)} />
+        )}
+        <div aria-live="polite">
+          <AnswerSlip key={selected} question={questions[selected]} />
+        </div>
       </div>
     </section>
   );
@@ -161,7 +196,8 @@ function useArchiveVault() {
       vault.style.setProperty("--scrim", (progress < 0.85 ? 0.55 : Math.max(0, 0.55 - (progress - 0.85) * 8)).toFixed(3));
       scene?.setProgress(progress);
       // Transparente no corredor; fora dele o texto claro precisaria de fundo.
-      const leaving = rect.bottom < window.innerHeight * 1.75;
+      const leaving =
+        rect.bottom < window.innerHeight * 1.75 || (window.innerWidth < 860 && window.scrollY > 60);
       vault.parentElement?.previousElementSibling?.classList.toggle("lp-nav--solid", leaving);
     };
     const request = () => {

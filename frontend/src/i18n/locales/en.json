@@ -16,8 +16,6 @@
   "demo": {
     "title": "Ask IABill",
     "choose": "Choose a question",
-    "answered": "Answered with source",
-    "refused": "Refused",
     "source": "Approved source",
     "noSource": "No approved record supports this answer.",
     "questions": [

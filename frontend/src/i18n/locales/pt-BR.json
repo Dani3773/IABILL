@@ -16,8 +16,6 @@
   "demo": {
     "title": "Pergunte ao IABill",
     "choose": "Escolha uma pergunta",
-    "answered": "Respondido com fonte",
-    "refused": "Recusado",
     "source": "Fonte aprovada",
     "noSource": "Nenhum registro aprovado sustenta esta resposta.",
     "questions": [

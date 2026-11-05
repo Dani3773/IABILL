@@ -16,8 +16,6 @@
   "demo": {
     "title": "Zeptejte se IABill",
     "choose": "Vyberte otázku",
-    "answered": "Odpovězeno se zdrojem",
-    "refused": "Odmítnuto",
     "source": "Schválený zdroj",
     "noSource": "Žádný schválený záznam tuto odpověď nepodporuje.",
     "questions": [
