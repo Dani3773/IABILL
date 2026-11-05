@@ -13,7 +13,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.support.TransactionTemplate;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -26,6 +28,7 @@ class AuditLogImmutabilityIntegrationTest extends IntegrationTestBase {
     @Autowired private TenantRepository tenantRepository;
     @Autowired private UserRepository userRepository;
     @Autowired private JdbcTemplate jdbcTemplate;
+    @Autowired private TransactionTemplate transactionTemplate;
 
     private UUID tenantId;
     private UUID userId;
@@ -60,6 +63,21 @@ class AuditLogImmutabilityIntegrationTest extends IntegrationTestBase {
     @Test
     void insert_shouldStillBeAllowed() {
         assertThat(countLogsOfEntity()).isEqualTo(1);
+    }
+
+    // Mesmo formato de metadados da geracao por IA: valores Long voltam do JSON como
+    // Integer, o que faria o Hibernate tentar um UPDATE ao comparar a entidade.
+    @Test
+    void recordInsideTransaction_withNumericAndListMetadata_shouldNotAttemptUpdate() {
+        UUID generatedDocumentId = UUID.randomUUID();
+
+        transactionTemplate.executeWithoutResult(status -> auditLogService.record(
+                tenantId, userId, AuditAction.AI_GENERATE, AuditEntityType.DOCUMENT, generatedDocumentId,
+                Map.of("chunksUsed", 5, "retrievalLatencyMs", 716L, "sourceDocumentIds", List.of("doc-1"))));
+
+        Integer logs = jdbcTemplate.queryForObject(
+                "SELECT count(*) FROM audit_logs WHERE entity_id = ?", Integer.class, generatedDocumentId);
+        assertThat(logs).isEqualTo(1);
     }
 
     @Test

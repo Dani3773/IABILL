@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -11,7 +12,10 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 
+// @Immutable evita o UPDATE que a comparacao dos metadados JSON dispararia: o trigger
+// da V51 rejeita qualquer alteracao nesta tabela, o que derrubaria a transacao inteira.
 @Entity
+@Immutable
 @Table(name = "audit_logs")
 @Getter
 @Setter
