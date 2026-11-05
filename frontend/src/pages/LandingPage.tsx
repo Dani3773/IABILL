@@ -17,7 +17,7 @@ interface DemoQuestion {
 }
 
 // Índice do registro que sustenta cada pergunta; -1 quando nada aprovado sustenta.
-const QUESTION_RECORD = [-1, 0, 1, -1];
+const QUESTION_RECORD = [-1, 0, 1, -1, 2, 3, 4];
 
 interface HowStep {
   lead: string;

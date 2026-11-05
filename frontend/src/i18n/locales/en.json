@@ -42,6 +42,24 @@
         "q": "Has the company ever suffered a data breach?",
         "kind": "refuse",
         "a": "There is not enough data in the context to answer if the company has ever suffered a data breach."
+      },
+      {
+        "q": "Who is the data protection officer?",
+        "kind": "answer",
+        "a": "The officer is Carlos Mendes, and data subjects reach him through the company's privacy channel.",
+        "source": "Privacy policy, approved by Ana Silva"
+      },
+      {
+        "q": "Does the team get LGPD training?",
+        "kind": "answer",
+        "a": "Yes. The whole team takes the training once a year, and each person's attendance is recorded.",
+        "source": "Team training, approved by Carlos Mendes"
+      },
+      {
+        "q": "What do we do if there is an incident?",
+        "kind": "answer",
+        "a": "The officer assesses the case and, if the risk is relevant, notifies the ANPD and data subjects within three business days.",
+        "source": "Incident response plan, approved by Ana Silva"
       }
     ],
     "stamp": "NO RECORD",

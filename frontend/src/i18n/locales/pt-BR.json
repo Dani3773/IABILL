@@ -42,6 +42,24 @@
         "q": "A empresa já sofreu algum vazamento?",
         "kind": "refuse",
         "a": "Não há dados suficientes no contexto para responder se a empresa já sofreu algum vazamento de dados."
+      },
+      {
+        "q": "Quem é o encarregado de dados?",
+        "kind": "answer",
+        "a": "O encarregado é Carlos Mendes, e os titulares falam com ele pelo canal de privacidade da empresa.",
+        "source": "Política de privacidade, aprovada por Ana Silva"
+      },
+      {
+        "q": "A equipe recebe treinamento em LGPD?",
+        "kind": "answer",
+        "a": "Sim. Toda a equipe faz o treinamento uma vez por ano, e a presença de cada pessoa fica registrada.",
+        "source": "Treinamento da equipe, aprovado por Carlos Mendes"
+      },
+      {
+        "q": "O que fazemos se houver um incidente?",
+        "kind": "answer",
+        "a": "O encarregado avalia o caso e, se houver risco relevante, comunica a ANPD e os titulares em até três dias úteis.",
+        "source": "Plano de resposta a incidentes, aprovado por Ana Silva"
       }
     ],
     "stamp": "SEM REGISTRO",
