@@ -161,6 +161,9 @@ function useArchiveVault() {
       vault.style.setProperty("--door", Math.max(0, (progress - 0.95) / 0.05).toFixed(3));
       vault.style.setProperty("--scrim", (progress < 0.85 ? 0.55 : Math.max(0, 0.55 - (progress - 0.85) * 8)).toFixed(3));
       scene?.setProgress(progress);
+      // Transparente no corredor; fora dele o texto claro precisaria de fundo.
+      const leaving = rect.bottom < window.innerHeight * 1.75;
+      vault.parentElement?.previousElementSibling?.classList.toggle("lp-nav--solid", leaving);
     };
     const request = () => {
       if (!tick) tick = requestAnimationFrame(update);

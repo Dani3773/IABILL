@@ -927,10 +927,20 @@
   --field-soft: #d8cdb0;
   background: none;
   left: 0;
-  position: absolute;
+  position: fixed;
   right: 0;
   top: 0;
-  z-index: 3;
+  transition: background-color 240ms ease, padding 240ms ease;
+  z-index: 10;
+}
+
+.lp .lp-nav--solid {
+  background: #0c1c16;
+  padding-block: 12px;
+}
+
+.lp [id] {
+  scroll-margin-top: 84px;
 }
 
 /* Corredor: o palco 3D fica preso atrás do hero e dos passos. */
