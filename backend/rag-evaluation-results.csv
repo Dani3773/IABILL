@@ -29,9 +29,9 @@ pos-027,positive,relatorio_conformidade,A empresa tem um canal para receber rela
 pos-028,positive,inventario_dados,Como os dados pessoais sao classificados por nivel de sensibilidade?,0.2,1.0,1.0,,,
 pos-029,positive,relatorio_conformidade,Quem e responsavel por coordenar o plano de resposta a incidentes de seguranca?,0.2,1.0,1.0,,,
 pos-030,positive,relatorio_conformidade,A empresa contrata auditoria externa para avaliar conformidade com a LGPD?,0.2,1.0,1.0,,,
-neg-001,negative,,Quais sao as politicas de retencao de dados da empresa?,,,,recusa_contexto_insuficiente,true,Não há dados suficientes no contexto fornecido para determinar as políticas de retenção de dados da empresa.
-neg-002,negative,,Qual o faturamento anual da empresa em 2025?,,,,recusa_fora_de_escopo,true,Não há dados suficientes no contexto para determinar o faturamento anual da empresa em 2025.
-neg-003,negative,,A empresa ja sofreu algum vazamento de dados?,,,,recusa_contexto_insuficiente,true,Não há dados suficientes no contexto fornecido para responder se a empresa já sofreu algum vazamento de dados.
-neg-004,negative,,Quantos funcionarios a empresa tem atualmente?,,,,recusa_fora_de_escopo,true,Não há dados suficientes no contexto para determinar quantos funcionários a empresa tem atualmente.
-neg-005,negative,,Qual e a politica de ferias e licenca maternidade da empresa?,,,,recusa_contexto_insuficiente,true,Não há dados suficientes no contexto fornecido para determinar a política de férias e licença maternidade da empresa.
-neg-006,negative,,A empresa oferece plano de carreira e promocao interna aos colaboradores?,,,,recusa_fora_de_escopo,true,Não há dados suficientes no contexto fornecido para determinar se a empresa oferece plano de carreira e promoção interna aos colaboradores.
+neg-001,negative,,Quais sao as politicas de retencao de dados da empresa?,,,,recusa_contexto_insuficiente,true,Não há informações suficientes no contexto fornecido para responder à sua pergunta sobre as políticas de retenção de dados da empresa.
+neg-002,negative,,Qual o faturamento anual da empresa em 2025?,,,,recusa_fora_de_escopo,true,Não há dados suficientes no contexto fornecido para determinar o faturamento anual da empresa em 2025.
+neg-003,negative,,A empresa ja sofreu algum vazamento de dados?,,,,recusa_contexto_insuficiente,true,Não há dados suficientes no contexto fornecido para determinar se a empresa já sofreu algum vazamento de dados.
+neg-004,negative,,Quantos funcionarios a empresa tem atualmente?,,,,recusa_fora_de_escopo,true,Não há dados suficientes no contexto fornecido para determinar quantos funcionários a empresa tem atualmente.
+neg-005,negative,,Qual e a politica de ferias e licenca maternidade da empresa?,,,,recusa_contexto_insuficiente,true,Não há dados suficientes no contexto fornecido para redigir a política de férias e licença maternidade da empresa. O contexto apenas contém a pergunta
+neg-006,negative,,A empresa oferece plano de carreira e promocao interna aos colaboradores?,,,,recusa_fora_de_escopo,true,Não há dados suficientes no contexto fornecido para responder se a empresa oferece plano de carreira e promoção interna aos colaboradores.
