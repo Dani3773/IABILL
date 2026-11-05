@@ -13,6 +13,18 @@ Artefato do Trabalho de Conclusão de Curso **"Sistema web para apoio estruturad
 
 O IABill está disponível em **[iabill.com](https://iabill.com)**. Para usar o site não é preciso instalar nada nem configurar chaves.
 
+### Contas de teste
+
+As contas abaixo pertencem à NexTech, empresa fictícia usada na demonstração. Todas usam a senha `NexTech@2026`.
+
+| E-mail |
+| --- |
+| `ana.silva@nextech.com.br` |
+| `carlos.mendes@nextech.com.br` |
+| `juliana.rocha@nextech.com.br` |
+
+Não insira dados pessoais reais nessas contas, porque elas são públicas.
+
 ## O problema
 
 Pequenas e médias empresas têm dificuldade para transformar as exigências da LGPD e do RGPD em atividades concretas. Modelos de linguagem podem ajudar a redigir documentos, mas também podem inventar informações, o que é um risco sério em textos de natureza legal.
