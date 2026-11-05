@@ -11,13 +11,10 @@
   "hero": {
     "line1": "Kein Eintrag,",
     "line2": "keine Antwort.",
-    "lead": "IABill erstellt die LGPD- und DSGVO-Dokumente Ihres Unternehmens nur auf Basis Ihrer genehmigten Inhalte. Fehlt eine Grundlage, lehnt die KI ab, anstatt zu erfinden.",
-    "cta": "Unternehmen registrieren",
-    "secondary": "Ich habe bereits ein Konto"
+    "lead": "IABill erstellt die LGPD- und DSGVO-Dokumente Ihres Unternehmens nur auf Basis Ihrer genehmigten Inhalte. Fehlt eine Grundlage, lehnt die KI ab, anstatt zu erfinden."
   },
   "demo": {
     "title": "Fragen Sie IABill",
-    "note": "Beispiel mit NexTech, einem fiktiven Unternehmen",
     "choose": "Wählen Sie eine Frage",
     "answered": "Mit Quelle beantwortet",
     "refused": "Abgelehnt",

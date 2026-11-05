@@ -11,13 +11,10 @@
   "hero": {
     "line1": "No record,",
     "line2": "no answer.",
-    "lead": "IABill writes your company's LGPD and GDPR documents using only what you've already approved. When there's no basis, the AI refuses instead of inventing.",
-    "cta": "Register company",
-    "secondary": "I already have an account"
+    "lead": "IABill writes your company's LGPD and GDPR documents using only what you've already approved. When there's no basis, the AI refuses instead of inventing."
   },
   "demo": {
     "title": "Ask IABill",
-    "note": "Example with NexTech, a fictional company",
     "choose": "Choose a question",
     "answered": "Answered with source",
     "refused": "Refused",

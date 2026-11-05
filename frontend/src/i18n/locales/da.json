@@ -11,13 +11,10 @@
   "hero": {
     "line1": "Ingen data,",
     "line2": "intet svar.",
-    "lead": "IABill udarbejder din virksomheds LGPD- og GDPR-dokumenter udelukkende baseret på det, du allerede har godkendt. Hvis der mangler grundlag, afviser AI'en i stedet for at opfinde.",
-    "cta": "Registrer virksomhed",
-    "secondary": "Har allerede en konto"
+    "lead": "IABill udarbejder din virksomheds LGPD- og GDPR-dokumenter udelukkende baseret på det, du allerede har godkendt. Hvis der mangler grundlag, afviser AI'en i stedet for at opfinde."
   },
   "demo": {
     "title": "Spørg IABill",
-    "note": "Eksempel med NexTech, en fiktiv virksomhed",
     "choose": "Vælg et spørgsmål",
     "answered": "Besvaret med kilde",
     "refused": "Afvist",

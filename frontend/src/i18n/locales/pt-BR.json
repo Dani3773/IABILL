@@ -11,13 +11,10 @@
   "hero": {
     "line1": "Sem registro,",
     "line2": "sem resposta.",
-    "lead": "O IABill escreve os documentos de LGPD e RGPD da sua empresa usando só o que você já aprovou. Quando falta base, a IA recusa em vez de inventar.",
-    "cta": "Cadastrar empresa",
-    "secondary": "Já tenho conta"
+    "lead": "O IABill escreve os documentos de LGPD e RGPD da sua empresa usando só o que você já aprovou. Quando falta base, a IA recusa em vez de inventar."
   },
   "demo": {
     "title": "Pergunte ao IABill",
-    "note": "Exemplo com a NexTech, empresa fictícia",
     "choose": "Escolha uma pergunta",
     "answered": "Respondido com fonte",
     "refused": "Recusado",

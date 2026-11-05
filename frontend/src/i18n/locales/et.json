@@ -11,13 +11,10 @@
   "hero": {
     "line1": "Kirjeta pole,",
     "line2": "vastust pole.",
-    "lead": "IABill koostab teie ettevõtte LGPD ja isikuandmete kaitse üldmääruse dokumendid, kasutades ainult seda, mille olete juba heaks kiitnud. Kui alus puudub, keeldub tehisintellekt vastamast, selle asemel et midagi välja mõelda.",
-    "cta": "Registreeri ettevõte",
-    "secondary": "Mul on juba konto"
+    "lead": "IABill koostab teie ettevõtte LGPD ja isikuandmete kaitse üldmääruse dokumendid, kasutades ainult seda, mille olete juba heaks kiitnud. Kui alus puudub, keeldub tehisintellekt vastamast, selle asemel et midagi välja mõelda."
   },
   "demo": {
     "title": "Küsi IABillilt",
-    "note": "Näide fiktiivse ettevõtte NexTechiga",
     "choose": "Vali küsimus",
     "answered": "Vastatud allikaga",
     "refused": "Keeldutud",

@@ -168,26 +168,13 @@
   max-width: 34ch;
 }
 
-.hero__lead,
-.hero__actions {
+.hero__lead {
   animation: lp-fade-up 700ms var(--ease-out) 420ms both;
 }
 
 @keyframes lp-fade-up {
   from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-.hero__actions {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  margin-top: 32px;
-}
-
-.hero__secondary {
-  color: var(--field-ink);
 }
 
 /* Demonstração */
@@ -869,10 +856,6 @@
   }
 
   .lp-nav .lp-language {
-    max-width: 146px;
-  }
-
-  .lp-nav__actions .lp-button {
     display: none;
   }
 
@@ -890,7 +873,6 @@
 @media (prefers-reduced-motion: reduce) {
   .hero__line > span,
   .hero__lead,
-  .hero__actions,
   .demo,
   .demo__result,
   .faq__answer,

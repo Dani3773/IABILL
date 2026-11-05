@@ -49,7 +49,6 @@ function AskDemo({ onChoose }: { onChoose: (record: number) => void }) {
     <section className="demo" data-ui aria-label={t("demo.title")}>
       <header className="demo__head">
         <strong>{t("demo.title")}</strong>
-        <span>{t("demo.note")}</span>
       </header>
       <div className="demo__questions" role="group" aria-labelledby="demo-choose">
         <p id="demo-choose">{t("demo.choose")}</p>
@@ -290,14 +289,6 @@ export function LandingPage() {
               </span>
             </h1>
             <p className="hero__lead">{t("hero.lead")}</p>
-            <div className="hero__actions">
-              <Link to="/signup" className="lp-button">
-                {t("hero.cta")}
-              </Link>
-              <Link to="/login" className="hero__secondary">
-                {t("hero.secondary")}
-              </Link>
-            </div>
           </div>
           <AskDemo onChoose={choose} />
         </section>

@@ -11,13 +11,10 @@
   "hero": {
     "line1": "Bez záznamu,",
     "line2": "bez odpovědi.",
-    "lead": "IABill vytváří dokumenty LGPD a GDPR pro vaši společnost pouze z toho, co jste již schválili. Pokud chybí podklad, AI odmítne, místo aby si vymýšlela.",
-    "cta": "Registrovat firmu",
-    "secondary": "Již mám účet"
+    "lead": "IABill vytváří dokumenty LGPD a GDPR pro vaši společnost pouze z toho, co jste již schválili. Pokud chybí podklad, AI odmítne, místo aby si vymýšlela."
   },
   "demo": {
     "title": "Zeptejte se IABill",
-    "note": "Příklad s NexTech, fiktivní společností",
     "choose": "Vyberte otázku",
     "answered": "Odpovězeno se zdrojem",
     "refused": "Odmítnuto",
