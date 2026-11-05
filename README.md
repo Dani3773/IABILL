@@ -9,6 +9,10 @@ Artefato do Trabalho de Conclusão de Curso **"Sistema web para apoio estruturad
 
 > **Estado do projeto:** protótipo acadêmico. Os documentos gerados não passaram por validação jurídica formal e não substituem a análise de um profissional habilitado.
 
+## Acesse o sistema
+
+O IABill está disponível em **[iabill.com](https://iabill.com)**. Para usar o site não é preciso instalar nada nem configurar chaves.
+
 ## O problema
 
 Pequenas e médias empresas têm dificuldade para transformar as exigências da LGPD e do RGPD em atividades concretas. Modelos de linguagem podem ajudar a redigir documentos, mas também podem inventar informações, o que é um risco sério em textos de natureza legal.
@@ -27,7 +31,7 @@ O IABill organiza o processo de adequação e limita o uso da IA com cinco mecan
 | --- | --- |
 | Inventário e governança | Registro de atividades de tratamento (ROPA), setores, fornecedores, transferência internacional, retenção e descarte |
 | Documentos | Geração assistida, RIPD/DPIA, Política de Segurança da Informação, material de treinamento, publicação da Política de Privacidade, exportação em PDF |
-| Fluxo de aprovação | Estados `DRAFT` → `GENERATED` → `REVIEWED` → `APPROVED`, com retorno a `DRAFT` em caso de rejeição |
+| Fluxo de aprovação | Estados `DRAFT` → `GENERATED` → `REVIEWED` → `APPROVED`, com retorno a `DRAFT` em caso de rejeição, nova revisão após edição e bloqueio de documentos aprovados |
 | Busca e assistente | Busca semântica por workspace e chat com chamada de funções |
 | Direitos e consentimento | Canal público para solicitações de titulares e registro público de consentimento |
 | Incidentes | Registro com marcos separados para notificação à ANPD e aos titulares |
@@ -92,7 +96,9 @@ O backend é uma aplicação única organizada em camadas (`controller`, `servic
 - JDK 21
 - Node.js 22 ou superior
 - Docker
-- Uma chave da API do Google Gemini, necessária para busca, geração e aprovação de documentos
+- Uma chave própria da API do Google Gemini, necessária para busca, geração e aprovação de documentos
+
+A chave pode ser criada no [Google AI Studio](https://aistudio.google.com/apikey). Sem ela, o sistema inicia normalmente, mas essas três funções ficam indisponíveis. A chave nunca deve ser versionada no repositório.
 
 ### 1. Banco de dados
 
@@ -143,7 +149,7 @@ Nunca coloque chaves ou senhas reais em arquivos versionados.
 
 ## Testes
 
-A suíte padrão tem 29 testes, entre unitários e de integração. Os testes de integração usam um PostgreSQL real em contêiner, portanto o Docker precisa estar em execução.
+A suíte padrão tem 55 testes, entre unitários e de integração. Os testes de integração usam um PostgreSQL real em contêiner, portanto o Docker precisa estar em execução.
 
 ```bash
 cd backend
@@ -205,7 +211,9 @@ python scripts/rag-evaluation/evaluate_rag_metrics.py backend/rag-evaluation-res
 - A recusa foi medida, mas a ocorrência de alucinações em documentos gerados com contexto suficiente não foi.
 - Não houve estudo com usuários reais nem medição de ganho de tempo.
 - As métricas operacionais vêm de apenas 11 gerações, o que não permite inferir o comportamento sob carga.
-- Os testes automatizados não cobrem a permissão por papel do Encarregado, a trilha de auditoria nem o isolamento da busca vetorial.
+- Os testes automatizados não cobrem a permissão por papel do Encarregado nem o isolamento da busca vetorial.
+- A mesma pessoa pode revisar e aprovar um documento, e não há fluxo de nova versão para documentos aprovados.
+- O aviso de prazo de incidentes não considera feriados nem a contagem em dobro para agentes de pequeno porte.
 
 ## Licença
 
