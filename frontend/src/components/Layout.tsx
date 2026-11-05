@@ -1,3 +1,4 @@
+import { Logo } from "./brand/Logo";
 import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
 import {
   LayoutGrid,
@@ -78,16 +79,16 @@ export function Layout() {
   const roleLabel = role ? (ROLE_LABELS[role] ?? role) : "—";
 
   return (
-    <div className="flex h-screen bg-[#F5F2EA] overflow-hidden">
+    <div className="flex h-screen bg-[#FBF8F8] overflow-hidden">
       <aside
-        className={`${collapsed ? "w-16" : "w-60"} h-full bg-[#161310] flex flex-col shrink-0 transition-all duration-200`}
+        className={`${collapsed ? "w-16" : "w-60"} h-full bg-[#000000] flex flex-col shrink-0 transition-all duration-200`}
       >
         <div
           className={`p-5 border-b border-white/10 flex items-center ${collapsed ? "justify-center" : "justify-between"}`}
         >
           {!collapsed && (
-            <span className="font-serif text-xl text-white tracking-tight select-none">
-              IA<span className="text-[#14B8A6]">Bill</span>
+            <span className="text-xl text-white tracking-tight select-none">
+              <Logo />
             </span>
           )}
           <button
@@ -128,7 +129,7 @@ export function Layout() {
                     collapsed ? "justify-center" : ""
                   } ${
                     isActive
-                      ? "bg-[#14B8A6]/15 text-[#14B8A6]"
+                      ? "bg-[#D92B21]/15 text-[#FF8A80]"
                       : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
                   }`}
                 >
@@ -142,7 +143,7 @@ export function Layout() {
         <div className="relative p-3 border-t border-white/10">
           {profileOpen && (
             <div
-              className={`absolute bottom-full mb-2 bg-[#1E1B17] border border-white/10 rounded-lg shadow-xl overflow-hidden ${
+              className={`absolute bottom-full mb-2 bg-[#1A1A1A] border border-white/10 rounded-lg shadow-xl overflow-hidden ${
                 collapsed ? "left-3 w-56" : "left-3 right-3"
               }`}
             >
@@ -159,7 +160,7 @@ export function Layout() {
                   </p>
                 )}
                 {committeeRole && (
-                  <p className="text-[11px] text-[#14B8A6] mt-0.5 truncate">
+                  <p className="text-[11px] text-[#FF8A80] mt-0.5 truncate">
                     Comitê LGPD: {committeeRole}
                   </p>
                 )}
@@ -180,9 +181,9 @@ export function Layout() {
                   Verificação em 2 Etapas
                 </span>
                 <span
-                  className={`text-[10px] font-mono uppercase tracking-wide px-1.5 py-0.5 rounded ${
+                  className={`text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded ${
                     mfaEnabled
-                      ? "bg-[#14B8A6]/15 text-[#14B8A6]"
+                      ? "bg-[#D92B21]/15 text-[#FF8A80]"
                       : "bg-white/5 text-slate-500"
                   }`}
                 >

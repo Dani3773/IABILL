@@ -36,23 +36,6 @@
   outline-offset: 2px;
 }
 
-.iabill-logo {
-  align-items: center;
-  display: inline-flex;
-  gap: 10px;
-}
-
-.iabill-logo__mark {
-  height: 26px;
-  width: 26px;
-}
-
-.iabill-logo__word {
-  font-size: 1.25rem;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-}
-
 /* Navegação */
 .lp-nav {
   align-items: center;

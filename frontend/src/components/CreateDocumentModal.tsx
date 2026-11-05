@@ -48,18 +48,18 @@ export function CreateDocumentModal({ workspaceId, onClose, onCreated, initialTy
   }
 
   return (
-    <div className="fixed inset-0 bg-[#1B2233]/40 backdrop-blur-sm flex items-center justify-center px-4 z-50">
-      <div className="w-full max-w-md bg-white rounded-xl p-6 shadow-2xl border border-[#1B2233]/10">
+    <div className="fixed inset-0 bg-[#0A0A0A]/40 flex items-center justify-center px-4 z-50">
+      <div className="w-full max-w-md bg-white rounded-xl p-6 shadow-2xl border border-[#0A0A0A]/10">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#14B8A6]/10 flex items-center justify-center">
-              <FileText className="w-4 h-4 text-[#14B8A6]" />
+            <div className="w-8 h-8 rounded-lg bg-[#D92B21]/10 flex items-center justify-center">
+              <FileText className="w-4 h-4 text-[#B4201A]" />
             </div>
-            <h2 className="text-lg font-serif text-[#1B2233]">Novo Documento</h2>
+            <h2 className="text-lg text-[#0A0A0A]">Novo Documento</h2>
           </div>
           <button
             onClick={onClose}
-            className="text-[#1B2233]/40 hover:text-[#1B2233] transition-colors"
+            className="text-[#0A0A0A]/40 hover:text-[#0A0A0A] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -67,22 +67,22 @@ export function CreateDocumentModal({ workspaceId, onClose, onCreated, initialTy
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-medium text-[#1B2233]/60 mb-1.5">Título</label>
+            <label className="block text-xs font-medium text-[#0A0A0A]/60 mb-1.5">Título</label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
               placeholder="Ex: Relatório de Conformidade - Q3 2026"
-              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] text-sm px-3 py-2.5 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] transition-all placeholder:text-[#1B2233]/35"
+              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] text-sm px-3 py-2.5 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] transition-all placeholder:text-[#0A0A0A]/35"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#1B2233]/60 mb-1.5">Tipo de Documento</label>
+            <label className="block text-xs font-medium text-[#0A0A0A]/60 mb-1.5">Tipo de Documento</label>
             <select
               value={type}
               onChange={(e) => setType(e.target.value as DocumentType)}
-              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] text-sm px-3 py-2.5 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] transition-all"
+              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] text-sm px-3 py-2.5 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] transition-all"
             >
               {Object.entries(DOCUMENT_TYPE_LABELS).map(([value, label]) => (
                 <option key={value} value={value}>
@@ -98,14 +98,14 @@ export function CreateDocumentModal({ workspaceId, onClose, onCreated, initialTy
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-colors"
+              className="flex-1 bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
             >
               {isLoading ? "Criando..." : "Criar"}
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-[#1B2233]/5 hover:bg-[#1B2233]/10 text-[#1B2233] text-sm font-medium rounded-lg py-2.5 transition-colors"
+              className="flex-1 bg-[#0A0A0A]/5 hover:bg-[#0A0A0A]/10 text-[#0A0A0A] text-sm font-medium rounded-lg py-2.5 transition-colors"
             >
               Cancelar
             </button>

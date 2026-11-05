@@ -26,7 +26,7 @@ export function PublicPrivacyPolicyPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F5F2EA] flex items-center justify-center text-[#1B2233]/50 text-sm">
+      <div className="min-h-screen bg-[#FBF8F8] flex items-center justify-center text-[#0A0A0A]/50 text-sm">
         Carregando...
       </div>
     );
@@ -34,17 +34,17 @@ export function PublicPrivacyPolicyPage() {
 
   if (!found || !content) {
     return (
-      <div className="min-h-screen bg-[#F5F2EA] flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#FBF8F8] flex items-center justify-center px-4">
         <div className="max-w-md text-center">
-          <h1 className="text-[#1B2233] text-lg font-semibold mb-2">
+          <h1 className="text-[#0A0A0A] text-lg font-semibold mb-2">
             Política de Privacidade não disponível
           </h1>
-          <p className="text-[#1B2233]/55 text-sm">
+          <p className="text-[#0A0A0A]/55 text-sm">
             {workspaceName
               ? `${workspaceName} ainda não publicou uma política de privacidade neste link.`
               : "Não encontramos nenhuma empresa correspondente a este link."}
           </p>
-          <Link to="/" className="text-[#0d7a6d] hover:underline text-sm mt-4 inline-block font-medium">
+          <Link to="/" className="text-[#0A0A0A] hover:underline text-sm mt-4 inline-block font-medium">
             Voltar ao início
           </Link>
         </div>
@@ -53,19 +53,19 @@ export function PublicPrivacyPolicyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F2EA] px-4 py-12">
+    <div className="min-h-screen bg-[#FBF8F8] px-4 py-12">
       <div className="max-w-2xl mx-auto">
-        <p className="font-mono text-xs tracking-widest text-[#0d7a6d] uppercase mb-2">
+        <p className="text-xs tracking-widest text-[#0A0A0A] uppercase mb-2">
           Política de Privacidade
         </p>
-        <h1 className="text-[#1B2233] text-2xl font-serif mb-1">{workspaceName}</h1>
+        <h1 className="text-[#0A0A0A] text-2xl mb-1">{workspaceName}</h1>
         {publishedAt && (
-          <p className="text-[#1B2233]/45 text-xs mb-8">
+          <p className="text-[#0A0A0A]/45 text-xs mb-8">
             Publicada em {new Date(publishedAt).toLocaleDateString("pt-BR")}
           </p>
         )}
         <div
-          className="bg-white rounded-xl p-6 border border-[#1B2233]/10 text-[#1B2233]/80 text-sm leading-relaxed"
+          className="bg-white rounded-xl p-6 border border-[#0A0A0A]/10 text-[#0A0A0A]/80 text-sm leading-relaxed"
           dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
         />
       </div>

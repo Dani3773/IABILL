@@ -236,31 +236,31 @@ export function DocumentDetailPage() {
   if (!document) return <Alert type="error" message="Documento não encontrado." />;
 
   const inputClass =
-    "w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] mb-3";
+    "w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] mb-3";
 
   return (
     <div className="max-w-3xl mx-auto">
       <Link
         to={`/workspaces/${document.workspaceId}/documents`}
-        className="flex items-center gap-1.5 text-[#0d7a6d] hover:text-[#14B8A6] text-sm mb-4 font-medium transition-colors w-fit"
+        className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
         Voltar aos Documentos
       </Link>
 
       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-xl font-serif text-[#1B2233]">{document.title}</h2>
-        <span className="text-xs px-2 py-1 rounded bg-[#1B2233]/8 text-[#1B2233]/70 font-medium">
+        <h2 className="text-xl text-[#0A0A0A]">{document.title}</h2>
+        <span className="text-xs px-2 py-1 rounded bg-[#0A0A0A]/8 text-[#0A0A0A]/70 font-medium">
           {document.status}
         </span>
       </div>
-      <p className="text-sm text-[#1B2233]/55 mb-4">{DOCUMENT_TYPE_LABELS[document.type]}</p>
+      <p className="text-sm text-[#0A0A0A]/55 mb-4">{DOCUMENT_TYPE_LABELS[document.type]}</p>
 
       {document.status === "APPROVED" && (
         <button
           onClick={handleDownloadPdf}
           disabled={isActionLoading}
-          className="flex items-center gap-1.5 bg-[#1B2233]/8 hover:bg-[#1B2233]/15 disabled:opacity-50 text-[#1B2233] text-sm font-medium rounded-lg px-4 py-2 transition-colors mb-4"
+          className="flex items-center gap-1.5 bg-[#0A0A0A]/8 hover:bg-[#0A0A0A]/15 disabled:opacity-50 text-[#0A0A0A] text-sm font-medium rounded-lg px-4 py-2 transition-colors mb-4"
         >
           <Download className="w-3.5 h-3.5" />
           Baixar PDF
@@ -273,8 +273,8 @@ export function DocumentDetailPage() {
       </div>
 
       {document.status === "DRAFT" && (
-        <div className="bg-white rounded-xl p-4 border border-[#1B2233]/10 mb-4">
-          <label className="block text-sm text-[#1B2233]/70 mb-2">Instrução para a IA</label>
+        <div className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 mb-4">
+          <label className="block text-sm text-[#0A0A0A]/70 mb-2">Instrução para a IA</label>
           <textarea
             value={instruction}
             onChange={(e) => setInstruction(e.target.value)}
@@ -285,7 +285,7 @@ export function DocumentDetailPage() {
           <button
             onClick={handleGenerate}
             disabled={isActionLoading || !instruction.trim()}
-            className="bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] font-semibold rounded-lg px-4 py-2 transition-colors"
+            className="bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white font-semibold rounded-lg px-4 py-2 transition-colors"
           >
             {isActionLoading ? "Gerando..." : "Gerar com IA"}
           </button>
@@ -293,8 +293,8 @@ export function DocumentDetailPage() {
       )}
 
       {document.status !== "APPROVED" && (
-        <div className="bg-white rounded-xl p-4 border border-[#1B2233]/10 mb-4">
-          <label className="block text-sm text-[#1B2233]/70 mb-2">Conteúdo</label>
+        <div className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 mb-4">
+          <label className="block text-sm text-[#0A0A0A]/70 mb-2">Conteúdo</label>
           <textarea
             value={editedContent}
             onChange={(e) => setEditedContent(e.target.value)}
@@ -305,17 +305,17 @@ export function DocumentDetailPage() {
           <button
             onClick={handleSaveContent}
             disabled={isActionLoading || editedContent === (document.generatedContent ?? "")}
-            className="bg-[#1B2233]/8 hover:bg-[#1B2233]/15 disabled:opacity-50 text-[#1B2233] text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+            className="bg-[#0A0A0A]/8 hover:bg-[#0A0A0A]/15 disabled:opacity-50 text-[#0A0A0A] text-sm font-medium rounded-lg px-4 py-2 transition-colors"
           >
             Salvar edição manual
           </button>
         </div>
       )}
       {document.status === "APPROVED" && document.generatedContent !== null && (
-        <div className="bg-white rounded-xl p-4 border border-[#1B2233]/10 mb-4">
-          <label className="block text-sm text-[#1B2233]/70 mb-2">Conteúdo (aprovado, somente leitura)</label>
+        <div className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 mb-4">
+          <label className="block text-sm text-[#0A0A0A]/70 mb-2">Conteúdo (aprovado, somente leitura)</label>
           <div
-            className="text-sm text-[#1B2233]/85 leading-relaxed max-h-96 overflow-y-auto bg-[#F5F2EA] rounded-lg p-4"
+            className="text-sm text-[#0A0A0A]/85 leading-relaxed max-h-96 overflow-y-auto bg-[#FBF8F8] rounded-lg p-4"
             dangerouslySetInnerHTML={{ __html: renderMarkdown(document.generatedContent) }}
           />
         </div>
@@ -327,7 +327,7 @@ export function DocumentDetailPage() {
             <button
               onClick={handleReview}
               disabled={isActionLoading}
-              className="bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] font-semibold rounded-lg px-4 py-2 transition-colors"
+              className="bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white font-semibold rounded-lg px-4 py-2 transition-colors"
             >
               Marcar como Revisado
             </button>
@@ -336,7 +336,7 @@ export function DocumentDetailPage() {
             <button
               onClick={handleApprove}
               disabled={isActionLoading}
-              className="bg-[#B8862B] hover:bg-[#A9791F] disabled:opacity-50 text-[#0A0D16] font-semibold rounded-lg px-4 py-2 transition-colors"
+              className="bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white font-semibold rounded-lg px-4 py-2 transition-colors"
             >
               Aprovar
             </button>
@@ -351,12 +351,12 @@ export function DocumentDetailPage() {
             </button>
           ) : (
             <div className="w-full bg-white rounded-xl p-4 border border-red-200 mt-2">
-              <label className="block text-sm text-[#1B2233]/70 mb-2">Motivo da rejeição</label>
+              <label className="block text-sm text-[#0A0A0A]/70 mb-2">Motivo da rejeição</label>
               <textarea
                 value={rejectionReason}
                 onChange={(e) => setRejectionReason(e.target.value)}
                 rows={2}
-                className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-red-400 mb-3"
+                className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-red-400 mb-3"
               />
               <div className="flex gap-2">
                 <button
@@ -368,7 +368,7 @@ export function DocumentDetailPage() {
                 </button>
                 <button
                   onClick={() => setShowRejectionForm(false)}
-                  className="text-[#1B2233]/50 hover:text-[#1B2233]/75 text-sm px-4 py-2"
+                  className="text-[#0A0A0A]/50 hover:text-[#0A0A0A]/75 text-sm px-4 py-2"
                 >
                   Cancelar
                 </button>
@@ -379,25 +379,25 @@ export function DocumentDetailPage() {
       )}
 
       {document.status === "APPROVED" && document.type === "POLITICA_PRIVACIDADE" && (
-        <div className="bg-white rounded-xl p-4 border border-[#1B2233]/10 mt-4">
-          <h3 className="text-sm font-medium text-[#1B2233]/70 mb-3">Publicação Pública</h3>
+        <div className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 mt-4">
+          <h3 className="text-sm font-medium text-[#0A0A0A]/70 mb-3">Publicação Pública</h3>
           {document.isPublished ? (
             <>
-              <p className="text-sm text-[#0d7a6d] mb-3">
+              <p className="text-sm text-[#0A0A0A] mb-3">
                 ✓ Publicada{" "}
                 {document.publishedAt && `em ${new Date(document.publishedAt).toLocaleString("pt-BR")}`}
               </p>
               {publicUrl && (
-                <div className="flex items-center gap-4 mb-3 bg-[#F5F2EA] rounded-lg p-3">
+                <div className="flex items-center gap-4 mb-3 bg-[#FBF8F8] rounded-lg p-3">
                   {qrDataUrl && (
                     <img src={qrDataUrl} alt="QR Code da política pública" className="w-20 h-20 rounded-lg bg-white p-1" />
                   )}
                   <div className="min-w-0">
-                    <p className="text-xs text-[#1B2233]/55 mb-1">Link público para compartilhar:</p>
+                    <p className="text-xs text-[#0A0A0A]/55 mb-1">Link público para compartilhar:</p>
                     <button
                       type="button"
                       onClick={() => window.open(publicUrl, "_blank", "noopener,noreferrer")}
-                      className="text-[#0d7a6d] hover:underline text-sm break-all text-left"
+                      className="text-[#0A0A0A] hover:underline text-sm break-all text-left"
                     >
                       {publicUrl}
                     </button>
@@ -407,7 +407,7 @@ export function DocumentDetailPage() {
               <button
                 onClick={handleUnpublish}
                 disabled={isActionLoading}
-                className="bg-[#1B2233]/8 hover:bg-[#1B2233]/15 disabled:opacity-50 text-[#1B2233] text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+                className="bg-[#0A0A0A]/8 hover:bg-[#0A0A0A]/15 disabled:opacity-50 text-[#0A0A0A] text-sm font-medium rounded-lg px-4 py-2 transition-colors"
               >
                 Despublicar
               </button>
@@ -416,7 +416,7 @@ export function DocumentDetailPage() {
             <button
               onClick={handlePublishClick}
               disabled={isActionLoading}
-              className="bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg px-4 py-2 transition-colors"
+              className="bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors"
             >
               Publicar
             </button>

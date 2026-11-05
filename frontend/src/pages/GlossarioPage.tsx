@@ -48,25 +48,25 @@ export function GlossarioPage() {
     <div className="max-w-3xl mx-auto">
       <Link
         to={`/workspaces/${workspaceId}/pilares`}
-        className="flex items-center gap-1.5 text-[#0d7a6d] hover:text-[#14B8A6] text-sm mb-4 font-medium transition-colors w-fit"
+        className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
         Voltar aos Pilares
       </Link>
 
       <div className="flex items-center gap-2.5 mb-1">
-        <BookOpen className="w-5 h-5 text-[#14B8A6]" />
-        <h1 className="text-xl font-serif text-[#1B2233]">Glossário de Termos</h1>
+        <BookOpen className="w-5 h-5 text-[#B4201A]" />
+        <h1 className="text-xl text-[#0A0A0A]">Glossário de Termos</h1>
       </div>
-      <p className="text-sm text-[#1B2233]/55 mb-6">
+      <p className="text-sm text-[#0A0A0A]/55 mb-6">
         Art. 5º da LGPD. Termos que aparecem em várias telas do sistema, explicados em linguagem simples.
       </p>
 
       <div className="space-y-3">
         {TERMOS.map((t) => (
-          <div key={t.nome} className="bg-white rounded-xl p-4 border border-[#1B2233]/10">
-            <h3 className="font-medium text-[#1B2233] mb-1">{t.nome}</h3>
-            <p className="text-sm text-[#1B2233]/65 leading-relaxed">{t.explicacao}</p>
+          <div key={t.nome} className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10">
+            <h3 className="font-medium text-[#0A0A0A] mb-1">{t.nome}</h3>
+            <p className="text-sm text-[#0A0A0A]/65 leading-relaxed">{t.explicacao}</p>
           </div>
         ))}
       </div>

@@ -52,7 +52,7 @@ export function VendorsPage() {
     <div>
       <Link
         to={`/workspaces/${workspaceId}/pilares`}
-        className="flex items-center gap-1.5 text-[#0d7a6d] hover:text-[#14B8A6] text-sm mb-4 font-medium transition-colors w-fit"
+        className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
         Voltar aos Pilares
@@ -60,14 +60,14 @@ export function VendorsPage() {
 
       <div className="flex items-center justify-between mb-2">
         <div>
-          <h1 className="text-xl font-serif text-[#1B2233]">Fornecedores e Terceiros</h1>
-          <p className="text-sm text-[#1B2233]/55 mt-0.5">
+          <h1 className="text-xl text-[#0A0A0A]">Fornecedores e Terceiros</h1>
+          <p className="text-sm text-[#0A0A0A]/55 mt-0.5">
             Registro de fornecedores/operadores com acesso a dados pessoais, conforme Art. 39 da LGPD.
           </p>
         </div>
         <button
           onClick={() => { setEditing(null); setShowModal(true); }}
-          className="bg-[#14B8A6] hover:bg-[#10a595] text-[#0A0D16] text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors shrink-0"
+          className="bg-[#0A0A0A] hover:bg-[#2A2A2A] text-white text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors shrink-0"
         >
           + Novo Fornecedor
         </button>
@@ -76,34 +76,34 @@ export function VendorsPage() {
       {error && <div className="my-4"><Alert type="error" message={error} /></div>}
 
       {vendors.length === 0 ? (
-        <div className="bg-white rounded-xl border border-[#1B2233]/10 p-10 text-center mt-6">
-          <Truck className="w-8 h-8 text-[#1B2233]/25 mx-auto mb-3" />
-          <p className="text-[#1B2233]/55 text-sm">Nenhum fornecedor registrado ainda.</p>
+        <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-10 text-center mt-6">
+          <Truck className="w-8 h-8 text-[#0A0A0A]/25 mx-auto mb-3" />
+          <p className="text-[#0A0A0A]/55 text-sm">Nenhum fornecedor registrado ainda.</p>
         </div>
       ) : (
         <div className="space-y-2 mt-6">
           {vendors.map((vendor) => (
-            <div key={vendor.id} className="bg-white rounded-xl p-4 border border-[#1B2233]/10">
+            <div key={vendor.id} className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10">
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <p className="font-medium text-[#1B2233]">{vendor.name}</p>
+                    <p className="font-medium text-[#0A0A0A]">{vendor.name}</p>
                     {vendor.sectorName && (
-                      <span className="text-[10px] font-mono uppercase tracking-wide bg-[#1B2233]/8 text-[#1B2233]/60 rounded px-1.5 py-0.5">
+                      <span className="text-[10px] uppercase tracking-wide bg-[#0A0A0A]/8 text-[#0A0A0A]/60 rounded px-1.5 py-0.5">
                         {vendor.sectorName}
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-[#1B2233]/60 mb-2">{vendor.serviceProvided}</p>
-                  <p className="text-xs text-[#1B2233]/50 mb-3">
-                    <span className="text-[#1B2233]/70">Dados compartilhados:</span> {vendor.sharedDataCategories}
+                  <p className="text-xs text-[#0A0A0A]/60 mb-2">{vendor.serviceProvided}</p>
+                  <p className="text-xs text-[#0A0A0A]/50 mb-3">
+                    <span className="text-[#0A0A0A]/70">Dados compartilhados:</span> {vendor.sharedDataCategories}
                   </p>
                   <div className="flex items-center gap-4 text-xs">
-                    <span className={`flex items-center gap-1 ${vendor.dpaSigned ? "text-[#0d7a6d]" : "text-[#1B2233]/40"}`}>
+                    <span className={`flex items-center gap-1 ${vendor.dpaSigned ? "text-[#0A0A0A]" : "text-[#0A0A0A]/40"}`}>
                       {vendor.dpaSigned ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
                       DPA {vendor.dpaSigned ? `assinado${vendor.dpaSignedAt ? ` em ${new Date(vendor.dpaSignedAt).toLocaleDateString("pt-BR")}` : ""}` : "não assinado"}
                     </span>
-                    <span className={`flex items-center gap-1 ${vendor.securityClausesConfirmed ? "text-[#0d7a6d]" : "text-[#1B2233]/40"}`}>
+                    <span className={`flex items-center gap-1 ${vendor.securityClausesConfirmed ? "text-[#0A0A0A]" : "text-[#0A0A0A]/40"}`}>
                       {vendor.securityClausesConfirmed ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
                       Cláusulas de segurança
                     </span>
@@ -112,14 +112,14 @@ export function VendorsPage() {
                 <div className="flex gap-2 shrink-0">
                   <button
                     onClick={() => { setEditing(vendor); setShowModal(true); }}
-                    className="text-[#1B2233]/40 hover:text-[#14B8A6] transition-colors"
+                    className="text-[#0A0A0A]/40 hover:text-[#B4201A] transition-colors"
                     title="Editar"
                   >
                     <Pencil className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDelete(vendor.id)}
-                    className="text-[#1B2233]/40 hover:text-red-600 transition-colors"
+                    className="text-[#0A0A0A]/40 hover:text-red-600 transition-colors"
                     title="Remover"
                   >
                     <Trash2 className="w-4 h-4" />

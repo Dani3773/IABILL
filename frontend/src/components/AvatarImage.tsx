@@ -43,11 +43,11 @@ export function AvatarImage({ email, name, size = 32, className = "" }: Props) {
 
   return (
     <div
-      className={`rounded-full bg-[#14B8A6]/20 border border-[#14B8A6]/30 flex items-center justify-center shrink-0 overflow-hidden ${className}`}
+      className={`rounded-full bg-[#D92B21]/20 border border-[#D92B21]/30 flex items-center justify-center shrink-0 overflow-hidden ${className}`}
       style={{ width: size, height: size }}
     >
       {showInitials ? (
-        <span className="text-[#14B8A6] font-semibold" style={{ fontSize: size * 0.35 }}>
+        <span className="text-[#B4201A] font-semibold" style={{ fontSize: size * 0.35 }}>
           {initials(name)}
         </span>
       ) : (

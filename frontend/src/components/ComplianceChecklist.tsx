@@ -110,9 +110,9 @@ function buildRows(s: ComplianceSummary): Row[] {
 }
 
 const STATUS_ICON: Record<RowStatus, ReactElement> = {
-  ok: <CheckCircle2 className="w-4 h-4 text-[#0d7a6d]" />,
+  ok: <CheckCircle2 className="w-4 h-4 text-[#0A0A0A]" />,
   warning: <AlertTriangle className="w-4 h-4 text-amber-600" />,
-  neutral: <Circle className="w-4 h-4 text-[#1B2233]/25" />,
+  neutral: <Circle className="w-4 h-4 text-[#0A0A0A]/25" />,
 };
 
 export function ComplianceChecklist({ workspaceId }: Props) {
@@ -128,8 +128,8 @@ export function ComplianceChecklist({ workspaceId }: Props) {
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-xl border border-[#1B2233]/10 p-5 mb-6">
-        <p className="text-sm text-[#1B2233]/40">Carregando resumo de conformidade...</p>
+      <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-5 mb-6">
+        <p className="text-sm text-[#0A0A0A]/40">Carregando resumo de conformidade...</p>
       </div>
     );
   }
@@ -139,18 +139,18 @@ export function ComplianceChecklist({ workspaceId }: Props) {
   const rows = buildRows(summary);
 
   return (
-    <div className="bg-white rounded-xl border border-[#1B2233]/10 p-5 mb-6">
-      <h3 className="text-sm font-medium text-[#1B2233]/70 mb-3">Resumo de Conformidade</h3>
+    <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-5 mb-6">
+      <h3 className="text-sm font-medium text-[#0A0A0A]/70 mb-3">Resumo de Conformidade</h3>
       <div className="space-y-2">
         {rows.map((row) => (
           <div key={row.label} className="flex items-center gap-3 text-sm">
             {STATUS_ICON[row.status]}
-            <span className="text-[#1B2233] font-medium w-52 shrink-0">{row.label}</span>
-            <span className="text-[#1B2233]/55">{row.detail}</span>
+            <span className="text-[#0A0A0A] font-medium w-52 shrink-0">{row.label}</span>
+            <span className="text-[#0A0A0A]/55">{row.detail}</span>
           </div>
         ))}
       </div>
-      <p className="text-[11px] text-[#1B2233]/35 mt-4 pt-3 border-t border-[#1B2233]/8">
+      <p className="text-[11px] text-[#0A0A0A]/35 mt-4 pt-3 border-t border-[#0A0A0A]/8">
         Resumo baseado nos dados cadastrados no sistema, não representa comparação com outras empresas.
       </p>
     </div>

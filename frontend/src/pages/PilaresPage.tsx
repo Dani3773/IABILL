@@ -50,8 +50,8 @@ export function PilaresPage() {
       id: "fundamentos",
       title: "1. Fundamentos Legais",
       subtitle: "O que sua empresa precisa saber antes de qualquer coisa",
-      accent: "text-[#0d7a6d]",
-      bg: "bg-[#14B8A6]/10",
+      accent: "text-[#0A0A0A]",
+      bg: "bg-[#D92B21]/10",
       cards: [
         {
           to: `/workspaces/${workspaceId}/pilares/comite`,
@@ -123,8 +123,8 @@ export function PilaresPage() {
       id: "operacao",
       title: "2. Operação do Dia a Dia",
       subtitle: "O trabalho contínuo de manter a adequação",
-      accent: "text-[#1B2233]/80",
-      bg: "bg-[#1B2233]/6",
+      accent: "text-[#0A0A0A]/80",
+      bg: "bg-[#0A0A0A]/6",
       cards: [
         {
           to: `/workspaces/${workspaceId}/pilares/ropa`,
@@ -180,8 +180,8 @@ export function PilaresPage() {
       id: "governanca",
       title: "3. Governança Avançada",
       subtitle: "O que sustenta a adequação no longo prazo",
-      accent: "text-[#B8862B]",
-      bg: "bg-[#B8862B]/10",
+      accent: "text-[#B4201A]",
+      bg: "bg-[#D92B21]/10",
       cards: [
         {
           to: `/workspaces/${workspaceId}/users`,
@@ -214,10 +214,10 @@ export function PilaresPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-serif text-[#1B2233] mb-1">
+      <h1 className="text-xl text-[#0A0A0A] mb-1">
         Pilares de Conformidade
       </h1>
-      <p className="text-sm text-[#1B2233]/55 mb-6">
+      <p className="text-sm text-[#0A0A0A]/55 mb-6">
         O caminho que sua empresa deve seguir para se manter adequada à
         LGPD/RGPD, organizado em três estágios.
       </p>
@@ -225,16 +225,16 @@ export function PilaresPage() {
       <div className="flex gap-3 mb-8">
         <Link
           to={`/workspaces/${workspaceId}/pilares/diagnostico`}
-          className="flex items-center gap-2 bg-white rounded-lg px-4 py-2.5 border border-[#1B2233]/10 hover:border-[#14B8A6]/50 transition-colors text-sm font-medium text-[#1B2233]"
+          className="flex items-center gap-2 bg-white rounded-lg px-4 py-2.5 border border-[#0A0A0A]/10 hover:border-[#D92B21]/50 transition-colors text-sm font-medium text-[#0A0A0A]"
         >
-          <ClipboardCheck className="w-4 h-4 text-[#14B8A6]" />
+          <ClipboardCheck className="w-4 h-4 text-[#B4201A]" />
           Diagnóstico Inicial
         </Link>
         <Link
           to={`/workspaces/${workspaceId}/pilares/setores`}
-          className="flex items-center gap-2 bg-white rounded-lg px-4 py-2.5 border border-[#1B2233]/10 hover:border-[#14B8A6]/50 transition-colors text-sm font-medium text-[#1B2233]"
+          className="flex items-center gap-2 bg-white rounded-lg px-4 py-2.5 border border-[#0A0A0A]/10 hover:border-[#D92B21]/50 transition-colors text-sm font-medium text-[#0A0A0A]"
         >
-          <Building2 className="w-4 h-4 text-[#14B8A6]" />
+          <Building2 className="w-4 h-4 text-[#B4201A]" />
           Setores
         </Link>
       </div>
@@ -242,10 +242,10 @@ export function PilaresPage() {
         {stages.map((stage) => (
           <div key={stage.id}>
             <div className={`rounded-xl ${stage.bg} px-5 py-4 mb-4`}>
-              <h2 className={`font-serif text-lg ${stage.accent}`}>
+              <h2 className={`text-lg ${stage.accent}`}>
                 {stage.title}
               </h2>
-              <p className="text-xs text-[#1B2233]/50 mt-0.5">
+              <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
                 {stage.subtitle}
               </p>
             </div>
@@ -257,38 +257,38 @@ export function PilaresPage() {
                     key={card.title}
                     to={card.comingSoon ? "#" : card.to}
                     onClick={(e) => card.comingSoon && e.preventDefault()}
-                    className={`bg-white rounded-xl p-5 border border-[#1B2233]/10 transition-all ${
+                    className={`bg-white rounded-xl p-5 border border-[#0A0A0A]/10 transition-all ${
                       card.comingSoon
                         ? "opacity-60 cursor-default"
-                        : "hover:border-[#14B8A6]/50 hover:shadow-md"
+                        : "hover:border-[#D92B21]/50 hover:shadow-md"
                     }`}
                   >
                     <div className="flex items-center justify-between mb-3">
-                      <div className="w-9 h-9 rounded-lg bg-[#14B8A6]/10 flex items-center justify-center">
-                        <Icon className="w-4 h-4 text-[#14B8A6]" />
+                      <div className="w-9 h-9 rounded-lg bg-[#D92B21]/10 flex items-center justify-center">
+                        <Icon className="w-4 h-4 text-[#B4201A]" />
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-mono uppercase tracking-wide text-[#B8862B]">
+                        <span className="text-[10px] uppercase tracking-wide text-[#B4201A]">
                           {card.legalBasis}
                         </span>
                         {!card.comingSoon && (
-                          <ArrowRight className="w-4 h-4 text-[#1B2233]/25" />
+                          <ArrowRight className="w-4 h-4 text-[#0A0A0A]/25" />
                         )}
                       </div>
                     </div>
-                    <h3 className="font-medium text-[#1B2233] mb-1">
+                    <h3 className="font-medium text-[#0A0A0A] mb-1">
                       {card.title}
                       {card.comingSoon && (
-                        <span className="ml-2 text-[10px] font-mono uppercase tracking-wide text-[#1B2233]/40">
+                        <span className="ml-2 text-[10px] uppercase tracking-wide text-[#0A0A0A]/40">
                           Em breve
                         </span>
                       )}
                     </h3>
-                    <p className="text-xs text-[#1B2233]/55 leading-relaxed">
+                    <p className="text-xs text-[#0A0A0A]/55 leading-relaxed">
                       {card.description}
                     </p>
                     {card.note && (
-                      <p className="text-xs text-[#B8862B] leading-relaxed mt-2 pt-2 border-t border-[#B8862B]/15">
+                      <p className="text-xs text-[#B4201A] leading-relaxed mt-2 pt-2 border-t border-[#D92B21]/15">
                         {card.note}
                       </p>
                     )}

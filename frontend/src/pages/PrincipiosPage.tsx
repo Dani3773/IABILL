@@ -67,29 +67,29 @@ export function PrincipiosPage() {
     <div className="max-w-3xl mx-auto">
       <Link
         to={`/workspaces/${workspaceId}/pilares`}
-        className="flex items-center gap-1.5 text-[#0d7a6d] hover:text-[#14B8A6] text-sm mb-4 font-medium transition-colors w-fit"
+        className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
         Voltar aos Pilares
       </Link>
 
       <div className="flex items-center gap-2.5 mb-1">
-        <Scale className="w-5 h-5 text-[#14B8A6]" />
-        <h1 className="text-xl font-serif text-[#1B2233]">Princípios da LGPD</h1>
+        <Scale className="w-5 h-5 text-[#B4201A]" />
+        <h1 className="text-xl text-[#0A0A0A]">Princípios da LGPD</h1>
       </div>
-      <p className="text-sm text-[#1B2233]/55 mb-6">
+      <p className="text-sm text-[#0A0A0A]/55 mb-6">
         Art. 6º da Lei nº 13.709/2018. Toda decisão sobre tratamento de dados pessoais deveria conseguir se justificar por pelo menos um desses dez princípios.
       </p>
 
       <div className="space-y-4">
         {PRINCIPIOS.map((p, i) => (
-          <div key={p.nome} className="bg-white rounded-xl p-5 border border-[#1B2233]/10">
+          <div key={p.nome} className="bg-white rounded-xl p-5 border border-[#0A0A0A]/10">
             <div className="flex items-baseline gap-2 mb-2">
-              <span className="text-xs font-mono text-[#B8862B]">{String(i + 1).padStart(2, "0")}</span>
-              <h3 className="font-medium text-[#1B2233]">{p.nome}</h3>
+              <span className="text-xs text-[#B4201A]">{String(i + 1).padStart(2, "0")}</span>
+              <h3 className="font-medium text-[#0A0A0A]">{p.nome}</h3>
             </div>
-            <p className="text-sm text-[#1B2233]/70 leading-relaxed mb-2">{p.explicacao}</p>
-            <p className="text-xs text-[#1B2233]/50 leading-relaxed bg-[#F5F2EA] rounded-lg p-3">
+            <p className="text-sm text-[#0A0A0A]/70 leading-relaxed mb-2">{p.explicacao}</p>
+            <p className="text-xs text-[#0A0A0A]/50 leading-relaxed bg-[#FBF8F8] rounded-lg p-3">
               <span className="font-medium">Exemplo prático: </span>
               {p.exemplo}
             </p>

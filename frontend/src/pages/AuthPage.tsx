@@ -1,3 +1,4 @@
+import { Logo } from "../components/brand/Logo";
 import {
   useRef,
   useState,
@@ -45,23 +46,20 @@ const STEPS: { label: string; icon: typeof Building2 }[] = [
   { label: "Conta", icon: UserRound },
 ];
 
-const NOISE_TEXTURE =
-  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E\")";
-
 const INPUT_CLASS =
   "w-full rounded-lg bg-white/[0.05] text-white text-sm px-3 py-2.5 border border-white/10 transition-all duration-200 placeholder:text-slate-600 " +
-  "hover:border-white/20 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/35 focus:border-[#14B8A6]/70 focus:bg-white/[0.07] " +
+  "hover:border-white/20 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/35 focus:border-[#D92B21]/70 focus:bg-white/[0.07] " +
   "[&:-webkit-autofill]:[-webkit-text-fill-color:#fff] [&:-webkit-autofill]:[transition:background-color_9999s]";
 const INPUT_WITH_ICON = INPUT_CLASS + " pl-9";
 
 function Wordmark({ size = "text-2xl" }: { size?: string }) {
   return (
     <div className="select-none">
-      <span className={`font-serif ${size} text-white tracking-tight`}>
-        IA<span className="text-[#14B8A6]">Bill</span>
+      <span className={`${size} text-white tracking-tight`}>
+        <Logo />
       </span>
-      <p className="font-mono text-[9px] text-slate-500 uppercase tracking-[0.25em] mt-0.5">
-        Plataforma de conformidade
+      <p className="text-sm text-slate-400 mt-1">
+        Adequação à LGPD e ao RGPD
       </p>
     </div>
   );
@@ -73,17 +71,17 @@ function ApprovalSeal({ size = 96 }: { size?: number }) {
       <defs>
         <path id="seal-circle-auth" d="M 100,100 m -78,0 a 78,78 0 1,1 156,0 a 78,78 0 1,1 -156,0" />
       </defs>
-      <circle cx="100" cy="100" r="94" fill="none" stroke="#B8862B" strokeWidth="1.5" opacity="0.5" />
-      <circle cx="100" cy="100" r="78" fill="none" stroke="#B8862B" strokeWidth="2" />
-      <text fill="#B8862B" fontSize="10.5" letterSpacing="3" fontFamily="ui-monospace, monospace">
+      <circle cx="100" cy="100" r="94" fill="none" stroke="#D92B21" strokeWidth="1.5" opacity="0.5" />
+      <circle cx="100" cy="100" r="78" fill="none" stroke="#D92B21" strokeWidth="2" />
+      <text fill="#D92B21" fontSize="10.5" letterSpacing="3" fontFamily="Switzer, sans-serif">
         <textPath href="#seal-circle-auth" startOffset="0%">CONTA CRIADA · IABILL · BEM-VINDO ·</textPath>
       </text>
       <g transform="translate(100,100)">
-        <circle r="46" fill="none" stroke="#B8862B" strokeWidth="1.5" />
+        <circle r="46" fill="none" stroke="#D92B21" strokeWidth="1.5" />
         <path
           d="M -18,2 L -6,16 L 20,-14"
           fill="none"
-          stroke="#B8862B"
+          stroke="#D92B21"
           strokeWidth="5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -128,8 +126,8 @@ const STRENGTH_META = [
   { label: "", color: "transparent" },
   { label: "Fraca", color: "#F87171" },
   { label: "Média", color: "#FBBF24" },
-  { label: "Boa", color: "#14B8A6" },
-  { label: "Forte", color: "#B8862B" },
+  { label: "Boa", color: "#D92B21" },
+  { label: "Forte", color: "#D92B21" },
 ];
 
 export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "signup" }) {
@@ -389,13 +387,8 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const cityState = [workspaceCity, workspaceState].filter(Boolean).join(" - ");
 
   return (
-    <div className="relative min-h-screen bg-[#161310] flex items-center justify-center px-4 py-8 overflow-hidden">
+    <div className="relative min-h-screen bg-[#000000] flex items-center justify-center px-4 py-8 overflow-hidden">
       <style>{`
-        @keyframes iabill-glow-pulse {
-          0%, 100% { opacity: 0.7; }
-          50% { opacity: 1; }
-        }
-        .iabill-glow-pulse { animation: iabill-glow-pulse 8s ease-in-out infinite; }
         @keyframes iabill-card-enter {
           from { opacity: 0; transform: translateY(16px) scale(0.985); }
           to { opacity: 1; transform: translateY(0) scale(1); }
@@ -425,67 +418,33 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
           80% { transform: translateX(4px); }
         }
         .iabill-shake { animation: iabill-shake 0.4s ease-in-out both; }
-        .iabill-sheen { position: relative; overflow: hidden; }
-        .iabill-sheen::after {
-          content: '';
-          position: absolute;
-          top: 0; left: -80%;
-          width: 45%; height: 100%;
-          background: linear-gradient(105deg, transparent, rgba(255,255,255,0.35), transparent);
-          transform: skewX(-18deg);
-          transition: left 0.55s ease;
-          pointer-events: none;
-        }
-        .iabill-sheen:hover::after { left: 130%; }
         .iabill-card-edge {
-          background:
-            linear-gradient(rgba(255,255,255,0.045), rgba(255,255,255,0.045)) padding-box,
-            linear-gradient(135deg, rgba(20,184,166,0.35), rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.06) 65%, rgba(184,134,43,0.35)) border-box;
-          border: 1px solid transparent;
+          background: #141414;
         }
         @media (prefers-reduced-motion: reduce) {
           .iabill-seal-pop, .iabill-step-fwd, .iabill-step-back,
-          .iabill-glow-pulse, .iabill-card-enter, .iabill-shake { animation: none; }
-          .iabill-sheen::after { display: none; }
+          .iabill-card-enter, .iabill-shake { animation: none; }
         }
       `}</style>
 
-      <div
-        className="absolute inset-0 opacity-[0.05]"
-        style={{
-          backgroundImage:
-            "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-          maskImage: "radial-gradient(ellipse 90% 80% at 50% 45%, black, transparent)",
-          WebkitMaskImage: "radial-gradient(ellipse 90% 80% at 50% 45%, black, transparent)",
-        }}
-      />
-      <div className="absolute inset-0 opacity-[0.035] pointer-events-none" style={{ backgroundImage: NOISE_TEXTURE }} />
-      <div
-        className="absolute inset-0 flex items-center justify-center pointer-events-none iabill-glow-pulse"
-        style={{
-          background: "radial-gradient(ellipse 700px 500px at 50% 50%, rgba(184,134,43,0.10), transparent 70%)",
-        }}
-      />
-
-      <div className="iabill-card-enter iabill-card-edge relative w-full max-w-4xl grid md:grid-cols-[1fr_1.15fr] rounded-2xl overflow-hidden backdrop-blur-xl shadow-[0_24px_80px_-16px_rgba(0,0,0,0.7)]">
+      <div className="iabill-card-enter iabill-card-edge relative w-full max-w-4xl grid md:grid-cols-[1fr_1.15fr] rounded-2xl overflow-hidden ">
         <div className="absolute top-0 inset-x-8 h-px bg-linear-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
 
         <div className="hidden md:flex flex-col justify-between p-8 border-r border-white/10 bg-white/1.5">
           {isSignUpMode ? (
             <>
               <div>
-                <p className="font-mono text-[10px] tracking-[0.2em] text-[#14B8A6] uppercase mb-6">
+                <p className="text-sm text-[#FF8A80] mb-6">
                   Pré-visualização · Cadastro
                 </p>
                 <div className="space-y-4">
                   <div>
                     <div className="h-2 w-2/3 bg-white/10 rounded-full mb-2" />
-                    <h2 className="font-serif text-xl text-white leading-snug min-h-10 transition-all">
+                    <h2 className="text-xl text-white leading-snug min-h-10 transition-all">
                       {workspaceName || <span className="text-slate-600">Sua empresa aparece aqui</span>}
                     </h2>
                     {workspaceDocumentId && (
-                      <p className="font-mono text-xs text-slate-400 mt-1">{formatCnpj(workspaceDocumentId)}</p>
+                      <p className="text-xs text-slate-400 mt-1">{formatCnpj(workspaceDocumentId)}</p>
                     )}
                   </div>
                   {legalRegimes.length > 0 && (
@@ -493,7 +452,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                       {legalRegimes.map((r) => (
                         <span
                           key={r}
-                          className="text-[10px] font-mono tracking-wide uppercase bg-[#14B8A6]/15 text-[#14B8A6] border border-[#14B8A6]/20 rounded px-2 py-1"
+                          className="text-[10px] tracking-wide uppercase bg-[#D92B21]/15 text-[#FF8A80] border border-[#D92B21]/20 rounded px-2 py-1"
                         >
                           {r}
                         </span>
@@ -502,7 +461,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                   )}
                   {(addressParts || workspaceNeighborhood || cityState || workspaceCountry) && (
                     <div className="pt-3 border-t border-white/10">
-                      <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-slate-500 mb-1">Endereço</p>
+                      <p className="text-sm text-slate-500 mb-1">Endereço</p>
                       <p className="text-xs text-slate-400 leading-relaxed">
                         {addressParts && <>{addressParts}<br /></>}
                         {workspaceNeighborhood && <>{workspaceNeighborhood}<br /></>}
@@ -511,18 +470,18 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                       </p>
                     </div>
                   )}
-                  {workspacePhone && <p className="text-xs text-slate-400 font-mono">{workspacePhone}</p>}
+                  {workspacePhone && <p className="text-xs text-slate-400 ">{workspacePhone}</p>}
                 </div>
               </div>
               <div className="flex items-center justify-center pt-6 min-h-34">
                 {justCreated ? (
-                  <div className="iabill-seal-pop drop-shadow-[0_0_24px_rgba(184,134,43,0.35)]">
+                  <div className="iabill-seal-pop drop-">
                     <ApprovalSeal size={112} />
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#B8862B]/60 animate-pulse" />
-                    <p className="text-[10px] font-mono text-slate-600 uppercase tracking-[0.2em]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D92B21]/60 animate-pulse" />
+                    <p className="text-sm text-slate-600">
                       Aguardando confirmação
                     </p>
                   </div>
@@ -531,28 +490,28 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
             </>
           ) : (
             <div>
-              <p className="font-mono text-[10px] tracking-[0.2em] text-[#14B8A6] uppercase mb-2">
+              <p className="text-sm text-[#FF8A80] mb-2">
                 Bem-vindo de volta
               </p>
-              <h2 className="font-serif text-xl text-white leading-snug mb-6">
+              <h2 className="text-xl text-white leading-snug mb-6">
                 Sua conformidade, sempre auditável.
               </h2>
 
               <div className="grid grid-cols-3 gap-2 mb-6 pb-6 border-b border-white/10">
                 <div>
-                  <p className="font-mono text-lg text-white">1.000</p>
+                  <p className="text-lg text-white">1.000</p>
                   <p className="text-[9px] text-slate-500 uppercase tracking-wide leading-tight mt-0.5">
                     Precision@1
                   </p>
                 </div>
                 <div>
-                  <p className="font-mono text-lg text-white">1.000</p>
+                  <p className="text-lg text-white">1.000</p>
                   <p className="text-[9px] text-slate-500 uppercase tracking-wide leading-tight mt-0.5">
                     Recall@5
                   </p>
                 </div>
                 <div>
-                  <p className="font-mono text-lg text-white">100%</p>
+                  <p className="text-lg text-white">100%</p>
                   <p className="text-[9px] text-slate-500 uppercase tracking-wide leading-tight mt-0.5">
                     Recusa correta
                   </p>
@@ -611,7 +570,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     required
                     autoFocus
                     placeholder="000000"
-                    className={INPUT_WITH_ICON + " font-mono tracking-widest text-center"}
+                    className={INPUT_WITH_ICON + " tracking-widest text-center"}
                   />
                 </div>
               </Field>
@@ -627,7 +586,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               <button
                 type="submit"
                 disabled={mfaLoading || mfaCode.length !== 6}
-                className="iabill-sheen w-full flex items-center justify-center gap-2 bg-[#14B8A6] hover:bg-[#10a595] active:scale-[0.985] disabled:opacity-60 disabled:pointer-events-none text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-all duration-200 shadow-[0_8px_24px_-8px_rgba(20,184,166,0.5)]"
+                className="w-full flex items-center justify-center gap-2 bg-[#D92B21] hover:bg-[#B4201A] active:scale-[0.985] disabled:opacity-60 disabled:pointer-events-none text-white text-sm font-semibold rounded-lg py-2.5 transition-all duration-200 "
               >
                 {mfaLoading ? (
                   <>
@@ -663,7 +622,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               </Field>
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-medium text-slate-400 tracking-wide">Senha</span>
-                <Link to="/esqueci-senha" className="text-[11px] text-[#14B8A6] hover:underline">
+                <Link to="/esqueci-senha" className="text-[11px] text-[#FF8A80] hover:underline">
                   Esqueceu a senha?
                 </Link>
               </div>
@@ -707,7 +666,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     type="button"
                     onClick={handleResendConfirmation}
                     disabled={resendLoading}
-                    className="text-[#14B8A6] hover:underline text-xs disabled:opacity-50"
+                    className="text-[#FF8A80] hover:underline text-xs disabled:opacity-50"
                   >
                     {resendLoading ? "Reenviando..." : "Reenviar e-mail de confirmação"}
                   </button>
@@ -720,7 +679,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               <button
                 type="submit"
                 disabled={loginLoading}
-                className="iabill-sheen w-full flex items-center justify-center gap-2 bg-[#14B8A6] hover:bg-[#10a595] active:scale-[0.985] disabled:opacity-60 disabled:pointer-events-none text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-all duration-200 shadow-[0_8px_24px_-8px_rgba(20,184,166,0.5)]"
+                className="w-full flex items-center justify-center gap-2 bg-[#D92B21] hover:bg-[#B4201A] active:scale-[0.985] disabled:opacity-60 disabled:pointer-events-none text-white text-sm font-semibold rounded-lg py-2.5 transition-all duration-200 "
               >
                 {loginLoading ? (
                   <>
@@ -732,21 +691,21 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                   </>
                 )}
               </button>
-              <p className="flex items-center justify-center gap-1.5 text-[10px] font-mono text-slate-600 uppercase tracking-[0.15em] pt-1">
+              <p className="flex items-center justify-center gap-1.5 text-sm text-slate-600 pt-1">
                 <ShieldCheck className="w-3 h-3" /> Conexão criptografada
               </p>
             </form>
           ) : justCreated ? (
             <div className="flex-1 flex flex-col items-center justify-center gap-4 py-8 text-center">
-              <div className="iabill-seal-pop md:hidden drop-shadow-[0_0_24px_rgba(184,134,43,0.35)]">
+              <div className="iabill-seal-pop md:hidden drop-">
                 <ApprovalSeal size={120} />
               </div>
-              <p className="font-serif text-lg text-white">Conta criada</p>
+              <p className="text-lg text-white">Conta criada</p>
               <p className="text-sm text-slate-400 max-w-xs">{signupSuccess}</p>
               <button
                 type="button"
                 onClick={() => switchMode(false)}
-                className="text-[#14B8A6] hover:underline text-sm mt-2"
+                className="text-[#FF8A80] hover:underline text-sm mt-2"
               >
                 Ir para o login
               </button>
@@ -764,9 +723,9 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                         <div
                           className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
                             isDone
-                              ? "bg-[#14B8A6] text-[#0A0D16]"
+                              ? "bg-[#D92B21] text-white"
                               : isCurrent
-                                ? "border-2 border-[#14B8A6] text-[#14B8A6] shadow-[0_0_12px_rgba(20,184,166,0.35)]"
+                                ? "border-2 border-[#0A0A0A] text-[#FF8A80] "
                                 : "border border-slate-700 text-slate-600"
                           }`}
                         >
@@ -783,7 +742,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                       {i < STEPS.length - 1 && (
                         <div className="flex-1 h-px bg-slate-800 relative overflow-hidden rounded-full">
                           <div
-                            className={`absolute inset-y-0 left-0 bg-[#14B8A6] transition-all duration-500 ease-out ${
+                            className={`absolute inset-y-0 left-0 bg-[#D92B21] transition-all duration-500 ease-out ${
                               isDone ? "w-full" : "w-0"
                             }`}
                           />
@@ -812,10 +771,10 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             required
                             autoComplete="off"
                             placeholder="00.000.000/0000-00"
-                            className={INPUT_WITH_ICON + " font-mono"}
+                            className={INPUT_WITH_ICON + " "}
                           />
                           {cnpjLookupLoading && (
-                            <Loader2 className="w-4 h-4 text-[#14B8A6] animate-spin absolute right-3 top-1/2 -translate-y-1/2" />
+                            <Loader2 className="w-4 h-4 text-[#FF8A80] animate-spin absolute right-3 top-1/2 -translate-y-1/2" />
                           )}
                         </div>
                       </Field>
@@ -832,7 +791,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             className={
                               INPUT_WITH_ICON +
                               (cnpjAutofilled
-                                ? " ring-2 ring-[#14B8A6]/50 border-[#14B8A6]/70 bg-[#14B8A6]/6"
+                                ? " ring-2 ring-[#D92B21]/50 border-[#D92B21]/70 bg-[#D92B21]/6"
                                 : "")
                             }
                           />
@@ -848,7 +807,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             onChange={(e) => setWorkspacePhone(formatPhone(e.target.value))}
                             autoComplete="off"
                             placeholder="(00) 00000-0000"
-                            className={INPUT_WITH_ICON + " font-mono"}
+                            className={INPUT_WITH_ICON + " "}
                           />
                         </div>
                       </Field>
@@ -865,7 +824,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                                 aria-pressed={active}
                                 className={`flex-1 flex items-center justify-center gap-1.5 text-xs font-medium rounded-lg py-2.5 border transition-all duration-200 active:scale-[0.97] ${
                                   active
-                                    ? "bg-[#14B8A6]/15 border-[#14B8A6] text-[#14B8A6] shadow-[0_0_16px_-4px_rgba(20,184,166,0.4)]"
+                                    ? "bg-[#D92B21]/15 border-[#0A0A0A] text-[#FF8A80] "
                                     : "border-white/10 text-slate-500 hover:border-white/25 hover:text-slate-300"
                                 }`}
                               >
@@ -893,7 +852,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             className={INPUT_WITH_ICON + " appearance-none cursor-pointer"}
                           >
                             {COUNTRIES.map((c) => (
-                              <option key={c.code} value={c.name} className="bg-[#161310]">
+                              <option key={c.code} value={c.name} className="bg-[#000000]">
                                 {c.name}
                               </option>
                             ))}
@@ -912,10 +871,10 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             onBlur={workspaceCountry === "Brasil" ? handleCepBlur : undefined}
                             autoComplete="off"
                             placeholder={workspaceCountry === "Brasil" ? "00000-000" : "Código postal"}
-                            className={INPUT_WITH_ICON + " font-mono"}
+                            className={INPUT_WITH_ICON + " "}
                           />
                           {cepLookupLoading && (
-                            <Loader2 className="w-4 h-4 text-[#14B8A6] animate-spin absolute right-3 top-1/2 -translate-y-1/2" />
+                            <Loader2 className="w-4 h-4 text-[#FF8A80] animate-spin absolute right-3 top-1/2 -translate-y-1/2" />
                           )}
                         </div>
                       </Field>
@@ -928,9 +887,9 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                               onChange={(e) => setWorkspaceState(e.target.value)}
                               className={INPUT_CLASS + " appearance-none cursor-pointer"}
                             >
-                              <option value="" className="bg-[#161310]">Selecione</option>
+                              <option value="" className="bg-[#000000]">Selecione</option>
                               {BRAZILIAN_STATES.map((s) => (
-                                <option key={s} value={s} className="bg-[#161310]">
+                                <option key={s} value={s} className="bg-[#000000]">
                                   {s}
                                 </option>
                               ))}
@@ -1103,7 +1062,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     <button
                       type="button"
                       onClick={goNext}
-                      className="iabill-sheen flex-1 flex items-center justify-center gap-1.5 bg-[#14B8A6] hover:bg-[#10a595] active:scale-[0.985] text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-all duration-200 shadow-[0_8px_24px_-8px_rgba(20,184,166,0.5)]"
+                      className="flex-1 flex items-center justify-center gap-1.5 bg-[#D92B21] hover:bg-[#B4201A] active:scale-[0.985] text-white text-sm font-semibold rounded-lg py-2.5 transition-all duration-200 "
                     >
                       Continuar <ArrowRight className="w-4 h-4" />
                     </button>
@@ -1111,7 +1070,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     <button
                       type="submit"
                       disabled={signupLoading}
-                      className="iabill-sheen flex-1 flex items-center justify-center gap-2 bg-[#B8862B] hover:bg-[#A9791F] active:scale-[0.985] disabled:opacity-60 disabled:pointer-events-none text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-all duration-200 shadow-[0_8px_24px_-8px_rgba(184,134,43,0.5)]"
+                      className="flex-1 flex items-center justify-center gap-2 bg-[#D92B21] hover:bg-[#B4201A] active:scale-[0.985] disabled:opacity-60 disabled:pointer-events-none text-white text-sm font-semibold rounded-lg py-2.5 transition-all duration-200 "
                     >
                       {signupLoading ? (
                         <>

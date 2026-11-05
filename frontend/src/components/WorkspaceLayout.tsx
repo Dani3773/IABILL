@@ -19,13 +19,13 @@ export function WorkspaceLayout() {
     <div>
       <Link
         to="/dashboard"
-        className="flex items-center gap-1.5 text-[#0d7a6d] hover:text-[#14B8A6] text-sm mb-4 font-medium transition-colors w-fit"
+        className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
         Voltar aos Workspaces
       </Link>
 
-      <div className="flex gap-1 border-b border-[#1B2233]/12 mb-6">
+      <div className="flex gap-1 border-b border-[#0A0A0A]/12 mb-6">
         {tabs.map((tab) => {
           const isActive = location.pathname === tab.path;
           return (
@@ -34,8 +34,8 @@ export function WorkspaceLayout() {
               to={tab.path}
               className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                 isActive
-                  ? "border-[#14B8A6] text-[#1B2233]"
-                  : "border-transparent text-[#1B2233]/55 hover:text-[#1B2233]/80"
+                  ? "border-[#0A0A0A] text-[#0A0A0A]"
+                  : "border-transparent text-[#0A0A0A]/55 hover:text-[#0A0A0A]/80"
               }`}
             >
               {tab.label}

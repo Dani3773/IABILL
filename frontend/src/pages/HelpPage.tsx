@@ -262,17 +262,17 @@ export function HelpPage() {
     <div>
       <Link
         to="/dashboard"
-        className="flex items-center gap-1.5 text-[#0d7a6d] hover:text-[#14B8A6] text-sm mb-4 font-medium transition-colors w-fit"
+        className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
         Voltar aos Workspaces
       </Link>
 
       <div className="flex items-center gap-2.5 mb-1">
-        <HelpCircle className="w-5 h-5 text-[#14B8A6]" />
-        <h1 className="text-xl font-serif text-[#1B2233]">Central de Ajuda</h1>
+        <HelpCircle className="w-5 h-5 text-[#B4201A]" />
+        <h1 className="text-xl text-[#0A0A0A]">Central de Ajuda</h1>
       </div>
-      <p className="text-sm text-[#1B2233]/55 mb-6">
+      <p className="text-sm text-[#0A0A0A]/55 mb-6">
         Guia rápido sobre cada módulo do IABill.
       </p>
 
@@ -287,8 +287,8 @@ export function HelpPage() {
                 onClick={() => setActiveId(section.id)}
                 className={`flex items-center gap-2 w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-[#14B8A6]/10 text-[#0d7a6d]"
-                    : "text-[#1B2233]/60 hover:bg-[#1B2233]/5"
+                    ? "bg-[#D92B21]/10 text-[#0A0A0A]"
+                    : "text-[#0A0A0A]/60 hover:bg-[#0A0A0A]/5"
                 }`}
               >
                 <Icon className="w-4 h-4 shrink-0" />
@@ -298,15 +298,15 @@ export function HelpPage() {
           })}
         </nav>
 
-        <div className="bg-white rounded-xl border border-[#1B2233]/10 p-6">
-          <h2 className="text-lg font-serif text-[#1B2233] mb-4">{active.title}</h2>
+        <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-6">
+          <h2 className="text-lg text-[#0A0A0A] mb-4">{active.title}</h2>
           <div className="space-y-4">
             {active.body.map((block, i) => (
               <div key={i}>
                 {block.heading && (
-                  <h3 className="text-sm font-semibold text-[#1B2233] mb-1">{block.heading}</h3>
+                  <h3 className="text-sm font-semibold text-[#0A0A0A] mb-1">{block.heading}</h3>
                 )}
-                <p className="text-sm text-[#1B2233]/70 leading-relaxed">{block.text}</p>
+                <p className="text-sm text-[#0A0A0A]/70 leading-relaxed">{block.text}</p>
               </div>
             ))}
           </div>

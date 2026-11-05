@@ -56,41 +56,41 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
   }
 
   const inputClass =
-    "w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] text-sm px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6]";
+    "w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] text-sm px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A]";
 
   return (
-    <div className="fixed inset-0 bg-[#1B2233]/40 backdrop-blur-sm flex items-center justify-center px-4 z-50">
-      <div className="w-full max-w-md bg-white rounded-xl p-6 shadow-2xl border border-[#1B2233]/10">
+    <div className="fixed inset-0 bg-[#0A0A0A]/40 flex items-center justify-center px-4 z-50">
+      <div className="w-full max-w-md bg-white rounded-xl p-6 shadow-2xl border border-[#0A0A0A]/10">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#14B8A6]/10 flex items-center justify-center">
-              <Building2 className="w-4 h-4 text-[#14B8A6]" />
+            <div className="w-8 h-8 rounded-lg bg-[#D92B21]/10 flex items-center justify-center">
+              <Building2 className="w-4 h-4 text-[#B4201A]" />
             </div>
-            <h2 className="text-lg font-serif text-[#1B2233]">
+            <h2 className="text-lg text-[#0A0A0A]">
               Workspaces de {username}
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="text-[#1B2233]/40 hover:text-[#1B2233] transition-colors"
+            className="text-[#0A0A0A]/40 hover:text-[#0A0A0A] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <div className="mb-4">
-          <p className="text-xs font-medium text-[#1B2233]/60 mb-2">Já vinculado a:</p>
+          <p className="text-xs font-medium text-[#0A0A0A]/60 mb-2">Já vinculado a:</p>
           {memberships.length === 0 ? (
-            <p className="text-sm text-[#1B2233]/40">Nenhum workspace ainda.</p>
+            <p className="text-sm text-[#0A0A0A]/40">Nenhum workspace ainda.</p>
           ) : (
             <ul className="space-y-1.5">
               {memberships.map((m) => (
                 <li
                   key={m.workspaceId}
-                  className="text-sm text-[#1B2233] bg-[#F5F2EA] rounded-lg px-3 py-2"
+                  className="text-sm text-[#0A0A0A] bg-[#FBF8F8] rounded-lg px-3 py-2"
                 >
                   {m.workspaceName}{" "}
-                  <span className="text-[#1B2233]/45">({m.workspaceType})</span>
+                  <span className="text-[#0A0A0A]/45">({m.workspaceType})</span>
                 </li>
               ))}
             </ul>
@@ -98,8 +98,8 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
         </div>
 
         {availableWorkspaces.length > 0 && (
-          <div className="border-t border-[#1B2233]/10 pt-4">
-            <label className="block text-xs font-medium text-[#1B2233]/60 mb-1.5">
+          <div className="border-t border-[#0A0A0A]/10 pt-4">
+            <label className="block text-xs font-medium text-[#0A0A0A]/60 mb-1.5">
               Vincular a um novo workspace
             </label>
             <div className="flex gap-2">
@@ -117,7 +117,7 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
               <button
                 onClick={handleAssign}
                 disabled={isLoading}
-                className="bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg px-4 py-2 transition-colors shrink-0"
+                className="bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors shrink-0"
               >
                 Vincular
               </button>

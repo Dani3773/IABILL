@@ -126,13 +126,13 @@ export function PlatformTenantDetailPage() {
   if (!tenant) return <Alert type="error" message="Empresa não encontrada." />;
 
   const inputClass =
-    "w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] text-sm px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6]";
+    "w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] text-sm px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A]";
 
   return (
     <div className="max-w-3xl mx-auto">
       <Link
         to="/platform"
-        className="flex items-center gap-1.5 text-[#0d7a6d] hover:text-[#14B8A6] text-sm mb-4 font-medium transition-colors w-fit"
+        className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
         Voltar à Plataforma
@@ -143,25 +143,25 @@ export function PlatformTenantDetailPage() {
         {successMessage && <Alert type="success" message={successMessage} />}
       </div>
 
-      <div className="bg-white rounded-xl p-5 border border-[#1B2233]/10 mb-6">
+      <div className="bg-white rounded-xl p-5 border border-[#0A0A0A]/10 mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-serif text-[#1B2233]">Dados da Empresa</h2>
+          <h2 className="text-lg text-[#0A0A0A]">Dados da Empresa</h2>
           <div className="flex items-center gap-3">
             <span
               className={`text-xs px-2 py-1 rounded font-medium ${
-                tenant.active ? "bg-[#14B8A6]/12 text-[#0d7a6d]" : "bg-red-50 text-red-700"
+                tenant.active ? "bg-[#D92B21]/12 text-[#0A0A0A]" : "bg-red-50 text-red-700"
               }`}
             >
               {tenant.active ? "Ativa" : "Desativada"}
             </span>
             {!isEditing && (
               <>
-                <button onClick={() => setIsEditing(true)} className="text-sm text-[#0d7a6d] hover:underline font-medium">
+                <button onClick={() => setIsEditing(true)} className="text-sm text-[#0A0A0A] hover:underline font-medium">
                   Editar
                 </button>
                 <button
                   onClick={handleToggleActive}
-                  className={`text-sm hover:underline font-medium ${tenant.active ? "text-red-600" : "text-[#0d7a6d]"}`}
+                  className={`text-sm hover:underline font-medium ${tenant.active ? "text-red-600" : "text-[#0A0A0A]"}`}
                 >
                   {tenant.active ? "Desativar" : "Reativar"}
                 </button>
@@ -172,21 +172,21 @@ export function PlatformTenantDetailPage() {
         {isEditing ? (
           <form onSubmit={handleSave} className="space-y-3">
             <div>
-              <label className="block text-xs font-medium text-[#1B2233]/60 mb-1">Nome</label>
+              <label className="block text-xs font-medium text-[#0A0A0A]/60 mb-1">Nome</label>
               <input value={name} onChange={(e) => setName(e.target.value)} required className={inputClass} />
             </div>
             <div className="flex gap-2 pt-1">
               <button
                 type="submit"
                 disabled={saving}
-                className="bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg px-4 py-2 transition-colors"
+                className="bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors"
               >
                 {saving ? "Salvando..." : "Salvar"}
               </button>
               <button
                 type="button"
                 onClick={() => setIsEditing(false)}
-                className="text-sm text-[#1B2233]/55 hover:text-[#1B2233]/80 px-4 py-2"
+                className="text-sm text-[#0A0A0A]/55 hover:text-[#0A0A0A]/80 px-4 py-2"
               >
                 Cancelar
               </button>
@@ -195,34 +195,34 @@ export function PlatformTenantDetailPage() {
         ) : (
           <dl className="grid grid-cols-2 gap-3 text-sm">
             <div>
-              <dt className="text-[#1B2233]/50">Nome</dt>
-              <dd className="text-[#1B2233]">{tenant.name}</dd>
+              <dt className="text-[#0A0A0A]/50">Nome</dt>
+              <dd className="text-[#0A0A0A]">{tenant.name}</dd>
             </div>
             <div>
-              <dt className="text-[#1B2233]/50">Cadastrada em</dt>
-              <dd className="text-[#1B2233]">{new Date(tenant.createdAt).toLocaleDateString("pt-BR")}</dd>
+              <dt className="text-[#0A0A0A]/50">Cadastrada em</dt>
+              <dd className="text-[#0A0A0A]">{new Date(tenant.createdAt).toLocaleDateString("pt-BR")}</dd>
             </div>
           </dl>
         )}
       </div>
 
-      <div className="bg-white rounded-xl p-5 border border-[#1B2233]/10 mb-6">
-        <h2 className="text-lg font-serif text-[#1B2233] mb-3">Usuários ({tenant.users.length})</h2>
+      <div className="bg-white rounded-xl p-5 border border-[#0A0A0A]/10 mb-6">
+        <h2 className="text-lg text-[#0A0A0A] mb-3">Usuários ({tenant.users.length})</h2>
         <div className="space-y-2">
           {tenant.users.map((u) => (
-            <div key={u.id} className="bg-[#F5F2EA] rounded-lg px-3 py-2.5 text-sm">
+            <div key={u.id} className="bg-[#FBF8F8] rounded-lg px-3 py-2.5 text-sm">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[#1B2233]">{u.username}</p>
-                  <p className="text-[#1B2233]/50 text-xs">{u.email}</p>
+                  <p className="text-[#0A0A0A]">{u.username}</p>
+                  <p className="text-[#0A0A0A]/50 text-xs">{u.email}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   {u.dpoSubstitute && (
-                    <span className="text-xs px-2 py-1 rounded bg-[#14B8A6]/12 text-[#0d7a6d] font-medium">
+                    <span className="text-xs px-2 py-1 rounded bg-[#D92B21]/12 text-[#0A0A0A] font-medium">
                       Substituto
                     </span>
                   )}
-                  <span className="text-xs px-2 py-1 rounded bg-[#1B2233]/8 text-[#1B2233]/70 font-medium">
+                  <span className="text-xs px-2 py-1 rounded bg-[#0A0A0A]/8 text-[#0A0A0A]/70 font-medium">
                     {u.role}
                   </span>
                   <button
@@ -230,24 +230,24 @@ export function PlatformTenantDetailPage() {
                       setEditingUserId(editingUserId === u.id ? null : u.id);
                       setNewRole(u.role);
                     }}
-                    className="text-xs text-[#0d7a6d] hover:underline font-medium"
+                    className="text-xs text-[#0A0A0A] hover:underline font-medium"
                   >
                     Mudar papel
                   </button>
                   <button
                     onClick={() => handleResetPassword(u.id)}
-                    className="text-xs text-[#B8862B] hover:underline font-medium"
+                    className="text-xs text-[#B4201A] hover:underline font-medium"
                   >
                     Resetar senha
                   </button>
                 </div>
               </div>
               {editingUserId === u.id && (
-                <div className="flex items-center gap-2 mt-2 pt-2 border-t border-[#1B2233]/10">
+                <div className="flex items-center gap-2 mt-2 pt-2 border-t border-[#0A0A0A]/10">
                   <select
                     value={newRole}
                     onChange={(e) => setNewRole(e.target.value as "ADMIN" | "USER" | "DPO" | "SUPER_ADMIN")}
-                    className="text-xs rounded bg-white text-[#1B2233] px-2 py-1 border border-[#1B2233]/10 focus:outline-none focus:border-[#14B8A6]"
+                    className="text-xs rounded bg-white text-[#0A0A0A] px-2 py-1 border border-[#0A0A0A]/10 focus:outline-none focus:border-[#0A0A0A]"
                   >
                     <option value="USER">USER</option>
                     <option value="DPO">DPO</option>
@@ -256,13 +256,13 @@ export function PlatformTenantDetailPage() {
                   </select>
                   <button
                     onClick={() => handleChangeRole(u.id)}
-                    className="text-xs bg-[#14B8A6] hover:bg-[#10a595] text-[#0A0D16] font-semibold rounded px-3 py-1 transition-colors"
+                    className="text-xs bg-[#0A0A0A] hover:bg-[#2A2A2A] text-white font-semibold rounded px-3 py-1 transition-colors"
                   >
                     Salvar
                   </button>
                   <button
                     onClick={() => setEditingUserId(null)}
-                    className="text-xs text-[#1B2233]/50 hover:text-[#1B2233]/75 px-2"
+                    className="text-xs text-[#0A0A0A]/50 hover:text-[#0A0A0A]/75 px-2"
                   >
                     Cancelar
                   </button>
@@ -274,19 +274,19 @@ export function PlatformTenantDetailPage() {
       </div>
 
       {tempPassword && (
-        <div className="fixed inset-0 bg-[#1B2233]/40 backdrop-blur-sm flex items-center justify-center px-4 z-50">
+        <div className="fixed inset-0 bg-[#0A0A0A]/40 flex items-center justify-center px-4 z-50">
           <div className="w-full max-w-sm bg-white rounded-xl p-6 shadow-2xl border border-amber-300">
-            <h3 className="text-[#1B2233] font-serif text-lg mb-2">Senha temporária gerada</h3>
-            <p className="text-[#1B2233]/55 text-xs mb-3">
+            <h3 className="text-[#0A0A0A] text-lg mb-2">Senha temporária gerada</h3>
+            <p className="text-[#0A0A0A]/55 text-xs mb-3">
               Copie e envie ao usuário por um canal seguro. Essa senha não pode ser recuperada depois de fechar
               esta janela.
             </p>
-            <div className="bg-[#F5F2EA] rounded-lg px-3 py-2 font-mono text-[#0d7a6d] text-sm mb-4 select-all border border-[#1B2233]/10">
+            <div className="bg-[#FBF8F8] rounded-lg px-3 py-2 text-[#0A0A0A] text-sm mb-4 select-all border border-[#0A0A0A]/10">
               {tempPassword}
             </div>
             <button
               onClick={() => setTempPassword(null)}
-              className="w-full bg-[#14B8A6] hover:bg-[#10a595] text-[#0A0D16] text-sm font-semibold rounded-lg py-2 transition-colors"
+              className="w-full bg-[#0A0A0A] hover:bg-[#2A2A2A] text-white text-sm font-semibold rounded-lg py-2 transition-colors"
             >
               Fechar
             </button>
@@ -294,22 +294,22 @@ export function PlatformTenantDetailPage() {
         </div>
       )}
 
-      <div className="bg-white rounded-xl p-5 border border-[#1B2233]/10">
-        <h2 className="text-lg font-serif text-[#1B2233] mb-3">Workspaces ({tenant.workspaces.length})</h2>
+      <div className="bg-white rounded-xl p-5 border border-[#0A0A0A]/10">
+        <h2 className="text-lg text-[#0A0A0A] mb-3">Workspaces ({tenant.workspaces.length})</h2>
         <div className="space-y-2">
           {tenant.workspaces.map((w) => (
-            <div key={w.id} className="flex items-center justify-between bg-[#F5F2EA] rounded-lg px-3 py-2.5 text-sm">
+            <div key={w.id} className="flex items-center justify-between bg-[#FBF8F8] rounded-lg px-3 py-2.5 text-sm">
               <div>
-                <p className="text-[#1B2233]">{w.name}</p>
-                <p className="text-[#1B2233]/45 text-xs font-mono">{w.documentId}</p>
+                <p className="text-[#0A0A0A]">{w.name}</p>
+                <p className="text-[#0A0A0A]/45 text-xs ">{w.documentId}</p>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-xs px-2 py-1 rounded bg-[#B8862B]/12 text-[#B8862B] font-medium">
+                <span className="text-xs px-2 py-1 rounded bg-[#D92B21]/12 text-[#B4201A] font-medium">
                   {w.type}
                 </span>
                 <button
                   onClick={() => handleClickEditWorkspace(w.id)}
-                  className="text-[#1B2233]/40 hover:text-[#14B8A6] transition-colors"
+                  className="text-[#0A0A0A]/40 hover:text-[#B4201A] transition-colors"
                   title="Editar"
                 >
                   <Pencil className="w-3.5 h-3.5" />

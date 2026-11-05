@@ -50,8 +50,8 @@ const SEVERITY_LABELS: Record<IncidentSeverity, string> = {
 }
 
 const SEVERITY_STYLES: Record<IncidentSeverity, string> = {
-  LOW: 'bg-[#1B2233]/8 text-[#1B2233]/70',
-  MEDIUM: 'bg-[#B8862B]/12 text-[#B8862B]',
+  LOW: 'bg-[#0A0A0A]/8 text-[#0A0A0A]/70',
+  MEDIUM: 'bg-[#D92B21]/12 text-[#B4201A]',
   HIGH: 'bg-orange-100 text-orange-700',
   CRITICAL: 'bg-red-100 text-red-700',
 }
@@ -65,11 +65,11 @@ const STATUS_LABELS: Record<IncidentStatus, string> = {
 }
 
 const STATUS_STYLES: Record<IncidentStatus, string> = {
-  IDENTIFIED: 'bg-[#1B2233]/8 text-[#1B2233]/70',
-  ASSESSING: 'bg-[#B8862B]/12 text-[#B8862B]',
+  IDENTIFIED: 'bg-[#0A0A0A]/8 text-[#0A0A0A]/70',
+  ASSESSING: 'bg-[#D92B21]/12 text-[#B4201A]',
   ANPD_NOTIFIED: 'bg-blue-100 text-blue-700',
-  DATA_SUBJECTS_NOTIFIED: 'bg-[#14B8A6]/12 text-[#0d7a6d]',
-  RESOLVED: 'bg-[#14B8A6]/12 text-[#0d7a6d]',
+  DATA_SUBJECTS_NOTIFIED: 'bg-[#D92B21]/12 text-[#0A0A0A]',
+  RESOLVED: 'bg-[#D92B21]/12 text-[#0A0A0A]',
 }
 
 // Status selecionaveis manualmente no dropdown - ANPD_NOTIFIED e DATA_SUBJECTS_NOTIFIED
@@ -172,8 +172,8 @@ export function IncidentsPage() {
   return (
     <div className="max-w-3xl mx-auto">
 
-      <h1 className="text-xl font-serif text-[#1B2233] mb-1">Incidentes de Segurança</h1>
-      <p className="text-sm text-[#1B2233]/55 mb-6">
+      <h1 className="text-xl text-[#0A0A0A] mb-1">Incidentes de Segurança</h1>
+      <p className="text-sm text-[#0A0A0A]/55 mb-6">
         Registro de incidentes e vazamentos de dados pessoais, conforme Art. 48 da LGPD.
       </p>
 
@@ -193,27 +193,27 @@ export function IncidentsPage() {
           </button>
         ) : (
           <div className="bg-white rounded-xl p-4 border border-red-200 space-y-2">
-            <h3 className="text-sm font-medium text-[#1B2233]/70 mb-1">Novo incidente</h3>
+            <h3 className="text-sm font-medium text-[#0A0A0A]/70 mb-1">Novo incidente</h3>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Título do incidente"
-              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] placeholder:text-[#1B2233]/40"
+              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
             />
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
               placeholder="Descrição do que aconteceu"
-              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] placeholder:text-[#1B2233]/40"
+              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
             />
             <textarea
               value={affectedDataCategories}
               onChange={(e) => setAffectedDataCategories(e.target.value)}
               rows={2}
               placeholder="Categorias de dados afetadas (ex: CPF, e-mail, dados bancários)"
-              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] placeholder:text-[#1B2233]/40"
+              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
             />
             <div className="grid grid-cols-2 gap-2">
               <input
@@ -221,12 +221,12 @@ export function IncidentsPage() {
                 value={estimatedAffectedCount}
                 onChange={(e) => setEstimatedAffectedCount(e.target.value)}
                 placeholder="Nº estimado de titulares afetados"
-                className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] placeholder:text-[#1B2233]/40"
+                className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
               />
               <select
                 value={severity}
                 onChange={(e) => setSeverity(e.target.value as IncidentSeverity)}
-                className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6]"
+                className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A]"
               >
                 {Object.entries(SEVERITY_LABELS).map(([value, label]) => (
                   <option key={value} value={value}>
@@ -240,7 +240,7 @@ export function IncidentsPage() {
               onChange={(e) => setMitigationMeasures(e.target.value)}
               rows={2}
               placeholder="Medidas de mitigação já adotadas (opcional)"
-              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] placeholder:text-[#1B2233]/40"
+              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
             />
             <div className="flex gap-2 pt-1">
               <button
@@ -252,7 +252,7 @@ export function IncidentsPage() {
               </button>
               <button
                 onClick={() => setShowForm(false)}
-                className="text-sm text-[#1B2233]/55 hover:text-[#1B2233]/80 px-4 py-2"
+                className="text-sm text-[#0A0A0A]/55 hover:text-[#0A0A0A]/80 px-4 py-2"
               >
                 Cancelar
               </button>
@@ -261,26 +261,26 @@ export function IncidentsPage() {
         )}
       </div>
 
-      <h3 className="text-sm font-medium text-[#1B2233]/70 mb-2">Incidentes registrados ({incidents.length})</h3>
+      <h3 className="text-sm font-medium text-[#0A0A0A]/70 mb-2">Incidentes registrados ({incidents.length})</h3>
       {incidents.length === 0 ? (
-        <div className="bg-white rounded-xl border border-[#1B2233]/10 p-10 text-center">
-          <ShieldAlert className="w-8 h-8 text-[#1B2233]/25 mx-auto mb-3" />
-          <p className="text-[#1B2233]/55 text-sm">Nenhum incidente registrado.</p>
+        <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-10 text-center">
+          <ShieldAlert className="w-8 h-8 text-[#0A0A0A]/25 mx-auto mb-3" />
+          <p className="text-[#0A0A0A]/55 text-sm">Nenhum incidente registrado.</p>
         </div>
       ) : (
         <div className="space-y-3">
           {incidents.map((incident) => (
-            <div key={incident.id} className="bg-white rounded-xl p-4 border border-[#1B2233]/10">
+            <div key={incident.id} className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10">
               <div className="flex items-start justify-between gap-4 mb-2">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <p className="font-medium text-[#1B2233] text-sm">{incident.title}</p>
+                    <p className="font-medium text-[#0A0A0A] text-sm">{incident.title}</p>
                     <span className={`text-xs px-2 py-0.5 rounded font-medium ${SEVERITY_STYLES[incident.severity]}`}>
                       {SEVERITY_LABELS[incident.severity]}
                     </span>
                   </div>
-                  <p className="text-xs text-[#1B2233]/60">{incident.description}</p>
-                  <p className="text-xs text-[#1B2233]/45 mt-1">
+                  <p className="text-xs text-[#0A0A0A]/60">{incident.description}</p>
+                  <p className="text-xs text-[#0A0A0A]/45 mt-1">
                     Dados afetados: {incident.affectedDataCategories}
                     {incident.estimatedAffectedCount != null && ` · ~${incident.estimatedAffectedCount} titulares`}
                   </p>
@@ -289,7 +289,7 @@ export function IncidentsPage() {
                   value={incident.status}
                   onChange={(e) => handleStatusChange(incident.id, e.target.value as IncidentStatus)}
                   disabled={!MANUAL_STATUS_OPTIONS.includes(incident.status)}
-                  className={`text-xs rounded px-2 py-1 border-0 focus:outline-none focus:ring-1 focus:ring-[#14B8A6] font-medium ${STATUS_STYLES[incident.status]}`}
+                  className={`text-xs rounded px-2 py-1 border-0 focus:outline-none focus:ring-1 focus:ring-[#0A0A0A] font-medium ${STATUS_STYLES[incident.status]}`}
                 >
                   {incident.status === 'ANPD_NOTIFIED' || incident.status === 'DATA_SUBJECTS_NOTIFIED' ? (
                     <option value={incident.status}>{STATUS_LABELS[incident.status]}</option>
@@ -302,7 +302,7 @@ export function IncidentsPage() {
                   )}
                 </select>
               </div>
-              <div className="flex items-center gap-4 pt-2 mt-2 border-t border-[#1B2233]/8 text-xs">
+              <div className="flex items-center gap-4 pt-2 mt-2 border-t border-[#0A0A0A]/8 text-xs">
                 {incident.anpdNotifiedAt ? (
                   <span className="text-blue-700">
                     ANPD notificada em {new Date(incident.anpdNotifiedAt).toLocaleString('pt-BR')}
@@ -316,7 +316,7 @@ export function IncidentsPage() {
                       const deadlineInfo = getNotificationDeadlineInfo(incident, incident.anpdNotifiedAt, 'a ANPD')
                       if (!deadlineInfo) return null
                       return (
-                        <span className={deadlineInfo.urgent ? "text-red-600 font-medium" : "text-[#1B2233]/45"}>
+                        <span className={deadlineInfo.urgent ? "text-red-600 font-medium" : "text-[#0A0A0A]/45"}>
                           {deadlineInfo.text}
                         </span>
                       )
@@ -324,14 +324,14 @@ export function IncidentsPage() {
                   </div>
                 )}
                 {incident.dataSubjectsNotifiedAt ? (
-                  <span className="text-[#0d7a6d]">
+                  <span className="text-[#0A0A0A]">
                     Titulares notificados em {new Date(incident.dataSubjectsNotifiedAt).toLocaleString('pt-BR')}
                   </span>
                 ) : (
                   <div className="flex flex-col gap-0.5">
                     <button
                       onClick={() => handleNotifyDataSubjects(incident.id)}
-                      className="text-[#0d7a6d] hover:underline font-medium text-left"
+                      className="text-[#0A0A0A] hover:underline font-medium text-left"
                     >
                       Registrar notificação aos titulares
                     </button>
@@ -339,7 +339,7 @@ export function IncidentsPage() {
                       const deadlineInfo = getNotificationDeadlineInfo(incident, incident.dataSubjectsNotifiedAt, 'os titulares')
                       if (!deadlineInfo) return null
                       return (
-                        <span className={deadlineInfo.urgent ? "text-red-600 font-medium" : "text-[#1B2233]/45"}>
+                        <span className={deadlineInfo.urgent ? "text-red-600 font-medium" : "text-[#0A0A0A]/45"}>
                           {deadlineInfo.text}
                         </span>
                       )

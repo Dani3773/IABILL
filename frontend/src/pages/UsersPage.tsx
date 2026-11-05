@@ -41,14 +41,14 @@ export function UsersPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-xl font-serif text-[#1B2233]">Usuários</h2>
-          <p className="text-sm text-[#1B2233]/50 mt-0.5">
+          <h2 className="text-xl text-[#0A0A0A]">Usuários</h2>
+          <p className="text-sm text-[#0A0A0A]/50 mt-0.5">
             {users.length} {users.length === 1 ? "usuário cadastrado" : "usuários cadastrados"}
           </p>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="bg-[#14B8A6] hover:bg-[#10a595] text-[#0A0D16] text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors"
+          className="bg-[#0A0A0A] hover:bg-[#2A2A2A] text-white text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors"
         >
           + Novo Usuário
         </button>
@@ -60,23 +60,23 @@ export function UsersPage() {
         {users.map((user) => (
           <div
             key={user.id}
-            className="flex items-center justify-between bg-white rounded-xl p-4 border border-[#1B2233]/10"
+            className="flex items-center justify-between bg-white rounded-xl p-4 border border-[#0A0A0A]/10"
           >
             <div>
-              <p className="font-medium text-[#1B2233]">{user.username}</p>
-              <p className="text-xs text-[#1B2233]/50">{user.email}</p>
+              <p className="font-medium text-[#0A0A0A]">{user.username}</p>
+              <p className="text-xs text-[#0A0A0A]/50">{user.email}</p>
             </div>
             <div className="flex items-center gap-3">
               {user.dpoSubstitute && (
-                <span className="text-xs px-2 py-1 rounded font-medium bg-[#14B8A6]/12 text-[#0d7a6d]">
+                <span className="text-xs px-2 py-1 rounded font-medium bg-[#D92B21]/12 text-[#0A0A0A]">
                   Substituto
                 </span>
               )}
               <span
                 className={`text-xs px-2 py-1 rounded font-medium ${
                   user.role === 'ADMIN'
-                    ? 'bg-[#B8862B]/12 text-[#B8862B]'
-                    : 'bg-[#1B2233]/8 text-[#1B2233]/70'
+                    ? 'bg-[#D92B21]/12 text-[#B4201A]'
+                    : 'bg-[#0A0A0A]/8 text-[#0A0A0A]/70'
                 }`}
               >
                 {user.role}
@@ -84,14 +84,14 @@ export function UsersPage() {
               {user.role === 'DPO' && (
                 <button
                   onClick={() => handleToggleSubstitute(user.id)}
-                  className="text-sm text-[#0d7a6d] hover:underline font-medium"
+                  className="text-sm text-[#0A0A0A] hover:underline font-medium"
                 >
                   {user.dpoSubstitute ? 'Remover substituto' : 'Marcar como substituto'}
                 </button>
               )}
               <button
                 onClick={() => setAssigningUser(user)}
-                className="text-sm text-[#0d7a6d] hover:underline font-medium"
+                className="text-sm text-[#0A0A0A] hover:underline font-medium"
               >
                 Gerenciar workspaces
               </button>

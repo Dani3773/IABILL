@@ -64,20 +64,20 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
   }
 
   const inputClass =
-    "w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] text-sm px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] placeholder:text-[#1B2233]/40";
-  const labelClass = "block text-xs font-medium text-[#1B2233]/60 mb-1.5";
+    "w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] text-sm px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40";
+  const labelClass = "block text-xs font-medium text-[#0A0A0A]/60 mb-1.5";
 
   return (
-    <div className="fixed inset-0 bg-[#1B2233]/40 backdrop-blur-sm flex items-center justify-center px-4 z-50 py-8 overflow-y-auto">
-      <div className="w-full max-w-md bg-white rounded-xl p-6 shadow-2xl border border-[#1B2233]/10 my-auto">
+    <div className="fixed inset-0 bg-[#0A0A0A]/40 flex items-center justify-center px-4 z-50 py-8 overflow-y-auto">
+      <div className="w-full max-w-md bg-white rounded-xl p-6 shadow-2xl border border-[#0A0A0A]/10 my-auto">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#14B8A6]/10 flex items-center justify-center">
-              <UserPlus className="w-4 h-4 text-[#14B8A6]" />
+            <div className="w-8 h-8 rounded-lg bg-[#D92B21]/10 flex items-center justify-center">
+              <UserPlus className="w-4 h-4 text-[#B4201A]" />
             </div>
-            <h2 className="text-lg font-serif text-[#1B2233]">Novo Usuário</h2>
+            <h2 className="text-lg text-[#0A0A0A]">Novo Usuário</h2>
           </div>
-          <button onClick={onClose} className="text-[#1B2233]/40 hover:text-[#1B2233] transition-colors">
+          <button onClick={onClose} className="text-[#0A0A0A]/40 hover:text-[#0A0A0A] transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -116,7 +116,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
 
           <div>
             <label className={labelClass}>
-              Cargo na empresa <span className="text-[#1B2233]/40">(opcional)</span>
+              Cargo na empresa <span className="text-[#0A0A0A]/40">(opcional)</span>
             </label>
             <input
               type="text"
@@ -142,19 +142,19 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
             </div>
           )}
           {role === "DPO" && (
-            <label className="flex items-center gap-2 text-sm text-[#1B2233]/70 cursor-pointer">
+            <label className="flex items-center gap-2 text-sm text-[#0A0A0A]/70 cursor-pointer">
               <input
                 type="checkbox"
                 checked={dpoSubstitute}
                 onChange={(e) => setDpoSubstitute(e.target.checked)}
-                className="rounded border-[#1B2233]/20 text-[#14B8A6] focus:ring-[#14B8A6]/30"
+                className="rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
               />
               É substituto do Encarregado (DPO), não o titular principal
             </label>
           )}
           <div>
             <label className={labelClass}>
-              Cargo no comitê de LGPD <span className="text-[#1B2233]/40">(opcional)</span>
+              Cargo no comitê de LGPD <span className="text-[#0A0A0A]/40">(opcional)</span>
             </label>
             <input
               type="text"
@@ -165,7 +165,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
             />
           </div>
 
-          <p className="text-xs text-[#1B2233]/45">
+          <p className="text-xs text-[#0A0A0A]/45">
             O usuário receberá um e-mail de convite para definir sua própria senha e ativar o acesso.
           </p>
 
@@ -175,14 +175,14 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-colors"
+              className="flex-1 bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
             >
               {isLoading ? "Enviando convite..." : "Convidar"}
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-[#1B2233]/5 hover:bg-[#1B2233]/10 text-[#1B2233] text-sm font-medium rounded-lg py-2.5 transition-colors"
+              className="flex-1 bg-[#0A0A0A]/5 hover:bg-[#0A0A0A]/10 text-[#0A0A0A] text-sm font-medium rounded-lg py-2.5 transition-colors"
             >
               Cancelar
             </button>

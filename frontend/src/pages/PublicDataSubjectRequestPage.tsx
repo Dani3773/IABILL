@@ -70,7 +70,7 @@ export function PublicDataSubjectRequestPage() {
 
   if (loadingCompany) {
     return (
-      <div className="min-h-screen bg-[#F5F2EA] flex items-center justify-center text-[#1B2233]/50 text-sm">
+      <div className="min-h-screen bg-[#FBF8F8] flex items-center justify-center text-[#0A0A0A]/50 text-sm">
         Carregando...
       </div>
     );
@@ -78,14 +78,14 @@ export function PublicDataSubjectRequestPage() {
 
   if (!companyFound) {
     return (
-      <div className="min-h-screen bg-[#F5F2EA] flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#FBF8F8] flex items-center justify-center px-4">
         <div className="max-w-md text-center">
-          <h1 className="text-[#1B2233] text-lg font-semibold mb-2">Empresa não encontrada</h1>
-          <p className="text-[#1B2233]/55 text-sm">
+          <h1 className="text-[#0A0A0A] text-lg font-semibold mb-2">Empresa não encontrada</h1>
+          <p className="text-[#0A0A0A]/55 text-sm">
             O link que você acessou não corresponde a nenhuma empresa cadastrada no IABill. Confirme o link com
             quem forneceu, ou entre em contato diretamente com a empresa.
           </p>
-          <Link to="/" className="text-[#0d7a6d] hover:underline text-sm mt-4 inline-block font-medium">
+          <Link to="/" className="text-[#0A0A0A] hover:underline text-sm mt-4 inline-block font-medium">
             Voltar ao início
           </Link>
         </div>
@@ -95,14 +95,14 @@ export function PublicDataSubjectRequestPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-[#F5F2EA] flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#FBF8F8] flex items-center justify-center px-4">
         <div className="max-w-md text-center">
-          <div className="w-14 h-14 rounded-full bg-[#14B8A6]/15 flex items-center justify-center mx-auto mb-4">
-            <CheckCircle2 className="w-7 h-7 text-[#0d7a6d]" />
+          <div className="w-14 h-14 rounded-full bg-[#D92B21]/15 flex items-center justify-center mx-auto mb-4">
+            <CheckCircle2 className="w-7 h-7 text-[#0A0A0A]" />
           </div>
-          <h1 className="text-[#1B2233] text-lg font-semibold mb-2">Solicitação enviada</h1>
-          <p className="text-[#1B2233]/55 text-sm">
-            Sua solicitação foi recebida por <strong className="text-[#1B2233]">{companyName}</strong> e será
+          <h1 className="text-[#0A0A0A] text-lg font-semibold mb-2">Solicitação enviada</h1>
+          <p className="text-[#0A0A0A]/55 text-sm">
+            Sua solicitação foi recebida por <strong className="text-[#0A0A0A]">{companyName}</strong> e será
             analisada. Você pode ser contatado pelo e-mail informado para dar continuidade ao processo.
           </p>
         </div>
@@ -111,54 +111,54 @@ export function PublicDataSubjectRequestPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F2EA] px-4 py-12">
+    <div className="min-h-screen bg-[#FBF8F8] px-4 py-12">
       <div className="max-w-lg mx-auto">
-        <p className="font-mono text-xs tracking-widest text-[#0d7a6d] uppercase mb-2">
+        <p className="text-xs tracking-widest text-[#0A0A0A] uppercase mb-2">
           Portal de solicitação do titular · Art. 18 LGPD
         </p>
-        <h1 className="text-[#1B2233] text-2xl font-serif mb-1">{companyName}</h1>
-        <p className="text-[#1B2233]/55 text-sm mb-8">
+        <h1 className="text-[#0A0A0A] text-2xl mb-1">{companyName}</h1>
+        <p className="text-[#0A0A0A]/55 text-sm mb-8">
           Use este formulário para solicitar acesso, correção, eliminação, portabilidade ou anonimização dos seus
           dados pessoais tratados por esta empresa.
         </p>
-        <form onSubmit={handleSubmit} className="space-y-4 bg-white rounded-xl p-6 border border-[#1B2233]/10">
+        <form onSubmit={handleSubmit} className="space-y-4 bg-white rounded-xl p-6 border border-[#0A0A0A]/10">
           <div>
-            <label className="block text-sm text-[#1B2233]/70 mb-1">Seu nome completo</label>
+            <label className="block text-sm text-[#0A0A0A]/70 mb-1">Seu nome completo</label>
             <input
               type="text"
               value={requesterName}
               onChange={(e) => setRequesterName(e.target.value)}
               required
-              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6]"
+              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A]"
             />
           </div>
           <div>
-            <label className="block text-sm text-[#1B2233]/70 mb-1">Seu e-mail</label>
+            <label className="block text-sm text-[#0A0A0A]/70 mb-1">Seu e-mail</label>
             <input
               type="email"
               value={requesterEmail}
               onChange={(e) => setRequesterEmail(e.target.value)}
               required
-              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6]"
+              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A]"
             />
           </div>
           <div>
-            <label className="block text-sm text-[#1B2233]/70 mb-1">CPF (opcional, ajuda a empresa a te localizar)</label>
+            <label className="block text-sm text-[#0A0A0A]/70 mb-1">CPF (opcional, ajuda a empresa a te localizar)</label>
             <input
               type="text"
               inputMode="numeric"
               value={requesterDocumentId}
               onChange={(e) => setRequesterDocumentId(formatCpf(e.target.value))}
               placeholder="000.000.000-00"
-              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6]"
+              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A]"
             />
           </div>
           <div>
-            <label className="block text-sm text-[#1B2233]/70 mb-1">Tipo de solicitação</label>
+            <label className="block text-sm text-[#0A0A0A]/70 mb-1">Tipo de solicitação</label>
             <select
               value={requestType}
               onChange={(e) => setRequestType(e.target.value as DataSubjectRequestType)}
-              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6]"
+              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A]"
             >
               {Object.entries(TYPE_LABELS).map(([value, label]) => (
                 <option key={value} value={value}>
@@ -168,21 +168,21 @@ export function PublicDataSubjectRequestPage() {
             </select>
           </div>
           <div>
-            <label className="block text-sm text-[#1B2233]/70 mb-1">Descreva sua solicitação</label>
+            <label className="block text-sm text-[#0A0A0A]/70 mb-1">Descreva sua solicitação</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
               rows={4}
               placeholder="Ex: Gostaria de saber quais dados meus vocês possuem, e desde quando."
-              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] placeholder:text-[#1B2233]/40"
+              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
             />
           </div>
           {error && <p className="text-red-600 text-sm">{error}</p>}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-colors"
+            className="w-full bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
           >
             {isSubmitting ? "Enviando..." : "Enviar solicitação"}
           </button>

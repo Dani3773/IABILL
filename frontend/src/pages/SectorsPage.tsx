@@ -60,14 +60,14 @@ export function SectorsPage() {
     <div className="max-w-xl mx-auto">
       <Link
         to={`/workspaces/${workspaceId}/pilares`}
-        className="flex items-center gap-1.5 text-[#0d7a6d] hover:text-[#14B8A6] text-sm mb-4 font-medium transition-colors w-fit"
+        className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
         Voltar aos Pilares
       </Link>
 
-      <h1 className="text-xl font-serif text-[#1B2233] mb-1">Setores / Departamentos</h1>
-      <p className="text-sm text-[#1B2233]/55 mb-6">
+      <h1 className="text-xl text-[#0A0A0A] mb-1">Setores / Departamentos</h1>
+      <p className="text-sm text-[#0A0A0A]/55 mb-6">
         Cadastre os setores da empresa para organizar colaboradores, atividades de tratamento e fornecedores por área.
       </p>
 
@@ -79,28 +79,28 @@ export function SectorsPage() {
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
           placeholder="Ex: Recursos Humanos, TI, Marketing"
-          className="flex-1 rounded-lg bg-white text-[#1B2233] text-sm px-3 py-2.5 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] placeholder:text-[#1B2233]/40"
+          className="flex-1 rounded-lg bg-white text-[#0A0A0A] text-sm px-3 py-2.5 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
         />
         <button
           type="submit"
           disabled={isSaving || !newName.trim()}
-          className="bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors"
+          className="bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors"
         >
           {isSaving ? "Adicionando..." : "+ Adicionar"}
         </button>
       </form>
 
       {sectors.length === 0 ? (
-        <div className="bg-white rounded-xl border border-[#1B2233]/10 p-10 text-center">
-          <Building2 className="w-8 h-8 text-[#1B2233]/25 mx-auto mb-3" />
-          <p className="text-[#1B2233]/55 text-sm">Nenhum setor cadastrado ainda.</p>
+        <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-10 text-center">
+          <Building2 className="w-8 h-8 text-[#0A0A0A]/25 mx-auto mb-3" />
+          <p className="text-[#0A0A0A]/55 text-sm">Nenhum setor cadastrado ainda.</p>
         </div>
       ) : (
         <div className="space-y-2">
           {sectors.map((sector) => (
-            <div key={sector.id} className="bg-white rounded-xl p-4 border border-[#1B2233]/10 flex items-center justify-between">
-              <p className="font-medium text-[#1B2233]">{sector.name}</p>
-              <button onClick={() => handleDelete(sector.id)} className="text-[#1B2233]/40 hover:text-red-600 transition-colors" title="Remover">
+            <div key={sector.id} className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 flex items-center justify-between">
+              <p className="font-medium text-[#0A0A0A]">{sector.name}</p>
+              <button onClick={() => handleDelete(sector.id)} className="text-[#0A0A0A]/40 hover:text-red-600 transition-colors" title="Remover">
                 <Trash2 className="w-4 h-4" />
               </button>
             </div>

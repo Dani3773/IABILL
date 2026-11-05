@@ -49,7 +49,7 @@ export function PublicConsentPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F5F2EA] flex items-center justify-center text-[#1B2233]/50 text-sm">
+      <div className="min-h-screen bg-[#FBF8F8] flex items-center justify-center text-[#0A0A0A]/50 text-sm">
         Carregando...
       </div>
     );
@@ -57,10 +57,10 @@ export function PublicConsentPage() {
 
   if (!found) {
     return (
-      <div className="min-h-screen bg-[#F5F2EA] flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#FBF8F8] flex items-center justify-center px-4">
         <div className="max-w-md text-center">
-          <h1 className="text-[#1B2233] text-lg font-semibold mb-2">Link inválido</h1>
-          <p className="text-[#1B2233]/55 text-sm">
+          <h1 className="text-[#0A0A0A] text-lg font-semibold mb-2">Link inválido</h1>
+          <p className="text-[#0A0A0A]/55 text-sm">
             Não encontramos nenhuma atividade correspondente a este link.
           </p>
         </div>
@@ -70,13 +70,13 @@ export function PublicConsentPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-[#F5F2EA] flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#FBF8F8] flex items-center justify-center px-4">
         <div className="max-w-md text-center">
-          <div className="w-14 h-14 rounded-full bg-[#14B8A6]/15 flex items-center justify-center mx-auto mb-4">
-            <CheckCircle2 className="w-7 h-7 text-[#0d7a6d]" />
+          <div className="w-14 h-14 rounded-full bg-[#D92B21]/15 flex items-center justify-center mx-auto mb-4">
+            <CheckCircle2 className="w-7 h-7 text-[#0A0A0A]" />
           </div>
-          <h1 className="text-[#1B2233] text-lg font-semibold mb-2">Consentimento registrado</h1>
-          <p className="text-[#1B2233]/55 text-sm">
+          <h1 className="text-[#0A0A0A] text-lg font-semibold mb-2">Consentimento registrado</h1>
+          <p className="text-[#0A0A0A]/55 text-sm">
             Obrigado. Seu consentimento foi registrado com sucesso junto a {workspaceName}.
           </p>
         </div>
@@ -85,46 +85,46 @@ export function PublicConsentPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F2EA] px-4 py-12">
+    <div className="min-h-screen bg-[#FBF8F8] px-4 py-12">
       <div className="max-w-lg mx-auto">
-        <p className="font-mono text-xs tracking-widest text-[#0d7a6d] uppercase mb-2">
+        <p className="text-xs tracking-widest text-[#0A0A0A] uppercase mb-2">
           Termo de Consentimento · Art. 8º LGPD
         </p>
-        <h1 className="text-[#1B2233] text-2xl font-serif mb-1">{workspaceName}</h1>
-        <p className="text-[#1B2233]/55 text-sm mb-6">{processName}</p>
+        <h1 className="text-[#0A0A0A] text-2xl mb-1">{workspaceName}</h1>
+        <p className="text-[#0A0A0A]/55 text-sm mb-6">{processName}</p>
 
-        <div className="bg-white rounded-xl p-5 border border-[#1B2233]/10 mb-6">
-          <p className="text-sm text-[#1B2233]/80 leading-relaxed whitespace-pre-wrap">{purpose}</p>
+        <div className="bg-white rounded-xl p-5 border border-[#0A0A0A]/10 mb-6">
+          <p className="text-sm text-[#0A0A0A]/80 leading-relaxed whitespace-pre-wrap">{purpose}</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 bg-white rounded-xl p-6 border border-[#1B2233]/10">
+        <form onSubmit={handleSubmit} className="space-y-4 bg-white rounded-xl p-6 border border-[#0A0A0A]/10">
           <div>
-            <label className="block text-sm text-[#1B2233]/70 mb-1">Seu nome completo</label>
+            <label className="block text-sm text-[#0A0A0A]/70 mb-1">Seu nome completo</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6]"
+              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A]"
             />
           </div>
           <div>
-            <label className="block text-sm text-[#1B2233]/70 mb-1">Seu e-mail</label>
+            <label className="block text-sm text-[#0A0A0A]/70 mb-1">Seu e-mail</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6]"
+              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A]"
             />
           </div>
-          <label className="flex items-start gap-2 text-sm text-[#1B2233]/70 cursor-pointer">
+          <label className="flex items-start gap-2 text-sm text-[#0A0A0A]/70 cursor-pointer">
             <input
               type="checkbox"
               checked={agreed}
               onChange={(e) => setAgreed(e.target.checked)}
               required
-              className="mt-0.5 rounded border-[#1B2233]/20 text-[#14B8A6] focus:ring-[#14B8A6]/30"
+              className="mt-0.5 rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
             />
             Li e concordo com a finalidade de tratamento de dados descrita acima.
           </label>
@@ -134,7 +134,7 @@ export function PublicConsentPage() {
           <button
             type="submit"
             disabled={isSubmitting || !agreed}
-            className="w-full flex items-center justify-center gap-2 bg-[#14B8A6] hover:bg-[#10a595] disabled:opacity-50 text-[#0A0D16] text-sm font-semibold rounded-lg py-2.5 transition-colors"
+            className="w-full flex items-center justify-center gap-2 bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
           >
             <ShieldCheck className="w-4 h-4" />
             {isSubmitting ? "Registrando..." : "Confirmar consentimento"}

@@ -33,9 +33,9 @@ const STATUS_LABELS: Record<DataSubjectRequestStatus, string> = {
 };
 
 const STATUS_STYLES: Record<DataSubjectRequestStatus, string> = {
-  RECEIVED: "bg-[#1B2233]/8 text-[#1B2233]/70",
-  IN_PROGRESS: "bg-[#B8862B]/12 text-[#B8862B]",
-  COMPLETED: "bg-[#14B8A6]/12 text-[#0d7a6d]",
+  RECEIVED: "bg-[#0A0A0A]/8 text-[#0A0A0A]/70",
+  IN_PROGRESS: "bg-[#D92B21]/12 text-[#B4201A]",
+  COMPLETED: "bg-[#D92B21]/12 text-[#0A0A0A]",
   REJECTED: "bg-red-50 text-red-700",
 };
 
@@ -158,23 +158,23 @@ export function DataSubjectRequestsPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-serif text-[#1B2233] mb-1">
+      <h1 className="text-xl text-[#0A0A0A] mb-1">
         Direitos do Titular
       </h1>
-      <p className="text-sm text-[#1B2233]/55 mb-2">
+      <p className="text-sm text-[#0A0A0A]/55 mb-2">
         Solicitações recebidas via portal público, conforme Art. 18 da LGPD.
       </p>
-      <div className="bg-white rounded-xl p-4 border border-[#1B2233]/10 mb-6 text-xs text-[#1B2233]/60 leading-relaxed">
+      <div className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 mb-6 text-xs text-[#0A0A0A]/60 leading-relaxed">
         A LGPD garante a qualquer titular o direito de solicitar{" "}
-        <span className="font-medium text-[#1B2233]">acesso</span> aos seus
-        dados, <span className="font-medium text-[#1B2233]">correção</span> de
+        <span className="font-medium text-[#0A0A0A]">acesso</span> aos seus
+        dados, <span className="font-medium text-[#0A0A0A]">correção</span> de
         dados incorretos,{" "}
-        <span className="font-medium text-[#1B2233]">eliminação</span> quando
+        <span className="font-medium text-[#0A0A0A]">eliminação</span> quando
         aplicável,{" "}
-        <span className="font-medium text-[#1B2233]">portabilidade</span> para
+        <span className="font-medium text-[#0A0A0A]">portabilidade</span> para
         outro fornecedor,{" "}
-        <span className="font-medium text-[#1B2233]">anonimização</span>, e{" "}
-        <span className="font-medium text-[#1B2233]">
+        <span className="font-medium text-[#0A0A0A]">anonimização</span>, e{" "}
+        <span className="font-medium text-[#0A0A0A]">
           revogação de consentimento
         </span>{" "}
         a qualquer momento. Toda solicitação recebida aqui já gera
@@ -192,16 +192,16 @@ export function DataSubjectRequestsPage() {
       )}
 
       {publicUrl && (
-        <div className="bg-white rounded-xl p-4 border border-[#1B2233]/10 mb-6 flex items-center gap-4">
+        <div className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 mb-6 flex items-center gap-4">
           {qrDataUrl && (
             <img
               src={qrDataUrl}
               alt="QR Code do portal de solicitação"
-              className="w-20 h-20 rounded-lg bg-[#F5F2EA] p-1"
+              className="w-20 h-20 rounded-lg bg-[#FBF8F8] p-1"
             />
           )}
           <div className="min-w-0 flex-1">
-            <p className="flex items-center gap-1.5 text-xs font-medium text-[#1B2233]/70 mb-1">
+            <p className="flex items-center gap-1.5 text-xs font-medium text-[#0A0A0A]/70 mb-1">
               <QrCode className="w-3.5 h-3.5" />
               Link público do portal, compartilhe com clientes e funcionários
             </p>
@@ -210,7 +210,7 @@ export function DataSubjectRequestsPage() {
               onClick={() =>
                 window.open(publicUrl, "_blank", "noopener,noreferrer")
               }
-              className="text-[#0d7a6d] hover:underline text-sm break-all text-left"
+              className="text-[#0A0A0A] hover:underline text-sm break-all text-left"
             >
               {publicUrl}
             </button>
@@ -218,15 +218,15 @@ export function DataSubjectRequestsPage() {
         </div>
       )}
 
-      <div className="bg-white rounded-xl p-4 border border-[#1B2233]/10 mb-6 flex flex-wrap items-center gap-3">
+      <div className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 mb-6 flex flex-wrap items-center gap-3">
         <div className="relative flex-1 min-w-48">
-          <Search className="w-3.5 h-3.5 text-[#1B2233]/35 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-3.5 h-3.5 text-[#0A0A0A]/35 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar por nome ou e-mail"
-            className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] text-sm pl-8 pr-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30 focus:border-[#14B8A6] placeholder:text-[#1B2233]/40"
+            className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] text-sm pl-8 pr-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
           />
         </div>
         <select
@@ -234,7 +234,7 @@ export function DataSubjectRequestsPage() {
           onChange={(e) =>
             setTypeFilter(e.target.value as DataSubjectRequestType | "ALL")
           }
-          className="text-sm rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:border-[#14B8A6]"
+          className="text-sm rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:border-[#0A0A0A]"
         >
           <option value="ALL">Todos os tipos</option>
           {Object.entries(TYPE_LABELS).map(([value, label]) => (
@@ -248,7 +248,7 @@ export function DataSubjectRequestsPage() {
           onChange={(e) =>
             setStatusFilter(e.target.value as DataSubjectRequestStatus | "ALL")
           }
-          className="text-sm rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:border-[#14B8A6]"
+          className="text-sm rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:border-[#0A0A0A]"
         >
           <option value="ALL">Todos os status</option>
           {Object.entries(STATUS_LABELS).map(([value, label]) => (
@@ -260,14 +260,14 @@ export function DataSubjectRequestsPage() {
         <select
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value as SortOrder)}
-          className="text-sm rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:border-[#14B8A6]"
+          className="text-sm rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:border-[#0A0A0A]"
         >
           <option value="recent">Mais recentes primeiro</option>
           <option value="oldest">Mais antigas primeiro</option>
         </select>
       </div>
 
-      <p className="text-xs text-[#1B2233]/45 mb-3">
+      <p className="text-xs text-[#0A0A0A]/45 mb-3">
         {filtered.length} de {requests.length} solicitaç
         {requests.length !== 1 ? "ões" : "ão"}
         {pendingCount > 0 &&
@@ -275,9 +275,9 @@ export function DataSubjectRequestsPage() {
       </p>
 
       {filtered.length === 0 ? (
-        <div className="bg-white rounded-xl border border-[#1B2233]/10 p-10 text-center">
-          <Inbox className="w-8 h-8 text-[#1B2233]/25 mx-auto mb-3" />
-          <p className="text-[#1B2233]/55 text-sm">
+        <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-10 text-center">
+          <Inbox className="w-8 h-8 text-[#0A0A0A]/25 mx-auto mb-3" />
+          <p className="text-[#0A0A0A]/55 text-sm">
             {requests.length === 0
               ? "Nenhuma solicitação recebida ainda."
               : "Nenhuma solicitação corresponde aos filtros."}
@@ -288,25 +288,25 @@ export function DataSubjectRequestsPage() {
           {filtered.map((r) => (
             <div
               key={r.id}
-              className="bg-white rounded-xl p-4 border border-[#1B2233]/10"
+              className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10"
             >
               <div className="flex items-start justify-between gap-4 mb-2">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <p className="font-medium text-[#1B2233] text-sm">
+                    <p className="font-medium text-[#0A0A0A] text-sm">
                       {r.requesterName}
                     </p>
-                    <span className="text-xs px-2 py-0.5 rounded bg-[#B8862B]/12 text-[#B8862B] font-medium">
+                    <span className="text-xs px-2 py-0.5 rounded bg-[#D92B21]/12 text-[#B4201A] font-medium">
                       {TYPE_LABELS[r.requestType]}
                     </span>
-                    <span className="text-[10px] text-[#1B2233]/40">
+                    <span className="text-[10px] text-[#0A0A0A]/40">
                       {new Date(r.createdAt).toLocaleDateString("pt-BR")}
                     </span>
                   </div>
-                  <p className="text-xs text-[#1B2233]/60">
+                  <p className="text-xs text-[#0A0A0A]/60">
                     {r.requesterEmail}
                   </p>
-                  <p className="text-xs text-[#1B2233]/45 mt-2">
+                  <p className="text-xs text-[#0A0A0A]/45 mt-2">
                     {r.description}
                   </p>
                 </div>
@@ -318,7 +318,7 @@ export function DataSubjectRequestsPage() {
                       e.target.value as DataSubjectRequestStatus,
                     )
                   }
-                  className={`text-xs rounded px-2 py-1 border-0 focus:outline-none focus:ring-1 focus:ring-[#14B8A6] font-medium ${STATUS_STYLES[r.status]}`}
+                  className={`text-xs rounded px-2 py-1 border-0 focus:outline-none focus:ring-1 focus:ring-[#0A0A0A] font-medium ${STATUS_STYLES[r.status]}`}
                 >
                   {Object.entries(STATUS_LABELS).map(([value, label]) => (
                     <option key={value} value={value}>
@@ -328,7 +328,7 @@ export function DataSubjectRequestsPage() {
                 </select>
               </div>
               {r.status === "REJECTED" && r.rejectionReason && (
-                <p className="text-xs text-red-700 mt-2 pt-2 border-t border-[#1B2233]/8">
+                <p className="text-xs text-red-700 mt-2 pt-2 border-t border-[#0A0A0A]/8">
                   Motivo da rejeição: {r.rejectionReason}
                 </p>
               )}
@@ -338,9 +338,9 @@ export function DataSubjectRequestsPage() {
       )}
 
       {rejectingId && (
-        <div className="fixed inset-0 bg-[#1B2233]/40 backdrop-blur-sm flex items-center justify-center px-4 z-50">
+        <div className="fixed inset-0 bg-[#0A0A0A]/40 flex items-center justify-center px-4 z-50">
           <div className="w-full max-w-sm bg-white rounded-xl p-6 shadow-2xl border border-red-200">
-            <h3 className="text-[#1B2233] font-semibold mb-2">
+            <h3 className="text-[#0A0A0A] font-semibold mb-2">
               Motivo da rejeição
             </h3>
             <textarea
@@ -348,7 +348,7 @@ export function DataSubjectRequestsPage() {
               onChange={(e) => setRejectionReason(e.target.value)}
               rows={3}
               placeholder="Explique por que esta solicitação está sendo rejeitada"
-              className="w-full rounded-lg bg-[#F5F2EA] text-[#1B2233] px-3 py-2 border border-[#1B2233]/10 focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-400 mb-4 placeholder:text-[#1B2233]/40"
+              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-400 mb-4 placeholder:text-[#0A0A0A]/40"
             />
             <div className="flex gap-2">
               <button
@@ -363,7 +363,7 @@ export function DataSubjectRequestsPage() {
                   setRejectingId(null);
                   setRejectionReason("");
                 }}
-                className="flex-1 bg-[#1B2233]/5 hover:bg-[#1B2233]/10 text-[#1B2233] text-sm font-medium rounded-lg py-2 transition-colors"
+                className="flex-1 bg-[#0A0A0A]/5 hover:bg-[#0A0A0A]/10 text-[#0A0A0A] text-sm font-medium rounded-lg py-2 transition-colors"
               >
                 Cancelar
               </button>
