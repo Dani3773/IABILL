@@ -109,10 +109,15 @@
     "s3": "Aprovado",
     "s3Meta": "Aprovado por Ana Silva, conteúdo bloqueado",
     "s3Note": "Oficial e pronto para exportar em PDF",
-    "pdf": "Baixar PDF"
+    "pdf": "Baixar PDF",
+    "docBody": [
+      "O atendimento ao cliente coleta nome, e-mail e telefone para responder chamados.",
+      "Os dados ficam armazenados por cinco anos, com criptografia em repouso.",
+      "O acesso é restrito à equipe de suporte, e cada consulta fica registrada."
+    ]
   },
   "law": {
-    "title": "Cada função tem um artigo por trás.",
+    "title": "Cada função tem um artigo.",
     "items": [
       {
         "mark": "Art. 37",
@@ -175,7 +180,7 @@
     ]
   },
   "cta": {
-    "title": "Comece pelo que já é verdade.",
+    "title": "Comece pelo que é verdade.",
     "lead": "Crie a conta da sua empresa e faça seu primeiro registro.",
     "emailLabel": "Seu e-mail de trabalho",
     "placeholder": "voce@empresa.com",

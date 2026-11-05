@@ -109,10 +109,15 @@
     "s3": "Approved",
     "s3Meta": "Approved by Ana Silva, content locked",
     "s3Note": "Official and ready for PDF export",
-    "pdf": "Download PDF"
+    "pdf": "Download PDF",
+    "docBody": [
+      "Customer support collects name, email and phone number to answer tickets.",
+      "The data is stored for five years, with encryption at rest.",
+      "Access is restricted to the support team, and every lookup is logged."
+    ]
   },
   "law": {
-    "title": "Each function is backed by an article.",
+    "title": "Every feature has an article.",
     "items": [
       {
         "mark": "Art. 37",

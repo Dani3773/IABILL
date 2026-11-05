@@ -1,4 +1,4 @@
-import { type FormEvent, useEffect, useRef, useState } from "react";
+import { type CSSProperties, type FormEvent, useEffect, useRef, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
@@ -114,6 +114,110 @@ function AskDemo({ onChoose }: { onChoose: (record: number) => void }) {
   );
 }
 
+// Um único documento atravessa os três momentos conforme a rolagem avança.
+function DocumentStates() {
+  const { t } = useTranslation();
+  const ref = useRef<HTMLElement>(null);
+  const [step, setStep] = useState(0);
+  const lines = t("states.docBody", { returnObjects: true }) as string[];
+  const labels = [t("states.s1"), t("states.s2"), t("states.s3")];
+  const notes = [t("states.s1Note"), t("states.s2Note"), t("states.s3Note")];
+  const metas = [t("states.s1Meta"), t("states.s2Meta"), t("states.s3Meta")];
+
+  useEffect(() => {
+    const section = ref.current;
+    if (!section) return;
+
+    let tick = 0;
+    const update = () => {
+      tick = 0;
+      const box = section.getBoundingClientRect();
+      const travel = box.height - window.innerHeight;
+      const progress = travel > 0 ? -box.top / travel : 0;
+      setStep(progress < 0.36 ? 0 : progress < 0.7 ? 1 : 2);
+    };
+    const request = () => {
+      if (!tick) tick = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", request, { passive: true });
+    window.addEventListener("resize", request);
+    return () => {
+      window.removeEventListener("scroll", request);
+      window.removeEventListener("resize", request);
+      cancelAnimationFrame(tick);
+    };
+  }, []);
+
+  return (
+    <section className="states" id="aprovacao" ref={ref} data-step={step}>
+      <div className="states__intro" data-reveal>
+        <h2 className="lp-heading">{t("states.title")}</h2>
+        <p>{t("states.lead")}</p>
+        <img
+          src="/landing/livro-registro.webp"
+          alt={t("images.ledger")}
+          width="1120"
+          height="615"
+          loading="lazy"
+        />
+      </div>
+      <div className="states__stage">
+        <ol className="states__steps">
+          {labels.map((label, index) => (
+            <li key={label} aria-current={index === step ? "step" : undefined}>
+              {label}
+            </li>
+          ))}
+        </ol>
+        <article className="paper" data-ui data-mark={labels[0]}>
+          <header>
+            <span>{t("states.doc")}</span>
+            <h3>{t("states.docTitle")}</h3>
+          </header>
+          {lines.map((line, index) => (
+            <p key={line} className={index === 1 ? "paper__marked" : undefined}>
+              {line}
+            </p>
+          ))}
+          <footer>
+            <small>{metas[step]}</small>
+            <div className="paper__actions" aria-hidden={step !== 1}>
+              <span>{t("states.reject")}</span>
+              <span>{t("states.approve")}</span>
+            </div>
+            <strong className="paper__stamp">{labels[2]}</strong>
+          </footer>
+        </article>
+        <p className="states__note">{notes[step]}</p>
+      </div>
+    </section>
+  );
+}
+
+// Cada ficha é um teste do mesmo relatório: 30 buscas certas e 6 recusas certas.
+function ProofBoard() {
+  return (
+    <div className="proof__board" aria-hidden="true" data-reveal>
+      {Array.from({ length: 36 }, (_, index) => {
+        const refused = index >= 30;
+        return (
+          <span
+            key={index}
+            className={refused ? "proof__card proof__card--refused" : "proof__card"}
+            style={{ "--i": index } as CSSProperties}
+          >
+            <svg viewBox="0 0 16 16">
+              <path d={refused ? "M3 3l10 10M13 3 3 13" : "M2 9l4 4 8-10"} />
+            </svg>
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
 function FaqIndex() {
   const { t } = useTranslation();
   const items = t("faq.items", { returnObjects: true }) as FaqItem[];
@@ -132,11 +236,15 @@ function FaqIndex() {
             >
               {item.q}
             </button>
-            {index === selected && <p className="faq__inline">{item.a}</p>}
+            {index === selected && (
+              <p className="faq__inline" data-ui>
+                {item.a}
+              </p>
+            )}
           </li>
         ))}
       </ul>
-      <p className="faq__answer" aria-live="polite" key={selected}>
+      <p className="faq__answer" aria-live="polite" key={selected} data-ui>
         {items[selected].a}
       </p>
     </div>
@@ -376,68 +484,20 @@ export function LandingPage() {
           <div className="vault__end" />
         </div>
 
-        <section className="states" id="aprovacao">
-          <div className="states__intro" data-reveal>
-            <h2 className="lp-heading">{t("states.title")}</h2>
-            <p>{t("states.lead")}</p>
-            <img
-              src="/landing/livro-registro.webp"
-              alt={t("images.ledger")}
-              width="1120"
-              height="615"
-              loading="lazy"
-            />
-          </div>
-          <div className="states__rows">
-            <figure data-reveal>
-              <div className="doc-row" data-ui>
-                <div>
-                  <strong>{t("states.docTitle")}</strong>
-                  <span>
-                    {t("states.doc")} · {t("states.s1Meta")}
-                  </span>
-                </div>
-                <em className="doc-row__status">{t("states.s1")}</em>
-              </div>
-              <figcaption>{t("states.s1Note")}</figcaption>
-            </figure>
-            <figure data-reveal>
-              <div className="doc-row doc-row--active" data-ui>
-                <div>
-                  <strong>{t("states.docTitle")}</strong>
-                  <span>
-                    {t("states.doc")} · {t("states.s2Meta")}
-                  </span>
-                </div>
-                <div className="doc-row__actions">
-                  <span className="doc-row__ghost">{t("states.reject")}</span>
-                  <span className="doc-row__primary">{t("states.approve")}</span>
-                </div>
-              </div>
-              <figcaption>{t("states.s2Note")}</figcaption>
-            </figure>
-            <figure data-reveal>
-              <div className="doc-row doc-row--done" data-ui>
-                <div>
-                  <strong>{t("states.docTitle")}</strong>
-                  <span>
-                    {t("states.doc")} · {t("states.s3Meta")}
-                  </span>
-                </div>
-                <strong className="doc-row__stamp">{t("states.s3")}</strong>
-              </div>
-              <figcaption>{t("states.s3Note")}</figcaption>
-            </figure>
-          </div>
-        </section>
+        <DocumentStates />
 
         <section className="law" id="lei">
+          <h2 className="lp-heading" data-reveal>
+            {t("law.title")}
+          </h2>
           <div className="law__board">
-            <h2 className="law__title" data-reveal>
-              {t("law.title")}
-            </h2>
-            {laws.map((law) => (
-              <article key={law.mark} className="law__tile" data-reveal>
+            {laws.map((law, index) => (
+              <article
+                key={law.mark}
+                className="law__tile"
+                style={{ "--i": index } as CSSProperties}
+                data-reveal
+              >
                 <h3>{law.mark}</h3>
                 <p>{law.text}</p>
               </article>
@@ -446,15 +506,14 @@ export function LandingPage() {
         </section>
 
         <section className="proof" aria-labelledby="proof-title">
-          <p className="proof__value" data-reveal>
-            {t("proof.value")}
-          </p>
           <div data-reveal>
+            <p className="proof__value">{t("proof.value")}</p>
             <h2 id="proof-title" className="proof__title">
               {t("proof.title")}
             </h2>
             <p>{t("proof.text")}</p>
           </div>
+          <ProofBoard />
         </section>
 
         <section className="faq" id="perguntas">
