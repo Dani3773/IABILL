@@ -36,7 +36,7 @@ import { AxiosError } from "axios";
 import { resendConfirmation } from "../api/authService";
 import { Link } from "react-router-dom";
 import "./auth.css";
-import type { VaultScene } from "../components/auth/vaultScene";
+import { createSpineField, type SpineField } from "../components/auth/spineField";
 import { loginWithMfa } from "../api/authService";
 
 type SignupStep = 1 | 2 | 3;
@@ -130,7 +130,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const [justCreated, setJustCreated] = useState(false);
   const [opening, setOpening] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const sceneRef = useRef<VaultScene | null>(null);
+  const fieldRef = useRef<SpineField | null>(null);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -179,48 +179,25 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const [mfaLoading, setMfaLoading] = useState(false);
 
   async function enterVault() {
-    await sceneRef.current?.open();
+    await fieldRef.current?.open();
     setOpening(true);
-    await new Promise((resolve) => setTimeout(resolve, 260));
+    await new Promise((resolve) => setTimeout(resolve, 200));
   }
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!canvas) return;
 
-    let cancelled = false;
-    let scene: VaultScene | null = null;
-    const initialPlate = (workspaceName.trim() || "IABILL").toUpperCase();
-    const handleResize = () => scene?.resize();
-
-    void (async () => {
-      try {
-        const [{ createVaultScene }] = await Promise.all([
-          import("../components/auth/vaultScene"),
-          document.fonts?.ready,
-        ]);
-        if (cancelled) return;
-        scene = createVaultScene(canvas, window.innerWidth < 860, initialPlate);
-        sceneRef.current = scene;
-        canvas.classList.add("is-ready");
-      } catch {
-        canvas.remove();
-      }
-    })();
-    window.addEventListener("resize", handleResize);
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const field = createSpineField(canvas, still);
+    fieldRef.current = field;
+    canvas.classList.add("is-ready");
 
     return () => {
-      cancelled = true;
-      window.removeEventListener("resize", handleResize);
-      scene?.dispose();
-      sceneRef.current = null;
+      field.dispose();
+      fieldRef.current = null;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (isSignUpMode) sceneRef.current?.setPlate((workspaceName.trim() || "IABILL").toUpperCase());
-  }, [isSignUpMode, workspaceName]);
 
   function handleCapsLock(e: KeyboardEvent<HTMLInputElement>) {
     setCapsLockOn(e.getModifierState?.("CapsLock") ?? false);
@@ -242,7 +219,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
       setAuth(response);
       navigate(response.tenantId ? "/dashboard" : "/platform");
     } catch (err) {
-      sceneRef.current?.deny();
+      fieldRef.current?.deny();
       if (err instanceof AxiosError && err.response?.status === 403) {
         setNeedsConfirmation(true);
         setLoginError(getErrorMessage(err, "Confirme seu e-mail antes de entrar."));
@@ -264,7 +241,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
       setAuth(response);
       navigate(response.tenantId ? "/dashboard" : "/platform");
     } catch (err) {
-      sceneRef.current?.deny();
+      fieldRef.current?.deny();
       setLoginError(getErrorMessage(err, "Código inválido."));
     } finally {
       setMfaLoading(false);
@@ -410,7 +387,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
         adminPassword,
       });
       setJustCreated(true);
-      void sceneRef.current?.open();
+      void fieldRef.current?.open();
       setSignupSuccess(response.message);
     } catch (err) {
       setSignupError(getErrorMessage(err, "Não foi possível criar a conta. Verifique os dados."));
@@ -478,7 +455,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
           </Link>
           <div
             className="auth__card iabill-card-enter"
-            onInput={() => sceneRef.current?.tick()}
+            onInput={() => fieldRef.current?.tick()}
           >
           <h1 className="auth__title">{isSignUpMode ? "Abra o seu arquivo." : "Bem-vindo de volta."}</h1>
           <p className="auth__switch">
