@@ -89,7 +89,7 @@ function buildRows(s: ComplianceSummary): Row[] {
     rows.push({
       label: tr('Prazo de Notificação'),
       status: "warning",
-      detail: trn(s.incidentNotificationOverdueCount, '{{n}} incidente com prazo de notificação à ANPD vencido', '{{n}} incidentes com prazo de notificação à ANPD vencido'),
+      detail: trn(s.incidentNotificationOverdueCount, '{{n}} incidente com prazo de notificação à autoridade vencido', '{{n}} incidentes com prazo de notificação à autoridade vencido'),
     });
   }
   rows.push({

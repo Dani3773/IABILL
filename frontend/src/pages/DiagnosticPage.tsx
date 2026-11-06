@@ -54,7 +54,7 @@ const QUESTIONS: Question[] = [
     text: tr('A equipe está familiarizada com o processo de resposta a incidentes de segurança?'),
     legalBasis: tr('Art. 48 da LGPD'),
     actionTitle: tr('Revisar o processo de resposta a incidentes'),
-    actionDescription: tr('Familiarize a equipe com o módulo de Incidentes e os passos de notificação à ANPD e aos titulares.'),
+    actionDescription: tr('Familiarize a equipe com o módulo de Incidentes e os passos de notificação à autoridade e aos titulares.'),
   },
   {
     id: "vendor",

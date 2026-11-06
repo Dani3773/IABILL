@@ -48,7 +48,7 @@ function buildAttention(
       rows.push({
         tone: "danger",
         title: trn(summary.incidentNotificationOverdueCount, '{{n}} incidente com prazo vencido', '{{n}} incidentes com prazo vencido'),
-        detail: tr('A comunicação à ANPD passou do prazo calculado.'),
+        detail: tr('A comunicação à autoridade passou do prazo calculado.'),
         to: `${base}/incidents`,
       });
     }
