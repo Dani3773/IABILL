@@ -55,6 +55,10 @@
   margin: 0;
 }
 
+.auth__title--spaced {
+  margin-bottom: 12px;
+}
+
 .auth__switch {
   color: #4a4640;
   font-size: 0.9375rem;

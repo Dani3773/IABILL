@@ -1,4 +1,4 @@
-import { Logo } from "../components/brand/Logo";
+import { AUTH_BUTTON_CLASS, AUTH_INPUT_CLASS, AuthField, AuthShell } from "../components/AuthShell";
 import { useState, type FormEvent } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { resetPassword } from "../api/authService";
@@ -42,51 +42,43 @@ export function ResetPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#000000] flex items-center justify-center px-4">
-      <div className="max-w-sm w-full">
-        <div className="text-center mb-6">
-          <span className="text-2xl text-white tracking-tight">
-            <Logo />
-          </span>
-        </div>
+    <AuthShell>
 
         {status === "success" ? (
-          <div className="text-center">
-            <div className="w-14 h-14 rounded-full bg-[#D92B21]/15 flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 className="w-7 h-7 text-[#FF8A80]" />
-            </div>
-            <h1 className="text-white text-lg font-semibold mb-2">Senha redefinida</h1>
-            <p className="text-slate-400 text-sm">Redirecionando para o login...</p>
+          <div>
+            <CheckCircle2 className="w-8 h-8 text-emerald-700 mb-4" />
+            <h1 className="auth__title auth__title--spaced">Senha redefinida</h1>
+            <p className="auth__switch mt-0! mb-0!">Redirecionando para o login...</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            <h1 className="text-white text-lg font-semibold text-center mb-1">
+            <h1 className="auth__title auth__title--spaced">
               Defina sua nova senha
             </h1>
 
-            <div>
-              <label className="block text-xs font-medium text-slate-400 mb-1">Nova senha</label>
+            <AuthField label="Nova senha">
               <input
                 type="password"
+                autoComplete="new-password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 required
                 minLength={8}
                 placeholder="Mínimo 8 caracteres"
-                className="w-full rounded-lg bg-white/5 text-white text-sm px-3 py-2.5 border border-white/10 focus:outline-none focus:border-[#0A0A0A]"
+                className={AUTH_INPUT_CLASS}
               />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-slate-400 mb-1">Confirme a senha</label>
+            </AuthField>
+            <AuthField label="Confirme a senha">
               <input
                 type="password"
+                autoComplete="new-password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 minLength={8}
-                className="w-full rounded-lg bg-white/5 text-white text-sm px-3 py-2.5 border border-white/10 focus:outline-none focus:border-[#0A0A0A]"
+                className={AUTH_INPUT_CLASS}
               />
-            </div>
+            </AuthField>
 
             {status === "error" && <Alert type="error" message={message} />}
             {status === "form" && message && <Alert type="error" message={message} />}
@@ -94,19 +86,18 @@ export function ResetPasswordPage() {
             <button
               type="submit"
               disabled={status === "loading"}
-              className="w-full bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
+              className={AUTH_BUTTON_CLASS}
             >
               {status === "loading" ? "Redefinindo..." : "Redefinir senha"}
             </button>
 
             <p className="text-center">
-              <Link to="/login" className="text-slate-500 hover:text-slate-300 text-xs">
+              <Link to="/login" className="auth__link">
                 Voltar ao login
               </Link>
             </p>
           </form>
         )}
-      </div>
-    </div>
+    </AuthShell>
   );
 }

@@ -125,7 +125,7 @@ export function PilaresPage() {
           title: "Inventário / ROPA",
           legalBasis: "Art. 37",
           description:
-            "Registro estruturado de todas as atividades de tratamento de dados da empresa, quem trata o quê, com qual finalidade, e com base em qual hipótese legal. É o documento mais consultado pela ANPD em fiscalização.",
+            "Registro estruturado de todas as atividades de tratamento de dados da empresa, quem trata o quê, com qual finalidade, e com base em qual hipótese legal. É a base para responder à ANPD e aos titulares.",
         },
         {
           to: `/workspaces/${workspaceId}/data-subject-requests`,
@@ -181,7 +181,7 @@ export function PilaresPage() {
           legalBasis: "Art. 41",
           description:
             "A pessoa responsável formalmente pela proteção de dados na empresa, ponto de contato entre a empresa, os titulares, e a ANPD.",
-          note: "Mesmo estando na fase avançada, vale designar cedo. Empresas de médio e grande porte são obrigadas a ter DPO. Empresas genuinamente pequenas têm dispensa dessa obrigação específica, desde que mantenham um canal de comunicação com o titular, mas a fiscalização real de 2026 tem mirado justamente empresas sem DPO visível, então declarar cedo reduz risco na prática, mesmo quando não é estritamente obrigatório.",
+          note: "Vale designar cedo. Pela LGPD, o controlador deve indicar um Encarregado. Agentes de pequeno porte podem ser dispensados pela Resolução CD/ANPD 2/2022, salvo em tratamento de alto risco, mas precisam manter um canal de comunicação com o titular. Em 2026, a ANPD monitorou justamente a indicação do Encarregado e a existência desse canal.",
         },
         {
           to: `/workspaces/${workspaceId}/documents`,

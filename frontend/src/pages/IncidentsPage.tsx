@@ -11,6 +11,7 @@ import {
 import { LoadingSpinner } from '../components/LoadingSpinner'
 import { Alert } from '../components/Alert'
 import { getErrorMessage } from '../api/errorUtils'
+import { useWorkspaces } from '../contexts/WorkspaceContext'
 import type { Incident, IncidentSeverity, IncidentStatus } from '../types/incident'
 
 // Soma N dias UTEIS a uma data, pulando sabados e domingos - usado pro prazo
@@ -26,20 +27,34 @@ function addBusinessDays(start: Date, days: number): Date {
   return result
 }
 
-// ANPD e titulares têm o mesmo prazo de 3 dias úteis (Resolução CD/ANPD 15/2024, Arts. 6º e 9º).
+// LGPD: ANPD e titulares têm o mesmo prazo de 3 dias úteis (Resolução CD/ANPD 15/2024, Arts. 6º e 9º).
+// RGPD: autoridade de controlo em 72 horas (Art. 33.º); titular sem demora injustificada (Art. 34.º).
 function getNotificationDeadlineInfo(
   incident: Incident,
   notifiedAt: string | null,
   target: string,
+  rgpdOnly: boolean,
+  isAuthority: boolean,
 ): { text: string; urgent: boolean } | null {
   if (notifiedAt) return null
-  const deadline = addBusinessDays(new Date(incident.discoveredAt), 3)
+  if (rgpdOnly && !isAuthority) {
+    return { text: 'Se o risco for elevado, comunicar sem demora injustificada', urgent: false }
+  }
+  const discovered = new Date(incident.discoveredAt)
+  const deadline = rgpdOnly
+    ? new Date(discovered.getTime() + 72 * 60 * 60 * 1000)
+    : addBusinessDays(discovered, 3)
   const now = new Date()
-  const formattedDeadline = deadline.toLocaleDateString('pt-BR')
+  const formattedDeadline = rgpdOnly
+    ? deadline.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })
+    : deadline.toLocaleDateString('pt-BR')
   if (now > deadline) {
     return { text: `Prazo para notificar ${target} vencido desde ${formattedDeadline}`, urgent: true }
   }
-  return { text: `Notificar ${target} até ${formattedDeadline} (3 dias úteis)`, urgent: false }
+  return {
+    text: `Notificar ${target} até ${formattedDeadline} (${rgpdOnly ? '72 horas' : '3 dias úteis'})`,
+    urgent: false,
+  }
 }
 
 const SEVERITY_LABELS: Record<IncidentSeverity, string> = {
@@ -59,7 +74,7 @@ const SEVERITY_STYLES: Record<IncidentSeverity, string> = {
 const STATUS_LABELS: Record<IncidentStatus, string> = {
   IDENTIFIED: 'Identificado',
   ASSESSING: 'Em Avaliação',
-  ANPD_NOTIFIED: 'ANPD Notificada',
+  ANPD_NOTIFIED: 'Autoridade notificada',
   DATA_SUBJECTS_NOTIFIED: 'Titulares Notificados',
   RESOLVED: 'Resolvido',
 }
@@ -79,6 +94,10 @@ const STATUS_STYLES: Record<IncidentStatus, string> = {
 const MANUAL_STATUS_OPTIONS: IncidentStatus[] = ['IDENTIFIED', 'ASSESSING', 'RESOLVED']
 
 export function IncidentsPage() {
+  const { currentWorkspace } = useWorkspaces()
+  const regimes = currentWorkspace?.legalRegimes ?? []
+  const rgpdOnly = regimes.includes('RGPD') && !regimes.includes('LGPD')
+  const authorityLabel = rgpdOnly ? 'a autoridade de controlo' : 'a ANPD'
   const { workspaceId } = useParams<{ workspaceId: string }>()
   const [incidents, setIncidents] = useState<Incident[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -146,11 +165,11 @@ export function IncidentsPage() {
   }
 
   async function handleNotifyAnpd(id: string) {
-    if (!window.confirm('Confirma que a ANPD foi notificada sobre este incidente agora?')) return
+    if (!window.confirm(`Confirma que ${authorityLabel} foi notificada sobre este incidente agora?`)) return
     try {
       const updated = await notifyAnpd(id)
       setIncidents((prev) => prev.map((i) => (i.id === id ? updated : i)))
-      setSuccessMessage('Notificação à ANPD registrada.')
+      setSuccessMessage('Notificação à autoridade registrada.')
     } catch (err) {
       setError(getErrorMessage(err, 'Não foi possível registrar a notificação.'))
     }
@@ -305,15 +324,15 @@ export function IncidentsPage() {
               <div className="flex items-center gap-4 pt-2 mt-2 border-t border-[#0A0A0A]/8 text-xs">
                 {incident.anpdNotifiedAt ? (
                   <span className="text-blue-700">
-                    ANPD notificada em {new Date(incident.anpdNotifiedAt).toLocaleString('pt-BR')}
+                    Autoridade notificada em {new Date(incident.anpdNotifiedAt).toLocaleString('pt-BR')}
                   </span>
                 ) : (
                   <div className="flex flex-col gap-0.5">
                     <button onClick={() => handleNotifyAnpd(incident.id)} className="text-blue-700 hover:underline font-medium text-left">
-                      Registrar notificação à ANPD
+                      Registrar notificação à autoridade
                     </button>
                     {(() => {
-                      const deadlineInfo = getNotificationDeadlineInfo(incident, incident.anpdNotifiedAt, 'a ANPD')
+                      const deadlineInfo = getNotificationDeadlineInfo(incident, incident.anpdNotifiedAt, authorityLabel, rgpdOnly, true)
                       if (!deadlineInfo) return null
                       return (
                         <span className={deadlineInfo.urgent ? "text-red-600 font-medium" : "text-[#0A0A0A]/45"}>
@@ -336,7 +355,7 @@ export function IncidentsPage() {
                       Registrar notificação aos titulares
                     </button>
                     {(() => {
-                      const deadlineInfo = getNotificationDeadlineInfo(incident, incident.dataSubjectsNotifiedAt, 'os titulares')
+                      const deadlineInfo = getNotificationDeadlineInfo(incident, incident.dataSubjectsNotifiedAt, 'os titulares', rgpdOnly, false)
                       if (!deadlineInfo) return null
                       return (
                         <span className={deadlineInfo.urgent ? "text-red-600 font-medium" : "text-[#0A0A0A]/45"}>

@@ -218,7 +218,7 @@ const SECTIONS: Section[] = [
     icon: ShieldAlert,
     body: [
       {
-        text: "A ANPD tem intensificado a fiscalização em 2026, com foco especial em empresas sem Encarregado de Dados designado. Se sua empresa receber uma notificação, pedido de esclarecimento, ou for alvo de fiscalização, mantenha a calma e reúna a documentação disponível no sistema.",
+        text: "Em 2026, a ANPD monitorou a indicação do Encarregado e a existência de um canal com os titulares em 56 agentes de tratamento. Se sua empresa receber uma notificação, pedido de esclarecimento, ou for alvo de fiscalização, mantenha a calma e reúna a documentação disponível no sistema.",
       },
       {
         heading: "O que a ANPD costuma pedir",

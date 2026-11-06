@@ -22,7 +22,7 @@ function buildRows(s: ComplianceSummary): Row[] {
     status: s.dpoDesignated ? "ok" : "warning",
     detail: s.dpoDesignated
       ? `${s.dpoName} designado como Encarregado`
-      : "Nenhum Encarregado designado, item priorizado na fiscalização da ANPD",
+      : "Nenhum Encarregado designado, tema de monitoramento recente da ANPD",
   });
   rows.push({
     label: "Inventário / ROPA",

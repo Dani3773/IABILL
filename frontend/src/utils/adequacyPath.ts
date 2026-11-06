@@ -142,8 +142,8 @@ export function buildAdequacyPath(input: PathInput): AdequacyPath {
       citations: [
         { regime: 'LGPD', reference: 'Art. 6º, X', about: 'responsabilização e prestação de contas' },
         { regime: 'LGPD', reference: 'Art. 50', about: 'boas práticas e governança' },
-        { regime: 'RGPD', reference: 'Art. 5º, n.º 2', about: 'responsabilidade do controlador' },
-        { regime: 'RGPD', reference: 'Art. 24', about: 'medidas para demonstrar conformidade' },
+        { regime: 'RGPD', reference: 'Art. 5.º, n.º 2', about: 'responsabilidade demonstrável' },
+        { regime: 'RGPD', reference: 'Art. 24.º', about: 'responsabilidade do responsável pelo tratamento' },
       ],
       guide: { label: 'Evidências e monitoramento', to: `${base}/pilares/evidencias-monitoramento` },
       checks: [
@@ -168,7 +168,10 @@ export function buildAdequacyPath(input: PathInput): AdequacyPath {
       citations: [
         { regime: 'LGPD', reference: 'Art. 41', about: 'indicação do Encarregado' },
         { regime: 'LGPD', reference: 'Art. 41, § 1º', about: 'identidade e contato divulgados publicamente' },
-        { regime: 'RGPD', reference: 'Art. 37', about: 'designação do DPO, quando obrigatória, e publicação do contato' },
+        { regime: 'LGPD', reference: 'Resolução CD/ANPD 18/2024', about: 'regras de atuação do Encarregado' },
+        { regime: 'LGPD', reference: 'Resolução CD/ANPD 2/2022', about: 'tratamento simplificado para agentes de pequeno porte' },
+        { regime: 'RGPD', reference: 'Art. 37.º, n.º 1', about: 'casos em que a designação do encarregado é obrigatória' },
+        { regime: 'RGPD', reference: 'Art. 37.º, n.º 7', about: 'publicação dos contactos do encarregado' },
       ],
       guide: { label: 'Quem é Quem', to: `${base}/pilares/quem-e-quem` },
       checks: [
@@ -178,7 +181,9 @@ export function buildAdequacyPath(input: PathInput): AdequacyPath {
           state: summary?.dpoDesignated ? 'done' : 'pending',
           hint: summary?.dpoDesignated
             ? `${summary.dpoName} é o Encarregado.`
-            : 'Atribua o papel de Encarregado a uma pessoa, em Usuários.',
+            : regimes.includes('LGPD')
+              ? 'Atribua o papel em Usuários. Agentes de pequeno porte podem ser dispensados, mas precisam manter um canal com o titular.'
+              : 'Na RGPD, a designação é obrigatória nos casos do art. 37.º, n.º 1. Atribua o papel em Usuários.',
           to: '/users',
           actionLabel: 'Abrir Usuários',
         },
@@ -206,7 +211,9 @@ export function buildAdequacyPath(input: PathInput): AdequacyPath {
       why: 'A empresa precisa manter registro das operações com dados pessoais. Esse inventário é a base de todas as etapas seguintes.',
       citations: [
         { regime: 'LGPD', reference: 'Art. 37', about: 'registro das operações de tratamento' },
-        { regime: 'RGPD', reference: 'Art. 30', about: 'registros das atividades de tratamento' },
+        { regime: 'LGPD', reference: 'Resolução CD/ANPD 2/2022', about: 'registro simplificado para agentes de pequeno porte' },
+        { regime: 'RGPD', reference: 'Art. 30.º', about: 'registos das atividades de tratamento' },
+        { regime: 'RGPD', reference: 'Art. 30.º, n.º 5', about: 'exceção condicionada para menos de 250 trabalhadores' },
       ],
       checks: [
         {
@@ -253,9 +260,9 @@ export function buildAdequacyPath(input: PathInput): AdequacyPath {
         { regime: 'LGPD', reference: 'Arts. 7º e 11', about: 'hipóteses de tratamento, inclusive de dados sensíveis' },
         { regime: 'LGPD', reference: 'Art. 8º', about: 'consentimento e ônus da prova' },
         { regime: 'LGPD', reference: 'Arts. 15 e 16', about: 'término do tratamento e eliminação' },
-        { regime: 'RGPD', reference: 'Arts. 6º e 9º', about: 'licitude e categorias especiais de dados' },
-        { regime: 'RGPD', reference: 'Art. 7º', about: 'condições do consentimento' },
-        { regime: 'RGPD', reference: 'Art. 5º, n.º 1, e)', about: 'limitação da conservação' },
+        { regime: 'RGPD', reference: 'Arts. 6.º e 9.º', about: 'licitude e categorias especiais de dados' },
+        { regime: 'RGPD', reference: 'Art. 7.º', about: 'condições aplicáveis ao consentimento' },
+        { regime: 'RGPD', reference: 'Art. 5.º, n.º 1, al. e)', about: 'limitação da conservação' },
       ],
       guide: { label: 'Base Legal', to: `${base}/pilares/base-legal` },
       checks: [
@@ -315,11 +322,11 @@ export function buildAdequacyPath(input: PathInput): AdequacyPath {
       why: 'O titular tem direito a informações claras, a segurança precisa ser organizada e tratamentos de maior risco pedem avaliação de impacto.',
       citations: [
         { regime: 'LGPD', reference: 'Art. 9º', about: 'acesso facilitado às informações do tratamento' },
-        { regime: 'LGPD', reference: 'Art. 38', about: 'relatório de impacto, quando exigido pela ANPD' },
+        { regime: 'LGPD', reference: 'Arts. 10, § 3º, e 38', about: 'relatório de impacto, quando a ANPD determinar' },
         { regime: 'LGPD', reference: 'Art. 46', about: 'medidas de segurança' },
-        { regime: 'RGPD', reference: 'Arts. 13 e 14', about: 'informações ao titular' },
-        { regime: 'RGPD', reference: 'Art. 32', about: 'segurança do tratamento' },
-        { regime: 'RGPD', reference: 'Art. 35', about: 'avaliação de impacto' },
+        { regime: 'RGPD', reference: 'Arts. 13.º e 14.º', about: 'informações a facultar ao titular' },
+        { regime: 'RGPD', reference: 'Art. 32.º', about: 'segurança do tratamento' },
+        { regime: 'RGPD', reference: 'Art. 35.º', about: 'avaliação de impacto, obrigatória em tratamento de elevado risco' },
       ],
       guide: { label: 'Retenção e Descarte', to: `${base}/pilares/retencao-descarte` },
       checks: [
@@ -349,10 +356,10 @@ export function buildAdequacyPath(input: PathInput): AdequacyPath {
           state: sensitive.length === 0 ? 'na' : ripdApproved ? 'done' : 'pending',
           hint:
             sensitive.length === 0
-              ? 'Nenhuma atividade marcada com dados sensíveis pede o relatório.'
+              ? 'Nenhuma atividade com dados sensíveis aberta para este relatório.'
               : ripdApproved
                 ? 'Relatório aprovado.'
-                : `${plural(sensitive.length, 'atividade envolve', 'atividades envolvem')} dados sensíveis.`,
+                : `${plural(sensitive.length, 'atividade envolve', 'atividades envolvem')} dados sensíveis. Recomendamos preparar o relatório antes que seja exigido.`,
           to: `${base}/documents?tipo=RIPD_DPIA`,
           actionLabel: 'Abrir Documentos',
         },
@@ -364,10 +371,11 @@ export function buildAdequacyPath(input: PathInput): AdequacyPath {
       summary: 'Controlar quem trata dados por você',
       why: 'Quem trata dados em nome da empresa precisa seguir suas instruções, e enviar dados para outro país exige uma garantia prevista em lei.',
       citations: [
-        { regime: 'LGPD', reference: 'Art. 39', about: 'operador segue instruções do controlador' },
+        { regime: 'LGPD', reference: 'Art. 39', about: 'operador segue as instruções do controlador' },
         { regime: 'LGPD', reference: 'Art. 33', about: 'transferência internacional' },
-        { regime: 'RGPD', reference: 'Art. 28', about: 'contrato com o subcontratante' },
-        { regime: 'RGPD', reference: 'Arts. 44 a 49', about: 'transferências internacionais' },
+        { regime: 'LGPD', reference: 'Resolução CD/ANPD 19/2024', about: 'regulamento e cláusulas-padrão de transferência' },
+        { regime: 'RGPD', reference: 'Art. 28.º', about: 'contrato com o subcontratante' },
+        { regime: 'RGPD', reference: 'Arts. 44.º a 49.º', about: 'transferências para países terceiros' },
       ],
       checks: [
         vendors.length > 0
@@ -424,7 +432,7 @@ export function buildAdequacyPath(input: PathInput): AdequacyPath {
       why: 'Quem lida com dados no dia a dia precisa saber o que fazer. Orientar funcionários e contratados faz parte das atribuições do Encarregado.',
       citations: [
         { regime: 'LGPD', reference: 'Art. 41, § 2º, III', about: 'orientar funcionários e contratados' },
-        { regime: 'RGPD', reference: 'Art. 39, n.º 1, b)', about: 'sensibilização e formação do pessoal' },
+        { regime: 'RGPD', reference: 'Art. 39.º, n.º 1, al. b)', about: 'sensibilização e formação do pessoal' },
       ],
       checks: [
         {
@@ -457,12 +465,14 @@ export function buildAdequacyPath(input: PathInput): AdequacyPath {
       id: 'atendimento',
       title: 'Atendimento',
       summary: 'Responder titulares e incidentes',
-      why: 'Titulares podem exercer direitos sobre seus dados, e incidentes com risco ou dano relevante precisam ser comunicados à autoridade e aos afetados.',
+      why: 'Titulares podem exercer direitos sobre seus dados, com prazo de resposta. Incidentes de risco relevante precisam ser comunicados à autoridade e, conforme o caso, às pessoas afetadas.',
       citations: [
-        { regime: 'LGPD', reference: 'Art. 18', about: 'direitos do titular' },
+        { regime: 'LGPD', reference: 'Arts. 18 e 19', about: 'direitos do titular; declaração completa em até 15 dias' },
         { regime: 'LGPD', reference: 'Art. 48', about: 'comunicação de incidente de segurança' },
-        { regime: 'RGPD', reference: 'Arts. 12 a 22', about: 'direitos do titular' },
-        { regime: 'RGPD', reference: 'Arts. 33 e 34', about: 'notificação de violação de dados' },
+        { regime: 'LGPD', reference: 'Resolução CD/ANPD 15/2024', about: 'comunicação à ANPD e ao titular em três dias úteis' },
+        { regime: 'RGPD', reference: 'Arts. 12.º a 22.º', about: 'direitos do titular; resposta em até um mês, prorrogável' },
+        { regime: 'RGPD', reference: 'Art. 33.º', about: 'notificação à autoridade de controlo em 72 horas, sempre que possível' },
+        { regime: 'RGPD', reference: 'Art. 34.º', about: 'comunicação ao titular, sem demora injustificada, em caso de elevado risco' },
       ],
       checks: [
         manual(
@@ -513,8 +523,8 @@ export function buildAdequacyPath(input: PathInput): AdequacyPath {
       citations: [
         { regime: 'LGPD', reference: 'Art. 6º, X', about: 'responsabilização e prestação de contas' },
         { regime: 'LGPD', reference: 'Art. 50', about: 'programa de governança' },
-        { regime: 'RGPD', reference: 'Art. 5º, n.º 2', about: 'responsabilidade do controlador' },
-        { regime: 'RGPD', reference: 'Art. 24, n.º 1', about: 'revisão e atualização das medidas' },
+        { regime: 'RGPD', reference: 'Art. 5.º, n.º 2', about: 'responsabilidade demonstrável' },
+        { regime: 'RGPD', reference: 'Art. 24.º, n.º 1', about: 'medidas revistas e atualizadas sempre que necessário' },
       ],
       guide: { label: 'Evidências e monitoramento', to: `${base}/pilares/evidencias-monitoramento` },
       checks: [

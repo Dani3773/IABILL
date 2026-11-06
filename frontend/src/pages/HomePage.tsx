@@ -75,7 +75,7 @@ function buildAttention(
       rows.push({
         tone: "warning",
         title: "Encarregado (DPO) não designado",
-        detail: "Item priorizado na fiscalização da ANPD.",
+        detail: "Tema de monitoramento recente da ANPD.",
         to: canManageUsers ? "/users" : `${base}/pilares/quem-e-quem`,
       });
     }

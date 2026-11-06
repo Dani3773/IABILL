@@ -81,10 +81,15 @@ public class ComplianceSummaryService {
         // Mesmo prazo de 3 dias uteis usado na tela de Incidentes (Resolucao CD/ANPD
         // 15/2024) - recalculado aqui em memoria, ja que essa logica so existia no
         // frontend ate agora, sem equivalente no backend.
+        // Unidade so com RGPD segue as 72 horas do Art. 33.
         Instant nowForIncidents = Instant.now();
+        boolean rgpdOnly = !workspace.getLegalRegimes().contains(LegalRegime.LGPD)
+                && workspace.getLegalRegimes().contains(LegalRegime.RGPD);
         int incidentNotificationOverdue = (int) incidents.stream()
                 .filter(i -> i.getAnpdNotifiedAt() == null)
-                .filter(i -> addBusinessDays(i.getDiscoveredAt(), 3).isBefore(nowForIncidents))
+                .filter(i -> (rgpdOnly
+                        ? i.getDiscoveredAt().plus(java.time.Duration.ofHours(72))
+                        : addBusinessDays(i.getDiscoveredAt(), 3)).isBefore(nowForIncidents))
                 .count();
 
         boolean privacyPolicyPublished = documents.stream()
