@@ -97,7 +97,17 @@
   letter-spacing: -0.022em;
   line-height: 1.32;
   margin: 0;
-  max-width: 21em;
+  max-width: 17em;
+}
+
+.auth__line {
+  display: block;
+}
+
+.auth__line--fill {
+  align-items: baseline;
+  display: flex;
+  gap: 0.24em;
 }
 
 .auth__blank {
@@ -106,23 +116,16 @@
   border-bottom: 2px solid #17130e;
   border-radius: 0;
   color: #b4201a;
-  field-sizing: content;
+  flex: 1;
   font: inherit;
   font-style: italic;
-  letter-spacing: inherit;
+  letter-spacing: 0;
   line-height: 1.1;
-  max-width: 100%;
-  min-width: 4.3em;
+  min-width: 0;
   outline: none;
   padding: 0 0.08em;
   transition: border-color 150ms ease;
-  width: 9em;
-}
-
-@supports (field-sizing: content) {
-  .auth__blank {
-    width: auto;
-  }
+  width: 100%;
 }
 
 .auth__blank::placeholder {
@@ -139,26 +142,37 @@
   box-shadow: 0 2px 0 #d92b21;
 }
 
-.auth__blank:-webkit-autofill {
+.auth__blank:-webkit-autofill,
+.auth__blank:-webkit-autofill:hover,
+.auth__blank:-webkit-autofill:focus {
   -webkit-text-fill-color: #b4201a;
+  caret-color: #b4201a;
   transition: background-color 9999s;
 }
 
+/* O Chrome ignora a fonte do campo enquanto mostra o valor salvo. */
+.auth__blank:-webkit-autofill::first-line {
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(2rem, 4.8vw, 4.5rem);
+  font-style: italic;
+  font-weight: 300;
+}
+
 .auth__blank--code {
+  display: inline-block;
   letter-spacing: 0.08em;
-  min-width: 4.2em;
+  width: 4.6em;
 }
 
 .auth__secret {
-  align-items: baseline;
-  display: inline-flex;
-  max-width: 100%;
+  display: flex;
+  flex: 1;
+  min-width: 0;
   position: relative;
 }
 
 .auth__secret .auth__blank {
-  min-width: 4.9em;
-  padding-right: 0.7em;
+  padding-right: 0.8em;
 }
 
 .auth__secret button {
@@ -231,14 +245,17 @@
     line-height: 1.36;
   }
 
-  .auth__blank,
-  .auth__secret {
-    display: block;
-    width: 100%;
+  .auth__line--fill {
+    display: inline;
   }
 
   .auth__blank {
+    display: block;
     margin: 4px 0;
+  }
+
+  .auth__blank:-webkit-autofill::first-line {
+    font-size: 2rem;
   }
 
   .auth__submit {

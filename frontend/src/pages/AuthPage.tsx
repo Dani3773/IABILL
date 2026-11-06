@@ -501,42 +501,47 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
           ) : !isSignUpMode ? (
             <form onSubmit={handleLogin} className="auth__form">
               <p className="auth__deed">
-                Em {now.date}, às {now.time},{" "}
-                <input
-                  type="email"
-                  aria-label="E-mail"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  autoComplete="username"
-                  placeholder="seu e-mail"
-                  className="auth__blank"
-                />{" "}
-                entra com a senha{" "}
-                <span className="auth__secret">
+                <span className="auth__line">Em {now.date}, às {now.time},</span>
+                <span className="auth__line auth__line--fill">
                   <input
-                    type={showPassword ? "text" : "password"}
-                    aria-label="Senha"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onKeyDown={handleCapsLock}
-                    onKeyUp={handleCapsLock}
-                    onBlur={() => setCapsLockOn(false)}
+                    type="email"
+                    aria-label="E-mail"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
-                    autoComplete="current-password"
-                    placeholder="sua senha"
+                    autoComplete="username"
+                    placeholder="seu e-mail"
                     className="auth__blank"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    tabIndex={-1}
-                    aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-                  >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
+                  <span>entra</span>
                 </span>
-                <span className="auth__stop">.</span>
+                <span className="auth__line auth__line--fill">
+                  <span>com a senha</span>
+                  <span className="auth__secret">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      aria-label="Senha"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      onKeyDown={handleCapsLock}
+                      onKeyUp={handleCapsLock}
+                      onBlur={() => setCapsLockOn(false)}
+                      required
+                      autoComplete="current-password"
+                      placeholder="sua senha"
+                      className="auth__blank"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      tabIndex={-1}
+                      aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                    >
+                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                  </span>
+                  <span className="auth__stop">.</span>
+                </span>
               </p>
               {capsLockOn && (
                 <p className="flex items-center gap-1.5 text-sm text-[#8a5a00] auth__notice">
