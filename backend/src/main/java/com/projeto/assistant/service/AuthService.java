@@ -1,5 +1,6 @@
 package com.projeto.assistant.service;
 
+import com.projeto.assistant.config.MessageCatalog;
 import com.projeto.assistant.dto.*;
 import com.projeto.assistant.model.Tenant;
 import com.projeto.assistant.model.User;
@@ -82,7 +83,7 @@ public class AuthService {
 
         emailService.sendEmailConfirmation(savedUser.getEmail(), savedUser.getUsername(), verificationToken);
 
-        return new SignupResponseDTO(true, "Conta criada. Verifique seu e-mail para confirmar e poder entrar.");
+        return new SignupResponseDTO(true, MessageCatalog.t("Conta criada. Verifique seu e-mail para confirmar e poder entrar."));
     }
 
     private String generateToken() {
@@ -159,7 +160,7 @@ public class AuthService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos"));
 
         if (matchedUser.isEmailVerified()) {
-            return new EmailConfirmationResponseDTO(false, "Este e-mail já está confirmado.");
+            return new EmailConfirmationResponseDTO(false, MessageCatalog.t("Este e-mail já está confirmado."));
         }
 
         String newToken = generateToken();
@@ -169,7 +170,7 @@ public class AuthService {
 
         emailService.sendEmailConfirmation(matchedUser.getEmail(), matchedUser.getUsername(), newToken);
 
-        return new EmailConfirmationResponseDTO(true, "E-mail de confirmação reenviado.");
+        return new EmailConfirmationResponseDTO(true, MessageCatalog.t("E-mail de confirmação reenviado."));
     }
 
     @Transactional
@@ -178,12 +179,12 @@ public class AuthService {
                 .orElse(null);
 
         if (user == null) {
-            return new EmailConfirmationResponseDTO(false, "Link de confirmação inválido.");
+            return new EmailConfirmationResponseDTO(false, MessageCatalog.t("Link de confirmação inválido."));
         }
 
         if (user.getEmailVerificationExpiresAt() != null
                 && user.getEmailVerificationExpiresAt().isBefore(Instant.now())) {
-            return new EmailConfirmationResponseDTO(false, "Link de confirmação expirado.");
+            return new EmailConfirmationResponseDTO(false, MessageCatalog.t("Link de confirmação expirado."));
         }
 
         user.setEmailVerified(true);
@@ -191,7 +192,7 @@ public class AuthService {
         user.setEmailVerificationExpiresAt(null);
         userRepository.save(user);
 
-        return new EmailConfirmationResponseDTO(true, "E-mail confirmado com sucesso.");
+        return new EmailConfirmationResponseDTO(true, MessageCatalog.t("E-mail confirmado com sucesso."));
     }
 
     @Transactional
@@ -214,7 +215,7 @@ public class AuthService {
         // Resposta SEMPRE identica, exista ou nao o e-mail no sistema - evita que
         // esse endpoint seja usado para descobrir quais e-mails tem conta cadastrada.
         return new EmailConfirmationResponseDTO(true,
-                "Se existir uma conta com esse e-mail, você receberá instruções para redefinir sua senha.");
+                MessageCatalog.t("Se existir uma conta com esse e-mail, você receberá instruções para redefinir sua senha."));
     }
 
     @Transactional
@@ -223,12 +224,12 @@ public class AuthService {
                 .orElse(null);
 
         if (user == null) {
-            return new EmailConfirmationResponseDTO(false, "Link de redefinição inválido.");
+            return new EmailConfirmationResponseDTO(false, MessageCatalog.t("Link de redefinição inválido."));
         }
 
         if (user.getPasswordResetExpiresAt() != null
                 && user.getPasswordResetExpiresAt().isBefore(Instant.now())) {
-            return new EmailConfirmationResponseDTO(false, "Link de redefinição expirado. Solicite um novo.");
+            return new EmailConfirmationResponseDTO(false, MessageCatalog.t("Link de redefinição expirado. Solicite um novo."));
         }
 
         user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
@@ -236,7 +237,7 @@ public class AuthService {
         user.setPasswordResetExpiresAt(null);
         userRepository.save(user);
 
-        return new EmailConfirmationResponseDTO(true, "Senha redefinida com sucesso.");
+        return new EmailConfirmationResponseDTO(true, MessageCatalog.t("Senha redefinida com sucesso."));
     }
 
     @Transactional(readOnly = true)

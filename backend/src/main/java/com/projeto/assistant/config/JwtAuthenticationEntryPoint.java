@@ -31,7 +31,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
                 Instant.now(),
                 HttpStatus.UNAUTHORIZED.value(),
                 "Unauthorized",
-                "Token de autenticação ausente ou inválido",
+                MessageCatalog.t("Token de autenticação ausente ou inválido"),
                 request.getRequestURI()
         );
 

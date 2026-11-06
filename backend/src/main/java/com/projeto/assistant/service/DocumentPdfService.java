@@ -1,5 +1,6 @@
 package com.projeto.assistant.service;
 
+import com.projeto.assistant.config.MessageCatalog;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import com.projeto.assistant.model.*;
 import com.projeto.assistant.repository.AuditLogRepository;
@@ -29,9 +30,6 @@ public class DocumentPdfService {
             DocumentType.MATERIAL_TREINAMENTO, "Material de Treinamento"
     );
 
-    private static final DateTimeFormatter DATE_FORMATTER =
-            DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm").withZone(ZoneId.of("America/Sao_Paulo"));
-
     private final DocumentService documentService;
     private final AuditLogRepository auditLogRepository;
     private final WorkspaceRepository workspaceRepository;
@@ -59,16 +57,18 @@ public class DocumentPdfService {
 
         String approvedByName = approvalEvent != null && approvalEvent.getUser() != null
                 ? approvalEvent.getUser().getUsername()
-                : "Não identificado";
+                : MessageCatalog.t("Não identificado");
         String approvedAt = approvalEvent != null
-                ? DATE_FORMATTER.format(approvalEvent.getCreatedAt())
-                : "Não identificado";
+                ? DateTimeFormatter.ofPattern(MessageCatalog.t("dd/MM/yyyy 'às' HH:mm"))
+                        .withZone(ZoneId.of("America/Sao_Paulo"))
+                        .format(approvalEvent.getCreatedAt())
+                : MessageCatalog.t("Não identificado");
 
         String workspaceName = workspaceRepository.findById(documentDto.workspaceId())
                 .map(w -> w.getName())
-                .orElse("Empresa não identificada");
+                .orElse(MessageCatalog.t("Empresa não identificada"));
         String documentTitle = documentDto.title();
-        String typeLabel = TYPE_LABELS.getOrDefault(documentDto.type(), documentDto.type().name());
+        String typeLabel = MessageCatalog.t(TYPE_LABELS.getOrDefault(documentDto.type(), documentDto.type().name()));
         String content = documentDto.generatedContent() != null ? documentDto.generatedContent() : "";
 
         String html = buildHtml(workspaceName, documentTitle, typeLabel, content, approvedByName, approvedAt);
@@ -100,7 +100,7 @@ public class DocumentPdfService {
                     size: A4;
                     margin: 2.5cm 2cm 3cm 2cm;
                     @bottom-center {
-                        content: "Página " counter(page) " de " counter(pages);
+                        content: "%s " counter(page) " %s " counter(pages);
                         font-family: 'Helvetica', sans-serif;
                         font-size: 9px;
                         color: #666666;
@@ -135,22 +135,26 @@ public class DocumentPdfService {
                     <h1>%s</h1>
                     <div class="company">%s</div>
                     <div class="meta">
-                        <div>Aprovado por: %s</div>
-                        <div>Data de aprovação: %s</div>
-                        <div>Documento gerado com apoio de inteligência artificial, revisado e aprovado por responsável humano antes da emissão deste arquivo.</div>
+                        <div>%s %s</div>
+                        <div>%s %s</div>
+                        <div>%s</div>
                     </div>
                 </div>
                 <div class="content">
                     %s
                     <div class="disclaimer">
-                        Este documento foi gerado pelo sistema IABill e reflete o conteúdo aprovado até a data de emissão deste PDF.
-                        Alterações posteriores ao documento original não são refletidas automaticamente neste arquivo.
+                        %s
                     </div>
                 </div>
             </body>
             </html>
-            """.formatted(title, typeLabel, typeLabel, escapeHtml(title), escapeHtml(workspaceName),
-                escapeHtml(approvedBy), approvedAt, contentHtml);
+            """.formatted(MessageCatalog.t("Página"), MessageCatalog.t("de"),
+                title, typeLabel, typeLabel, escapeHtml(title), escapeHtml(workspaceName),
+                MessageCatalog.t("Aprovado por:"), escapeHtml(approvedBy),
+                MessageCatalog.t("Data de aprovação:"), approvedAt,
+                MessageCatalog.t("Documento gerado com apoio de inteligência artificial, revisado e aprovado por responsável humano antes da emissão deste arquivo."),
+                contentHtml,
+                MessageCatalog.t("Este documento foi gerado pelo sistema IABill e reflete o conteúdo aprovado até a data de emissão deste PDF. Alterações posteriores ao documento original não são refletidas automaticamente neste arquivo."));
     }
 
     private String escapeHtml(String text) {

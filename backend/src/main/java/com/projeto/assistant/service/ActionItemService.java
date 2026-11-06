@@ -1,5 +1,6 @@
 package com.projeto.assistant.service;
 
+import com.projeto.assistant.config.MessageCatalog;
 import com.projeto.assistant.dto.*;
 import com.projeto.assistant.model.*;
 import com.projeto.assistant.repository.ActionItemRepository;
@@ -106,7 +107,8 @@ public class ActionItemService {
             Responda ESTRITAMENTE em formato JSON, como uma lista de objetos, sem nenhum texto
             antes ou depois, sem markdown, EXATAMENTE neste formato:
             [{"title": "...", "description": "..."}, {"title": "...", "description": "..."}]
-            """.formatted(context);
+            %s
+            """.formatted(context, MessageCatalog.aiLanguageInstruction());
 
         GeminiGenerationResultDTO generationResult = geminiGenerationService.generate(prompt);
         String rawResponse = generationResult.text();

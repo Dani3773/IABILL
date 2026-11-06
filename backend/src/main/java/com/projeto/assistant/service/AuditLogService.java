@@ -1,5 +1,6 @@
 package com.projeto.assistant.service;
 
+import com.projeto.assistant.config.MessageCatalog;
 import com.projeto.assistant.dto.AuditLogResponseDTO;
 import com.projeto.assistant.model.*;
 import com.projeto.assistant.repository.AuditLogRepository;
@@ -70,10 +71,10 @@ public class AuditLogService {
         response.getOutputStream().write(0xBF);
 
         PrintWriter writer = new PrintWriter(response.getOutputStream(), true, StandardCharsets.UTF_8);
-        writer.println("Data,Usuário,Ação,Tipo de Entidade,ID da Entidade,Detalhes");
+        writer.println(MessageCatalog.t("Data,Usuário,Ação,Tipo de Entidade,ID da Entidade,Detalhes"));
 
         for (AuditLogResponseDTO log : logs) {
-            String username = log.username() != null ? log.username() : "Sistema";
+            String username = log.username() != null ? log.username() : MessageCatalog.t("Sistema");
             String metadata = log.metadata() != null ? log.metadata().toString() : "";
             writer.println(String.join(",",
                     csvEscape(log.createdAt().toString()),

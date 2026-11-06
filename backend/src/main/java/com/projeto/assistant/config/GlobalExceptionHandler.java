@@ -47,6 +47,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleValidation(MethodArgumentNotValidException ex, HttpServletRequest request) {
         String message = ex.getBindingResult().getFieldErrors().stream()
                 .map(FieldError::getDefaultMessage)
+                .map(MessageCatalog::t)
                 .collect(Collectors.joining("; "));
 
         return buildResponse(HttpStatus.BAD_REQUEST, message, request);
@@ -73,7 +74,7 @@ public class GlobalExceptionHandler {
                 Instant.now(),
                 status.value(),
                 status.getReasonPhrase(),
-                message,
+                MessageCatalog.t(message),
                 request.getRequestURI()
         );
         return ResponseEntity.status(status).body(body);

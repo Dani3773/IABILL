@@ -89,6 +89,12 @@ O e-mail de confirmação não é enviado no ambiente local, então confirme a c
 docker exec lgpd-assistant-db psql -U lgpd_admin -d lgpd_assistant -c "UPDATE users SET email_verified = true WHERE email = 'seu-email@exemplo.com';"
 ```
 
+## Idiomas
+
+A landing page existe em 25 idiomas. O sistema funciona em português do Brasil, português de Portugal e inglês, e o idioma é trocado no menu da conta. Quem chega por outro idioma da landing usa o sistema em inglês.
+
+Nas telas, o texto em português do Brasil é a própria chave: `tr('Salvar')` procura a tradução em `frontend/src/i18n/locales/app/`, e o que não tiver tradução aparece em português. No backend, `MessageCatalog` faz o mesmo com `backend/src/main/resources/i18n/messages.json`, usando o cabeçalho `Accept-Language`, que também define o idioma de e-mails, PDFs e conteúdo gerado pela IA.
+
 ## Rodar os testes
 
 São 59 testes. Com o Docker ligado:

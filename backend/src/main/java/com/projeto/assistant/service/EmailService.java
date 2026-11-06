@@ -1,5 +1,6 @@
 package com.projeto.assistant.service;
 
+import com.projeto.assistant.config.MessageCatalog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -33,8 +34,8 @@ public class EmailService {
     public void sendEmailConfirmation(String toEmail, String username, String token) {
         String confirmUrl = "https://iabill.com/confirmar-email/" + token;
 
-        String subject = "Confirme sua conta no IABill";
-        String body = """
+        String subject = MessageCatalog.t("Confirme sua conta no IABill");
+        String body = MessageCatalog.t("""
                 Olá, %s,
 
                 Sua conta na plataforma IABill foi criada. Para confirmar seu e-mail, acesse:
@@ -44,7 +45,7 @@ public class EmailService {
                 Se você não solicitou este cadastro, pode ignorar este e-mail.
 
                 Equipe IABill
-                """.formatted(username, confirmUrl);
+                """).formatted(username, confirmUrl);
 
         send(toEmail, subject, body);
     }
@@ -52,8 +53,8 @@ public class EmailService {
     public void sendUserInvitation(String toEmail, String username, String inviterTenantName, String token) {
         String activationUrl = "https://iabill.com/ativar-conta/" + token;
 
-        String subject = "Você foi convidado para o IABill";
-        String body = """
+        String subject = MessageCatalog.t("Você foi convidado para o IABill");
+        String body = MessageCatalog.t("""
                 Olá, %s,
 
                 Você foi convidado para acessar o IABill como parte da conta de %s.
@@ -65,7 +66,7 @@ public class EmailService {
                 Se você não esperava este convite, pode ignorar este e-mail.
 
                 Equipe IABill
-                """.formatted(username, inviterTenantName, activationUrl);
+                """).formatted(username, inviterTenantName, activationUrl);
 
         send(toEmail, subject, body);
     }
@@ -94,8 +95,8 @@ public class EmailService {
     public void sendPasswordReset(String toEmail, String username, String tenantName, String token) {
         String resetUrl = "https://iabill.com/redefinir-senha/" + token;
 
-        String subject = "Redefinir senha da sua conta em " + tenantName;
-        String body = """
+        String subject = MessageCatalog.t("Redefinir senha da sua conta em " + tenantName);
+        String body = MessageCatalog.t("""
                 Olá, %s,
 
                 Recebemos uma solicitação para redefinir a senha da sua conta no IABill,
@@ -109,7 +110,7 @@ public class EmailService {
                 sua senha atual continua válida.
 
                 Equipe IABill
-                """.formatted(username, tenantName, resetUrl);
+                """).formatted(username, tenantName, resetUrl);
 
         send(toEmail, subject, body);
     }

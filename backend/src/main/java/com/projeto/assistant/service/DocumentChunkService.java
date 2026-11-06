@@ -1,5 +1,6 @@
 package com.projeto.assistant.service;
 
+import com.projeto.assistant.config.MessageCatalog;
 import com.projeto.assistant.model.*;
 import com.projeto.assistant.repository.DocumentChunkRepository;
 import com.projeto.assistant.repository.DocumentRepository;
@@ -143,8 +144,9 @@ public class DocumentChunkService {
             Contexto:
             %s
             Instrução: %s
+            %s
             Redija o conteúdo solicitado de forma clara e objetiva:
-            """.formatted(diretrizesEspecificas, context, instruction);
+            """.formatted(diretrizesEspecificas, context, instruction, MessageCatalog.aiLanguageInstruction());
 
         // Passo 3 (Generation): chama o Gemini, medindo latencia e capturando consumo de tokens
         Instant generationStart = Instant.now();

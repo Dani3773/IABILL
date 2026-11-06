@@ -1,5 +1,6 @@
 package com.projeto.assistant.service;
 
+import com.projeto.assistant.config.MessageCatalog;
 import com.projeto.assistant.dto.UserRequestDTO;
 import com.projeto.assistant.dto.UserResponseDTO;
 import com.projeto.assistant.model.Tenant;
@@ -100,12 +101,12 @@ public class UserService {
                 .orElse(null);
 
         if (user == null) {
-            return new EmailConfirmationResponseDTO(false, "Link de convite inválido.");
+            return new EmailConfirmationResponseDTO(false, MessageCatalog.t("Link de convite inválido."));
         }
 
         if (user.getEmailVerificationExpiresAt() != null
                 && user.getEmailVerificationExpiresAt().isBefore(Instant.now())) {
-            return new EmailConfirmationResponseDTO(false, "Link de convite expirado. Peça ao administrador para reenviar o convite.");
+            return new EmailConfirmationResponseDTO(false, MessageCatalog.t("Link de convite expirado. Peça ao administrador para reenviar o convite."));
         }
 
         user.setPasswordHash(passwordEncoder.encode(request.password()));
@@ -114,7 +115,7 @@ public class UserService {
         user.setEmailVerificationExpiresAt(null);
         userRepository.save(user);
 
-        return new EmailConfirmationResponseDTO(true, "Conta ativada com sucesso.");
+        return new EmailConfirmationResponseDTO(true, MessageCatalog.t("Conta ativada com sucesso."));
     }
 
     private String generateToken() {

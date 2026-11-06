@@ -1,5 +1,6 @@
 package com.projeto.assistant.service;
 
+import com.projeto.assistant.config.MessageCatalog;
 import com.projeto.assistant.dto.*;
 import com.projeto.assistant.model.*;
 import com.projeto.assistant.repository.ChatConversationRepository;
@@ -94,14 +95,14 @@ public class ChatService {
         }
 
         String textForModel = existingMessages.isEmpty()
-                ? buildSystemContext(workspaceId) + "\n\nMensagem do usuário: " + userMessageText
+                ? buildSystemContext(workspaceId) + "\n" + MessageCatalog.aiLanguageInstruction() + "\n\nMensagem do usuário: " + userMessageText
                 : userMessageText;
 
         contents.add(Map.of("role", "user", "parts", List.of(Map.of("text", textForModel))));
 
         List<Map<String, Object>> tools = buildToolDeclarations();
         List<String> actionsTaken = new ArrayList<>();
-        String finalReply = "Desculpe, não consegui concluir a solicitação em tempo hábil.";
+        String finalReply = MessageCatalog.t("Desculpe, não consegui concluir a solicitação em tempo hábil.");
 
         for (int round = 0; round < MAX_TOOL_CALL_ROUNDS; round++) {
             Map<String, Object> modelContent = geminiFunctionCallingService.generateWithTools(contents, tools);
@@ -158,14 +159,14 @@ public class ChatService {
             case "buscar_documentos" -> {
                 String query = (String) args.get("query");
                 var results = documentChunkService.semanticSearch(workspaceId, query, 5, authTenantId);
-                actionsTaken.add("Buscou informações nos documentos: \"" + query + "\"");
+                actionsTaken.add(MessageCatalog.t("Buscou informações nos documentos: \"" + query + "\""));
                 yield results;
             }
             case "criar_documento" -> {
                 String title = (String) args.get("title");
                 DocumentType type = DocumentType.valueOf((String) args.get("type"));
                 var doc = documentService.create(new DocumentRequestDTO(workspaceId, type, title), authTenantId, authUserId);
-                actionsTaken.add("Criou o documento \"" + title + "\"");
+                actionsTaken.add(MessageCatalog.t("Criou o documento \"" + title + "\""));
                 yield doc;
             }
             case "gerar_conteudo_documento" -> {
@@ -177,7 +178,7 @@ public class ChatService {
                     yield Map.of("erro", "Documento aprovado não pode ser alterado");
                 }
                 var generation = documentChunkService.generateAssistedContent(documentId, instruction, authTenantId, authUserId);
-                actionsTaken.add("Gerou conteúdo para o documento com IA");
+                actionsTaken.add(MessageCatalog.t("Gerou conteúdo para o documento com IA"));
                 yield generation;
             }
             case "criar_tarefa" -> {
@@ -186,17 +187,17 @@ public class ChatService {
                 var item = actionItemService.create(
                         new ActionItemRequestDTO(workspaceId, title, description, ActionItemSource.MANUAL),
                         authTenantId, authUserId);
-                actionsTaken.add("Criou a tarefa \"" + title + "\" no plano de ação");
+                actionsTaken.add(MessageCatalog.t("Criou a tarefa \"" + title + "\" no plano de ação"));
                 yield item;
             }
             case "listar_tarefas" -> {
                 var items = actionItemService.findByWorkspace(workspaceId, authTenantId);
-                actionsTaken.add("Consultou o plano de ação");
+                actionsTaken.add(MessageCatalog.t("Consultou o plano de ação"));
                 yield items;
             }
             case "listar_documentos" -> {
                 var docs = documentService.findByWorkspace(workspaceId, authTenantId);
-                actionsTaken.add("Consultou a lista de documentos");
+                actionsTaken.add(MessageCatalog.t("Consultou a lista de documentos"));
                 yield docs;
             }
             default -> Map.of("error", "Função desconhecida: " + functionName);
