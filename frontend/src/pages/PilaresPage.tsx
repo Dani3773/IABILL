@@ -178,7 +178,7 @@ export function PilaresPage() {
           to: "/users",
           icon: UserCog,
           title: "Encarregado (DPO)",
-          legalBasis: "Art. 37",
+          legalBasis: "Art. 41",
           description:
             "A pessoa responsável formalmente pela proteção de dados na empresa, ponto de contato entre a empresa, os titulares, e a ANPD.",
           note: "Mesmo estando na fase avançada, vale designar cedo. Empresas de médio e grande porte são obrigadas a ter DPO. Empresas genuinamente pequenas têm dispensa dessa obrigação específica, desde que mantenham um canal de comunicação com o titular, mas a fiscalização real de 2026 tem mirado justamente empresas sem DPO visível, então declarar cedo reduz risco na prática, mesmo quando não é estritamente obrigatório.",
@@ -208,7 +208,12 @@ export function PilaresPage() {
       <h1 className="text-xl text-[#0A0A0A] mb-1">Guia LGPD</h1>
       <p className="text-sm text-[#0A0A0A]/55 mb-6">
         O caminho que sua empresa deve seguir para se manter adequada à
-        LGPD/RGPD: o que estudar e onde cada tarefa acontece no sistema.
+        LGPD/RGPD: o que estudar e onde cada tarefa acontece no sistema. Para
+        seguir etapa por etapa, use o{" "}
+        <Link to={`/workspaces/${workspaceId}/caminho`} className="text-[#B4201A] hover:underline">
+          Caminho de Adequação
+        </Link>
+        .
       </p>
       {workspaceId && <ComplianceChecklist workspaceId={workspaceId} />}
       <div className="flex mb-8">

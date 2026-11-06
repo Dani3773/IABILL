@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, ClipboardCheck, CheckCircle2 } from "lucide-react";
 import { createActionItem } from "../api/actionItemService";
+import { confirmAdequacyItem } from "../api/adequacyService";
 
 interface Question {
   id: string;
@@ -15,7 +16,7 @@ const QUESTIONS: Question[] = [
   {
     id: "dpo",
     text: "Sua empresa tem um Encarregado de Dados (DPO) formalmente designado?",
-    legalBasis: "Art. 37 da LGPD",
+    legalBasis: "Art. 41 da LGPD",
     actionTitle: "Designar um Encarregado de Dados (DPO)",
     actionDescription: "Atribua o papel de DPO a um colaborador sem conflito de interesse (evite acumular com cargos de TI, Marketing, RH ou Financeiro, conforme orientação da ANPD). Acesse a aba Usuários para atribuir o papel.",
   },
@@ -111,6 +112,8 @@ export function DiagnosticPage() {
         }
       }
     }
+    // Quem nao pode confirmar itens (perfil de leitura) ve o resumo normalmente.
+    await confirmAdequacyItem(workspaceId, "DIAGNOSTICO").catch(() => undefined);
     setCreatedCount(count);
     setIsSubmitting(false);
     setFinished(true);

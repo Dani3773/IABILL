@@ -7,6 +7,7 @@ import { HomeRedirect } from "./components/HomeRedirect";
 import { StartRedirect } from "./components/StartRedirect";
 import { DashboardPage } from "./pages/DashboardPage";
 import { HomePage } from "./pages/HomePage";
+import { AdequacyPathPage } from "./pages/AdequacyPathPage";
 import { DocumentsPage } from "./pages/DocumentsPage";
 import { DocumentDetailPage } from "./pages/DocumentDetailPage";
 import { UsersPage } from "./pages/UsersPage";
@@ -80,6 +81,7 @@ function App() {
                 element={<WorkspaceLayout />}
               >
                 <Route path="inicio" element={<HomePage />} />
+                <Route path="caminho" element={<AdequacyPathPage />} />
                 <Route path="pilares" element={<PilaresPage />} />
                 <Route path="documents" element={<DocumentsPage />} />
                 <Route path="action-plan" element={<ActionPlanPage />} />

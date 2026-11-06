@@ -19,6 +19,7 @@ import {
   ListChecks,
   LogOut,
   Menu,
+  Route,
   ScrollText,
   Shield,
   ShieldCheck,
@@ -65,6 +66,7 @@ function buildWorkspaceNav(base: string): NavGroup[] {
     {
       items: [
         { label: "Início", path: `${base}/inicio`, icon: Home },
+        { label: "Caminho de Adequação", path: `${base}/caminho`, icon: Route },
         {
           label: "Documentos",
           path: `${base}/documents`,
@@ -350,7 +352,7 @@ function Shell() {
           </div>
         )}
 
-        <nav aria-label="Menu principal" className="iabill-side-scroll flex-1 min-h-0 overflow-y-auto p-3 flex flex-col gap-2.5">
+        <nav aria-label="Menu principal" className="iabill-side-scroll flex-1 min-h-0 overflow-y-auto p-3 flex flex-col gap-2">
           {workspaceGroups.map((group, index) => (
             <div key={group.label ?? index} className="space-y-0.5">
               {group.label && !collapsed && (

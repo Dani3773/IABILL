@@ -13,5 +13,6 @@ public enum AuditEntityType {
     VENDOR,
     EMPLOYEE,
     TRAINING,
-    SECTOR
+    SECTOR,
+    ADEQUACY_CONFIRMATION
 }

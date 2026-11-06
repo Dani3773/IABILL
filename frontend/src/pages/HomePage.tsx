@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   AlertTriangle,
@@ -9,13 +9,11 @@ import {
   ShieldAlert,
   Sparkles,
 } from "lucide-react";
-import { fetchComplianceSummary } from "../api/complianceSummaryService";
-import { fetchDocumentsByWorkspace } from "../api/documentService";
-import { fetchActionItems } from "../api/actionItemService";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Alert } from "../components/Alert";
 import { useWorkspaces } from "../contexts/WorkspaceContext";
 import { useAuth } from "../contexts/AuthContext";
+import { useAdequacyPath } from "../hooks/useAdequacyPath";
 import { formatCnpj } from "../utils/format";
 import {
   DOCUMENT_STATUS_LABELS,
@@ -171,15 +169,6 @@ function buildAttention(
     });
   }
 
-  if (summary && summary.ropaActivityCount === 0 && documents.length === 0) {
-    rows.unshift({
-      tone: "info",
-      title: "Comece pelo Diagnóstico Inicial",
-      detail: "Ele identifica as lacunas e cria as primeiras tarefas.",
-      to: `${base}/pilares/diagnostico`,
-    });
-  }
-
   return rows;
 }
 
@@ -206,37 +195,7 @@ export function HomePage() {
   const { currentWorkspace, openAssistant } = useWorkspaces();
   const { role } = useAuth();
   const [question, setQuestion] = useState("");
-  const [summary, setSummary] = useState<ComplianceSummary | null>(null);
-  const [documents, setDocuments] = useState<Document[]>([]);
-  const [actions, setActions] = useState<ActionItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [failed, setFailed] = useState(false);
-
-  useEffect(() => {
-    if (!workspaceId) return;
-    let cancelled = false;
-    setIsLoading(true);
-    setFailed(false);
-    Promise.allSettled([
-      fetchComplianceSummary(workspaceId),
-      fetchDocumentsByWorkspace(workspaceId),
-      fetchActionItems(workspaceId),
-    ]).then(([summaryResult, documentsResult, actionsResult]) => {
-      if (cancelled) return;
-      setSummary(summaryResult.status === "fulfilled" ? summaryResult.value : null);
-      setDocuments(documentsResult.status === "fulfilled" ? documentsResult.value : []);
-      setActions(actionsResult.status === "fulfilled" ? actionsResult.value : []);
-      setFailed(
-        summaryResult.status === "rejected" ||
-          documentsResult.status === "rejected" ||
-          actionsResult.status === "rejected",
-      );
-      setIsLoading(false);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [workspaceId]);
+  const { summary, documents, actions, path, isLoading, failed } = useAdequacyPath(workspaceId);
 
   function handleAsk(e: FormEvent) {
     e.preventDefault();
@@ -289,6 +248,31 @@ export function HomePage() {
           Perguntar
         </button>
       </form>
+
+      <Link
+        to={`${base}/caminho`}
+        className="block bg-white rounded-xl border border-[#0A0A0A]/10 hover:border-[#D92B21]/50 px-5 py-4 mb-6 transition-colors"
+      >
+        <span className="flex items-center justify-between gap-3">
+          <span className="min-w-0">
+            <span className="block text-[13px] text-[#0A0A0A]/60">Caminho de Adequação</span>
+            <span className="block text-base text-[#0A0A0A]">
+              {path.nextStage
+                ? `Etapa ${path.nextStage.number} de ${path.stages.length}: ${path.nextStage.title}`
+                : "Todas as etapas concluídas"}
+            </span>
+          </span>
+          <span className="flex items-center gap-1.5 text-sm font-semibold text-[#B4201A] shrink-0">
+            {path.nextStage ? "Continuar" : "Revisar"} <ArrowRight className="w-4 h-4" />
+          </span>
+        </span>
+        <span className="block h-1.5 rounded-full bg-[#0A0A0A]/8 overflow-hidden mt-3">
+          <span className="block h-full bg-[#D92B21] rounded-full" style={{ width: `${path.percent}%` }} />
+        </span>
+        <span className="block text-[13px] text-[#0A0A0A]/60 mt-1.5">
+          {path.doneCount} de {path.totalCount} itens concluídos
+        </span>
+      </Link>
 
       {failed && (
         <div className="mb-4">
