@@ -4,7 +4,9 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Layout } from "./components/Layout";
 import { WorkspaceLayout } from "./components/WorkspaceLayout";
 import { HomeRedirect } from "./components/HomeRedirect";
+import { StartRedirect } from "./components/StartRedirect";
 import { DashboardPage } from "./pages/DashboardPage";
+import { HomePage } from "./pages/HomePage";
 import { DocumentsPage } from "./pages/DocumentsPage";
 import { DocumentDetailPage } from "./pages/DocumentDetailPage";
 import { UsersPage } from "./pages/UsersPage";
@@ -62,6 +64,7 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
+              <Route path="/inicio" element={<StartRedirect />} />
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route
                 path="/documents/:documentId"
@@ -77,6 +80,7 @@ function App() {
                 path="/workspaces/:workspaceId"
                 element={<WorkspaceLayout />}
               >
+                <Route path="inicio" element={<HomePage />} />
                 <Route path="pilares" element={<PilaresPage />} />
                 <Route path="documents" element={<DocumentsPage />} />
                 <Route path="action-plan" element={<ActionPlanPage />} />

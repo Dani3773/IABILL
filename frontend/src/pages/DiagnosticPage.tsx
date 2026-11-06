@@ -145,7 +145,7 @@ export function DiagnosticPage() {
         className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
-        Voltar aos Pilares
+        Voltar ao Guia LGPD
       </Link>
 
       <div className="flex items-center gap-2.5 mb-1">

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
-  ArrowLeft,
   ClipboardList,
   AlertTriangle,
   Trash2,
@@ -100,13 +99,6 @@ export function ProcessingActivitiesPage() {
 
   return (
     <div>
-      <Link
-        to={`/workspaces/${workspaceId}/pilares`}
-        className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        Voltar aos Pilares
-      </Link>
 
       <div className="flex items-center justify-between mb-2">
         <div>

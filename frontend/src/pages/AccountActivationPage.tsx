@@ -48,7 +48,7 @@ export function AccountActivationPage() {
       }
       setAuth(loginResponse);
       setStatus("success");
-      setTimeout(() => navigate("/dashboard"), 1200);
+      setTimeout(() => navigate("/inicio"), 1200);
     } catch (err) {
       setStatus("error");
       setMessage(getErrorMessage(err, "Não foi possível ativar a conta."));

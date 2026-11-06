@@ -197,7 +197,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
       }
       await enterVault();
       setAuth(response);
-      navigate(response.tenantId ? "/dashboard" : "/platform");
+      navigate(response.tenantId ? "/inicio" : "/platform");
     } catch (err) {
       if (err instanceof AxiosError && err.response?.status === 403) {
         setNeedsConfirmation(true);
@@ -218,7 +218,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
       const response = await loginWithMfa({ email, password, code: Number(mfaCode) });
       await enterVault();
       setAuth(response);
-      navigate(response.tenantId ? "/dashboard" : "/platform");
+      navigate(response.tenantId ? "/inicio" : "/platform");
     } catch (err) {
       setLoginError(getErrorMessage(err, "Código inválido."));
     } finally {

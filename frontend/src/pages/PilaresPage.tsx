@@ -184,7 +184,7 @@ export function PilaresPage() {
       bg: "bg-[#D92B21]/10",
       cards: [
         {
-          to: `/workspaces/${workspaceId}/users`,
+          to: "/users",
           icon: UserCog,
           title: "Encarregado (DPO)",
           legalBasis: "Art. 37",

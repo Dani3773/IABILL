@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Building2, Trash2 } from "lucide-react";
+import { useParams } from "react-router-dom";
+import { Building2, Trash2 } from "lucide-react";
 import { fetchSectors, createSector, deleteSector } from "../api/sectorService";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Alert } from "../components/Alert";
@@ -58,13 +58,6 @@ export function SectorsPage() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <Link
-        to={`/workspaces/${workspaceId}/pilares`}
-        className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        Voltar aos Pilares
-      </Link>
 
       <h1 className="text-xl text-[#0A0A0A] mb-1">Setores / Departamentos</h1>
       <p className="text-sm text-[#0A0A0A]/55 mb-6">

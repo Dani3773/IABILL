@@ -14,6 +14,7 @@ import {
 } from "../api/documentService";
 import { getErrorMessage } from "../api/errorUtils";
 import { useAuth } from "../contexts/AuthContext";
+import { useWorkspaces } from "../contexts/WorkspaceContext";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Alert } from "../components/Alert";
 import type { Document, DocumentType } from "../types/document";
@@ -25,6 +26,7 @@ import { renderMarkdown } from "../utils/markdown";
 export function DocumentDetailPage() {
   const { documentId } = useParams<{ documentId: string }>();
   const { role } = useAuth();
+  const { selectWorkspace } = useWorkspaces();
   const [document, setDocument] = useState<Document | null>(null);
   const [editedContent, setEditedContent] = useState("");
   const [instruction, setInstruction] = useState("");
@@ -51,6 +53,10 @@ export function DocumentDetailPage() {
     if (!documentId) return;
     loadDocument(documentId);
   }, [documentId]);
+
+  useEffect(() => {
+    if (document) selectWorkspace(document.workspaceId);
+  }, [document, selectWorkspace]);
 
   useEffect(() => {
     if (!document || !document.isPublished) {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, GraduationCap, Users, Sparkles, Trash2 } from "lucide-react";
+import { GraduationCap, Users, Sparkles, Trash2 } from "lucide-react";
 import { fetchTrainings, deleteTraining } from "../api/trainingService";
 import { TrainingModal } from "../components/TrainingModal";
 import { LoadingSpinner } from "../components/LoadingSpinner";
@@ -56,13 +56,6 @@ export function TrainingsPage() {
 
   return (
     <div>
-      <Link
-        to={`/workspaces/${workspaceId}/pilares`}
-        className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        Voltar aos Pilares
-      </Link>
 
       <div className="flex items-center justify-between mb-2 flex-wrap gap-3">
         <div>
