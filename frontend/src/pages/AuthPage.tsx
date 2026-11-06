@@ -34,6 +34,7 @@ import { COUNTRIES, BRAZILIAN_STATES } from "../constants/locations";
 import { AxiosError } from "axios";
 import { resendConfirmation } from "../api/authService";
 import { Link } from "react-router-dom";
+import "./auth.css";
 import { loginWithMfa } from "../api/authService";
 
 type SignupStep = 1 | 2 | 3;
@@ -47,23 +48,10 @@ const STEPS: { label: string; icon: typeof Building2 }[] = [
 ];
 
 const INPUT_CLASS =
-  "w-full rounded-lg bg-white/[0.05] text-white text-sm px-3 py-2.5 border border-white/10 transition-all duration-200 placeholder:text-slate-600 " +
-  "hover:border-white/20 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/35 focus:border-[#D92B21]/70 focus:bg-white/[0.07] " +
-  "[&:-webkit-autofill]:[-webkit-text-fill-color:#fff] [&:-webkit-autofill]:[transition:background-color_9999s]";
+  "w-full rounded bg-[#fffaf0] text-[#17130e] text-sm px-3 py-2.5 border border-[#c9b27e] transition-all duration-200 placeholder:text-[#7a6e55] " +
+  "hover:border-[#17130e] focus:outline-none focus:ring-2 focus:ring-[#D92B21]/35 focus:border-[#D92B21] " +
+  "[&:-webkit-autofill]:[-webkit-text-fill-color:#17130e] [&:-webkit-autofill]:[transition:background-color_9999s]";
 const INPUT_WITH_ICON = INPUT_CLASS + " pl-9";
-
-function Wordmark({ size = "text-2xl" }: { size?: string }) {
-  return (
-    <div className="select-none">
-      <span className={`${size} text-white tracking-tight`}>
-        <Logo />
-      </span>
-      <p className="text-sm text-slate-400 mt-1">
-        Adequação à LGPD e ao RGPD
-      </p>
-    </div>
-  );
-}
 
 function ApprovalSeal({ size = 96 }: { size?: number }) {
   return (
@@ -102,9 +90,9 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="flex items-baseline gap-1.5 text-[11px] font-medium text-slate-400 mb-1.5 tracking-wide">
+      <span className="flex items-baseline gap-1.5 text-[11px] font-medium text-[#4d4433] mb-1.5 tracking-wide">
         {label}
-        {optional && <span className="text-slate-600 font-normal">· opcional</span>}
+        {optional && <span className="text-[#6d614a] font-normal">· opcional</span>}
       </span>
       {children}
     </label>
@@ -390,7 +378,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const cityState = [workspaceCity, workspaceState].filter(Boolean).join(" - ");
 
   return (
-    <div className="relative min-h-screen bg-[#000000] flex items-center justify-center px-4 py-8 overflow-hidden">
+    <div className="auth">
       <style>{`
         @keyframes iabill-card-enter {
           from { opacity: 0; transform: translateY(16px) scale(0.985); }
@@ -421,140 +409,76 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
           80% { transform: translateX(4px); }
         }
         .iabill-shake { animation: iabill-shake 0.4s ease-in-out both; }
-        .iabill-card-edge {
-          background: #141414;
-        }
         @media (prefers-reduced-motion: reduce) {
           .iabill-seal-pop, .iabill-step-fwd, .iabill-step-back,
           .iabill-card-enter, .iabill-shake { animation: none; }
         }
       `}</style>
 
-      <div className="iabill-card-enter iabill-card-edge relative w-full max-w-4xl grid md:grid-cols-[1fr_1.15fr] rounded-2xl overflow-hidden ">
-        <div className="absolute top-0 inset-x-8 h-px bg-linear-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
-
-        <div className="hidden md:flex flex-col justify-between p-8 border-r border-white/10 bg-white/1.5">
+      <div className="auth__frame">
+        <aside className="auth__side">
+          <Link to="/" aria-label="IABill" className="auth__logo">
+            <Logo />
+          </Link>
           {isSignUpMode ? (
-            <>
-              <div>
-                <p className="text-sm text-[#FF8A80] mb-6">
-                  Pré-visualização · Cadastro
-                </p>
-                <div className="space-y-4">
-                  <div>
-                    <div className="h-2 w-2/3 bg-white/10 rounded-full mb-2" />
-                    <h2 className="text-xl text-white leading-snug min-h-10 transition-all">
-                      {workspaceName || <span className="text-slate-600">Sua empresa aparece aqui</span>}
-                    </h2>
-                    {workspaceDocumentId && (
-                      <p className="text-xs text-slate-400 mt-1">{formatCnpj(workspaceDocumentId)}</p>
-                    )}
+            <div className="auth__preview-wrap">
+              <h1 className="auth__title">Abra o seu arquivo.</h1>
+              <div className="auth__preview">
+                <p className="auth__preview-label">Pré-visualização</p>
+                <h2>{workspaceName || "Sua empresa aparece aqui"}</h2>
+                {workspaceDocumentId && <p>{formatCnpj(workspaceDocumentId)}</p>}
+                {legalRegimes.length > 0 && (
+                  <div className="auth__regimes">
+                    {legalRegimes.map((r) => (
+                      <span key={r}>{r}</span>
+                    ))}
                   </div>
-                  {legalRegimes.length > 0 && (
-                    <div className="flex gap-1.5 flex-wrap">
-                      {legalRegimes.map((r) => (
-                        <span
-                          key={r}
-                          className="text-[10px] tracking-wide uppercase bg-[#D92B21]/15 text-[#FF8A80] border border-[#D92B21]/20 rounded px-2 py-1"
-                        >
-                          {r}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                  {(addressParts || workspaceNeighborhood || cityState || workspaceCountry) && (
-                    <div className="pt-3 border-t border-white/10">
-                      <p className="text-sm text-slate-500 mb-1">Endereço</p>
-                      <p className="text-xs text-slate-400 leading-relaxed">
-                        {addressParts && <>{addressParts}<br /></>}
-                        {workspaceNeighborhood && <>{workspaceNeighborhood}<br /></>}
-                        {cityState && <>{cityState}<br /></>}
-                        {workspaceCountry}
-                      </p>
-                    </div>
-                  )}
-                  {workspacePhone && <p className="text-xs text-slate-400 ">{workspacePhone}</p>}
-                </div>
-              </div>
-              <div className="flex items-center justify-center pt-6 min-h-34">
-                {justCreated ? (
-                  <div className="iabill-seal-pop drop-">
+                )}
+                {(addressParts || workspaceNeighborhood || cityState || workspaceCountry) && (
+                  <p>
+                    {addressParts && <>{addressParts}<br /></>}
+                    {workspaceNeighborhood && <>{workspaceNeighborhood}<br /></>}
+                    {cityState && <>{cityState}<br /></>}
+                    {workspaceCountry}
+                  </p>
+                )}
+                {workspacePhone && <p>{workspacePhone}</p>}
+                {justCreated && (
+                  <div className="auth__seal iabill-seal-pop">
                     <ApprovalSeal size={112} />
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#D92B21]/60 animate-pulse" />
-                    <p className="text-sm text-slate-600">
-                      Aguardando confirmação
-                    </p>
                   </div>
                 )}
               </div>
-            </>
+            </div>
           ) : (
             <div>
-              <p className="text-sm text-[#FF8A80] mb-2">
-                Bem-vindo de volta
-              </p>
-              <h2 className="text-xl text-white leading-snug mb-6">
-                Sua conformidade, sempre auditável.
-              </h2>
-
-              <div className="grid grid-cols-3 gap-2 mb-6 pb-6 border-b border-white/10">
-                <div>
-                  <p className="text-lg text-white">1.000</p>
-                  <p className="text-[9px] text-slate-500 uppercase tracking-wide leading-tight mt-0.5">
-                    Precision@1
-                  </p>
-                </div>
-                <div>
-                  <p className="text-lg text-white">1.000</p>
-                  <p className="text-[9px] text-slate-500 uppercase tracking-wide leading-tight mt-0.5">
-                    Recall@5
-                  </p>
-                </div>
-                <div>
-                  <p className="text-lg text-white">100%</p>
-                  <p className="text-[9px] text-slate-500 uppercase tracking-wide leading-tight mt-0.5">
-                    Recusa correta
-                  </p>
-                </div>
-              </div>
-
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Cada ação sobre dados pessoais fica registrada numa trilha de auditoria imutável,
-                validada por avaliação quantitativa do mecanismo de recuperação de contexto.
+              <h1 className="auth__title">Seu arquivo está onde você deixou.</h1>
+              <p className="auth__lead">
+                Cada ação sobre dados pessoais fica registrada na trilha de auditoria.
               </p>
             </div>
           )}
-        </div>
+        </aside>
 
-        <div className="p-8 flex flex-col">
-          <div className="mb-6">
-            <Wordmark />
-          </div>
-
-          <div className="relative grid grid-cols-2 rounded-xl bg-white/4 border border-white/10 p-1 mb-6 text-sm">
-            <div
-              className={`absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] rounded-lg bg-white/10 border border-white/10 shadow-sm transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                isSignUpMode ? "translate-x-full" : "translate-x-0"
-              }`}
-            />
+        <div className="auth__main">
+          <Link to="/" aria-label="IABill" className="auth__logo auth__logo--mobile">
+            <Logo />
+          </Link>
+          <div className="auth__card iabill-card-enter">
+          <div className="auth__tabs">
             <button
               type="button"
+              aria-pressed={!isSignUpMode}
               onClick={() => switchMode(false)}
-              className={`relative z-10 py-1.5 rounded-lg font-medium transition-colors duration-300 ${
-                !isSignUpMode ? "text-white" : "text-slate-500 hover:text-slate-300"
-              }`}
+              className="auth__tab"
             >
               Entrar
             </button>
             <button
               type="button"
+              aria-pressed={isSignUpMode}
               onClick={() => switchMode(true)}
-              className={`relative z-10 py-1.5 rounded-lg font-medium transition-colors duration-300 ${
-                isSignUpMode ? "text-white" : "text-slate-500 hover:text-slate-300"
-              }`}
+              className="auth__tab"
             >
               Cadastrar
             </button>
@@ -564,7 +488,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
             <form onSubmit={handleMfaSubmit} className="space-y-4 flex-1 flex flex-col">
               <Field label="Código de verificação">
                 <div className="relative">
-                  <ShieldCheck className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <ShieldCheck className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
                     type="text"
                     inputMode="numeric"
@@ -577,7 +501,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                   />
                 </div>
               </Field>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-[#5f5540]">
                 Abra seu aplicativo autenticador e digite o código de 6 dígitos.
               </p>
               {loginError && (
@@ -602,7 +526,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               <button
                 type="button"
                 onClick={() => { setMfaStep(false); setMfaCode(""); }}
-                className="text-xs text-slate-500 hover:text-slate-300 text-center"
+                className="text-xs text-[#5f5540] hover:text-[#17130e] text-center"
               >
                 Voltar ao login
               </button>
@@ -611,7 +535,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
             <form onSubmit={handleLogin} className="space-y-4 flex-1 flex flex-col">
               <Field label="E-mail">
                 <div className="relative">
-                  <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Mail className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
                     type="email"
                     value={email}
@@ -624,13 +548,13 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                 </div>
               </Field>
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-medium text-slate-400 tracking-wide">Senha</span>
-                <Link to="/esqueci-senha" className="text-[11px] text-[#FF8A80] hover:underline">
+                <span className="text-[11px] font-medium text-[#4d4433] tracking-wide">Senha</span>
+                <Link to="/esqueci-senha" className="text-[11px] text-[#b4201a] hover:underline">
                   Esqueceu a senha?
                 </Link>
               </div>
                 <div className="relative">
-                  <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Lock className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
                     type={showPassword ? "text" : "password"}
                     value={password}
@@ -648,13 +572,13 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     onClick={() => setShowPassword(!showPassword)}
                     tabIndex={-1}
                     aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5f5540] hover:text-[#17130e] transition-colors"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               {capsLockOn && (
-                <p className="flex items-center gap-1.5 text-xs text-[#FBBF24]">
+                <p className="flex items-center gap-1.5 text-xs text-[#8a5a00]">
                   <AlertTriangle className="w-3.5 h-3.5" /> Caps Lock está ativado
                 </p>
               )}
@@ -669,12 +593,12 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     type="button"
                     onClick={handleResendConfirmation}
                     disabled={resendLoading}
-                    className="text-[#FF8A80] hover:underline text-xs disabled:opacity-50"
+                    className="text-[#b4201a] hover:underline text-xs disabled:opacity-50"
                   >
                     {resendLoading ? "Reenviando..." : "Reenviar e-mail de confirmação"}
                   </button>
                   {resendMessage && (
-                    <p className="text-xs text-slate-400 mt-1">{resendMessage}</p>
+                    <p className="text-xs text-[#4d4433] mt-1">{resendMessage}</p>
                   )}
                 </div>
               )}
@@ -694,7 +618,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                   </>
                 )}
               </button>
-              <p className="flex items-center justify-center gap-1.5 text-sm text-slate-600 pt-1">
+              <p className="flex items-center justify-center gap-1.5 text-sm text-[#6d614a] pt-1">
                 <ShieldCheck className="w-3 h-3" /> Conexão criptografada
               </p>
             </form>
@@ -703,12 +627,12 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               <div className="iabill-seal-pop md:hidden drop-">
                 <ApprovalSeal size={120} />
               </div>
-              <p className="text-lg text-white">Conta criada</p>
-              <p className="text-sm text-slate-400 max-w-xs">{signupSuccess}</p>
+              <p className="text-lg text-[#17130e]">Conta criada</p>
+              <p className="text-sm text-[#4d4433] max-w-xs">{signupSuccess}</p>
               <button
                 type="button"
                 onClick={() => switchMode(false)}
-                className="text-[#FF8A80] hover:underline text-sm mt-2"
+                className="text-[#b4201a] hover:underline text-sm mt-2"
               >
                 Ir para o login
               </button>
@@ -728,22 +652,22 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             isDone
                               ? "bg-[#D92B21] text-white"
                               : isCurrent
-                                ? "border-2 border-[#0A0A0A] text-[#FF8A80] "
-                                : "border border-slate-700 text-slate-600"
+                                ? "border-2 border-[#b4201a] text-[#b4201a] "
+                                : "border border-[#c9b27e] text-[#6d614a]"
                           }`}
                         >
                           {isDone ? <Check className="w-3.5 h-3.5" /> : <Icon className="w-3.5 h-3.5" />}
                         </div>
                         <span
                           className={`text-[11px] hidden sm:block transition-colors duration-300 ${
-                            isCurrent ? "text-white font-medium" : isDone ? "text-slate-400" : "text-slate-600"
+                            isCurrent ? "text-[#17130e] font-medium" : isDone ? "text-[#4d4433]" : "text-[#6d614a]"
                           }`}
                         >
                           {label}
                         </span>
                       </div>
                       {i < STEPS.length - 1 && (
-                        <div className="flex-1 h-px bg-slate-800 relative overflow-hidden rounded-full">
+                        <div className="flex-1 h-px bg-[#d9c390] relative overflow-hidden rounded-full">
                           <div
                             className={`absolute inset-y-0 left-0 bg-[#D92B21] transition-all duration-500 ease-out ${
                               isDone ? "w-full" : "w-0"
@@ -764,7 +688,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     <>
                       <Field label="CNPJ">
                         <div className="relative">
-                          <Building2 className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <Building2 className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
                             type="text"
                             inputMode="numeric"
@@ -777,13 +701,13 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             className={INPUT_WITH_ICON + " "}
                           />
                           {cnpjLookupLoading && (
-                            <Loader2 className="w-4 h-4 text-[#FF8A80] animate-spin absolute right-3 top-1/2 -translate-y-1/2" />
+                            <Loader2 className="w-4 h-4 text-[#b4201a] animate-spin absolute right-3 top-1/2 -translate-y-1/2" />
                           )}
                         </div>
                       </Field>
                       <Field label="Nome da empresa">
                         <div className="relative">
-                          <Landmark className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <Landmark className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
                             type="text"
                             value={workspaceName}
@@ -802,7 +726,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                       </Field>
                       <Field label="Telefone" optional>
                         <div className="relative">
-                          <Phone className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <Phone className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
                             type="tel"
                             inputMode="numeric"
@@ -815,7 +739,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                         </div>
                       </Field>
                       <div>
-                        <p className="text-[11px] font-medium text-slate-400 mb-1.5 tracking-wide">Regime legal aplicável</p>
+                        <p className="text-[11px] font-medium text-[#4d4433] mb-1.5 tracking-wide">Regime legal aplicável</p>
                         <div className="flex gap-3">
                           {(["LGPD", "RGPD"] as LegalRegime[]).map((regime) => {
                             const active = legalRegimes.includes(regime);
@@ -827,8 +751,8 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                                 aria-pressed={active}
                                 className={`flex-1 flex items-center justify-center gap-1.5 text-xs font-medium rounded-lg py-2.5 border transition-all duration-200 active:scale-[0.97] ${
                                   active
-                                    ? "bg-[#D92B21]/15 border-[#0A0A0A] text-[#FF8A80] "
-                                    : "border-white/10 text-slate-500 hover:border-white/25 hover:text-slate-300"
+                                    ? "bg-[#D92B21]/15 border-[#b4201a] text-[#b4201a] "
+                                    : "border-[#c9b27e] text-[#5f5540] hover:border-[#17130e] hover:text-[#17130e]"
                                 }`}
                               >
                                 {active && <Check className="w-3 h-3" />}
@@ -844,7 +768,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     <>
                       <Field label="País">
                         <div className="relative">
-                          <Globe className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <Globe className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <select
                             value={workspaceCountry}
                             onChange={(e) => {
@@ -855,7 +779,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             className={INPUT_WITH_ICON + " appearance-none cursor-pointer"}
                           >
                             {COUNTRIES.map((c) => (
-                              <option key={c.code} value={c.name} className="bg-[#000000]">
+                              <option key={c.code} value={c.name} className="bg-[#fffaf0]">
                                 {c.name}
                               </option>
                             ))}
@@ -865,7 +789,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
 
                       <Field label="CEP" optional={workspaceCountry !== "Brasil"}>
                         <div className="relative">
-                          <Hash className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <Hash className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
                             type="text"
                             inputMode="numeric"
@@ -877,7 +801,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             className={INPUT_WITH_ICON + " "}
                           />
                           {cepLookupLoading && (
-                            <Loader2 className="w-4 h-4 text-[#FF8A80] animate-spin absolute right-3 top-1/2 -translate-y-1/2" />
+                            <Loader2 className="w-4 h-4 text-[#b4201a] animate-spin absolute right-3 top-1/2 -translate-y-1/2" />
                           )}
                         </div>
                       </Field>
@@ -890,9 +814,9 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                               onChange={(e) => setWorkspaceState(e.target.value)}
                               className={INPUT_CLASS + " appearance-none cursor-pointer"}
                             >
-                              <option value="" className="bg-[#000000]">Selecione</option>
+                              <option value="" className="bg-[#fffaf0]">Selecione</option>
                               {BRAZILIAN_STATES.map((s) => (
-                                <option key={s} value={s} className="bg-[#000000]">
+                                <option key={s} value={s} className="bg-[#fffaf0]">
                                   {s}
                                 </option>
                               ))}
@@ -935,7 +859,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                         <div className="col-span-2">
                           <Field label="Rua" optional>
                             <div className="relative">
-                              <MapPin className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                              <MapPin className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                               <input
                                 type="text"
                                 value={workspaceStreet}
@@ -949,7 +873,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                         </div>
                         <Field label="Número" optional>
                           <div className="relative">
-                            <Hash className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                            <Hash className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                             <input
                               type="text"
                               value={workspaceAddressNumber}
@@ -961,7 +885,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                           </div>
                         </Field>
                       </div>
-                      <p className="text-[11px] text-slate-600 pt-1 leading-relaxed">
+                      <p className="text-[11px] text-[#6d614a] pt-1 leading-relaxed">
                         {workspaceCountry === "Brasil"
                           ? "Informe o CEP para preencher automaticamente rua, bairro, cidade e estado."
                           : "O endereço é usado nos registros de conformidade da sua organização. Você pode completá-lo depois."}
@@ -972,7 +896,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     <>
                       <Field label="Nome de usuário">
                         <div className="relative">
-                          <UserRound className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <UserRound className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
                             type="text"
                             value={adminUsername}
@@ -985,7 +909,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                       </Field>
                       <Field label="E-mail">
                         <div className="relative">
-                          <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <Mail className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
                             type="email"
                             value={adminEmail}
@@ -999,7 +923,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                       </Field>
                       <Field label="Senha">
                         <div className="relative">
-                          <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <Lock className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
                             type={showSignupPassword ? "text" : "password"}
                             value={adminPassword}
@@ -1015,7 +939,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             onClick={() => setShowSignupPassword(!showSignupPassword)}
                             tabIndex={-1}
                             aria-label={showSignupPassword ? "Ocultar senha" : "Mostrar senha"}
-                            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5f5540] hover:text-[#17130e] transition-colors"
                           >
                             {showSignupPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                           </button>
@@ -1056,7 +980,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     <button
                       type="button"
                       onClick={goBack}
-                      className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-white px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all"
+                      className="flex items-center gap-1.5 text-sm text-[#4d4433] hover:text-[#17130e] px-3 py-2.5 rounded-lg hover:bg-[#e4cd97] transition-all"
                     >
                       <ArrowLeft className="w-4 h-4" /> Voltar
                     </button>
@@ -1088,6 +1012,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               </form>
             </div>
           )}
+          </div>
         </div>
       </div>
     </div>

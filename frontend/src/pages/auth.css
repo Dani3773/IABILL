@@ -1,0 +1,196 @@
+.auth {
+  background: #0c1c16;
+  color: #f7ecd0;
+  font-family: "Switzer", ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.01em;
+  min-height: 100svh;
+}
+
+.auth__frame {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 6fr);
+  min-height: 100svh;
+}
+
+.auth__side {
+  background: url("/landing/arquivo.webp") center 40% / cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 24px clamp(32px, 4vw, 64px) clamp(40px, 5vw, 72px);
+  position: relative;
+}
+
+.auth__side::before {
+  background: #0c1c16;
+  content: "";
+  inset: 0;
+  opacity: 0.64;
+  position: absolute;
+}
+
+.auth__side > * {
+  position: relative;
+}
+
+.auth__logo {
+  color: #f7ecd0;
+  width: fit-content;
+}
+
+.auth__logo--mobile {
+  display: none;
+}
+
+.auth__title {
+  font-family: "Archivo", "Switzer", sans-serif;
+  font-size: clamp(2.75rem, 5.4vw, 6.5rem);
+  font-stretch: 70%;
+  font-weight: 800;
+  letter-spacing: -0.012em;
+  line-height: 0.98;
+  margin: 0;
+  max-width: 11em;
+  text-transform: uppercase;
+}
+
+.auth__lead {
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  line-height: 1.35;
+  margin: 20px 0 0;
+  max-width: 34ch;
+}
+
+.auth__preview {
+  background: #fffaf0;
+  border-radius: 3px;
+  color: #17130e;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  margin-top: 28px;
+  max-width: 440px;
+  min-height: 170px;
+  padding: 20px 22px;
+  position: relative;
+  rotate: -0.8deg;
+}
+
+.auth__preview p {
+  color: #4d4433;
+  margin: 8px 0 0;
+}
+
+.auth__preview .auth__preview-label {
+  color: #5f5540;
+  font-size: 0.875rem;
+  margin: 0 0 6px;
+}
+
+.auth__preview h2 {
+  font-family: "Archivo", "Switzer", sans-serif;
+  font-size: 1.625rem;
+  font-stretch: 72%;
+  font-weight: 800;
+  line-height: 1.05;
+  margin: 0;
+  overflow-wrap: anywhere;
+  text-transform: uppercase;
+}
+
+.auth__regimes {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.auth__regimes span {
+  border: 2px solid #b4201a;
+  border-radius: 3px;
+  color: #b4201a;
+  font-family: "Archivo", "Switzer", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 800;
+  padding: 0 7px;
+}
+
+.auth__seal {
+  bottom: 8px;
+  position: absolute;
+  right: 8px;
+}
+
+.auth__main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: center;
+  padding: 88px clamp(24px, 5vw, 80px) 48px;
+}
+
+.auth__card {
+  background: #efdcae;
+  border-radius: 0 6px 6px 6px;
+  color: #17130e;
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  padding: 28px;
+  position: relative;
+  width: 100%;
+}
+
+.auth__tabs {
+  bottom: 100%;
+  display: flex;
+  gap: 4px;
+  left: 0;
+  position: absolute;
+}
+
+.auth__tab {
+  background: #c9985c;
+  border: 0;
+  border-radius: 6px 6px 0 0;
+  color: #17130e;
+  cursor: pointer;
+  font-family: "Archivo", "Switzer", sans-serif;
+  font-size: 1.125rem;
+  font-stretch: 78%;
+  font-weight: 800;
+  line-height: 1;
+  padding: 12px 22px 9px;
+  text-transform: uppercase;
+  transition: background-color 160ms ease;
+}
+
+.auth__tab[aria-pressed="true"] {
+  background: #efdcae;
+}
+
+@media (max-width: 860px) {
+  .auth__frame {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .auth__side {
+    display: none;
+  }
+
+  .auth__main {
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 20px 20px 40px;
+  }
+
+  .auth__logo--mobile {
+    display: block;
+    margin-bottom: 44px;
+  }
+
+  .auth__card {
+    max-width: none;
+    padding: 22px 20px;
+  }
+}
