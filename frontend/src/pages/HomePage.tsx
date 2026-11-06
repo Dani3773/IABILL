@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   AlertTriangle,
@@ -7,6 +7,7 @@ import {
   ClipboardCheck,
   FileText,
   ShieldAlert,
+  Sparkles,
 } from "lucide-react";
 import { fetchComplianceSummary } from "../api/complianceSummaryService";
 import { fetchDocumentsByWorkspace } from "../api/documentService";
@@ -202,8 +203,9 @@ function Stat({ label, value, to }: { label: string; value: string; to: string }
 
 export function HomePage() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { currentWorkspace } = useWorkspaces();
+  const { currentWorkspace, openAssistant } = useWorkspaces();
   const { role } = useAuth();
+  const [question, setQuestion] = useState("");
   const [summary, setSummary] = useState<ComplianceSummary | null>(null);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [actions, setActions] = useState<ActionItem[]>([]);
@@ -236,6 +238,14 @@ export function HomePage() {
     };
   }, [workspaceId]);
 
+  function handleAsk(e: FormEvent) {
+    e.preventDefault();
+    const text = question.trim();
+    if (!text) return;
+    openAssistant("chat", text);
+    setQuestion("");
+  }
+
   if (isLoading) return <LoadingSpinner label="Carregando a unidade..." />;
 
   const base = `/workspaces/${workspaceId}`;
@@ -257,6 +267,28 @@ export function HomePage() {
           </p>
         )}
       </div>
+
+      <form
+        onSubmit={handleAsk}
+        className="flex items-center gap-2 bg-white rounded-xl border border-[#0A0A0A]/15 focus-within:border-[#D92B21] pl-4 pr-2 py-2 mb-6 transition-colors"
+      >
+        <Sparkles className="w-4 h-4 text-[#B4201A] shrink-0" />
+        <input
+          type="text"
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          aria-label="Pergunte ao assistente"
+          placeholder="Pergunte sobre os documentos desta unidade..."
+          className="flex-1 min-w-0 bg-transparent text-[15px] text-[#0A0A0A] py-1.5 focus:outline-none placeholder:text-[#0A0A0A]/50"
+        />
+        <button
+          type="submit"
+          disabled={!question.trim()}
+          className="bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors shrink-0"
+        >
+          Perguntar
+        </button>
+      </form>
 
       {failed && (
         <div className="mb-4">

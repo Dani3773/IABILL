@@ -20,9 +20,9 @@ import {
   LogOut,
   Menu,
   ScrollText,
-  Search,
   Shield,
   ShieldCheck,
+  Sparkles,
   Truck,
   Users,
   X,
@@ -31,6 +31,7 @@ import {
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useWorkspaces, WorkspaceProvider } from "../contexts/WorkspaceContext";
+import { AssistantPanel } from "../components/AssistantPanel";
 import { AvatarImage } from "../components/AvatarImage";
 import { MfaSetupModal } from "../components/MfaSetupModal";
 import { fetchMfaStatus, disableMfa } from "../api/authService";
@@ -70,7 +71,6 @@ function buildWorkspaceNav(base: string): NavGroup[] {
           isActive: (pathname) =>
             pathname.startsWith(`${base}/documents`) || pathname.startsWith("/documents/"),
         },
-        { label: "Buscar", path: `${base}/search`, icon: Search },
       ],
     },
     {
@@ -129,7 +129,14 @@ function Shell() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [unitsOpen, setUnitsOpen] = useState(false);
-  const { workspaces, currentWorkspace, currentWorkspaceId } = useWorkspaces();
+  const {
+    workspaces,
+    currentWorkspace,
+    currentWorkspaceId,
+    assistantOpen,
+    openAssistant,
+    closeAssistant,
+  } = useWorkspaces();
   const workspaceMatch = useMatch("/workspaces/:workspaceId/*");
   const [mfaEnabled, setMfaEnabled] = useState<boolean | null>(null);
   const [showMfaModal, setShowMfaModal] = useState(false);
@@ -313,6 +320,26 @@ function Shell() {
           </div>
         )}
 
+        {currentWorkspace && (
+          <div className="px-3 pt-2">
+            <button
+              onClick={() => {
+                setMobileOpen(false);
+                if (assistantOpen) closeAssistant();
+                else openAssistant();
+              }}
+              aria-pressed={assistantOpen}
+              title={collapsed ? "Assistente IA" : undefined}
+              className={`flex items-center gap-2.5 w-full rounded-lg px-3 py-2 text-sm font-semibold text-white bg-[#D92B21] hover:bg-[#B4201A] transition-colors ${
+                collapsed ? "md:justify-center" : ""
+              }`}
+            >
+              <Sparkles className="w-4 h-4 shrink-0" />
+              <span className={collapsed ? "md:hidden" : ""}>Assistente IA</span>
+            </button>
+          </div>
+        )}
+
         <nav aria-label="Menu principal" className="flex-1 min-h-0 overflow-y-auto p-3 flex flex-col gap-3">
           {workspaceGroups.map((group, index) => (
             <div key={group.label ?? index} className="space-y-0.5">
@@ -419,9 +446,14 @@ function Shell() {
           <button onClick={() => setMobileOpen(true)} aria-label="Abrir menu">
             <Menu className="w-5 h-5" />
           </button>
-          <span className="min-w-0 truncate text-sm font-medium">
+          <span className="min-w-0 flex-1 truncate text-sm font-medium">
             {currentWorkspace?.name ?? "IABill"}
           </span>
+          {currentWorkspace && (
+            <button onClick={() => openAssistant()} aria-label="Abrir assistente" className="text-[#FFB3AD]">
+              <Sparkles className="w-5 h-5" />
+            </button>
+          )}
         </header>
         <main className="flex-1 min-h-0 overflow-y-auto p-4 md:p-8">
           <div className="mx-auto max-w-[1200px]">
@@ -429,6 +461,10 @@ function Shell() {
           </div>
         </main>
       </div>
+
+      {assistantOpen && currentWorkspace && (
+        <AssistantPanel key={currentWorkspace.id} workspaceId={currentWorkspace.id} />
+      )}
 
       {showMfaModal && (
         <MfaSetupModal

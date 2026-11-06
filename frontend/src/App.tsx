@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Layout } from "./components/Layout";
@@ -12,7 +12,6 @@ import { DocumentDetailPage } from "./pages/DocumentDetailPage";
 import { UsersPage } from "./pages/UsersPage";
 import { AuditLogsPage } from "./pages/AuditLogsPage";
 import { ActionPlanPage } from "./pages/ActionPlanPage";
-import { SearchPage } from "./pages/SearchPage";
 import { AuthPage } from './pages/AuthPage';
 import { SuperAdminPage } from './pages/SuperAdminPage';
 import { PlatformTenantDetailPage } from './pages/PlatformTenantDetailPage';
@@ -86,7 +85,7 @@ function App() {
                 <Route path="action-plan" element={<ActionPlanPage />} />
                 <Route path="incidents" element={<IncidentsPage />} />
                 <Route path="data-subject-requests" element={<DataSubjectRequestsPage />} />
-                <Route path="search" element={<SearchPage />} />
+                <Route path="search" element={<Navigate to="../documents" relative="path" replace />} />
                 <Route path="pilares/ropa" element={<ProcessingActivitiesPage />} />
                 <Route path="pilares/fornecedores" element={<VendorsPage />} />
                 <Route path="pilares/treinamento" element={<TrainingsPage />} />

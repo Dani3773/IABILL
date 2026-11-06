@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { Outlet, useParams } from "react-router-dom";
-import { ChatWidget } from "./ChatWidget";
 import { useWorkspaces } from "../contexts/WorkspaceContext";
 
 // A navegacao agora fica toda no menu lateral. Este layout so mantem a
@@ -13,10 +12,5 @@ export function WorkspaceLayout() {
     if (workspaceId) selectWorkspace(workspaceId);
   }, [workspaceId, selectWorkspace]);
 
-  return (
-    <div>
-      <Outlet />
-      {workspaceId && <ChatWidget workspaceId={workspaceId} />}
-    </div>
-  );
+  return <Outlet />;
 }

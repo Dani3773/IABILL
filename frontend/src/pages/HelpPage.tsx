@@ -31,11 +31,11 @@ const SECTIONS: Section[] = [
     icon: Rocket,
     body: [
       {
-        text: "O IABill organiza a adequação da sua empresa à LGPD/RGPD em módulos (chamados de \"Pilares\"), mais um fluxo de geração assistida de documentos por IA. Nenhum conteúdo gerado por IA vira oficial sozinho, sempre passa por revisão humana antes de valer.",
+        text: "O IABill organiza a adequação da sua empresa à LGPD/RGPD em módulos, reunidos no menu lateral e explicados no Guia LGPD, mais um fluxo de geração assistida de documentos por IA. Nenhum conteúdo gerado por IA vira oficial sozinho, sempre passa por revisão humana antes de valer.",
       },
       {
         heading: "Um caminho recomendado, passo a passo",
-        text: "1. Rode o Diagnóstico Inicial (aba Pilares), ele identifica lacunas reais e já cria as primeiras tarefas no Plano de Ação sozinho. 2. Abra o Plano de Ação e comece pelas tarefas mais simples, cada uma já aponta pro módulo certo do sistema. 3. Cadastre pelo menos um Fornecedor e um Colaborador, mesmo que poucos, isso deixa o sistema com dado real suficiente pra IA gerar conteúdo confiável depois. 4. Gere seu primeiro documento (recomendamos começar pelo Inventário de Dados), esse documento aprovado vira a base de contexto pra todos os outros. 5. Só depois disso gere a Política de Segurança da Informação e a Política de Privacidade, elas dependem do Inventário já existir e estar aprovado. 6. Ative a Verificação em 2 Etapas na sua própria conta.",
+        text: "1. Rode o Diagnóstico Inicial (menu Guia LGPD), ele identifica lacunas reais e já cria as primeiras tarefas no Plano de Ação sozinho. 2. Abra o Plano de Ação e comece pelas tarefas mais simples, cada uma já aponta pro módulo certo do sistema. 3. Cadastre pelo menos um Fornecedor e um Colaborador, mesmo que poucos, isso deixa o sistema com dado real suficiente pra IA gerar conteúdo confiável depois. 4. Gere seu primeiro documento (recomendamos começar pelo Inventário de Dados), esse documento aprovado vira a base de contexto pra todos os outros. 5. Só depois disso gere a Política de Segurança da Informação e a Política de Privacidade, elas dependem do Inventário já existir e estar aprovado. 6. Ative a Verificação em 2 Etapas na sua própria conta.",
       },
       {
         heading: "O ciclo de um documento",
@@ -43,17 +43,17 @@ const SECTIONS: Section[] = [
       },
       {
         heading: "Tem uma dúvida específica no meio do caminho?",
-        text: "Use o assistente de chat, disponível em qualquer tela do sistema (ícone no canto inferior direito). Ele consegue consultar seus documentos e tarefas reais e responder com base no que já existe no seu workspace, além de poder criar documentos e tarefas diretamente pela conversa.",
+        text: "Use o Assistente IA, disponível em qualquer tela do sistema (botão vermelho no menu lateral). Ele consegue consultar seus documentos e tarefas reais e responder com base no que já existe no seu workspace, além de poder criar documentos e tarefas diretamente pela conversa.",
       },
     ],
   },
     {
     id: "estrutura-pilares",
-    title: "Como os Pilares Estão Organizados",
+    title: "Como o Guia LGPD Está Organizado",
     icon: ClipboardList,
     body: [
       {
-        text: "A aba Pilares é o mapa geral da adequação da sua empresa, organizada em três estágios, do conteúdo que se estuda até o que se opera no dia a dia.",
+        text: "O Guia LGPD é o mapa geral da adequação da sua empresa, organizada em três estágios, do conteúdo que se estuda até o que se opera no dia a dia.",
       },
       {
         heading: "1. Fundamentos Legais",
@@ -111,7 +111,7 @@ const SECTIONS: Section[] = [
     icon: FileText,
     body: [
       {
-        text: "A IA só usa como base os documentos já aprovados dentro do mesmo workspace, nunca conhecimento genérico da internet. Se não houver contexto suficiente, o sistema recusa gerar conteúdo em vez de inventar informação sobre sua empresa.",
+        text: "A IA só usa como base os documentos já aprovados dentro da mesma unidade, nunca conhecimento genérico da internet. Se não houver contexto suficiente, o sistema recusa gerar conteúdo em vez de inventar informação sobre sua empresa.",
       },
       {
         heading: "Tipos de documento disponíveis",
@@ -170,7 +170,7 @@ const SECTIONS: Section[] = [
     icon: ListTodo,
     body: [
       {
-        text: "Lista de tarefas de adequação, criadas manualmente ou sugeridas pela IA com base nos documentos já existentes no workspace. Tarefas sugeridas por IA aparecem com um selo \"IA\", mantendo a origem sempre rastreável.",
+        text: "Lista de tarefas de adequação, criadas manualmente ou sugeridas pela IA com base nos documentos já existentes na unidade. Tarefas sugeridas por IA aparecem com um selo \"IA\", mantendo a origem sempre rastreável.",
       },
     ],
   },
@@ -226,11 +226,11 @@ const SECTIONS: Section[] = [
       },
       {
         heading: "Onde encontrar cada coisa no sistema",
-        text: "Papel de DPO: aba Usuários, filtrando pelo papel Encarregado. ROPA: aba Pilares > Inventário/ROPA. Política de Segurança da Informação: aba Documentos, tipo PSI, já aprovada. Treinamentos: aba Pilares > Treinamento, com a lista de participantes de cada um. Incidentes: aba Incidentes, com as datas de notificação à ANPD e aos titulares já registradas separadamente.",
+        text: "Papel de DPO: menu Usuários, filtrando pelo papel Encarregado. ROPA: menu Inventário / ROPA. Política de Segurança da Informação: menu Documentos, tipo PSI, já aprovada. Treinamentos: aba Pilares > Treinamento, com a lista de participantes de cada um. Incidentes: aba Incidentes, com as datas de notificação à ANPD e aos titulares já registradas separadamente.",
       },
       {
         heading: "Como compartilhar",
-        text: "Hoje é possível compartilhar o conteúdo diretamente das telas do sistema, ou exportar a trilha de auditoria completa em CSV (aba Auditoria) como evidência complementar de rastreabilidade. A exportação de documentos individuais em PDF ainda não está disponível, é um item já mapeado para desenvolvimento futuro.",
+        text: "Hoje é possível compartilhar o conteúdo diretamente das telas do sistema, ou exportar a trilha de auditoria completa em CSV (menu Auditoria) como evidência complementar de rastreabilidade. A exportação de documentos individuais em PDF ainda não está disponível, é um item já mapeado para desenvolvimento futuro.",
       },
       {
         heading: "Importante",
@@ -265,7 +265,7 @@ export function HelpPage() {
         className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
-        Voltar aos Workspaces
+        Voltar às unidades
       </Link>
 
       <div className="flex items-center gap-2.5 mb-1">
