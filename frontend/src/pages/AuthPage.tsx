@@ -1,6 +1,5 @@
 import { Logo } from "../components/brand/Logo";
 import {
-  useEffect,
   useRef,
   useState,
   type FormEvent,
@@ -24,6 +23,7 @@ import {
   Landmark,
   Hash,
   Loader2,
+  ShieldCheck,
   AlertTriangle,
 } from "lucide-react";
 import { login, signup } from "../api/authService";
@@ -99,14 +99,6 @@ function Field({
   );
 }
 
-function readClock() {
-  const d = new Date();
-  return {
-    date: d.toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" }),
-    time: d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }).replace(":", "h"),
-  };
-}
-
 function passwordStrength(pw: string): number {
   if (!pw) return 0;
   let score = 0;
@@ -135,12 +127,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const [stepDirection, setStepDirection] = useState<StepDirection>("fwd");
   const [justCreated, setJustCreated] = useState(false);
   const [opening, setOpening] = useState(false);
-  const [now, setNow] = useState(readClock);
-
-  useEffect(() => {
-    const timer = setInterval(() => setNow(readClock()), 15000);
-    return () => clearInterval(timer);
-  }, []);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -436,152 +422,150 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
       `}</style>
 
       <div className="auth__frame">
-        <header className="auth__top">
+        <main className="auth__main">
           <Link to="/" aria-label="IABill" className="auth__logo">
             <Logo />
           </Link>
+          <div className={`auth__card iabill-card-enter${isSignUpMode ? " auth__card--signup" : ""}`}>
+          <h1 className="auth__title">{isSignUpMode ? "Crie a conta da sua empresa" : "Entrar no IABill"}</h1>
           <p className="auth__switch">
-            <span>{isSignUpMode ? "Já tem conta?" : "Ainda não tem conta?"} </span>
+            {isSignUpMode ? "Já tem conta?" : "Ainda não tem conta?"}{" "}
             <button type="button" onClick={() => switchMode(!isSignUpMode)}>
               {isSignUpMode ? "Entrar" : "Cadastrar empresa"}
             </button>
           </p>
-        </header>
-
-        <main className="auth__main">
-          <div className={`auth__card iabill-card-enter${isSignUpMode ? " auth__card--signup" : ""}`}>
-          <h1 className={isSignUpMode ? "auth__title" : "sr-only"}>
-            {isSignUpMode ? "Abra a conta da sua empresa." : "Entrar no IABill"}
-          </h1>
 
           {!isSignUpMode && mfaStep ? (
-            <form onSubmit={handleMfaSubmit} className="auth__form">
-              <p className="auth__deed">
-                Para concluir, o código do seu autenticador é{" "}
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  autoComplete="one-time-code"
-                  aria-label="Código de verificação"
-                  value={mfaCode}
-                  onChange={(e) => setMfaCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                  required
-                  autoFocus
-                  placeholder="000000"
-                  className="auth__blank auth__blank--code"
-                />
-                <span className="auth__stop">.</span>
+            <form onSubmit={handleMfaSubmit} className="space-y-4">
+              <Field label="Código de verificação">
+                <div className="relative">
+                  <ShieldCheck className="w-4 h-4 text-[#6f6a61] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    value={mfaCode}
+                    onChange={(e) => setMfaCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                    required
+                    autoFocus
+                    placeholder="000000"
+                    className={INPUT_WITH_ICON + " tracking-widest text-center"}
+                  />
+                </div>
+              </Field>
+              <p className="text-sm text-[#6f6a61]">
+                Abra seu aplicativo autenticador e digite o código de 6 dígitos.
               </p>
               {loginError && (
-                <div key={loginError} className="iabill-shake auth__notice">
+                <div key={loginError} className="iabill-shake">
                   <Alert type="error" message={loginError} />
                 </div>
               )}
-              <div className="auth__actions">
-                <button type="submit" disabled={mfaLoading || mfaCode.length !== 6} className="auth__submit">
-                  {mfaLoading ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" /> Verificando...
-                    </>
-                  ) : (
-                    <>
-                      Verificar <ArrowRight className="w-5 h-5" />
-                    </>
-                  )}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => { setMfaStep(false); setMfaCode(""); }}
-                  className="auth__quiet"
-                >
-                  Voltar ao login
-                </button>
-              </div>
+              <button type="submit" disabled={mfaLoading || mfaCode.length !== 6} className="w-full flex items-center justify-center gap-2 bg-[#D92B21] hover:bg-[#B4201A] active:scale-[0.985] disabled:opacity-60 disabled:pointer-events-none text-white text-[15px] font-semibold rounded-md py-3 transition-all duration-200">
+                {mfaLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" /> Verificando...
+                  </>
+                ) : (
+                  "Verificar"
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={() => { setMfaStep(false); setMfaCode(""); }}
+                className="auth__link mx-auto block"
+              >
+                Voltar ao login
+              </button>
             </form>
           ) : !isSignUpMode ? (
-            <form onSubmit={handleLogin} className="auth__form">
-              <p className="auth__deed">
-                <span className="auth__line">Em {now.date}, às {now.time},</span>
-                <span className="auth__line auth__line--fill">
+            <form onSubmit={handleLogin} className="space-y-4">
+              <Field label="E-mail">
+                <div className="relative">
+                  <Mail className="w-4 h-4 text-[#6f6a61] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
+                    id="login-email"
+                    name="email"
                     type="email"
-                    aria-label="E-mail"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     autoComplete="username"
-                    placeholder="seu e-mail"
-                    className="auth__blank"
+                    placeholder="voce@empresa.com"
+                    className={INPUT_WITH_ICON}
                   />
-                  <span>entra </span>
-                </span>
-                <span className="auth__line auth__line--fill">
-                  <span>com a senha</span>
-                  <span className="auth__secret">
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      aria-label="Senha"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      onKeyDown={handleCapsLock}
-                      onKeyUp={handleCapsLock}
-                      onBlur={() => setCapsLockOn(false)}
-                      required
-                      autoComplete="current-password"
-                      placeholder="sua senha"
-                      className="auth__blank"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      tabIndex={-1}
-                      aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-                    >
-                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </button>
-                  </span>
-                  <span className="auth__stop">.</span>
-                </span>
-              </p>
+                </div>
+              </Field>
+              <div>
+                <div className="flex items-baseline justify-between mb-1.5">
+                  <label htmlFor="login-password" className="text-[13px] font-medium text-[#4a4640] tracking-wide">
+                    Senha
+                  </label>
+                  <Link to="/esqueci-senha" className="auth__link">
+                    Esqueceu a senha?
+                  </Link>
+                </div>
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-[#6f6a61] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <input
+                    id="login-password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={handleCapsLock}
+                    onKeyUp={handleCapsLock}
+                    onBlur={() => setCapsLockOn(false)}
+                    required
+                    autoComplete="current-password"
+                    placeholder="Sua senha"
+                    className={INPUT_WITH_ICON + " pr-10"}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    tabIndex={-1}
+                    aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#6f6a61] hover:text-[#17130e] transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
               {capsLockOn && (
-                <p className="flex items-center gap-1.5 text-sm text-[#8a5a00] auth__notice">
+                <p className="flex items-center gap-1.5 text-sm text-[#8a5a00]">
                   <AlertTriangle className="w-4 h-4" /> Caps Lock está ativado
                 </p>
               )}
               {loginError && (
-                <div key={loginError} className="iabill-shake auth__notice">
+                <div key={loginError} className="iabill-shake">
                   <Alert type="error" message={loginError} />
                 </div>
               )}
               {needsConfirmation && (
-                <div className="auth__notice">
+                <div className="text-center">
                   <button
                     type="button"
                     onClick={handleResendConfirmation}
                     disabled={resendLoading}
-                    className="auth__quiet"
+                    className="auth__link disabled:opacity-50"
                   >
                     {resendLoading ? "Reenviando..." : "Reenviar e-mail de confirmação"}
                   </button>
                   {resendMessage && <p className="text-sm text-[#4a4640] mt-1">{resendMessage}</p>}
                 </div>
               )}
-              <div className="auth__actions">
-                <button type="submit" disabled={loginLoading} className="auth__submit">
-                  {loginLoading ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" /> Entrando...
-                    </>
-                  ) : (
-                    <>
-                      Entrar <ArrowRight className="w-5 h-5" />
-                    </>
-                  )}
-                </button>
-                <Link to="/esqueci-senha" className="auth__quiet">
-                  Esqueceu a senha?
-                </Link>
-              </div>
+              <button type="submit" disabled={loginLoading} className="w-full flex items-center justify-center gap-2 bg-[#D92B21] hover:bg-[#B4201A] active:scale-[0.985] disabled:opacity-60 disabled:pointer-events-none text-white text-[15px] font-semibold rounded-md py-3 transition-all duration-200">
+                {loginLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" /> Entrando...
+                  </>
+                ) : (
+                  <>
+                    Entrar <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
             </form>
           ) : justCreated ? (
             <div className="flex-1 flex flex-col items-center justify-center gap-4 py-8 text-center">
