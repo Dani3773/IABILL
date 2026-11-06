@@ -21,3 +21,9 @@
   font-weight: 500;
   letter-spacing: -0.02em;
 }
+
+/* Em telas muito baixas, o menu lateral rola com uma barra discreta. */
+.iabill-side-scroll {
+  scrollbar-color: rgb(255 255 255 / 0.22) transparent;
+  scrollbar-width: thin;
+}

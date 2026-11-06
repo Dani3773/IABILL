@@ -226,11 +226,11 @@ const SECTIONS: Section[] = [
       },
       {
         heading: "Onde encontrar cada coisa no sistema",
-        text: "Papel de DPO: menu Usuários, filtrando pelo papel Encarregado. ROPA: menu Inventário / ROPA. Política de Segurança da Informação: menu Documentos, tipo PSI, já aprovada. Treinamentos: aba Pilares > Treinamento, com a lista de participantes de cada um. Incidentes: aba Incidentes, com as datas de notificação à ANPD e aos titulares já registradas separadamente.",
+        text: "Papel de DPO: menu da conta > Usuários, filtrando pelo papel Encarregado. ROPA: menu Inventário / ROPA. Política de Segurança da Informação: menu Documentos, tipo PSI, já aprovada. Treinamentos: aba Pilares > Treinamento, com a lista de participantes de cada um. Incidentes: aba Incidentes, com as datas de notificação à ANPD e aos titulares já registradas separadamente.",
       },
       {
         heading: "Como compartilhar",
-        text: "Hoje é possível compartilhar o conteúdo diretamente das telas do sistema, ou exportar a trilha de auditoria completa em CSV (menu Auditoria) como evidência complementar de rastreabilidade. A exportação de documentos individuais em PDF ainda não está disponível, é um item já mapeado para desenvolvimento futuro.",
+        text: "Hoje é possível compartilhar o conteúdo diretamente das telas do sistema, ou exportar a trilha de auditoria completa em CSV (menu da conta > Auditoria) como evidência complementar de rastreabilidade. A exportação de documentos individuais em PDF ainda não está disponível, é um item já mapeado para desenvolvimento futuro.",
       },
       {
         heading: "Importante",

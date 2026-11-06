@@ -50,6 +50,7 @@ interface NavItem {
   isActive?: (pathname: string) => boolean;
   adminOnly?: boolean;
   superAdminOnly?: boolean;
+  onlyWithoutUnit?: boolean;
 }
 
 interface NavGroup {
@@ -150,6 +151,7 @@ function Shell() {
   useEffect(() => {
     setMobileOpen(false);
     setUnitsOpen(false);
+    setProfileOpen(false);
   }, [location.pathname]);
 
   function switchWorkspace(id: string) {
@@ -179,17 +181,25 @@ function Shell() {
   }
 
   const footerItems: NavItem[] = [
-    { label: "Unidades", path: "/dashboard", icon: Building },
-    { label: "Usuários", path: "/users", icon: Users, adminOnly: true },
-    { label: "Auditoria", path: "/audit-logs", icon: ScrollText, adminOnly: true },
+    { label: "Unidades", path: "/dashboard", icon: Building, onlyWithoutUnit: true },
     { label: "Ajuda", path: "/ajuda", icon: HelpCircle },
     { label: "Plataforma", path: "/platform", icon: Shield, superAdminOnly: true },
   ].filter((item: NavItem) => {
     const passesAdminCheck = !item.adminOnly || role === "ADMIN" || role === "SUPER_ADMIN";
     const passesSuperAdminCheck = !item.superAdminOnly || role === "SUPER_ADMIN";
     const passesTenantCheck = item.superAdminOnly || tenantId !== null;
-    return passesAdminCheck && passesSuperAdminCheck && passesTenantCheck;
+    const passesUnitCheck = !item.onlyWithoutUnit || !currentWorkspace;
+    return passesAdminCheck && passesSuperAdminCheck && passesTenantCheck && passesUnitCheck;
   });
+
+  // Administracao fica no menu da conta para o menu principal caber sem rolagem.
+  const accountItems: NavItem[] =
+    tenantId !== null && (role === "ADMIN" || role === "SUPER_ADMIN")
+      ? [
+          { label: "Usuários", path: "/users", icon: Users },
+          { label: "Auditoria", path: "/audit-logs", icon: ScrollText },
+        ]
+      : [];
 
   const activeWorkspaceId = workspaceMatch?.params.workspaceId ?? currentWorkspaceId;
   const workspaceGroups =
@@ -340,7 +350,7 @@ function Shell() {
           </div>
         )}
 
-        <nav aria-label="Menu principal" className="flex-1 min-h-0 overflow-y-auto p-3 flex flex-col gap-3">
+        <nav aria-label="Menu principal" className="iabill-side-scroll flex-1 min-h-0 overflow-y-auto p-3 flex flex-col gap-2.5">
           {workspaceGroups.map((group, index) => (
             <div key={group.label ?? index} className="space-y-0.5">
               {group.label && !collapsed && (
@@ -381,6 +391,19 @@ function Shell() {
                   </p>
                 )}
               </div>
+              {accountItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className="flex items-center gap-2.5 w-full px-3 py-2.5 text-sm font-medium text-[#e5e0d6] hover:bg-white/5 transition-colors border-b border-white/10"
+                  >
+                    <Icon className="w-4 h-4" />
+                    {item.label}
+                  </Link>
+                );
+              })}
               <button
                 onClick={() => {
                   if (mfaEnabled) {
