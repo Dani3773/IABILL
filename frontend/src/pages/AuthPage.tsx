@@ -1,6 +1,5 @@
 import { Logo } from "../components/brand/Logo";
 import {
-  useEffect,
   useRef,
   useState,
   type FormEvent,
@@ -36,7 +35,6 @@ import { AxiosError } from "axios";
 import { resendConfirmation } from "../api/authService";
 import { Link } from "react-router-dom";
 import "./auth.css";
-import { createSpineField, type SpineField } from "../components/auth/spineField";
 import { loginWithMfa } from "../api/authService";
 
 type SignupStep = 1 | 2 | 3;
@@ -129,8 +127,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const [stepDirection, setStepDirection] = useState<StepDirection>("fwd");
   const [justCreated, setJustCreated] = useState(false);
   const [opening, setOpening] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const fieldRef = useRef<SpineField | null>(null);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -179,25 +175,9 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const [mfaLoading, setMfaLoading] = useState(false);
 
   async function enterVault() {
-    await fieldRef.current?.open();
     setOpening(true);
     await new Promise((resolve) => setTimeout(resolve, 200));
   }
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const field = createSpineField(canvas, still);
-    fieldRef.current = field;
-    canvas.classList.add("is-ready");
-
-    return () => {
-      field.dispose();
-      fieldRef.current = null;
-    };
-  }, []);
 
   function handleCapsLock(e: KeyboardEvent<HTMLInputElement>) {
     setCapsLockOn(e.getModifierState?.("CapsLock") ?? false);
@@ -219,7 +199,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
       setAuth(response);
       navigate(response.tenantId ? "/dashboard" : "/platform");
     } catch (err) {
-      fieldRef.current?.deny();
       if (err instanceof AxiosError && err.response?.status === 403) {
         setNeedsConfirmation(true);
         setLoginError(getErrorMessage(err, "Confirme seu e-mail antes de entrar."));
@@ -241,7 +220,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
       setAuth(response);
       navigate(response.tenantId ? "/dashboard" : "/platform");
     } catch (err) {
-      fieldRef.current?.deny();
       setLoginError(getErrorMessage(err, "Código inválido."));
     } finally {
       setMfaLoading(false);
@@ -387,7 +365,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
         adminPassword,
       });
       setJustCreated(true);
-      void fieldRef.current?.open();
       setSignupSuccess(response.message);
     } catch (err) {
       setSignupError(getErrorMessage(err, "Não foi possível criar a conta. Verifique os dados."));
@@ -445,18 +422,19 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
       `}</style>
 
       <div className="auth__frame">
-        <div className="auth__stage" aria-hidden="true">
-          <canvas ref={canvasRef} />
-        </div>
-
-        <div className="auth__main">
+        <div className="auth__brand">
           <Link to="/" aria-label="IABill" className="auth__logo">
             <Logo />
           </Link>
-          <div
-            className="auth__card iabill-card-enter"
-            onInput={() => fieldRef.current?.tick()}
-          >
+          <p className="auth__motto">
+            Sem registro,
+            <br />
+            sem resposta.
+          </p>
+        </div>
+
+        <div className="auth__main">
+          <div className="auth__card iabill-card-enter">
           <h1 className="auth__title">{isSignUpMode ? "Abra o seu arquivo." : "Bem-vindo de volta."}</h1>
           <p className="auth__switch">
             {isSignUpMode ? "Já tem conta?" : "Ainda não tem conta?"}{" "}

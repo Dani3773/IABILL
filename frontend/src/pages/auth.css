@@ -1,5 +1,5 @@
 .auth {
-  background: #0b0d0e;
+  background: #0c1c16;
   color: #f3f0e8;
   font-family: "Switzer", ui-sans-serif, system-ui, sans-serif;
   letter-spacing: -0.01em;
@@ -8,7 +8,7 @@
 }
 
 .auth::after {
-  background: #0b0d0e;
+  background: #0c1c16;
   content: "";
   inset: 0;
   opacity: 0;
@@ -24,37 +24,18 @@
 
 .auth__frame {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(380px, 34vw);
+  gap: clamp(40px, 6vw, 96px);
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 420px);
+  margin: 0 auto;
+  max-width: 1600px;
   min-height: 100svh;
+  padding: 28px clamp(28px, 5vw, 80px);
 }
 
-/* O cofre ocupa a tela toda; o formulário fica sobre a parede escura. */
-.auth__stage {
-  inset: 0;
-  overflow: hidden;
-  position: fixed;
-}
-
-.auth__stage canvas {
-  display: block;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 800ms ease;
-  width: 100%;
-}
-
-.auth__stage canvas.is-ready {
-  opacity: 1;
-}
-
-.auth__main {
-  background: #0b0d0e;
+.auth__brand {
   display: flex;
   flex-direction: column;
-  grid-column: 2;
-  min-height: 100svh;
-  padding: 28px clamp(28px, 3.4vw, 56px) 40px;
-  position: relative;
+  justify-content: space-between;
 }
 
 .auth__logo {
@@ -63,29 +44,41 @@
   width: fit-content;
 }
 
-.auth__card {
+.auth__motto {
+  font-family: "Archivo", "Switzer", sans-serif;
+  font-size: clamp(3rem, 7.6vw, 9rem);
+  font-stretch: 70%;
+  font-weight: 800;
+  letter-spacing: -0.012em;
+  line-height: 0.96;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.auth__main {
   display: flex;
-  flex: 1;
   flex-direction: column;
   justify-content: center;
-  margin: 40px 0;
+}
+
+.auth__card {
+  display: flex;
+  flex-direction: column;
 }
 
 .auth__title {
-  font-family: "Archivo", "Switzer", sans-serif;
-  font-size: clamp(2.5rem, 3.5vw, 3.75rem);
-  font-stretch: 72%;
-  font-weight: 800;
-  letter-spacing: -0.012em;
-  line-height: 1;
+  font-size: 1.75rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
   margin: 0;
-  text-transform: uppercase;
 }
 
 .auth__switch {
-  color: #b8b5ab;
+  color: #b9c7b4;
   font-size: 0.9375rem;
-  margin: 12px 0 30px;
+  margin: 8px 0 28px;
 }
 
 .auth__switch button {
@@ -99,33 +92,28 @@
   text-underline-offset: 3px;
 }
 
-.auth__switch button:hover {
-  color: #ff8a80;
-}
-
 .auth form > .flex-1:empty {
   flex: 0 0 8px;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 960px) {
   .auth__frame {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    padding: 20px;
   }
 
-  .auth__stage {
-    bottom: auto;
-    height: 22svh;
-    position: absolute;
+  .auth__brand {
+    gap: 36px;
+  }
+
+  .auth__motto {
+    font-size: 13vw;
+    margin: 0;
   }
 
   .auth__main {
-    background: none;
-    min-height: 100svh;
-    padding: 18px 20px 36px;
-  }
-
-  .auth__card {
     justify-content: flex-start;
-    margin: calc(22svh - 34px) 0 0;
   }
 }
