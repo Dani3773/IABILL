@@ -13,7 +13,8 @@
 }
 
 .auth__side {
-  background: url("/landing/arquivo.webp") center 40% / cover no-repeat;
+  background: #f3c32b;
+  color: #17130e;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -22,12 +23,27 @@
   position: relative;
 }
 
+/* A porta amarela do fim do corredor: a junta das folhas e as duas rodas. */
 .auth__side::before {
-  background: #0c1c16;
+  background: #17130e;
   content: "";
-  inset: 0;
-  opacity: 0.64;
+  height: 42%;
+  left: 50%;
   position: absolute;
+  top: 0;
+  width: 3px;
+}
+
+.auth__door {
+  fill: none;
+  height: auto;
+  left: 50%;
+  position: absolute !important;
+  stroke: #17130e;
+  stroke-width: 7;
+  top: clamp(72px, 13vh, 140px);
+  transform: translateX(-50%);
+  width: clamp(260px, 30vw, 460px);
 }
 
 .auth__side > * {
@@ -35,8 +51,12 @@
 }
 
 .auth__logo {
-  color: #f7ecd0;
+  color: #17130e;
   width: fit-content;
+}
+
+.auth__logo--mobile {
+  color: #f7ecd0;
 }
 
 .auth__logo--mobile {

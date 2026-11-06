@@ -417,6 +417,14 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
 
       <div className="auth__frame">
         <aside className="auth__side">
+          <svg className="auth__door" viewBox="0 0 460 150" aria-hidden="true">
+            <g id="auth-wheel">
+              <circle cx="95" cy="75" r="68" />
+              <circle cx="95" cy="75" r="11" />
+              <path d="M95 64V7M85.5 80.5 36 109M104.5 80.5 154 109" />
+            </g>
+            <use href="#auth-wheel" x="270" />
+          </svg>
           <Link to="/" aria-label="IABill" className="auth__logo">
             <Logo />
           </Link>
