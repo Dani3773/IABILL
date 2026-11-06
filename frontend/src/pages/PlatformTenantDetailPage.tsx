@@ -109,7 +109,7 @@ export function PlatformTenantDetailPage() {
       const full = await fetchWorkspaceDetail(workspaceId);
       setEditingWorkspace(full);
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível carregar os dados do workspace."));
+      setError(getErrorMessage(err, "Não foi possível carregar os dados da unidade."));
     }
   }
 
@@ -118,7 +118,7 @@ export function PlatformTenantDetailPage() {
     const { tenantId: _tenantId, ...rest } = payload;
     const updated = await updateWorkspace(editingWorkspace.id, rest);
     if (tenantId) load(tenantId);
-    setSuccessMessage("Workspace atualizado.");
+    setSuccessMessage("Unidade atualizada.");
     return updated as unknown as Workspace;
   }
 
@@ -126,7 +126,7 @@ export function PlatformTenantDetailPage() {
   if (!tenant) return <Alert type="error" message="Empresa não encontrada." />;
 
   const inputClass =
-    "w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] text-sm px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A]";
+    "w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] text-sm px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A]";
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -179,7 +179,7 @@ export function PlatformTenantDetailPage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors"
+                className="bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors"
               >
                 {saving ? "Salvando..." : "Salvar"}
               </button>
@@ -210,7 +210,7 @@ export function PlatformTenantDetailPage() {
         <h2 className="text-lg text-[#0A0A0A] mb-3">Usuários ({tenant.users.length})</h2>
         <div className="space-y-2">
           {tenant.users.map((u) => (
-            <div key={u.id} className="bg-[#FBF8F8] rounded-lg px-3 py-2.5 text-sm">
+            <div key={u.id} className="bg-[#fbfaf6] rounded-lg px-3 py-2.5 text-sm">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-[#0A0A0A]">{u.username}</p>
@@ -256,7 +256,7 @@ export function PlatformTenantDetailPage() {
                   </select>
                   <button
                     onClick={() => handleChangeRole(u.id)}
-                    className="text-xs bg-[#0A0A0A] hover:bg-[#2A2A2A] text-white font-semibold rounded px-3 py-1 transition-colors"
+                    className="text-xs bg-[#D92B21] hover:bg-[#B4201A] text-white font-semibold rounded px-3 py-1 transition-colors"
                   >
                     Salvar
                   </button>
@@ -281,12 +281,12 @@ export function PlatformTenantDetailPage() {
               Copie e envie ao usuário por um canal seguro. Essa senha não pode ser recuperada depois de fechar
               esta janela.
             </p>
-            <div className="bg-[#FBF8F8] rounded-lg px-3 py-2 text-[#0A0A0A] text-sm mb-4 select-all border border-[#0A0A0A]/10">
+            <div className="bg-[#fbfaf6] rounded-lg px-3 py-2 text-[#0A0A0A] text-sm mb-4 select-all border border-[#0A0A0A]/10">
               {tempPassword}
             </div>
             <button
               onClick={() => setTempPassword(null)}
-              className="w-full bg-[#0A0A0A] hover:bg-[#2A2A2A] text-white text-sm font-semibold rounded-lg py-2 transition-colors"
+              className="w-full bg-[#D92B21] hover:bg-[#B4201A] text-white text-sm font-semibold rounded-lg py-2 transition-colors"
             >
               Fechar
             </button>
@@ -295,10 +295,10 @@ export function PlatformTenantDetailPage() {
       )}
 
       <div className="bg-white rounded-xl p-5 border border-[#0A0A0A]/10">
-        <h2 className="text-lg text-[#0A0A0A] mb-3">Workspaces ({tenant.workspaces.length})</h2>
+        <h2 className="text-lg text-[#0A0A0A] mb-3">Unidades ({tenant.workspaces.length})</h2>
         <div className="space-y-2">
           {tenant.workspaces.map((w) => (
-            <div key={w.id} className="flex items-center justify-between bg-[#FBF8F8] rounded-lg px-3 py-2.5 text-sm">
+            <div key={w.id} className="flex items-center justify-between bg-[#fbfaf6] rounded-lg px-3 py-2.5 text-sm">
               <div>
                 <p className="text-[#0A0A0A]">{w.name}</p>
                 <p className="text-[#0A0A0A]/45 text-xs ">{w.documentId}</p>

@@ -61,7 +61,7 @@ export function AuditLogsPage() {
         </div>
         <button
           onClick={handleExportCsv}
-          className="flex items-center gap-2 bg-[#0A0A0A] hover:bg-[#2A2A2A] text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors shrink-0"
+          className="flex items-center gap-2 bg-[#D92B21] hover:bg-[#B4201A] text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors shrink-0"
         >
           <Download className="w-4 h-4" />
           Exportar CSV

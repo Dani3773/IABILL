@@ -25,10 +25,10 @@ Essas contas são públicas, então não insira dados pessoais reais nelas.
 
 ### Roteiro sugerido
 
-1. Entre com a conta da Ana Silva e abra um workspace.
-2. Na aba **Documentos**, gere um documento, revise e aprove. Depois de aprovado, ele não pode mais ser editado.
-3. Na aba **Buscar**, procure um assunto de um documento aprovado.
-4. No chat, pergunte algo que não está nos documentos, como o faturamento da empresa. A IA deve recusar.
+1. Entre com a conta da Ana Silva. O sistema abre o **Início** da unidade, com o que precisa de atenção.
+2. No menu **Documentos**, gere um documento, revise e aprove. Depois de aprovado, ele não pode mais ser editado.
+3. Abra o **Assistente IA** no menu e, em **Buscar trechos**, procure um assunto de um documento aprovado.
+4. Na aba **Perguntar** do assistente, pergunte algo que não está nos documentos, como o faturamento da empresa. A IA deve recusar.
 5. No menu **Auditoria**, veja o registro de tudo o que foi feito.
 
 As funções de IA dependem da cota do Google Gemini. Se aparecer erro de limite, tente de novo mais tarde.

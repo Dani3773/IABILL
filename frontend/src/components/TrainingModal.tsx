@@ -57,7 +57,7 @@ export function TrainingModal({ workspaceId, onClose, onSaved }: Props) {
   }
 
   const inputClass =
-    "w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] text-sm px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40";
+    "w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] text-sm px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40";
   const labelClass = "block text-xs font-medium text-[#0A0A0A]/60 mb-1.5";
 
   return (
@@ -108,7 +108,7 @@ export function TrainingModal({ workspaceId, onClose, onSaved }: Props) {
             ) : (
               <div className="max-h-40 overflow-y-auto border border-[#0A0A0A]/10 rounded-lg divide-y divide-[#0A0A0A]/8">
                 {employees.map((employee) => (
-                  <label key={employee.id} className="flex items-center gap-2 px-3 py-2 text-sm text-[#0A0A0A]/80 hover:bg-[#FBF8F8] cursor-pointer">
+                  <label key={employee.id} className="flex items-center gap-2 px-3 py-2 text-sm text-[#0A0A0A]/80 hover:bg-[#fbfaf6] cursor-pointer">
                     <input
                       type="checkbox"
                       checked={attendeeIds.includes(employee.id)}
@@ -126,7 +126,7 @@ export function TrainingModal({ workspaceId, onClose, onSaved }: Props) {
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
           <div className="flex gap-3 pt-2">
-            <button type="submit" disabled={isLoading} className="flex-1 bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors">
+            <button type="submit" disabled={isLoading} className="flex-1 bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors">
               {isLoading ? "Registrando..." : "Registrar treinamento"}
             </button>
             <button type="button" onClick={onClose} className="flex-1 bg-[#0A0A0A]/5 hover:bg-[#0A0A0A]/10 text-[#0A0A0A] text-sm font-medium rounded-lg py-2.5 transition-colors">

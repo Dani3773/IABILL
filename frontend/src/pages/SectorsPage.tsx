@@ -77,7 +77,7 @@ export function SectorsPage() {
         <button
           type="submit"
           disabled={isSaving || !newName.trim()}
-          className="bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors"
+          className="bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors"
         >
           {isSaving ? "Adicionando..." : "+ Adicionar"}
         </button>

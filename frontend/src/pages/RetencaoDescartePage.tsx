@@ -47,7 +47,7 @@ export function RetencaoDescartePage() {
           <h3 className="font-medium text-[#0A0A0A] mb-2">Como isso já funciona no sistema</h3>
           <p className="text-sm text-[#0A0A0A]/70 leading-relaxed">
             Cada atividade cadastrada no ROPA tem um campo opcional de data limite de retenção. Quando esse prazo
-            passa, um aviso aparece na própria atividade, e também no Resumo de Conformidade em Pilares, sem
+            passa, um aviso aparece na própria atividade, e também no Resumo de Conformidade do Guia LGPD, sem
             precisar lembrar manualmente de revisar cada uma.
           </p>
         </div>

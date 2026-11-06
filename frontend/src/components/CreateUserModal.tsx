@@ -64,7 +64,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
   }
 
   const inputClass =
-    "w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] text-sm px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40";
+    "w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] text-sm px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40";
   const labelClass = "block text-xs font-medium text-[#0A0A0A]/60 mb-1.5";
 
   return (
@@ -175,7 +175,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
+              className="flex-1 bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
             >
               {isLoading ? "Enviando convite..." : "Convidar"}
             </button>

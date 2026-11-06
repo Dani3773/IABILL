@@ -24,7 +24,7 @@ const QUESTIONS: Question[] = [
     text: "As atividades de tratamento de dados pessoais já estão registradas (inventário/ROPA)?",
     legalBasis: "Art. 37 da LGPD, Guia ANPD",
     actionTitle: "Preencher o Registro de Operações de Tratamento (ROPA)",
-    actionDescription: "Cadastre as atividades de tratamento de dados da empresa na aba Pilares > Inventário/ROPA.",
+    actionDescription: "Cadastre as atividades de tratamento de dados da empresa no menu Inventário / ROPA.",
   },
   {
     id: "psi",
@@ -38,7 +38,7 @@ const QUESTIONS: Question[] = [
     text: "Os colaboradores já passaram por treinamento/conscientização sobre proteção de dados?",
     legalBasis: "Guia de Segurança da Informação da ANPD",
     actionTitle: "Registrar o primeiro treinamento de colaboradores",
-    actionDescription: "Cadastre os colaboradores e registre um treinamento na aba Pilares > Treinamento.",
+    actionDescription: "Cadastre os colaboradores e registre um treinamento no menu Treinamento.",
   },
   {
     id: "dsr",
@@ -59,7 +59,7 @@ const QUESTIONS: Question[] = [
     text: "Os fornecedores com acesso a dados pessoais têm contrato de proteção de dados (DPA) assinado?",
     legalBasis: "Art. 39 da LGPD",
     actionTitle: "Confirmar DPAs assinados com fornecedores",
-    actionDescription: "Cadastre os fornecedores na aba Pilares > Fornecedores e confirme se há DPA assinado com cada um.",
+    actionDescription: "Cadastre os fornecedores no menu Fornecedores e confirme se há DPA assinado com cada um.",
   },
   {
     id: "mfa",
@@ -130,7 +130,7 @@ export function DiagnosticPage() {
         </p>
         <button
           onClick={() => navigate(`/workspaces/${workspaceId}/action-plan`)}
-          className="bg-[#0A0A0A] hover:bg-[#2A2A2A] text-white text-sm font-semibold rounded-lg px-5 py-2.5 transition-colors"
+          className="bg-[#D92B21] hover:bg-[#B4201A] text-white text-sm font-semibold rounded-lg px-5 py-2.5 transition-colors"
         >
           Ver Plano de Ação
         </button>

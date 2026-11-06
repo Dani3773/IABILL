@@ -47,7 +47,7 @@ export function ConsentRecordsModal({ activityId, activityName, onClose }: Props
 
         <p className="text-sm text-[#0A0A0A]/55 mb-4">{activityName}</p>
 
-        <div className="flex items-center gap-4 mb-6 bg-[#FBF8F8] rounded-lg p-4">
+        <div className="flex items-center gap-4 mb-6 bg-[#fbfaf6] rounded-lg p-4">
           {qrDataUrl && (
             <img src={qrDataUrl} alt="QR Code de consentimento" className="w-20 h-20 rounded-lg bg-white p-1" />
           )}
@@ -76,7 +76,7 @@ export function ConsentRecordsModal({ activityId, activityName, onClose }: Props
         ) : (
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {records.map((r) => (
-              <div key={r.id} className="bg-[#FBF8F8] rounded-lg p-3 text-sm">
+              <div key={r.id} className="bg-[#fbfaf6] rounded-lg p-3 text-sm">
                 <p className="font-medium text-[#0A0A0A]">{r.consenterName}</p>
                 <p className="text-xs text-[#0A0A0A]/55">{r.consenterEmail}</p>
                 <p className="text-xs text-[#0A0A0A]/45 mt-1">

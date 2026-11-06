@@ -55,7 +55,7 @@ export function DashboardPage() {
         {(role === 'ADMIN' || role === 'SUPER_ADMIN') && (
           <button
             onClick={() => setShowCreateModal(true)}
-            className="bg-[#0A0A0A] hover:bg-[#2A2A2A] text-white text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors"
+            className="bg-[#D92B21] hover:bg-[#B4201A] text-white text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors"
           >
             + Nova unidade
           </button>

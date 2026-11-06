@@ -49,14 +49,14 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
       );
       setSelectedWorkspaceId(nextAvailable?.id ?? "");
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível vincular o workspace."));
+      setError(getErrorMessage(err, "Não foi possível vincular a unidade."));
     } finally {
       setIsLoading(false);
     }
   }
 
   const inputClass =
-    "w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] text-sm px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A]";
+    "w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] text-sm px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A]";
 
   return (
     <div className="fixed inset-0 bg-[#0A0A0A]/40 flex items-center justify-center px-4 z-50">
@@ -67,7 +67,7 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
               <Building2 className="w-4 h-4 text-[#B4201A]" />
             </div>
             <h2 className="text-lg text-[#0A0A0A]">
-              Workspaces de {username}
+              Unidades de {username}
             </h2>
           </div>
           <button
@@ -81,13 +81,13 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
         <div className="mb-4">
           <p className="text-xs font-medium text-[#0A0A0A]/60 mb-2">Já vinculado a:</p>
           {memberships.length === 0 ? (
-            <p className="text-sm text-[#0A0A0A]/40">Nenhum workspace ainda.</p>
+            <p className="text-sm text-[#0A0A0A]/40">Nenhuma unidade ainda.</p>
           ) : (
             <ul className="space-y-1.5">
               {memberships.map((m) => (
                 <li
                   key={m.workspaceId}
-                  className="text-sm text-[#0A0A0A] bg-[#FBF8F8] rounded-lg px-3 py-2"
+                  className="text-sm text-[#0A0A0A] bg-[#fbfaf6] rounded-lg px-3 py-2"
                 >
                   {m.workspaceName}{" "}
                   <span className="text-[#0A0A0A]/45">({m.workspaceType})</span>
@@ -100,7 +100,7 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
         {availableWorkspaces.length > 0 && (
           <div className="border-t border-[#0A0A0A]/10 pt-4">
             <label className="block text-xs font-medium text-[#0A0A0A]/60 mb-1.5">
-              Vincular a um novo workspace
+              Vincular a uma nova unidade
             </label>
             <div className="flex gap-2">
               <select
@@ -117,7 +117,7 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
               <button
                 onClick={handleAssign}
                 disabled={isLoading}
-                className="bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors shrink-0"
+                className="bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors shrink-0"
               >
                 Vincular
               </button>

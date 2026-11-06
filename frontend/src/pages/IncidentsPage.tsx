@@ -199,21 +199,21 @@ export function IncidentsPage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Título do incidente"
-              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
+              className="w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
             />
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
               placeholder="Descrição do que aconteceu"
-              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
+              className="w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
             />
             <textarea
               value={affectedDataCategories}
               onChange={(e) => setAffectedDataCategories(e.target.value)}
               rows={2}
               placeholder="Categorias de dados afetadas (ex: CPF, e-mail, dados bancários)"
-              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
+              className="w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
             />
             <div className="grid grid-cols-2 gap-2">
               <input
@@ -221,12 +221,12 @@ export function IncidentsPage() {
                 value={estimatedAffectedCount}
                 onChange={(e) => setEstimatedAffectedCount(e.target.value)}
                 placeholder="Nº estimado de titulares afetados"
-                className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
+                className="w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
               />
               <select
                 value={severity}
                 onChange={(e) => setSeverity(e.target.value as IncidentSeverity)}
-                className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A]"
+                className="w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A]"
               >
                 {Object.entries(SEVERITY_LABELS).map(([value, label]) => (
                   <option key={value} value={value}>
@@ -240,7 +240,7 @@ export function IncidentsPage() {
               onChange={(e) => setMitigationMeasures(e.target.value)}
               rows={2}
               placeholder="Medidas de mitigação já adotadas (opcional)"
-              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
+              className="w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
             />
             <div className="flex gap-2 pt-1">
               <button

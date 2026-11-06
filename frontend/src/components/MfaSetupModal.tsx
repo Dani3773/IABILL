@@ -85,7 +85,7 @@ export function MfaSetupModal({ onClose, onEnabled }: Props) {
               onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
               required
               placeholder="000000"
-              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] text-sm px-3 py-2.5 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] tracking-widest text-center"
+              className="w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] text-sm px-3 py-2.5 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] tracking-widest text-center"
             />
           </div>
 
@@ -94,7 +94,7 @@ export function MfaSetupModal({ onClose, onEnabled }: Props) {
           <button
             type="submit"
             disabled={isLoading || code.length !== 6}
-            className="w-full bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
+            className="w-full bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
           >
             {isLoading ? "Confirmando..." : "Confirmar e ativar"}
           </button>

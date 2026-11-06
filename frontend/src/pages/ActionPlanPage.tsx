@@ -168,19 +168,19 @@ export function ActionPlanPage() {
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
           placeholder="Título da tarefa"
-          className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] mb-2 placeholder:text-[#0A0A0A]/40"
+          className="w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] mb-2 placeholder:text-[#0A0A0A]/40"
         />
         <textarea
           value={newDescription}
           onChange={(e) => setNewDescription(e.target.value)}
           rows={2}
           placeholder="Descrição (opcional)"
-          className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] mb-2 placeholder:text-[#0A0A0A]/40"
+          className="w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] mb-2 placeholder:text-[#0A0A0A]/40"
         />
         <button
           onClick={handleCreateManual}
           disabled={!newTitle.trim()}
-          className="bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors"
+          className="bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors"
         >
           Adicionar
         </button>

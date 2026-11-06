@@ -22,6 +22,7 @@ import QRCode from "qrcode";
 import { fetchWorkspaces } from "../api/workspaceService";
 import { ArrowLeft, Download } from "lucide-react";
 import { renderMarkdown } from "../utils/markdown";
+import { DOCUMENT_STATUS_LABELS, DOCUMENT_STATUS_STYLES } from "../utils/documentLabels";
 
 export function DocumentDetailPage() {
   const { documentId } = useParams<{ documentId: string }>();
@@ -242,7 +243,7 @@ export function DocumentDetailPage() {
   if (!document) return <Alert type="error" message="Documento não encontrado." />;
 
   const inputClass =
-    "w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] mb-3";
+    "w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] mb-3";
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -256,8 +257,8 @@ export function DocumentDetailPage() {
 
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-xl text-[#0A0A0A]">{document.title}</h2>
-        <span className="text-xs px-2 py-1 rounded bg-[#0A0A0A]/8 text-[#0A0A0A]/70 font-medium">
-          {document.status}
+        <span className={`text-xs px-2 py-1 rounded font-medium shrink-0 ${DOCUMENT_STATUS_STYLES[document.status]}`}>
+          {DOCUMENT_STATUS_LABELS[document.status]}
         </span>
       </div>
       <p className="text-sm text-[#0A0A0A]/55 mb-4">{DOCUMENT_TYPE_LABELS[document.type]}</p>
@@ -291,7 +292,7 @@ export function DocumentDetailPage() {
           <button
             onClick={handleGenerate}
             disabled={isActionLoading || !instruction.trim()}
-            className="bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white font-semibold rounded-lg px-4 py-2 transition-colors"
+            className="bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white font-semibold rounded-lg px-4 py-2 transition-colors"
           >
             {isActionLoading ? "Gerando..." : "Gerar com IA"}
           </button>
@@ -321,7 +322,7 @@ export function DocumentDetailPage() {
         <div className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 mb-4">
           <label className="block text-sm text-[#0A0A0A]/70 mb-2">Conteúdo (aprovado, somente leitura)</label>
           <div
-            className="text-sm text-[#0A0A0A]/85 leading-relaxed max-h-96 overflow-y-auto bg-[#FBF8F8] rounded-lg p-4"
+            className="text-sm text-[#0A0A0A]/85 leading-relaxed max-h-96 overflow-y-auto bg-[#fbfaf6] rounded-lg p-4"
             dangerouslySetInnerHTML={{ __html: renderMarkdown(document.generatedContent) }}
           />
         </div>
@@ -333,7 +334,7 @@ export function DocumentDetailPage() {
             <button
               onClick={handleReview}
               disabled={isActionLoading}
-              className="bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white font-semibold rounded-lg px-4 py-2 transition-colors"
+              className="bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white font-semibold rounded-lg px-4 py-2 transition-colors"
             >
               Marcar como Revisado
             </button>
@@ -362,7 +363,7 @@ export function DocumentDetailPage() {
                 value={rejectionReason}
                 onChange={(e) => setRejectionReason(e.target.value)}
                 rows={2}
-                className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-red-400 mb-3"
+                className="w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-red-400 mb-3"
               />
               <div className="flex gap-2">
                 <button
@@ -394,7 +395,7 @@ export function DocumentDetailPage() {
                 {document.publishedAt && `em ${new Date(document.publishedAt).toLocaleString("pt-BR")}`}
               </p>
               {publicUrl && (
-                <div className="flex items-center gap-4 mb-3 bg-[#FBF8F8] rounded-lg p-3">
+                <div className="flex items-center gap-4 mb-3 bg-[#fbfaf6] rounded-lg p-3">
                   {qrDataUrl && (
                     <img src={qrDataUrl} alt="QR Code da política pública" className="w-20 h-20 rounded-lg bg-white p-1" />
                   )}
@@ -422,7 +423,7 @@ export function DocumentDetailPage() {
             <button
               onClick={handlePublishClick}
               disabled={isActionLoading}
-              className="bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors"
+              className="bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors"
             >
               Publicar
             </button>

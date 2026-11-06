@@ -37,7 +37,7 @@ export function SuperAdminPage() {
               <th className="py-3 px-4">Empresa</th>
               <th className="py-3 px-4">Cadastrada em</th>
               <th className="py-3 px-4 text-center">Usuários</th>
-              <th className="py-3 px-4 text-center">Workspaces</th>
+              <th className="py-3 px-4 text-center">Unidades</th>
               <th className="py-3 px-4 text-center">Documentos</th>
               <th className="py-3 px-4 text-center">Status</th>
             </tr>
@@ -47,7 +47,7 @@ export function SuperAdminPage() {
               <tr
                 key={t.id}
                 onClick={() => navigate(`/platform/${t.id}`)}
-                className="border-b border-[#0A0A0A]/8 last:border-0 hover:bg-[#FBF8F8] cursor-pointer transition-colors"
+                className="border-b border-[#0A0A0A]/8 last:border-0 hover:bg-[#fbfaf6] cursor-pointer transition-colors"
               >
                 <td className="py-3 px-4 text-[#0A0A0A] font-medium">{t.name}</td>
                 <td className="py-3 px-4 text-[#0A0A0A]/60 whitespace-nowrap">

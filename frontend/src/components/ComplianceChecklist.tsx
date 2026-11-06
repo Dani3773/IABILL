@@ -102,7 +102,7 @@ function buildRows(s: ComplianceSummary): Row[] {
     label: "Solicitações de Titulares",
     status: s.dsrPendingCount > 0 ? "warning" : "ok",
     detail: s.dsrPendingCount > 0
-      ? `${s.dsrPendingCount} solicitação${s.dsrPendingCount !== 1 ? "ões" : ""} pendente${s.dsrPendingCount !== 1 ? "s" : ""}`
+      ? `${s.dsrPendingCount} ${s.dsrPendingCount !== 1 ? "solicitações pendentes" : "solicitação pendente"}`
       : "Nenhuma solicitação pendente",
   });
 

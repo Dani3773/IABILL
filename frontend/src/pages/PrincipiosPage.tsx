@@ -89,7 +89,7 @@ export function PrincipiosPage() {
               <h3 className="font-medium text-[#0A0A0A]">{p.nome}</h3>
             </div>
             <p className="text-sm text-[#0A0A0A]/70 leading-relaxed mb-2">{p.explicacao}</p>
-            <p className="text-xs text-[#0A0A0A]/50 leading-relaxed bg-[#FBF8F8] rounded-lg p-3">
+            <p className="text-xs text-[#0A0A0A]/50 leading-relaxed bg-[#fbfaf6] rounded-lg p-3">
               <span className="font-medium">Exemplo prático: </span>
               {p.exemplo}
             </p>

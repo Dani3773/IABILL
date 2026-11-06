@@ -3,7 +3,6 @@ import {
   ClipboardList,
   Truck,
   GraduationCap,
-  Building2,
   ClipboardCheck,
   ArrowRight,
   Scale,
@@ -37,8 +36,6 @@ interface Stage {
   id: string;
   title: string;
   subtitle: string;
-  accent: string;
-  bg: string;
   cards: StageCard[];
 }
 
@@ -48,10 +45,8 @@ export function PilaresPage() {
   const stages: Stage[] = [
     {
       id: "fundamentos",
-      title: "1. Fundamentos Legais",
-      subtitle: "O que sua empresa precisa saber antes de qualquer coisa",
-      accent: "text-[#0A0A0A]",
-      bg: "bg-[#D92B21]/10",
+      title: "Fundamentos legais",
+      subtitle: "Para estudar: o que sua empresa precisa saber antes de qualquer coisa",
       cards: [
         {
           to: `/workspaces/${workspaceId}/pilares/comite`,
@@ -121,10 +116,8 @@ export function PilaresPage() {
     },
     {
       id: "operacao",
-      title: "2. Operação do Dia a Dia",
-      subtitle: "O trabalho contínuo de manter a adequação",
-      accent: "text-[#0A0A0A]/80",
-      bg: "bg-[#0A0A0A]/6",
+      title: "Operação do dia a dia",
+      subtitle: "Para fazer: cada cartão abre a tela de trabalho correspondente",
       cards: [
         {
           to: `/workspaces/${workspaceId}/pilares/ropa`,
@@ -178,10 +171,8 @@ export function PilaresPage() {
     },
     {
       id: "governanca",
-      title: "3. Governança Avançada",
-      subtitle: "O que sustenta a adequação no longo prazo",
-      accent: "text-[#B4201A]",
-      bg: "bg-[#D92B21]/10",
+      title: "Governança avançada",
+      subtitle: "Para fazer: o que sustenta a adequação no longo prazo",
       cards: [
         {
           to: "/users",
@@ -214,15 +205,13 @@ export function PilaresPage() {
 
   return (
     <div>
-      <h1 className="text-xl text-[#0A0A0A] mb-1">
-        Pilares de Conformidade
-      </h1>
+      <h1 className="text-xl text-[#0A0A0A] mb-1">Guia LGPD</h1>
       <p className="text-sm text-[#0A0A0A]/55 mb-6">
         O caminho que sua empresa deve seguir para se manter adequada à
-        LGPD/RGPD, organizado em três estágios.
+        LGPD/RGPD: o que estudar e onde cada tarefa acontece no sistema.
       </p>
       {workspaceId && <ComplianceChecklist workspaceId={workspaceId} />}
-      <div className="flex gap-3 mb-8">
+      <div className="flex mb-8">
         <Link
           to={`/workspaces/${workspaceId}/pilares/diagnostico`}
           className="flex items-center gap-2 bg-white rounded-lg px-4 py-2.5 border border-[#0A0A0A]/10 hover:border-[#D92B21]/50 transition-colors text-sm font-medium text-[#0A0A0A]"
@@ -230,24 +219,13 @@ export function PilaresPage() {
           <ClipboardCheck className="w-4 h-4 text-[#B4201A]" />
           Diagnóstico Inicial
         </Link>
-        <Link
-          to={`/workspaces/${workspaceId}/pilares/setores`}
-          className="flex items-center gap-2 bg-white rounded-lg px-4 py-2.5 border border-[#0A0A0A]/10 hover:border-[#D92B21]/50 transition-colors text-sm font-medium text-[#0A0A0A]"
-        >
-          <Building2 className="w-4 h-4 text-[#B4201A]" />
-          Setores
-        </Link>
       </div>
       <div className="space-y-10">
         {stages.map((stage) => (
           <div key={stage.id}>
-            <div className={`rounded-xl ${stage.bg} px-5 py-4 mb-4`}>
-              <h2 className={`text-lg ${stage.accent}`}>
-                {stage.title}
-              </h2>
-              <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
-                {stage.subtitle}
-              </p>
+            <div className="mb-4">
+              <h2 className="text-lg text-[#0A0A0A]">{stage.title}</h2>
+              <p className="text-sm text-[#0A0A0A]/60 mt-0.5">{stage.subtitle}</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {stage.cards.map((card) => {

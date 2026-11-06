@@ -109,14 +109,14 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
       onCreated(workspace);
       onClose();
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível salvar o workspace."));
+      setError(getErrorMessage(err, "Não foi possível salvar a unidade."));
     } finally {
       setIsLoading(false);
     }
   }
 
   const inputClass =
-    "w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] text-sm px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40";
+    "w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] text-sm px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40";
   const labelClass = "block text-xs font-medium text-[#0A0A0A]/60 mb-1.5";
 
   return (
@@ -127,7 +127,7 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
             <div className="w-8 h-8 rounded-lg bg-[#D92B21]/10 flex items-center justify-center">
               <Building2 className="w-4 h-4 text-[#B4201A]" />
             </div>
-            <h2 className="text-lg text-[#0A0A0A]">{editing ? "Editar Workspace" : "Novo Workspace"}</h2>
+            <h2 className="text-lg text-[#0A0A0A]">{editing ? "Editar unidade" : "Nova unidade"}</h2>
           </div>
           <button onClick={onClose} className="text-[#0A0A0A]/40 hover:text-[#0A0A0A] transition-colors">
             <X className="w-5 h-5" />
@@ -319,7 +319,7 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
+              className="flex-1 bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
             >
               {isLoading ? "Salvando..." : editing ? "Salvar alterações" : "Criar"}
             </button>

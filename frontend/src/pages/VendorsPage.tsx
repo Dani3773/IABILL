@@ -60,7 +60,7 @@ export function VendorsPage() {
         </div>
         <button
           onClick={() => { setEditing(null); setShowModal(true); }}
-          className="bg-[#0A0A0A] hover:bg-[#2A2A2A] text-white text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors shrink-0"
+          className="bg-[#D92B21] hover:bg-[#B4201A] text-white text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors shrink-0"
         >
           + Novo Fornecedor
         </button>

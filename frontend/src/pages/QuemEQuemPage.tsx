@@ -11,12 +11,12 @@ const PAPEIS: Papel[] = [
   {
     nome: "Controlador",
     explicacao: "Quem decide o que fazer com o dado pessoal, para qual finalidade, e como. Geralmente é a própria empresa que você está representando no sistema.",
-    noSistema: "É o Tenant/Workspace cadastrado, a empresa cliente.",
+    noSistema: "É a empresa cliente cadastrada, com suas unidades.",
   },
   {
     nome: "Operador",
     explicacao: "Quem trata dado pessoal em nome do controlador, seguindo as instruções dele. Nuvem, folha de pagamento, ferramenta de IA, todos são operadores quando processam dado da sua empresa.",
-    noSistema: "É o que o sistema chama de Fornecedor/Terceiro, aba Pilares > Fornecedores.",
+    noSistema: "É o que o sistema chama de Fornecedor/Terceiro, menu Fornecedores.",
   },
   {
     nome: "Encarregado (DPO)",

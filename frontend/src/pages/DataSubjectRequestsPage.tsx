@@ -197,7 +197,7 @@ export function DataSubjectRequestsPage() {
             <img
               src={qrDataUrl}
               alt="QR Code do portal de solicitação"
-              className="w-20 h-20 rounded-lg bg-[#FBF8F8] p-1"
+              className="w-20 h-20 rounded-lg bg-[#fbfaf6] p-1"
             />
           )}
           <div className="min-w-0 flex-1">
@@ -226,7 +226,7 @@ export function DataSubjectRequestsPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar por nome ou e-mail"
-            className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] text-sm pl-8 pr-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
+            className="w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] text-sm pl-8 pr-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
           />
         </div>
         <select
@@ -234,7 +234,7 @@ export function DataSubjectRequestsPage() {
           onChange={(e) =>
             setTypeFilter(e.target.value as DataSubjectRequestType | "ALL")
           }
-          className="text-sm rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:border-[#0A0A0A]"
+          className="text-sm rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:border-[#0A0A0A]"
         >
           <option value="ALL">Todos os tipos</option>
           {Object.entries(TYPE_LABELS).map(([value, label]) => (
@@ -248,7 +248,7 @@ export function DataSubjectRequestsPage() {
           onChange={(e) =>
             setStatusFilter(e.target.value as DataSubjectRequestStatus | "ALL")
           }
-          className="text-sm rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:border-[#0A0A0A]"
+          className="text-sm rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:border-[#0A0A0A]"
         >
           <option value="ALL">Todos os status</option>
           {Object.entries(STATUS_LABELS).map(([value, label]) => (
@@ -260,7 +260,7 @@ export function DataSubjectRequestsPage() {
         <select
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value as SortOrder)}
-          className="text-sm rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:border-[#0A0A0A]"
+          className="text-sm rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:border-[#0A0A0A]"
         >
           <option value="recent">Mais recentes primeiro</option>
           <option value="oldest">Mais antigas primeiro</option>
@@ -348,7 +348,7 @@ export function DataSubjectRequestsPage() {
               onChange={(e) => setRejectionReason(e.target.value)}
               rows={3}
               placeholder="Explique por que esta solicitação está sendo rejeitada"
-              className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-400 mb-4 placeholder:text-[#0A0A0A]/40"
+              className="w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-400 mb-4 placeholder:text-[#0A0A0A]/40"
             />
             <div className="flex gap-2">
               <button
