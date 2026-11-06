@@ -6,7 +6,7 @@ import {
   type KeyboardEvent,
   type ReactNode,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Eye,
   EyeOff,
@@ -132,6 +132,7 @@ const STRENGTH_META = [
 
 export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "signup" }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { setAuth } = useAuth();
   const [isSignUpMode, setIsSignUpMode] = useState(initialMode === "signup");
   const [step, setStep] = useState<SignupStep>(1);
@@ -146,7 +147,9 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const [loginLoading, setLoginLoading] = useState(false);
 
   const [workspaceDocumentId, setWorkspaceDocumentId] = useState("");
-  const [workspaceName, setWorkspaceName] = useState("");
+  const [workspaceName, setWorkspaceName] = useState(
+    (location.state as { company?: string } | null)?.company ?? "",
+  );
   const [workspacePhone, setWorkspacePhone] = useState("");
   const [legalRegimes, setLegalRegimes] = useState<LegalRegime[]>(["LGPD"]);
   const [cnpjLookupLoading, setCnpjLookupLoading] = useState(false);

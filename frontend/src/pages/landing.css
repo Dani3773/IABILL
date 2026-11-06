@@ -646,7 +646,7 @@
 }
 
 .proof__value {
-  font-size: clamp(4.5rem, 11vw, 11rem);
+  font-size: clamp(3.5rem, 8.4vw, 9rem);
   margin: 0 0 20px;
 }
 
@@ -1351,12 +1351,34 @@
   margin-bottom: 16px;
 }
 
-.lp .cta__form div {
+.lp .cta__form .cta__folder {
   background: #efdcae;
-  border-radius: 3px;
+  border-radius: 0 6px 6px 6px;
   color: var(--ink);
+  margin-top: 56px;
   padding: 18px 20px 20px;
+  position: relative;
   rotate: -0.6deg;
+}
+
+.cta__tab {
+  background: #efdcae;
+  border-radius: 6px 6px 0 0;
+  bottom: 100%;
+  color: var(--ink);
+  font-family: "Archivo", "Switzer", sans-serif;
+  font-size: 1.25rem;
+  font-stretch: 78%;
+  font-weight: 800;
+  left: 0;
+  line-height: 1;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 12px 22px 6px;
+  position: absolute;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .lp .cta__form label {

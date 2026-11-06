@@ -150,9 +150,9 @@
     ]
   },
   "proof": {
-    "value": "36 of 36",
-    "title": "Correct answers in controlled test.",
-    "text": "30 searches found the correct excerpt, and 6 questions without a basis were refused. The test used 40 synthetic documents, thus measuring the mechanism and not guaranteeing results with real data."
+    "value": "Found 30. Refused 6.",
+    "title": "When there was a basis, it found it. When there was none, it refused.",
+    "text": "In a controlled test with 40 synthetic documents, all 30 searches found the correct excerpt and all 6 questions without a basis were refused. It measures the mechanism and does not guarantee results with real data."
   },
   "faq": {
     "title": "Frequently asked questions.",
@@ -180,11 +180,11 @@
     ]
   },
   "cta": {
-    "title": "Start with what is already true.",
-    "lead": "Create your company account and make your first record.",
-    "emailLabel": "Your work email",
-    "placeholder": "you@company.com",
-    "button": "Register company"
+    "title": "Open your archive.",
+    "lead": "It starts empty: the AI only answers after your first approved record.",
+    "placeholder": "Your company",
+    "button": "Open my archive",
+    "companyLabel": "Company name"
   },
   "footer": {
     "about": "LGPD and GDPR compliance",

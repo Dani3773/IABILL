@@ -150,9 +150,9 @@
     ]
   },
   "proof": {
-    "value": "36 de 36",
-    "title": "Respostas corretas no teste controlado.",
-    "text": "30 buscas encontraram o trecho certo e 6 perguntas sem base foram recusadas. O teste usou 40 documentos sintéticos, então mede o mecanismo e não garante o resultado com dados reais."
+    "value": "Achou 30. Recusou 6.",
+    "title": "Quando havia base, encontrou. Quando não havia, recusou.",
+    "text": "No teste controlado com 40 documentos sintéticos, as 30 buscas encontraram o trecho certo e as 6 perguntas sem base foram recusadas. Ele mede o mecanismo e não garante o resultado com dados reais."
   },
   "faq": {
     "title": "O que costumam perguntar.",
@@ -180,18 +180,17 @@
     ]
   },
   "cta": {
-    "title": "Comece pelo que é verdade.",
-    "lead": "Crie a conta da sua empresa e faça seu primeiro registro.",
-    "emailLabel": "Seu e-mail de trabalho",
-    "placeholder": "voce@empresa.com",
-    "button": "Cadastrar empresa"
+    "title": "Abra o seu arquivo.",
+    "lead": "Ele começa vazio: a IA só responde depois do seu primeiro registro aprovado.",
+    "placeholder": "Sua empresa",
+    "button": "Abrir meu arquivo",
+    "companyLabel": "Nome da empresa"
   },
   "footer": {
     "about": "Adequação à LGPD e ao RGPD",
     "madeBy": "Desenvolvido por",
     "contact": "Contato",
-    "academic": "Protótipo acadêmico. Não substitui orientação jurídica.",
-    "photos": "Fotos"
+    "academic": "Protótipo acadêmico. Não substitui orientação jurídica."
   },
   "images": {
     "archive": "Corredor de um arquivo com prateleiras cheias de caixas de documentos numeradas",

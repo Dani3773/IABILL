@@ -396,7 +396,7 @@ export function LandingPage() {
   const navigate = useNavigate();
   const pageRef = useReveal();
   const { vaultRef, canvasRef, choose } = useArchiveVault();
-  const [email, setEmail] = useState("");
+  const [company, setCompany] = useState("");
 
   if (isAuthenticated) {
     return <Navigate to={tenantId ? "/dashboard" : "/platform"} replace />;
@@ -404,7 +404,7 @@ export function LandingPage() {
 
   function handleStart(event: FormEvent) {
     event.preventDefault();
-    navigate("/signup", { state: { email } });
+    navigate("/signup", { state: { company: company.trim() } });
   }
 
   const steps = t("how.steps", { returnObjects: true }) as HowStep[];
@@ -435,7 +435,13 @@ export function LandingPage() {
         <div className="vault" ref={vaultRef}>
           <div className="vault__backdrop" aria-hidden="true">
             <div className="vault__stage">
-              <img src="/landing/arquivo.webp" alt="" width="1920" height="1241" />
+              <img
+                src="/landing/arquivo.webp"
+                alt=""
+                title="Foto: The National Archives (UK), CC BY 3.0"
+                width="1920"
+                height="1241"
+              />
               <canvas ref={canvasRef} />
               <div className="vault__scrim" />
               <div className="vault__door" />
@@ -530,15 +536,19 @@ export function LandingPage() {
             </h2>
             <form className="cta__form" onSubmit={handleStart} data-reveal>
               <p>{t("cta.lead")}</p>
-              <div>
-                <label htmlFor="cta-email">{t("cta.emailLabel")}</label>
+              <div className="cta__folder">
+                <span className="cta__tab" aria-hidden="true">
+                  {company.trim() || t("cta.placeholder")}
+                </span>
+                <label htmlFor="cta-company">{t("cta.companyLabel")}</label>
                 <input
-                  id="cta-email"
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  id="cta-company"
+                  type="text"
+                  value={company}
+                  onChange={(event) => setCompany(event.target.value)}
                   placeholder={t("cta.placeholder")}
-                  autoComplete="email"
+                  autoComplete="organization"
+                  maxLength={80}
                 />
                 <button type="submit" className="lp-button">
                   {t("cta.button")}
@@ -549,6 +559,7 @@ export function LandingPage() {
           <img
             src="/landing/fichario.webp"
             alt={t("images.cabinet")}
+            title="Foto: Watty62, CC BY-SA 4.0, via Wikimedia Commons"
             width="1200"
             height="900"
             loading="lazy"
@@ -573,11 +584,7 @@ export function LandingPage() {
           <img src="/brand/zagtxo-creme.webp" alt="Zágtxo" width="200" height="56" loading="lazy" />
         </div>
         <p className="lp-footer__note">
-          © {new Date().getFullYear()} IABill. {t("footer.academic")}{" "}
-          <span>
-            {t("footer.photos")}: The National Archives (UK), CC BY 3.0; RaphaelQS, CC0; Watty62, CC BY-SA 4.0, via{" "}
-            <a href="https://commons.wikimedia.org/">Wikimedia Commons</a>.
-          </span>
+          © {new Date().getFullYear()} IABill. {t("footer.academic")}
         </p>
       </footer>
     </div>
