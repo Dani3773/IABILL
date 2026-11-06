@@ -40,7 +40,33 @@
         "q": "Utrpěla společnost již nějaký únik dat?",
         "kind": "refuse",
         "a": "V kontextu nejsou dostatečné údaje k zodpovězení, zda společnost utrpěla únik dat."
+      },
+      {
+        "q": "Kdo je pověřenec pro ochranu osobních údajů?",
+        "kind": "answer",
+        "a": "Pověřencem je Carlos Mendes a subjekty údajů ho kontaktují přes firemní kanál pro ochranu soukromí.",
+        "source": "Zásady ochrany soukromí, schválila Ana Silva"
+      },
+      {
+        "q": "Absolvuje tým školení o LGPD?",
+        "kind": "answer",
+        "a": "Ano. Celý tým absolvuje školení jednou ročně a účast každého se zaznamenává.",
+        "source": "Školení týmu, schválil Carlos Mendes"
+      },
+      {
+        "q": "Co děláme při incidentu?",
+        "kind": "answer",
+        "a": "Pověřenec případ posoudí a při významném riziku do tří pracovních dnů informuje ANPD a subjekty údajů.",
+        "source": "Plán reakce na incidenty, schválila Ana Silva"
       }
+    ],
+    "stamp": "BEZ ZÁZNAMU",
+    "records": [
+      "Zásady uchovávání",
+      "Inventář údajů",
+      "Zásady ochrany soukromí",
+      "Školení týmu",
+      "Plán reakce na incidenty"
     ]
   },
   "how": {
@@ -64,7 +90,8 @@
         "call": "Zkontrolovat, zamítnout nebo schválit.",
         "response": "Po schválení je text uzamčen. Kdo co udělal, zůstává v auditní stopě, kterou databáze neumožňuje změnit."
       }
-    ]
+    ],
+    "archive": "Archivuje se jen to, co je schválené."
   },
   "states": {
     "title": "Jeden dokument, tři stavy.",
@@ -82,7 +109,12 @@
     "s3": "Schváleno",
     "s3Meta": "Schváleno Anou Silva, obsah uzamčen",
     "s3Note": "Oficiální a připraveno k exportu do PDF",
-    "pdf": "Stáhnout PDF"
+    "pdf": "Stáhnout PDF",
+    "docBody": [
+      "Zákaznická podpora shromažďuje jméno, e-mail a telefon, aby mohla odpovídat na požadavky.",
+      "Údaje se uchovávají pět let a jsou šifrované v klidovém stavu.",
+      "Přístup má pouze tým podpory a každé nahlédnutí se zaznamenává."
+    ]
   },
   "law": {
     "title": "Každá funkce má za sebou článek.",
@@ -150,14 +182,19 @@
   "cta": {
     "title": "Začněte tím, co je již pravda.",
     "lead": "Vytvořte si účet pro vaši společnost a proveďte svůj první záznam.",
-    "emailLabel": "Váš pracovní e-mail",
     "placeholder": "voce@empresa.com",
-    "button": "Registrovat firmu"
+    "button": "Registrovat firmu",
+    "companyLabel": "Název společnosti"
   },
   "footer": {
     "about": "Soulad s LGPD a GDPR",
     "madeBy": "Vyvinuto společností",
     "contact": "Kontakt",
     "academic": "Nenahrazuje právní poradenství."
+  },
+  "images": {
+    "archive": "Chodba archivu s regály plnými očíslovaných krabic s dokumenty",
+    "ledger": "Stará otevřená kniha záznamů s ručně psanými zápisy",
+    "cabinet": "Ruka otevírá zásuvku kartotéky s kartami seřazenými podle jména"
   }
 }

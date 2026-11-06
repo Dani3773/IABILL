@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Näin se toimii",
+    "states": "Hyväksyntä",
+    "law": "Laki",
+    "faq": "Kysymykset",
+    "login": "Kirjaudu",
+    "signup": "Rekisteröi yritys",
+    "language": "Kieli"
+  },
+  "hero": {
+    "line1": "Ei kirjausta,",
+    "line2": "ei vastausta.",
+    "lead": "IABill kirjoittaa yrityksesi LGPD- ja GDPR-asiakirjat vain jo hyväksymiesi tietojen pohjalta. Jos perusta puuttuu, tekoäly kieltäytyy keksimisen sijaan."
+  },
+  "demo": {
+    "title": "Kysy IABillilta",
+    "choose": "Valitse kysymys",
+    "source": "Hyväksytty lähde",
+    "noSource": "Yksikään hyväksytty kirjaus ei tue tätä vastausta.",
+    "questions": [
+      {
+        "q": "Mikä oli yrityksen liikevaihto vuonna 2025?",
+        "kind": "refuse",
+        "a": "Kontekstissa ei ole riittävästi tietoa yrityksen vuoden 2025 liikevaihdon määrittämiseen."
+      },
+      {
+        "q": "Kuinka kauan säilytämme asiakastietoja?",
+        "kind": "answer",
+        "a": "Asiakastietoja säilytetään viisi vuotta São Paulon alueen palvelimilla, ja ne on salattu levossa.",
+        "source": "Säilytyskäytäntö, hyväksynyt Ana Silva"
+      },
+      {
+        "q": "Kuka pääsee tukipyyntöihin?",
+        "kind": "answer",
+        "a": "Vain tukitiimi, ja pääsy on rajattu roolin mukaan. Tukipyynnöissä on asiakkaan nimi, sähköposti ja puhelinnumero.",
+        "source": "Tietovaranto, hyväksynyt Carlos Mendes"
+      },
+      {
+        "q": "Onko yrityksessä tapahtunut tietovuotoa?",
+        "kind": "refuse",
+        "a": "Kontekstissa ei ole riittävästi tietoa sen selvittämiseen, onko yrityksessä tapahtunut tietovuotoa."
+      },
+      {
+        "q": "Kuka on tietosuojavastaava?",
+        "kind": "answer",
+        "a": "Tietosuojavastaava on Carlos Mendes, ja rekisteröidyt tavoittavat hänet yrityksen tietosuojakanavan kautta.",
+        "source": "Tietosuojakäytäntö, hyväksynyt Ana Silva"
+      },
+      {
+        "q": "Saako tiimi LGPD-koulutusta?",
+        "kind": "answer",
+        "a": "Kyllä. Koko tiimi käy koulutuksen kerran vuodessa, ja jokaisen osallistuminen kirjataan.",
+        "source": "Tiimin koulutus, hyväksynyt Carlos Mendes"
+      },
+      {
+        "q": "Mitä teemme poikkeamatilanteessa?",
+        "kind": "answer",
+        "a": "Tietosuojavastaava arvioi tapauksen ja ilmoittaa merkittävästä riskistä ANPD:lle ja rekisteröidyille kolmen työpäivän kuluessa.",
+        "source": "Poikkeamien hallintasuunnitelma, hyväksynyt Ana Silva"
+      }
+    ],
+    "stamp": "EI KIRJAUSTA",
+    "records": [
+      "Säilytyskäytäntö",
+      "Tietovaranto",
+      "Tietosuojakäytäntö",
+      "Tiimin koulutus",
+      "Poikkeamien hallintasuunnitelma"
+    ]
+  },
+  "how": {
+    "title": "Tekoäly kirjoittaa, sinä päätät.",
+    "steps": [
+      {
+        "lead": "Kirjaa ensin, mitä yrityksesi tekee.",
+        "callLabel": "Sinä kirjaat",
+        "call": "Asiakaspalvelu kerää nimen, sähköpostin ja puhelinnumeron. Säilytysaika viisi vuotta. Oikeusperuste: sopimuksen täytäntöönpano.",
+        "response": "Hyväksytty kirjaus toimii kontekstina vain omassa työtilassasi."
+      },
+      {
+        "lead": "Pyydä sitten puuttuva asiakirja.",
+        "callLabel": "Sinä pyydät",
+        "call": "Laadi asiakaspalvelun vaikutustenarviointi.",
+        "response": "Tekoäly hakee hyväksyttyjä otteita ja kirjoittaa vain niiden pohjalta. Perusteeton kohta merkitään puutteelliseksi."
+      },
+      {
+        "lead": "Päätä lopuksi, mikä tulee viralliseksi.",
+        "callLabel": "Sinä päätät",
+        "call": "Tarkista, hylkää tai hyväksy.",
+        "response": "Hyväksytty teksti lukitaan. Kuka teki mitä jää lokiin, jota tietokanta ei anna muuttaa."
+      }
+    ],
+    "archive": "Vain hyväksytty arkistoidaan."
+  },
+  "states": {
+    "title": "Yksi asiakirja, kolme vaihetta.",
+    "lead": "Mikään ei tule viralliseksi ilman ihmisen tarkistusta. Jos joku muokkaa tekstiä tarkistuksen jälkeen, asiakirja palaa tarkistettavaksi.",
+    "docTitle": "Vaikutustenarviointi: asiakaspalvelu",
+    "doc": "RIPD/DPIA",
+    "s1": "Tekoälyn luoma",
+    "s1Meta": "Ei virallista arvoa, odottaa tarkistusta",
+    "s1Note": "Saapuessa",
+    "s2": "Tarkistettu",
+    "s2Meta": "Tarkistanut Juliana Rocha",
+    "s2Note": "Valmis hyväksyttäväksi tai hylättäväksi",
+    "approve": "Hyväksy",
+    "reject": "Hylkää",
+    "s3": "Hyväksytty",
+    "s3Meta": "Hyväksynyt Ana Silva, sisältö lukittu",
+    "s3Note": "Virallinen ja valmis PDF-vientiin",
+    "pdf": "Lataa PDF",
+    "docBody": [
+      "Asiakaspalvelu kerää nimen, sähköpostin ja puhelinnumeron tukipyyntöihin vastaamista varten.",
+      "Tietoja säilytetään viisi vuotta, ja ne on salattu levossa.",
+      "Pääsy on rajattu tukitiimille, ja jokainen haku kirjataan."
+    ]
+  },
+  "law": {
+    "title": "Jokaisella toiminnolla on oma artiklansa.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Seloste käsittelytoimista"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Tietosuojaa koskeva vaikutustenarviointi"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Oma rooli tietosuojavastaavalle"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Eristys ja roolipohjainen pääsynhallinta"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Poikkeamat määräaikoineen ANPD:lle ja rekisteröidyille"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Lokit osoitusvelvollisuutta varten"
+      },
+      {
+        "mark": "GDPR 35",
+        "text": "Eurooppalaisen vaikutustenarvioinnin osat"
+      }
+    ]
+  },
+  "proof": {
+    "value": "Löysi 30. Kieltäytyi 6.",
+    "title": "Kun perusta oli olemassa, se löytyi. Kun sitä ei ollut, järjestelmä kieltäytyi.",
+    "text": "Hallitussa testissä 40 synteettisellä asiakirjalla kaikki 30 hakua löysivät oikean otteen ja kaikki 6 perusteetonta kysymystä hylättiin. Testi mittaa mekanismia eikä takaa tuloksia todellisilla tiedoilla."
+  },
+  "faq": {
+    "title": "Usein kysytyt kysymykset.",
+    "items": [
+      {
+        "q": "Voiko tekoäly keksiä tietoja?",
+        "a": "Mallia on ohjeistettu käyttämään vain hyväksyttyjä otteita ja kieltäytymään, jos ne eivät riitä. Tämä pienentää riskiä mutta ei poista sitä. Siksi jokainen luotu teksti käy läpi ihmisen tarkistuksen ja hyväksynnän."
+      },
+      {
+        "q": "Korvaako IABill juristin tai tietosuojavastaavan?",
+        "a": "Ei. Se järjestää prosessin ja valmistelee asiakirjat. Luoduilla teksteillä ei ole muodollista oikeudellista vahvistusta, ja lopullinen päätös on aina yritykselläsi."
+      },
+      {
+        "q": "Voiko toinen yritys nähdä tietoni?",
+        "a": "Jokainen toiminto tarkistaa, kuuluuko resurssi organisaatiollesi, ja tekoälyn haku rajoittuu työtilaasi. Tämä eristys kuuluu automaattisiin testeihin."
+      },
+      {
+        "q": "Sopiiko se yrityksille Euroopassa?",
+        "a": "Kyllä. Jokaisessa työtilassa määritetään sovellettavat säännöt, LGPD, GDPR tai molemmat, ja vaikutustenarviointi sisältää GDPR:n 35 artiklan osat."
+      },
+      {
+        "q": "Kuka voi hyväksyä asiakirjan?",
+        "a": "Kuka tahansa käyttäjä voi tarkistaa, mutta hyväksyntä on varattu järjestelmänvalvojalle. Hyväksyttyä sisältöä ei voi enää muokata tai luoda uudelleen."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Avaa arkistosi.",
+    "lead": "Se on aluksi tyhjä: tekoäly vastaa vasta ensimmäisen hyväksytyn kirjauksen jälkeen.",
+    "placeholder": "Yrityksesi",
+    "button": "Avaa arkistoni",
+    "companyLabel": "Yrityksen nimi"
+  },
+  "footer": {
+    "about": "LGPD- ja GDPR-vaatimustenmukaisuus",
+    "madeBy": "Kehittäjä",
+    "contact": "Yhteystiedot",
+    "academic": "Ei korvaa oikeudellista neuvontaa."
+  },
+  "images": {
+    "archive": "Arkiston käytävä, jonka hyllyt ovat täynnä numeroituja asiakirjalaatikoita",
+    "ledger": "Vanha avoin rekisterikirja käsin kirjoitettuine merkintöineen",
+    "cabinet": "Käsi avaamassa korttikaapin laatikkoa, jossa kortit ovat nimen mukaan"
+  }
+}

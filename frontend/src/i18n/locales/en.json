@@ -191,5 +191,10 @@
     "madeBy": "Developed by",
     "contact": "Contact",
     "academic": "Does not substitute legal advice."
+  },
+  "images": {
+    "archive": "Archive corridor with shelves full of numbered document boxes",
+    "ledger": "Old record book, open, with handwritten entries",
+    "cabinet": "Hand opening a card-file drawer with cards sorted by name"
   }
 }

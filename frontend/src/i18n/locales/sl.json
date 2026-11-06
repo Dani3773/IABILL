@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Kako deluje",
+    "states": "Odobritev",
+    "law": "Zakon",
+    "faq": "Vprašanja",
+    "login": "Prijava",
+    "signup": "Registriraj podjetje",
+    "language": "Jezik"
+  },
+  "hero": {
+    "line1": "Brez zapisa",
+    "line2": "ni odgovora.",
+    "lead": "IABill piše dokumente LGPD in GDPR vašega podjetja samo iz tega, kar ste že odobrili. Ko podlage ni, UI raje zavrne, kot da bi si izmišljala."
+  },
+  "demo": {
+    "title": "Vprašajte IABill",
+    "choose": "Izberite vprašanje",
+    "source": "Odobren vir",
+    "noSource": "Noben odobren zapis ne podpira tega odgovora.",
+    "questions": [
+      {
+        "q": "Kolikšni so bili prihodki podjetja v letu 2025?",
+        "kind": "refuse",
+        "a": "V kontekstu ni dovolj podatkov za določitev letnih prihodkov podjetja v letu 2025."
+      },
+      {
+        "q": "Kako dolgo hranimo podatke strank?",
+        "kind": "answer",
+        "a": "Podatki strank se hranijo pet let na strežnikih v regiji São Paulo, šifrirani v mirovanju.",
+        "source": "Politika hrambe, odobrila Ana Silva"
+      },
+      {
+        "q": "Kdo dostopa do zahtevkov za podporo?",
+        "kind": "answer",
+        "a": "Samo ekipa za podporo, z dostopom, omejenim glede na vlogo. Zahtevki vsebujejo ime, e-pošto in telefon stranke.",
+        "source": "Popis podatkov, odobril Carlos Mendes"
+      },
+      {
+        "q": "Ali je podjetje že utrpelo uhajanje podatkov?",
+        "kind": "refuse",
+        "a": "V kontekstu ni dovolj podatkov za odgovor, ali je podjetje že utrpelo uhajanje podatkov."
+      },
+      {
+        "q": "Kdo je pooblaščenec za varstvo podatkov?",
+        "kind": "answer",
+        "a": "Pooblaščenec je Carlos Mendes, posamezniki pa ga dosežejo prek kanala za zasebnost podjetja.",
+        "source": "Politika zasebnosti, odobrila Ana Silva"
+      },
+      {
+        "q": "Ali se ekipa usposablja o LGPD?",
+        "kind": "answer",
+        "a": "Da. Vsa ekipa se usposablja enkrat na leto, udeležba vsake osebe pa se zabeleži.",
+        "source": "Usposabljanje ekipe, odobril Carlos Mendes"
+      },
+      {
+        "q": "Kaj storimo ob incidentu?",
+        "kind": "answer",
+        "a": "Pooblaščenec oceni primer in, če je tveganje pomembno, v treh delovnih dneh obvesti ANPD in posameznike.",
+        "source": "Načrt odziva na incidente, odobrila Ana Silva"
+      }
+    ],
+    "stamp": "BREZ ZAPISA",
+    "records": [
+      "Politika hrambe",
+      "Popis podatkov",
+      "Politika zasebnosti",
+      "Usposabljanje ekipe",
+      "Načrt odziva na incidente"
+    ]
+  },
+  "how": {
+    "title": "UI piše, vi odločate.",
+    "steps": [
+      {
+        "lead": "Najprej zabeležite, kaj vaše podjetje počne.",
+        "callLabel": "Beležite",
+        "call": "Služba za stranke zbira ime, e-pošto in telefon. Hramba pet let. Pravna podlaga: izvajanje pogodbe.",
+        "response": "Po odobritvi zapis postane kontekst samo za vaš delovni prostor."
+      },
+      {
+        "lead": "Nato zahtevajte manjkajoči dokument.",
+        "callLabel": "Zahtevate",
+        "call": "Pripravi oceno učinka za službo za stranke.",
+        "response": "UI poišče odobrene odlomke in piše samo iz njih. Kar nima podlage, označi kot nepopolno."
+      },
+      {
+        "lead": "Na koncu odločite, kaj postane uradno.",
+        "callLabel": "Odločate",
+        "call": "Preglej, zavrni ali odobri.",
+        "response": "Po odobritvi je besedilo zaklenjeno. Kdo je kaj storil, ostane v revizijski sledi, ki je podatkovna baza ne dovoli spreminjati."
+      }
+    ],
+    "archive": "Arhivira se samo odobreno."
+  },
+  "states": {
+    "title": "En dokument, tri faze.",
+    "lead": "Brez človeškega pregleda nič ne postane uradno. Če kdo po pregledu ureja besedilo, se dokument vrne v pregled.",
+    "docTitle": "Ocena učinka: služba za stranke",
+    "doc": "RIPD/DPIA",
+    "s1": "Ustvarila UI",
+    "s1Meta": "Brez uradne vrednosti, čaka na pregled",
+    "s1Note": "Ob prejemu",
+    "s2": "Pregledano",
+    "s2Meta": "Pregledala Juliana Rocha",
+    "s2Note": "Pripravljeno za odobritev ali zavrnitev",
+    "approve": "Odobri",
+    "reject": "Zavrni",
+    "s3": "Odobreno",
+    "s3Meta": "Odobrila Ana Silva, vsebina zaklenjena",
+    "s3Note": "Uradno in pripravljeno za izvoz v PDF",
+    "pdf": "Prenesi PDF",
+    "docBody": [
+      "Služba za stranke zbira ime, e-pošto in telefon za odgovarjanje na zahtevke.",
+      "Podatki se hranijo pet let, šifrirani v mirovanju.",
+      "Dostop ima samo ekipa za podporo, vsak vpogled pa se beleži."
+    ]
+  },
+  "law": {
+    "title": "Vsaka funkcija ima svoj člen.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Evidenca dejavnosti obdelave"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Ocena učinka v zvezi z varstvom podatkov"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Posebna vloga za pooblaščenca za varstvo podatkov"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Izolacija in nadzor dostopa po vlogah"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Incidenti z roki za ANPD in posameznike"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Revizijska sled za odgovornost"
+      },
+      {
+        "mark": "GDPR 35",
+        "text": "Elementi evropske ocene učinka"
+      }
+    ]
+  },
+  "proof": {
+    "value": "Našla 30. Zavrnila 6.",
+    "title": "Ko je bila podlaga, jo je našla. Ko je ni bilo, je zavrnila.",
+    "text": "V nadzorovanem preizkusu s 40 sintetičnimi dokumenti je vseh 30 iskanj našlo pravi odlomek, vseh 6 vprašanj brez podlage pa je bilo zavrnjenih. Preizkus meri mehanizem in ne zagotavlja rezultatov z resničnimi podatki."
+  },
+  "faq": {
+    "title": "Pogosta vprašanja.",
+    "items": [
+      {
+        "q": "Ali si UI lahko izmišlja podatke?",
+        "a": "Model ima navodilo, da uporablja samo odobrene odlomke in zavrne, ko ti ne zadoščajo. To zmanjša tveganje, vendar ga ne odpravi. Zato vsako ustvarjeno besedilo pregleda in odobri človek."
+      },
+      {
+        "q": "Ali IABill nadomesti odvetnika ali pooblaščenca?",
+        "a": "Ne. Organizira postopek in pripravlja dokumente. Ustvarjena besedila nimajo formalne pravne potrditve, končna odločitev pa je vedno na vašem podjetju."
+      },
+      {
+        "q": "Ali lahko drugo podjetje vidi moje podatke?",
+        "a": "Vsaka operacija preveri, ali vir pripada vaši organizaciji, iskanje UI pa je omejeno na vaš delovni prostor. Ta izolacija je del avtomatiziranih preizkusov."
+      },
+      {
+        "q": "Je primeren za podjetja v Evropi?",
+        "a": "Da. Vsak delovni prostor določi veljavne režime, LGPD, GDPR ali oba, ocena učinka pa vključuje elemente 35. člena GDPR."
+      },
+      {
+        "q": "Kdo lahko odobri dokument?",
+        "a": "Pregleda lahko vsak uporabnik, odobritev pa je pridržana profilu skrbnika. Po odobritvi vsebine ni več mogoče urejati ali znova ustvariti."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Odprite svoj arhiv.",
+    "lead": "Začne se prazen: UI odgovarja šele po vašem prvem odobrenem zapisu.",
+    "placeholder": "Vaše podjetje",
+    "button": "Odpri moj arhiv",
+    "companyLabel": "Ime podjetja"
+  },
+  "footer": {
+    "about": "Skladnost z LGPD in GDPR",
+    "madeBy": "Razvil",
+    "contact": "Kontakt",
+    "academic": "Ne nadomešča pravnega svetovanja."
+  },
+  "images": {
+    "archive": "Hodnik arhiva s policami, polnimi oštevilčenih škatel z dokumenti",
+    "ledger": "Stara odprta knjiga zapisov z ročno napisanimi vnosi",
+    "cabinet": "Roka odpira predal kartoteke s karticami, urejenimi po imenu"
+  }
+}

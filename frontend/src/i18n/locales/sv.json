@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Så fungerar det",
+    "states": "Godkännande",
+    "law": "Lag",
+    "faq": "Frågor",
+    "login": "Logga in",
+    "signup": "Registrera företag",
+    "language": "Språk"
+  },
+  "hero": {
+    "line1": "Ingen registrering,",
+    "line2": "inget svar.",
+    "lead": "IABill skriver företagets LGPD- och GDPR-dokument med enbart det du redan har godkänt. När underlag saknas vägrar AI:n i stället för att hitta på."
+  },
+  "demo": {
+    "title": "Fråga IABill",
+    "choose": "Välj en fråga",
+    "source": "Godkänd källa",
+    "noSource": "Ingen godkänd registrering stöder det här svaret.",
+    "questions": [
+      {
+        "q": "Vad var företagets omsättning 2025?",
+        "kind": "refuse",
+        "a": "Det finns inte tillräckligt med data i sammanhanget för att fastställa företagets årsomsättning 2025."
+      },
+      {
+        "q": "Hur länge lagrar vi kunduppgifter?",
+        "kind": "answer",
+        "a": "Kunduppgifter lagras i fem år på servrar i São Paulo-regionen, krypterade i vila.",
+        "source": "Lagringspolicy, godkänd av Ana Silva"
+      },
+      {
+        "q": "Vem har tillgång till supportärenden?",
+        "kind": "answer",
+        "a": "Endast supportteamet, med rollbegränsad åtkomst. Ärendena innehåller kundens namn, e-post och telefonnummer.",
+        "source": "Datainventering, godkänd av Carlos Mendes"
+      },
+      {
+        "q": "Har företaget drabbats av en personuppgiftsincident?",
+        "kind": "refuse",
+        "a": "Det finns inte tillräckligt med data i sammanhanget för att svara på om företaget har drabbats av en incident."
+      },
+      {
+        "q": "Vem är dataskyddsombud?",
+        "kind": "answer",
+        "a": "Ombudet är Carlos Mendes, och de registrerade når honom via företagets integritetskanal.",
+        "source": "Integritetspolicy, godkänd av Ana Silva"
+      },
+      {
+        "q": "Får teamet utbildning i LGPD?",
+        "kind": "answer",
+        "a": "Ja. Hela teamet går utbildningen en gång om året och varje persons närvaro registreras.",
+        "source": "Teamutbildning, godkänd av Carlos Mendes"
+      },
+      {
+        "q": "Vad gör vi vid en incident?",
+        "kind": "answer",
+        "a": "Ombudet bedömer fallet och underrättar, om risken är betydande, ANPD och de registrerade inom tre arbetsdagar.",
+        "source": "Incidenthanteringsplan, godkänd av Ana Silva"
+      }
+    ],
+    "stamp": "INGEN REGISTRERING",
+    "records": [
+      "Lagringspolicy",
+      "Datainventering",
+      "Integritetspolicy",
+      "Teamutbildning",
+      "Incidenthanteringsplan"
+    ]
+  },
+  "how": {
+    "title": "AI:n skriver, du bestämmer.",
+    "steps": [
+      {
+        "lead": "Registrera först vad företaget gör.",
+        "callLabel": "Du registrerar",
+        "call": "Kundtjänst samlar in namn, e-post och telefonnummer. Lagring i fem år. Rättslig grund: fullgörande av avtal.",
+        "response": "När registreringen har godkänts blir den sammanhang enbart för din arbetsyta."
+      },
+      {
+        "lead": "Begär sedan det dokument som saknas.",
+        "callLabel": "Du begär",
+        "call": "Skriv konsekvensbedömningen för kundtjänsten.",
+        "response": "AI:n söker godkända utdrag och skriver enbart utifrån dem. Allt utan underlag anges som ofullständigt."
+      },
+      {
+        "lead": "Bestäm till sist vad som blir officiellt.",
+        "callLabel": "Du bestämmer",
+        "call": "Granska, avvisa eller godkänn.",
+        "response": "Efter godkännandet låses texten. Vem som gjorde vad finns kvar i granskningsloggen, som databasen hindrar från att ändras."
+      }
+    ],
+    "archive": "Endast det godkända arkiveras."
+  },
+  "states": {
+    "title": "Ett dokument, tre steg.",
+    "lead": "Inget blir officiellt utan mänsklig granskning. Om någon redigerar efter granskningen går dokumentet tillbaka för ny granskning.",
+    "docTitle": "Konsekvensbedömning: kundtjänst",
+    "doc": "RIPD/DPIA",
+    "s1": "AI-genererat",
+    "s1Meta": "Inget officiellt värde, väntar på granskning",
+    "s1Note": "Vid ankomst",
+    "s2": "Granskat",
+    "s2Meta": "Granskat av Juliana Rocha",
+    "s2Note": "Klart att godkänna eller avvisa",
+    "approve": "Godkänn",
+    "reject": "Avvisa",
+    "s3": "Godkänt",
+    "s3Meta": "Godkänt av Ana Silva, innehållet låst",
+    "s3Note": "Officiellt och klart för PDF-export",
+    "pdf": "Ladda ner PDF",
+    "docBody": [
+      "Kundtjänst samlar in namn, e-post och telefonnummer för att besvara ärenden.",
+      "Uppgifterna lagras i fem år, krypterade i vila.",
+      "Åtkomsten är begränsad till supportteamet och varje sökning loggas."
+    ]
+  },
+  "law": {
+    "title": "Varje funktion har en artikel.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Register över behandlingar"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Konsekvensbedömning avseende dataskydd"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Egen roll för dataskyddsombudet"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Isolering och rollbaserad åtkomstkontroll"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Incidenter med tidsfrister för ANPD och de registrerade"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Granskningslogg för ansvarsskyldighet"
+      },
+      {
+        "mark": "GDPR 35",
+        "text": "Delar av den europeiska konsekvensbedömningen"
+      }
+    ]
+  },
+  "proof": {
+    "value": "Hittade 30. Vägrade 6.",
+    "title": "När det fanns underlag hittade den det. När det inte fanns vägrade den.",
+    "text": "I ett kontrollerat test med 40 syntetiska dokument hittade alla 30 sökningar rätt utdrag och alla 6 frågor utan underlag avvisades. Testet mäter mekanismen och garanterar inte resultat med verkliga data."
+  },
+  "faq": {
+    "title": "Vanliga frågor.",
+    "items": [
+      {
+        "q": "Kan AI:n hitta på information?",
+        "a": "Modellen är instruerad att bara använda godkända utdrag och att vägra när de inte räcker. Det minskar risken men tar inte bort den. Därför granskas och godkänns all genererad text av en människa."
+      },
+      {
+        "q": "Ersätter IABill en jurist eller ett dataskyddsombud?",
+        "a": "Nej. Det organiserar processen och förbereder dokument. De genererade texterna har ingen formell juridisk validering och det slutliga beslutet ligger alltid hos ditt företag."
+      },
+      {
+        "q": "Kan ett annat företag se mina uppgifter?",
+        "a": "Varje åtgärd kontrollerar att resursen tillhör din organisation, och AI:ns sökning är begränsad till din arbetsyta. Denna isolering ingår i de automatiska testerna."
+      },
+      {
+        "q": "Passar det företag i Europa?",
+        "a": "Ja. Varje arbetsyta anger vilka regelverk som gäller, LGPD, GDPR eller båda, och konsekvensbedömningen innehåller delarna i artikel 35 i GDPR."
+      },
+      {
+        "q": "Vem kan godkänna ett dokument?",
+        "a": "Alla användare kan granska, medan godkännande är förbehållet administratörsprofilen. Efter godkännandet kan innehållet inte längre redigeras eller genereras på nytt."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Öppna ditt arkiv.",
+    "lead": "Det börjar tomt: AI:n svarar först efter din första godkända registrering.",
+    "placeholder": "Ditt företag",
+    "button": "Öppna mitt arkiv",
+    "companyLabel": "Företagsnamn"
+  },
+  "footer": {
+    "about": "Efterlevnad av LGPD och GDPR",
+    "madeBy": "Utvecklat av",
+    "contact": "Kontakt",
+    "academic": "Ersätter inte juridisk rådgivning."
+  },
+  "images": {
+    "archive": "Arkivkorridor med hyllor fulla av numrerade dokumentlådor",
+    "ledger": "Gammal uppslagen registerbok med handskrivna anteckningar",
+    "cabinet": "Hand som öppnar en kartotekslåda med kort sorterade efter namn"
+  }
+}

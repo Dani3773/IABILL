@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Kif jaħdem",
+    "states": "Approvazzjoni",
+    "law": "Liġi",
+    "faq": "Domandi",
+    "login": "Idħol",
+    "signup": "Irreġistra l-kumpanija",
+    "language": "Lingwa"
+  },
+  "hero": {
+    "line1": "Bla reġistru,",
+    "line2": "bla tweġiba.",
+    "lead": "IABill jikteb id-dokumenti tal-LGPD u tal-GDPR tal-kumpanija tiegħek billi juża biss dak li diġà approvajt. Meta ma jkunx hemm bażi, l-IA tirrifjuta minflok tivvinta."
+  },
+  "demo": {
+    "title": "Staqsi lil IABill",
+    "choose": "Agħżel domanda",
+    "source": "Sors approvat",
+    "noSource": "L-ebda reġistru approvat ma jappoġġa din it-tweġiba.",
+    "questions": [
+      {
+        "q": "X'kien id-dħul tal-kumpanija fl-2025?",
+        "kind": "refuse",
+        "a": "M'hemmx biżżejjed data fil-kuntest biex jiġi stabbilit id-dħul annwali tal-kumpanija fl-2025."
+      },
+      {
+        "q": "Għal kemm żmien inżommu d-data tal-klijenti?",
+        "kind": "answer",
+        "a": "Id-data tal-klijenti tinżamm għal ħames snin, fuq servers fir-reġjun ta' São Paulo, b'kriptaġġ waqt il-ħażna.",
+        "source": "Politika taż-żamma, approvata minn Ana Silva"
+      },
+      {
+        "q": "Min għandu aċċess għat-talbiet ta' appoġġ?",
+        "kind": "answer",
+        "a": "It-tim tal-appoġġ biss, b'aċċess ristrett skont ir-rwol. It-talbiet iżommu l-isem, l-email u t-telefon tal-klijent.",
+        "source": "Inventarju tad-data, approvat minn Carlos Mendes"
+      },
+      {
+        "q": "Il-kumpanija qatt sofriet ksur tad-data?",
+        "kind": "refuse",
+        "a": "M'hemmx biżżejjed data fil-kuntest biex jingħad jekk il-kumpanija qatt sofrietx ksur tad-data."
+      },
+      {
+        "q": "Min hu l-uffiċjal għall-protezzjoni tad-data?",
+        "kind": "answer",
+        "a": "L-uffiċjal hu Carlos Mendes, u s-suġġetti tad-data jikkuntattjawh permezz tal-kanal tal-privatezza tal-kumpanija.",
+        "source": "Politika tal-privatezza, approvata minn Ana Silva"
+      },
+      {
+        "q": "It-tim jieħu taħriġ dwar l-LGPD?",
+        "kind": "answer",
+        "a": "Iva. It-tim kollu jagħmel it-taħriġ darba fis-sena u l-preżenza ta' kull persuna tiġi rreġistrata.",
+        "source": "Taħriġ tat-tim, approvat minn Carlos Mendes"
+      },
+      {
+        "q": "X'nagħmlu jekk ikun hemm inċident?",
+        "kind": "answer",
+        "a": "L-uffiċjal jivvaluta l-każ u, jekk ir-riskju jkun rilevanti, jinnotifika lill-ANPD u lis-suġġetti tad-data fi żmien tlett ijiem tax-xogħol.",
+        "source": "Pjan ta' rispons għall-inċidenti, approvat minn Ana Silva"
+      }
+    ],
+    "stamp": "BLA REĠISTRU",
+    "records": [
+      "Politika taż-żamma",
+      "Inventarju tad-data",
+      "Politika tal-privatezza",
+      "Taħriġ tat-tim",
+      "Pjan ta' rispons għall-inċidenti"
+    ]
+  },
+  "how": {
+    "title": "L-IA tikteb, int tiddeċiedi.",
+    "steps": [
+      {
+        "lead": "L-ewwel, irreġistra x'tagħmel il-kumpanija tiegħek.",
+        "callLabel": "Tirreġistra",
+        "call": "Is-servizz lill-klijenti jiġbor isem, email u telefon. Żamma ta' ħames snin. Bażi legali: eżekuzzjoni tal-kuntratt.",
+        "response": "Ladarba approvat, ir-reġistru jsir kuntest għall-ispazju tax-xogħol tiegħek biss."
+      },
+      {
+        "lead": "Imbagħad, itlob id-dokument li jonqos.",
+        "callLabel": "Titlob",
+        "call": "Ikteb il-valutazzjoni tal-impatt tas-servizz lill-klijenti.",
+        "response": "L-IA tfittex estratti approvati u tikteb bihom biss. Dak li m'għandux bażi jiġi ddikjarat mhux komplut."
+      },
+      {
+        "lead": "Fl-aħħar, iddeċiedi x'isir uffiċjali.",
+        "callLabel": "Tiddeċiedi",
+        "call": "Irrevedi, irrifjuta jew approva.",
+        "response": "Ladarba approvat, it-test jiġi msakkar. Min għamel xiex jibqa' fit-traċċa tal-awditjar, li d-database ma tħallihiex tinbidel."
+      }
+    ],
+    "archive": "Jiġi arkivjat biss dak li hu approvat."
+  },
+  "states": {
+    "title": "Dokument wieħed, tliet stadji.",
+    "lead": "Xejn ma jsir uffiċjali mingħajr reviżjoni umana. Jekk xi ħadd jeditja wara r-reviżjoni, id-dokument jerġa' jmur għar-reviżjoni.",
+    "docTitle": "Valutazzjoni tal-impatt: servizz lill-klijenti",
+    "doc": "RIPD/DPIA",
+    "s1": "Iġġenerat mill-IA",
+    "s1Meta": "L-ebda valur uffiċjali, qed jistenna reviżjoni",
+    "s1Note": "Mal-wasla",
+    "s2": "Rivedut",
+    "s2Meta": "Rivedut minn Juliana Rocha",
+    "s2Note": "Lest għall-approvazzjoni jew ir-rifjut",
+    "approve": "Approva",
+    "reject": "Irrifjuta",
+    "s3": "Approvat",
+    "s3Meta": "Approvat minn Ana Silva, kontenut imsakkar",
+    "s3Note": "Uffiċjali u lest għall-esportazzjoni f'PDF",
+    "pdf": "Niżżel il-PDF",
+    "docBody": [
+      "Is-servizz lill-klijenti jiġbor isem, email u telefon biex iwieġeb it-talbiet.",
+      "Id-data tinżamm għal ħames snin, b'kriptaġġ waqt il-ħażna.",
+      "L-aċċess huwa ristrett għat-tim tal-appoġġ u kull konsultazzjoni tiġi rreġistrata."
+    ]
+  },
+  "law": {
+    "title": "Kull funzjoni għandha artiklu.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Reġistru tal-attivitajiet tal-ipproċessar"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Valutazzjoni tal-impatt fuq il-protezzjoni tad-data"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Rwol speċifiku għall-uffiċjal għall-protezzjoni tad-data"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Iżolament u kontroll tal-aċċess ibbażat fuq ir-rwoli"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Inċidenti bi skadenzi għall-ANPD u s-suġġetti tad-data"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Traċċa tal-awditjar għar-responsabbiltà"
+      },
+      {
+        "mark": "GDPR 35",
+        "text": "Elementi tal-valutazzjoni tal-impatt Ewropea"
+      }
+    ]
+  },
+  "proof": {
+    "value": "Sab 30. Irrifjuta 6.",
+    "title": "Meta kien hemm bażi, sabha. Meta ma kienx hemm, irrifjuta.",
+    "text": "F'test ikkontrollat b'40 dokument sintetiku, it-30 tfittxija kollha sabu l-estratt korrett u s-6 domandi kollha mingħajr bażi ġew irrifjutati. Dan ikejjel il-mekkaniżmu u ma jiggarantixxix riżultati b'data reali."
+  },
+  "faq": {
+    "title": "Domandi frekwenti.",
+    "items": [
+      {
+        "q": "L-IA tista' tivvinta informazzjoni?",
+        "a": "Il-mudell huwa struzzjonat juża biss estratti approvati u jirrifjuta meta ma jkunux biżżejjed. Dan inaqqas ir-riskju iżda ma jeliminahx. Għalhekk kull test iġġenerat jgħaddi minn reviżjoni u approvazzjoni umana."
+      },
+      {
+        "q": "IABill jieħu post avukat jew uffiċjal għall-protezzjoni tad-data?",
+        "a": "Le. Jorganizza l-proċess u jħejji d-dokumenti. It-testi ġġenerati m'għandhomx validazzjoni legali formali, u d-deċiżjoni finali dejjem hija f'idejn il-kumpanija tiegħek."
+      },
+      {
+        "q": "Kumpanija oħra tista' tara d-data tiegħi?",
+        "a": "Kull operazzjoni tivverifika jekk ir-riżors jappartjenix lill-organizzazzjoni tiegħek, u t-tfittxija tal-IA hija ristretta għall-ispazju tax-xogħol tiegħek. Dan l-iżolament huwa parti mit-testijiet awtomatizzati."
+      },
+      {
+        "q": "Huwa adattat għal kumpaniji fl-Ewropa?",
+        "a": "Iva. Kull spazju tax-xogħol jiddefinixxi r-reġimi applikabbli, LGPD, GDPR jew it-tnejn, u l-valutazzjoni tal-impatt tinkludi l-elementi tal-Art. 35 tal-GDPR."
+      },
+      {
+        "q": "Min jista' japprova dokument?",
+        "a": "Kull utent jista' jirrevedi, u l-approvazzjoni hija riżervata għall-profil tal-amministratur. Ladarba approvat, il-kontenut ma jistax jibqa' jiġi editjat jew iġġenerat mill-ġdid."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Iftaħ l-arkivju tiegħek.",
+    "lead": "Jibda vojt: l-IA twieġeb biss wara l-ewwel reġistru approvat tiegħek.",
+    "placeholder": "Il-kumpanija tiegħek",
+    "button": "Iftaħ l-arkivju tiegħi",
+    "companyLabel": "Isem il-kumpanija"
+  },
+  "footer": {
+    "about": "Konformità mal-LGPD u l-GDPR",
+    "madeBy": "Żviluppat minn",
+    "contact": "Kuntatt",
+    "academic": "Ma jissostitwixxix parir legali."
+  },
+  "images": {
+    "archive": "Kuritur ta' arkivju bi xkafef mimlijin kaxxi ta' dokumenti nnumerati",
+    "ledger": "Ktieb tar-reġistri antik, miftuħ, b'annotazzjonijiet miktuba bl-idejn",
+    "cabinet": "Id tiftaħ kexxun ta' fajls bi skedi organizzati skont l-isem"
+  }
+}

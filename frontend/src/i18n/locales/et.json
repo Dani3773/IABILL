@@ -40,7 +40,33 @@
         "q": "Kas ettevõte on juba kannatanud andmelekke all?",
         "kind": "refuse",
         "a": "Kontekstis puuduvad piisavad andmed, et vastata, kas ettevõte on kannatanud andmelekke all."
+      },
+      {
+        "q": "Kes on andmekaitseametnik?",
+        "kind": "answer",
+        "a": "Andmekaitseametnik on Carlos Mendes ja andmesubjektid saavad temaga ühendust ettevõtte privaatsuskanali kaudu.",
+        "source": "Privaatsuspoliitika, kinnitas Ana Silva"
+      },
+      {
+        "q": "Kas meeskond saab LGPD koolitust?",
+        "kind": "answer",
+        "a": "Jah. Kogu meeskond läbib koolituse kord aastas ja iga inimese osalemine registreeritakse.",
+        "source": "Meeskonna koolitus, kinnitas Carlos Mendes"
+      },
+      {
+        "q": "Mida teeme intsidendi korral?",
+        "kind": "answer",
+        "a": "Andmekaitseametnik hindab juhtumit ja teavitab olulise riski korral kolme tööpäeva jooksul ANPD-d ja andmesubjekte.",
+        "source": "Intsidentidele reageerimise plaan, kinnitas Ana Silva"
       }
+    ],
+    "stamp": "KIRJE PUUDUB",
+    "records": [
+      "Säilitamise põhimõtted",
+      "Andmete inventuur",
+      "Privaatsuspoliitika",
+      "Meeskonna koolitus",
+      "Intsidentidele reageerimise plaan"
     ]
   },
   "how": {
@@ -64,7 +90,8 @@
         "call": "Vaadata üle, tagasi lükata või kinnitada.",
         "response": "Kinnitatuna on tekst blokeeritud. Kes mida tegi, jääb auditi jäljele, mida andmebaas ei luba muuta."
       }
-    ]
+    ],
+    "archive": "Arhiveeritakse ainult kinnitatu."
   },
   "states": {
     "title": "Üks dokument, kolm etappi.",
@@ -82,7 +109,12 @@
     "s3": "Kinnitatud",
     "s3Meta": "Kinnitanud Ana Silva, sisu blokeeritud",
     "s3Note": "Ametlik ja valmis PDF-ina eksportimiseks",
-    "pdf": "Laadi alla PDF"
+    "pdf": "Laadi alla PDF",
+    "docBody": [
+      "Klienditugi kogub päringutele vastamiseks nime, e-posti ja telefoninumbri.",
+      "Andmeid säilitatakse viis aastat ja need on salvestatult krüpteeritud.",
+      "Juurdepääs on ainult tugimeeskonnal ja iga päring logitakse."
+    ]
   },
   "law": {
     "title": "Iga funktsiooni taga on artikkel.",
@@ -150,14 +182,19 @@
   "cta": {
     "title": "Alustage sellest, mis on juba tõsi.",
     "lead": "Looge oma ettevõtte konto ja tehke oma esimene registreering.",
-    "emailLabel": "Teie töö e-posti aadress",
     "placeholder": "sina@ettevote.com",
-    "button": "Registreeri ettevõte"
+    "button": "Registreeri ettevõte",
+    "companyLabel": "Ettevõtte nimi"
   },
   "footer": {
     "about": "Vastavus LGPD-le ja isikuandmete kaitse üldmäärusele",
     "madeBy": "Arendanud",
     "contact": "Kontakt",
     "academic": "Ei asenda õigusnõuannet."
+  },
+  "images": {
+    "archive": "Arhiivikoridor nummerdatud dokumendikaste täis riiulitega",
+    "ledger": "Vana avatud registriraamat käsitsi kirjutatud sissekannetega",
+    "cabinet": "Käsi avab kartoteegisahtli nime järgi sorditud kaartidega"
   }
 }

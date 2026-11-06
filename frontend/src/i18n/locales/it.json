@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Come funziona",
+    "states": "Approvazione",
+    "law": "Legge",
+    "faq": "Domande",
+    "login": "Accedi",
+    "signup": "Registra azienda",
+    "language": "Lingua"
+  },
+  "hero": {
+    "line1": "Senza registro,",
+    "line2": "nessuna risposta.",
+    "lead": "IABill redige i documenti LGPD e GDPR della tua azienda usando solo ciò che hai già approvato. Quando manca una base, l'IA rifiuta invece di inventare."
+  },
+  "demo": {
+    "title": "Chiedi a IABill",
+    "choose": "Scegli una domanda",
+    "source": "Fonte approvata",
+    "noSource": "Nessun registro approvato sostiene questa risposta.",
+    "questions": [
+      {
+        "q": "Qual è stato il fatturato dell'azienda nel 2025?",
+        "kind": "refuse",
+        "a": "Il contesto non contiene dati sufficienti per determinare il fatturato annuo dell'azienda nel 2025."
+      },
+      {
+        "q": "Per quanto tempo conserviamo i dati dei clienti?",
+        "kind": "answer",
+        "a": "I dati dei clienti sono conservati per cinque anni, su server nella regione di San Paolo, con cifratura a riposo.",
+        "source": "Politica di conservazione, approvata da Ana Silva"
+      },
+      {
+        "q": "Chi accede ai ticket di assistenza?",
+        "kind": "answer",
+        "a": "Solo il team di assistenza, con accesso limitato per ruolo. I ticket conservano nome, e-mail e telefono del cliente.",
+        "source": "Inventario dei dati, approvato da Carlos Mendes"
+      },
+      {
+        "q": "L'azienda ha mai subito una violazione dei dati?",
+        "kind": "refuse",
+        "a": "Il contesto non contiene dati sufficienti per dire se l'azienda abbia mai subito una violazione."
+      },
+      {
+        "q": "Chi è il responsabile della protezione dei dati?",
+        "kind": "answer",
+        "a": "Il responsabile è Carlos Mendes; gli interessati lo contattano tramite il canale privacy dell'azienda.",
+        "source": "Informativa sulla privacy, approvata da Ana Silva"
+      },
+      {
+        "q": "Il team riceve formazione sulla LGPD?",
+        "kind": "answer",
+        "a": "Sì. Tutto il team segue la formazione una volta l'anno e la presenza di ciascuno viene registrata.",
+        "source": "Formazione del team, approvata da Carlos Mendes"
+      },
+      {
+        "q": "Cosa facciamo in caso di incidente?",
+        "kind": "answer",
+        "a": "Il responsabile valuta il caso e, se il rischio è rilevante, informa l'ANPD e gli interessati entro tre giorni lavorativi.",
+        "source": "Piano di risposta agli incidenti, approvato da Ana Silva"
+      }
+    ],
+    "stamp": "NESSUN REGISTRO",
+    "records": [
+      "Politica di conservazione",
+      "Inventario dei dati",
+      "Informativa sulla privacy",
+      "Formazione del team",
+      "Piano di risposta agli incidenti"
+    ]
+  },
+  "how": {
+    "title": "L'IA scrive, tu decidi.",
+    "steps": [
+      {
+        "lead": "Prima, registra ciò che fa la tua azienda.",
+        "callLabel": "Tu registri",
+        "call": "L'assistenza clienti raccoglie nome, e-mail e telefono. Conservazione di cinque anni. Base giuridica: esecuzione del contratto.",
+        "response": "Una volta approvato, il registro diventa contesto solo per il tuo spazio di lavoro."
+      },
+      {
+        "lead": "Poi, chiedi il documento mancante.",
+        "callLabel": "Tu chiedi",
+        "call": "Redigi la valutazione d'impatto dell'assistenza clienti.",
+        "response": "L'IA cerca estratti approvati e scrive usando solo quelli. Ciò che non ha una base viene dichiarato incompleto."
+      },
+      {
+        "lead": "Infine, decidi cosa diventa ufficiale.",
+        "callLabel": "Tu decidi",
+        "call": "Rivedi, rifiuta o approva.",
+        "response": "Una volta approvato, il testo è bloccato. Chi ha fatto cosa resta nel registro di controllo, che il database impedisce di modificare."
+      }
+    ],
+    "archive": "Si archivia solo ciò che è approvato."
+  },
+  "states": {
+    "title": "Un documento, tre fasi.",
+    "lead": "Nulla diventa ufficiale senza revisione umana. Se qualcuno modifica il testo dopo la revisione, il documento torna in revisione.",
+    "docTitle": "Valutazione d'impatto: assistenza clienti",
+    "doc": "RIPD/DPIA",
+    "s1": "Generato dall'IA",
+    "s1Meta": "Senza valore ufficiale, in attesa di revisione",
+    "s1Note": "All'arrivo",
+    "s2": "Rivisto",
+    "s2Meta": "Rivisto da Juliana Rocha",
+    "s2Note": "Pronto per l'approvazione o il rifiuto",
+    "approve": "Approva",
+    "reject": "Rifiuta",
+    "s3": "Approvato",
+    "s3Meta": "Approvato da Ana Silva, contenuto bloccato",
+    "s3Note": "Ufficiale e pronto per l'esportazione in PDF",
+    "pdf": "Scarica PDF",
+    "docBody": [
+      "L'assistenza clienti raccoglie nome, e-mail e telefono per rispondere ai ticket.",
+      "I dati sono conservati per cinque anni, con cifratura a riposo.",
+      "L'accesso è limitato al team di assistenza e ogni consultazione viene registrata."
+    ]
+  },
+  "law": {
+    "title": "Ogni funzione ha il suo articolo.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Registro delle attività di trattamento"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Valutazione d'impatto sulla protezione dei dati"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Ruolo specifico per il responsabile della protezione dei dati"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Isolamento e controllo degli accessi basato sui ruoli"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Incidenti con scadenze per l'ANPD e gli interessati"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Registro di controllo per la responsabilizzazione"
+      },
+      {
+        "mark": "GDPR 35",
+        "text": "Elementi della valutazione d'impatto europea"
+      }
+    ]
+  },
+  "proof": {
+    "value": "Trovati 30. Rifiutati 6.",
+    "title": "Quando c'era una base, l'ha trovata. Quando non c'era, ha rifiutato.",
+    "text": "In un test controllato con 40 documenti sintetici, tutte le 30 ricerche hanno trovato l'estratto corretto e tutte le 6 domande senza base sono state rifiutate. Il test misura il meccanismo e non garantisce risultati con dati reali."
+  },
+  "faq": {
+    "title": "Domande frequenti.",
+    "items": [
+      {
+        "q": "L'IA può inventare informazioni?",
+        "a": "Il modello è istruito a usare solo estratti approvati e a rifiutare quando sono insufficienti. Questo riduce il rischio, ma non lo elimina. Per questo ogni testo generato passa da revisione e approvazione umana."
+      },
+      {
+        "q": "IABill sostituisce un avvocato o un DPO?",
+        "a": "No. Organizza il processo e prepara i documenti. I testi generati non hanno una validazione giuridica formale e la decisione finale spetta sempre alla tua azienda."
+      },
+      {
+        "q": "Un'altra azienda può vedere i miei dati?",
+        "a": "Ogni operazione verifica che la risorsa appartenga alla tua organizzazione e la ricerca dell'IA è limitata al tuo spazio di lavoro. Questo isolamento fa parte dei test automatizzati."
+      },
+      {
+        "q": "È adatto alle aziende in Europa?",
+        "a": "Sì. Ogni spazio di lavoro definisce i regimi applicabili, LGPD, GDPR o entrambi, e la valutazione d'impatto include gli elementi dell'art. 35 del GDPR."
+      },
+      {
+        "q": "Chi può approvare un documento?",
+        "a": "Qualsiasi utente può rivedere, mentre l'approvazione è riservata al profilo amministratore. Una volta approvato, il contenuto non può più essere modificato né rigenerato."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Apri il tuo archivio.",
+    "lead": "Parte vuoto: l'IA risponde solo dopo il tuo primo registro approvato.",
+    "placeholder": "La tua azienda",
+    "button": "Apri il mio archivio",
+    "companyLabel": "Nome dell'azienda"
+  },
+  "footer": {
+    "about": "Conformità a LGPD e GDPR",
+    "madeBy": "Sviluppato da",
+    "contact": "Contatti",
+    "academic": "Non sostituisce la consulenza legale."
+  },
+  "images": {
+    "archive": "Corridoio di un archivio con scaffali pieni di scatole di documenti numerate",
+    "ledger": "Vecchio registro aperto, con annotazioni scritte a mano",
+    "cabinet": "Mano che apre un cassetto di schedario con schede ordinate per nome"
+  }
+}

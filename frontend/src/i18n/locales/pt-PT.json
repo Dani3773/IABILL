@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Como funciona",
+    "states": "Aprovação",
+    "law": "Lei",
+    "faq": "Perguntas",
+    "login": "Entrar",
+    "signup": "Registar empresa",
+    "language": "Idioma"
+  },
+  "hero": {
+    "line1": "Sem registo,",
+    "line2": "sem resposta.",
+    "lead": "O IABill redige os documentos de LGPD e RGPD da sua empresa usando apenas o que já aprovou. Quando falta base, a IA recusa em vez de inventar."
+  },
+  "demo": {
+    "title": "Pergunte ao IABill",
+    "choose": "Escolha uma pergunta",
+    "source": "Fonte aprovada",
+    "noSource": "Nenhum registo aprovado sustenta esta resposta.",
+    "questions": [
+      {
+        "q": "Qual foi a faturação da empresa em 2025?",
+        "kind": "refuse",
+        "a": "Não há dados suficientes no contexto para determinar a faturação anual da empresa em 2025."
+      },
+      {
+        "q": "Durante quanto tempo guardamos os dados de clientes?",
+        "kind": "answer",
+        "a": "Os dados de clientes são conservados durante cinco anos, em servidores na região de São Paulo, com cifragem em repouso.",
+        "source": "Política de conservação, aprovada por Ana Silva"
+      },
+      {
+        "q": "Quem acede aos pedidos de suporte?",
+        "kind": "answer",
+        "a": "Apenas a equipa de suporte, com acesso restrito por função. Os pedidos guardam nome, e-mail e telefone do cliente.",
+        "source": "Inventário de dados, aprovado por Carlos Mendes"
+      },
+      {
+        "q": "A empresa já sofreu alguma violação de dados?",
+        "kind": "refuse",
+        "a": "Não há dados suficientes no contexto para responder se a empresa já sofreu alguma violação de dados."
+      },
+      {
+        "q": "Quem é o encarregado da proteção de dados?",
+        "kind": "answer",
+        "a": "O encarregado é Carlos Mendes, e os titulares contactam-no pelo canal de privacidade da empresa.",
+        "source": "Política de privacidade, aprovada por Ana Silva"
+      },
+      {
+        "q": "A equipa recebe formação em LGPD?",
+        "kind": "answer",
+        "a": "Sim. Toda a equipa faz a formação uma vez por ano e a presença de cada pessoa é registada.",
+        "source": "Formação da equipa, aprovada por Carlos Mendes"
+      },
+      {
+        "q": "O que fazemos em caso de incidente?",
+        "kind": "answer",
+        "a": "O encarregado avalia o caso e, se o risco for relevante, comunica à ANPD e aos titulares no prazo de três dias úteis.",
+        "source": "Plano de resposta a incidentes, aprovado por Ana Silva"
+      }
+    ],
+    "stamp": "SEM REGISTO",
+    "records": [
+      "Política de conservação",
+      "Inventário de dados",
+      "Política de privacidade",
+      "Formação da equipa",
+      "Plano de resposta a incidentes"
+    ]
+  },
+  "how": {
+    "title": "A IA escreve, você decide.",
+    "steps": [
+      {
+        "lead": "Primeiro, registe o que a sua empresa faz.",
+        "callLabel": "Regista",
+        "call": "O apoio ao cliente recolhe nome, e-mail e telefone. Conservação de cinco anos. Fundamento jurídico: execução de contrato.",
+        "response": "Depois de aprovado, o registo serve de contexto apenas para o seu espaço de trabalho."
+      },
+      {
+        "lead": "Depois, peça o documento em falta.",
+        "callLabel": "Pede",
+        "call": "Redija o relatório de impacto do apoio ao cliente.",
+        "response": "A IA procura excertos aprovados e redige apenas com eles. O que não tem base é declarado incompleto."
+      },
+      {
+        "lead": "Por fim, decida o que se torna oficial.",
+        "callLabel": "Decide",
+        "call": "Rever, rejeitar ou aprovar.",
+        "response": "Depois de aprovado, o texto fica bloqueado. Quem fez o quê permanece no registo de auditoria, que a base de dados impede de alterar."
+      }
+    ],
+    "archive": "Só é arquivado o que está aprovado."
+  },
+  "states": {
+    "title": "Um documento, três momentos.",
+    "lead": "Nada se torna oficial sem revisão humana. Se alguém editar depois da revisão, o documento volta a ser revisto.",
+    "docTitle": "Relatório de impacto: apoio ao cliente",
+    "doc": "RIPD/DPIA",
+    "s1": "Gerado por IA",
+    "s1Meta": "Sem valor oficial, a aguardar revisão",
+    "s1Note": "À chegada",
+    "s2": "Revisto",
+    "s2Meta": "Revisto por Juliana Rocha",
+    "s2Note": "Pronto para aprovação ou rejeição",
+    "approve": "Aprovar",
+    "reject": "Rejeitar",
+    "s3": "Aprovado",
+    "s3Meta": "Aprovado por Ana Silva, conteúdo bloqueado",
+    "s3Note": "Oficial e pronto para exportar em PDF",
+    "pdf": "Transferir PDF",
+    "docBody": [
+      "O apoio ao cliente recolhe nome, e-mail e telefone para responder aos pedidos.",
+      "Os dados são conservados durante cinco anos, com cifragem em repouso.",
+      "O acesso é restrito à equipa de suporte e cada consulta fica registada."
+    ]
+  },
+  "law": {
+    "title": "Cada função tem um artigo.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Registo das atividades de tratamento"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Avaliação de impacto sobre a proteção de dados"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Papel específico para o encarregado da proteção de dados"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Isolamento e controlo de acesso por funções"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Incidentes com prazos para a ANPD e os titulares"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Registo de auditoria para a responsabilidade demonstrável"
+      },
+      {
+        "mark": "RGPD 35",
+        "text": "Elementos da avaliação de impacto europeia"
+      }
+    ]
+  },
+  "proof": {
+    "value": "Encontrou 30. Recusou 6.",
+    "title": "Quando havia base, encontrou-a. Quando não havia, recusou.",
+    "text": "Num teste controlado com 40 documentos sintéticos, as 30 pesquisas encontraram o excerto correto e as 6 perguntas sem base foram recusadas. Mede o mecanismo e não garante resultados com dados reais."
+  },
+  "faq": {
+    "title": "Perguntas frequentes.",
+    "items": [
+      {
+        "q": "A IA pode inventar informação?",
+        "a": "O modelo está instruído a usar apenas excertos aprovados e a recusar quando são insuficientes. Isto reduz o risco, mas não o elimina. Por isso, todo o texto gerado passa por revisão e aprovação humanas."
+      },
+      {
+        "q": "O IABill substitui um advogado ou um encarregado?",
+        "a": "Não. Organiza o processo e prepara documentos. Os textos gerados não têm validação jurídica formal e a decisão final cabe sempre à sua empresa."
+      },
+      {
+        "q": "Outra empresa pode ver os meus dados?",
+        "a": "Cada operação verifica se o recurso pertence à sua organização, e a pesquisa da IA está limitada ao seu espaço de trabalho. Este isolamento faz parte dos testes automatizados."
+      },
+      {
+        "q": "Serve para empresas na Europa?",
+        "a": "Sim. Cada espaço de trabalho define os regimes aplicáveis, LGPD, RGPD ou ambos, e o relatório de impacto inclui os elementos do art. 35.º do RGPD."
+      },
+      {
+        "q": "Quem pode aprovar um documento?",
+        "a": "Qualquer utilizador pode rever, e a aprovação está reservada ao perfil de administrador. Depois de aprovado, o conteúdo já não pode ser editado nem regenerado."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Abra o seu arquivo.",
+    "lead": "Começa vazio: a IA só responde depois do seu primeiro registo aprovado.",
+    "placeholder": "A sua empresa",
+    "button": "Abrir o meu arquivo",
+    "companyLabel": "Nome da empresa"
+  },
+  "footer": {
+    "about": "Adequação à LGPD e ao RGPD",
+    "madeBy": "Desenvolvido por",
+    "contact": "Contacto",
+    "academic": "Não substitui aconselhamento jurídico."
+  },
+  "images": {
+    "archive": "Corredor de um arquivo com prateleiras cheias de caixas de documentos numeradas",
+    "ledger": "Livro de registos antigo, aberto, com anotações à mão",
+    "cabinet": "Mão a abrir uma gaveta de ficheiro com fichas ordenadas por nome"
+  }
+}

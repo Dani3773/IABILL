@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Hoe het werkt",
+    "states": "Goedkeuring",
+    "law": "Wet",
+    "faq": "Vragen",
+    "login": "Inloggen",
+    "signup": "Bedrijf registreren",
+    "language": "Taal"
+  },
+  "hero": {
+    "line1": "Geen registratie,",
+    "line2": "geen antwoord.",
+    "lead": "IABill schrijft de LGPD- en AVG-documenten van je bedrijf met alleen wat je al hebt goedgekeurd. Ontbreekt de basis, dan weigert de AI in plaats van iets te verzinnen."
+  },
+  "demo": {
+    "title": "Vraag het IABill",
+    "choose": "Kies een vraag",
+    "source": "Goedgekeurde bron",
+    "noSource": "Geen enkele goedgekeurde registratie ondersteunt dit antwoord.",
+    "questions": [
+      {
+        "q": "Wat was de omzet van het bedrijf in 2025?",
+        "kind": "refuse",
+        "a": "De context bevat onvoldoende gegevens om de jaaromzet van het bedrijf in 2025 te bepalen."
+      },
+      {
+        "q": "Hoe lang bewaren we klantgegevens?",
+        "kind": "answer",
+        "a": "Klantgegevens worden vijf jaar bewaard op servers in de regio São Paulo, met versleuteling in rust.",
+        "source": "Bewaarbeleid, goedgekeurd door Ana Silva"
+      },
+      {
+        "q": "Wie heeft toegang tot supporttickets?",
+        "kind": "answer",
+        "a": "Alleen het supportteam, met toegang beperkt per rol. Tickets bevatten naam, e-mail en telefoonnummer van de klant.",
+        "source": "Gegevensinventaris, goedgekeurd door Carlos Mendes"
+      },
+      {
+        "q": "Heeft het bedrijf ooit een datalek gehad?",
+        "kind": "refuse",
+        "a": "De context bevat onvoldoende gegevens om te zeggen of het bedrijf ooit een datalek heeft gehad."
+      },
+      {
+        "q": "Wie is de functionaris gegevensbescherming?",
+        "kind": "answer",
+        "a": "De functionaris is Carlos Mendes; betrokkenen bereiken hem via het privacykanaal van het bedrijf.",
+        "source": "Privacybeleid, goedgekeurd door Ana Silva"
+      },
+      {
+        "q": "Krijgt het team LGPD-training?",
+        "kind": "answer",
+        "a": "Ja. Het hele team volgt de training één keer per jaar en de aanwezigheid van iedereen wordt vastgelegd.",
+        "source": "Teamtraining, goedgekeurd door Carlos Mendes"
+      },
+      {
+        "q": "Wat doen we bij een incident?",
+        "kind": "answer",
+        "a": "De functionaris beoordeelt de zaak en meldt het, als het risico relevant is, binnen drie werkdagen aan de ANPD en de betrokkenen.",
+        "source": "Incidentresponsplan, goedgekeurd door Ana Silva"
+      }
+    ],
+    "stamp": "GEEN REGISTRATIE",
+    "records": [
+      "Bewaarbeleid",
+      "Gegevensinventaris",
+      "Privacybeleid",
+      "Teamtraining",
+      "Incidentresponsplan"
+    ]
+  },
+  "how": {
+    "title": "De AI schrijft, jij beslist.",
+    "steps": [
+      {
+        "lead": "Leg eerst vast wat je bedrijf doet.",
+        "callLabel": "Jij legt vast",
+        "call": "De klantenservice verzamelt naam, e-mail en telefoonnummer. Bewaartermijn van vijf jaar. Rechtsgrond: uitvoering van de overeenkomst.",
+        "response": "Na goedkeuring wordt de registratie alleen context voor jouw werkruimte."
+      },
+      {
+        "lead": "Vraag daarna het ontbrekende document aan.",
+        "callLabel": "Jij vraagt",
+        "call": "Stel de effectbeoordeling van de klantenservice op.",
+        "response": "De AI zoekt goedgekeurde fragmenten en schrijft alleen daarmee. Wat geen basis heeft, wordt als onvolledig gemeld."
+      },
+      {
+        "lead": "Bepaal ten slotte wat officieel wordt.",
+        "callLabel": "Jij beslist",
+        "call": "Beoordelen, afwijzen of goedkeuren.",
+        "response": "Na goedkeuring is de tekst vergrendeld. Wie wat deed blijft in het controlelogboek, dat de database niet laat wijzigen."
+      }
+    ],
+    "archive": "Alleen wat is goedgekeurd, wordt gearchiveerd."
+  },
+  "states": {
+    "title": "Eén document, drie fasen.",
+    "lead": "Niets wordt officieel zonder menselijke beoordeling. Past iemand de tekst daarna aan, dan gaat het document opnieuw ter beoordeling.",
+    "docTitle": "Effectbeoordeling: klantenservice",
+    "doc": "RIPD/DPIA",
+    "s1": "Door AI gegenereerd",
+    "s1Meta": "Geen officiële waarde, wacht op beoordeling",
+    "s1Note": "Bij aankomst",
+    "s2": "Beoordeeld",
+    "s2Meta": "Beoordeeld door Juliana Rocha",
+    "s2Note": "Klaar voor goedkeuring of afwijzing",
+    "approve": "Goedkeuren",
+    "reject": "Afwijzen",
+    "s3": "Goedgekeurd",
+    "s3Meta": "Goedgekeurd door Ana Silva, inhoud vergrendeld",
+    "s3Note": "Officieel en klaar voor pdf-export",
+    "pdf": "Pdf downloaden",
+    "docBody": [
+      "De klantenservice verzamelt naam, e-mail en telefoonnummer om tickets te beantwoorden.",
+      "De gegevens worden vijf jaar bewaard, met versleuteling in rust.",
+      "Toegang is beperkt tot het supportteam en elke raadpleging wordt gelogd."
+    ]
+  },
+  "law": {
+    "title": "Elke functie heeft een artikel.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Register van verwerkingsactiviteiten"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Gegevensbeschermingseffectbeoordeling"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Eigen rol voor de functionaris gegevensbescherming"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Isolatie en rolgebaseerde toegangscontrole"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Incidenten met termijnen voor de ANPD en betrokkenen"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Controlelogboek voor verantwoording"
+      },
+      {
+        "mark": "AVG 35",
+        "text": "Onderdelen van de Europese effectbeoordeling"
+      }
+    ]
+  },
+  "proof": {
+    "value": "30 gevonden. 6 geweigerd.",
+    "title": "Was er een basis, dan vond het die. Was die er niet, dan weigerde het.",
+    "text": "In een gecontroleerde test met 40 synthetische documenten vonden alle 30 zoekopdrachten het juiste fragment en werden alle 6 vragen zonder basis geweigerd. Dit meet het mechanisme en garandeert geen resultaten met echte gegevens."
+  },
+  "faq": {
+    "title": "Veelgestelde vragen.",
+    "items": [
+      {
+        "q": "Kan de AI informatie verzinnen?",
+        "a": "Het model krijgt de opdracht alleen goedgekeurde fragmenten te gebruiken en te weigeren als die onvoldoende zijn. Dat verkleint het risico, maar neemt het niet weg. Daarom wordt elke gegenereerde tekst door mensen beoordeeld en goedgekeurd."
+      },
+      {
+        "q": "Vervangt IABill een advocaat of een FG?",
+        "a": "Nee. Het organiseert het proces en bereidt documenten voor. De gegenereerde teksten hebben geen formele juridische validatie en de eindbeslissing ligt altijd bij je bedrijf."
+      },
+      {
+        "q": "Kan een ander bedrijf mijn gegevens zien?",
+        "a": "Elke bewerking controleert of de bron bij jouw organisatie hoort, en de zoekfunctie van de AI is beperkt tot jouw werkruimte. Deze isolatie maakt deel uit van de geautomatiseerde tests."
+      },
+      {
+        "q": "Is het geschikt voor bedrijven in Europa?",
+        "a": "Ja. Elke werkruimte bepaalt welke regels gelden, LGPD, AVG of beide, en de effectbeoordeling bevat de onderdelen van art. 35 AVG."
+      },
+      {
+        "q": "Wie kan een document goedkeuren?",
+        "a": "Iedere gebruiker kan beoordelen; goedkeuren is voorbehouden aan het beheerdersprofiel. Na goedkeuring kan de inhoud niet meer worden bewerkt of opnieuw gegenereerd."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Open je archief.",
+    "lead": "Het begint leeg: de AI antwoordt pas na je eerste goedgekeurde registratie.",
+    "placeholder": "Je bedrijf",
+    "button": "Mijn archief openen",
+    "companyLabel": "Bedrijfsnaam"
+  },
+  "footer": {
+    "about": "Naleving van LGPD en AVG",
+    "madeBy": "Ontwikkeld door",
+    "contact": "Contact",
+    "academic": "Vervangt geen juridisch advies."
+  },
+  "images": {
+    "archive": "Archiefgang met schappen vol genummerde documentdozen",
+    "ledger": "Oud opengeslagen register met handgeschreven aantekeningen",
+    "cabinet": "Hand die een kaartenbaklade opent met kaarten op naam gesorteerd"
+  }
+}

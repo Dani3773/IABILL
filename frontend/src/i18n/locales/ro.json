@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Cum funcționează",
+    "states": "Aprobare",
+    "law": "Lege",
+    "faq": "Întrebări",
+    "login": "Autentificare",
+    "signup": "Înregistrează compania",
+    "language": "Limbă"
+  },
+  "hero": {
+    "line1": "Fără înregistrare,",
+    "line2": "fără răspuns.",
+    "lead": "IABill redactează documentele LGPD și GDPR ale companiei tale folosind doar ceea ce ai aprobat deja. Când lipsește baza, IA refuză în loc să inventeze."
+  },
+  "demo": {
+    "title": "Întreabă IABill",
+    "choose": "Alege o întrebare",
+    "source": "Sursă aprobată",
+    "noSource": "Nicio înregistrare aprobată nu susține acest răspuns.",
+    "questions": [
+      {
+        "q": "Care a fost cifra de afaceri a companiei în 2025?",
+        "kind": "refuse",
+        "a": "Contextul nu conține suficiente date pentru a stabili cifra de afaceri anuală a companiei în 2025."
+      },
+      {
+        "q": "Cât timp păstrăm datele clienților?",
+        "kind": "answer",
+        "a": "Datele clienților sunt păstrate cinci ani, pe servere din regiunea São Paulo, cu criptare în repaus.",
+        "source": "Politică de păstrare, aprobată de Ana Silva"
+      },
+      {
+        "q": "Cine are acces la tichetele de asistență?",
+        "kind": "answer",
+        "a": "Doar echipa de asistență, cu acces restricționat pe roluri. Tichetele conțin numele, e-mailul și telefonul clientului.",
+        "source": "Inventar de date, aprobat de Carlos Mendes"
+      },
+      {
+        "q": "Compania a suferit vreodată o scurgere de date?",
+        "kind": "refuse",
+        "a": "Contextul nu conține suficiente date pentru a spune dacă firma a suferit vreodată o scurgere de date."
+      },
+      {
+        "q": "Cine este responsabilul cu protecția datelor?",
+        "kind": "answer",
+        "a": "Responsabilul este Carlos Mendes, iar persoanele vizate îl contactează prin canalul de confidențialitate al companiei.",
+        "source": "Politică de confidențialitate, aprobată de Ana Silva"
+      },
+      {
+        "q": "Echipa primește instruire LGPD?",
+        "kind": "answer",
+        "a": "Da. Toată echipa urmează instruirea o dată pe an, iar prezența fiecărei persoane este înregistrată.",
+        "source": "Instruirea echipei, aprobată de Carlos Mendes"
+      },
+      {
+        "q": "Ce facem în cazul unui incident?",
+        "kind": "answer",
+        "a": "Responsabilul evaluează cazul și, dacă riscul este relevant, notifică ANPD și persoanele vizate în trei zile lucrătoare.",
+        "source": "Plan de răspuns la incidente, aprobat de Ana Silva"
+      }
+    ],
+    "stamp": "FĂRĂ ÎNREGISTRARE",
+    "records": [
+      "Politică de păstrare",
+      "Inventar de date",
+      "Politică de confidențialitate",
+      "Instruirea echipei",
+      "Plan de răspuns la incidente"
+    ]
+  },
+  "how": {
+    "title": "IA scrie, tu decizi.",
+    "steps": [
+      {
+        "lead": "Mai întâi, înregistrează ce face compania ta.",
+        "callLabel": "Înregistrezi",
+        "call": "Serviciul clienți colectează numele, e-mailul și telefonul. Păstrare cinci ani. Temei legal: executarea contractului.",
+        "response": "Odată aprobată, înregistrarea devine context doar pentru spațiul tău de lucru."
+      },
+      {
+        "lead": "Apoi, solicită documentul care lipsește.",
+        "callLabel": "Soliciți",
+        "call": "Redactează evaluarea de impact pentru serviciul clienți.",
+        "response": "IA caută fragmente aprobate și redactează doar pe baza lor. Orice element fără bază este declarat incomplet."
+      },
+      {
+        "lead": "În final, decide ce devine oficial.",
+        "callLabel": "Decizi",
+        "call": "Revizuiește, respinge sau aprobă.",
+        "response": "Odată aprobat, textul este blocat. Cine a făcut ce rămâne în jurnalul de audit, pe care baza de date nu permite să fie modificat."
+      }
+    ],
+    "archive": "Se arhivează doar ce este aprobat."
+  },
+  "states": {
+    "title": "Un document, trei etape.",
+    "lead": "Nimic nu devine oficial fără revizuire umană. Dacă cineva editează după revizuire, documentul revine la revizuire.",
+    "docTitle": "Evaluare de impact: serviciul clienți",
+    "doc": "RIPD/DPIA",
+    "s1": "Generat de IA",
+    "s1Meta": "Fără valoare oficială, în așteptarea revizuirii",
+    "s1Note": "La sosire",
+    "s2": "Revizuit",
+    "s2Meta": "Revizuit de Juliana Rocha",
+    "s2Note": "Pregătit pentru aprobare sau respingere",
+    "approve": "Aprobă",
+    "reject": "Respinge",
+    "s3": "Aprobat",
+    "s3Meta": "Aprobat de Ana Silva, conținut blocat",
+    "s3Note": "Oficial și pregătit pentru export PDF",
+    "pdf": "Descarcă PDF",
+    "docBody": [
+      "Serviciul clienți colectează numele, e-mailul și telefonul pentru a răspunde la tichete.",
+      "Datele sunt păstrate cinci ani, cu criptare în repaus.",
+      "Accesul este limitat la echipa de asistență, iar fiecare consultare este înregistrată."
+    ]
+  },
+  "law": {
+    "title": "Fiecare funcție are un articol.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Evidența activităților de prelucrare"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Evaluarea impactului asupra protecției datelor"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Rol specific pentru responsabilul cu protecția datelor"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Izolare și control al accesului pe roluri"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Incidente cu termene pentru ANPD și persoanele vizate"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Jurnal de audit pentru responsabilitate"
+      },
+      {
+        "mark": "GDPR 35",
+        "text": "Elementele evaluării de impact europene"
+      }
+    ]
+  },
+  "proof": {
+    "value": "A găsit 30. A refuzat 6.",
+    "title": "Când a existat o bază, a găsit-o. Când nu a existat, a refuzat.",
+    "text": "Într-un test controlat cu 40 de documente sintetice, toate cele 30 de căutări au găsit fragmentul corect, iar toate cele 6 întrebări fără bază au fost refuzate. Testul măsoară mecanismul și nu garantează rezultate pe date reale."
+  },
+  "faq": {
+    "title": "Întrebări frecvente.",
+    "items": [
+      {
+        "q": "Poate IA să inventeze informații?",
+        "a": "Modelul este instruit să folosească doar fragmente aprobate și să refuze când acestea sunt insuficiente. Acest lucru reduce riscul, dar nu îl elimină. De aceea, orice text generat trece prin revizuire și aprobare umană."
+      },
+      {
+        "q": "IABill înlocuiește un avocat sau un DPO?",
+        "a": "Nu. Organizează procesul și pregătește documente. Textele generate nu au validare juridică formală, iar decizia finală aparține întotdeauna companiei tale."
+      },
+      {
+        "q": "Poate altă companie să îmi vadă datele?",
+        "a": "Fiecare operațiune verifică dacă resursa aparține organizației tale, iar căutarea IA este limitată la spațiul tău de lucru. Această izolare face parte din testele automate."
+      },
+      {
+        "q": "Este potrivit pentru companii din Europa?",
+        "a": "Da. Fiecare spațiu de lucru definește regimurile aplicabile, LGPD, GDPR sau ambele, iar evaluarea de impact include elementele art. 35 din GDPR."
+      },
+      {
+        "q": "Cine poate aproba un document?",
+        "a": "Orice utilizator poate revizui, iar aprobarea este rezervată profilului de administrator. Odată aprobat, conținutul nu mai poate fi editat sau regenerat."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Deschide-ți arhiva.",
+    "lead": "Începe goală: IA răspunde doar după prima ta înregistrare aprobată.",
+    "placeholder": "Compania ta",
+    "button": "Deschide arhiva mea",
+    "companyLabel": "Numele companiei"
+  },
+  "footer": {
+    "about": "Conformitate cu LGPD și GDPR",
+    "madeBy": "Dezvoltat de",
+    "contact": "Contact",
+    "academic": "Nu înlocuiește consultanța juridică."
+  },
+  "images": {
+    "archive": "Coridor de arhivă cu rafturi pline de cutii de documente numerotate",
+    "ledger": "Registru vechi, deschis, cu însemnări scrise de mână",
+    "cabinet": "Mână care deschide un sertar de fișier cu fișe ordonate după nume"
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Kako funkcionira",
+    "states": "Odobrenje",
+    "law": "Zakon",
+    "faq": "Pitanja",
+    "login": "Prijava",
+    "signup": "Registriraj tvrtku",
+    "language": "Jezik"
+  },
+  "hero": {
+    "line1": "Bez zapisa",
+    "line2": "nema odgovora.",
+    "lead": "IABill piše LGPD i GDPR dokumente vaše tvrtke samo na temelju onoga što ste već odobrili. Kad nema temelja, UI odbija umjesto da izmišlja."
+  },
+  "demo": {
+    "title": "Pitajte IABill",
+    "choose": "Odaberite pitanje",
+    "source": "Odobreni izvor",
+    "noSource": "Nijedan odobreni zapis ne potkrepljuje ovaj odgovor.",
+    "questions": [
+      {
+        "q": "Koliki je bio prihod tvrtke u 2025.?",
+        "kind": "refuse",
+        "a": "U kontekstu nema dovoljno podataka za utvrđivanje godišnjeg prihoda tvrtke u 2025."
+      },
+      {
+        "q": "Koliko dugo čuvamo podatke klijenata?",
+        "kind": "answer",
+        "a": "Podaci klijenata čuvaju se pet godina na poslužiteljima u regiji São Paulo, šifrirani u mirovanju.",
+        "source": "Politika čuvanja, odobrila Ana Silva"
+      },
+      {
+        "q": "Tko pristupa zahtjevima za podršku?",
+        "kind": "answer",
+        "a": "Samo tim za podršku, s pristupom ograničenim prema ulozi. Zahtjevi sadrže ime, e-poštu i telefon klijenta.",
+        "source": "Popis podataka, odobrio Carlos Mendes"
+      },
+      {
+        "q": "Je li tvrtka ikad doživjela curenje podataka?",
+        "kind": "refuse",
+        "a": "U kontekstu nema dovoljno podataka za odgovor je li tvrtka ikad doživjela curenje podataka."
+      },
+      {
+        "q": "Tko je službenik za zaštitu podataka?",
+        "kind": "answer",
+        "a": "Službenik je Carlos Mendes, a ispitanici mu se obraćaju putem kanala za privatnost tvrtke.",
+        "source": "Politika privatnosti, odobrila Ana Silva"
+      },
+      {
+        "q": "Prolazi li tim obuku o LGPD-u?",
+        "kind": "answer",
+        "a": "Da. Cijeli tim prolazi obuku jednom godišnje, a prisutnost svake osobe se bilježi.",
+        "source": "Obuka tima, odobrio Carlos Mendes"
+      },
+      {
+        "q": "Što radimo u slučaju incidenta?",
+        "kind": "answer",
+        "a": "Službenik procjenjuje slučaj i, ako je rizik značajan, obavještava ANPD i ispitanike u roku od tri radna dana.",
+        "source": "Plan odgovora na incidente, odobrila Ana Silva"
+      }
+    ],
+    "stamp": "BEZ ZAPISA",
+    "records": [
+      "Politika čuvanja",
+      "Popis podataka",
+      "Politika privatnosti",
+      "Obuka tima",
+      "Plan odgovora na incidente"
+    ]
+  },
+  "how": {
+    "title": "UI piše, vi odlučujete.",
+    "steps": [
+      {
+        "lead": "Najprije zabilježite što vaša tvrtka radi.",
+        "callLabel": "Bilježite",
+        "call": "Korisnička služba prikuplja ime, e-poštu i telefon. Čuvanje pet godina. Pravna osnova: izvršenje ugovora.",
+        "response": "Nakon odobrenja zapis postaje kontekst samo za vaš radni prostor."
+      },
+      {
+        "lead": "Zatim zatražite dokument koji nedostaje.",
+        "callLabel": "Tražite",
+        "call": "Sastavi procjenu učinka za korisničku službu.",
+        "response": "UI traži odobrene odlomke i piše samo na temelju njih. Što nema temelj, označava kao nepotpuno."
+      },
+      {
+        "lead": "Na kraju odlučite što postaje službeno.",
+        "callLabel": "Odlučujete",
+        "call": "Pregledajte, odbijte ili odobrite.",
+        "response": "Nakon odobrenja tekst je zaključan. Tko je što učinio ostaje u revizijskom tragu, koji baza podataka ne dopušta mijenjati."
+      }
+    ],
+    "archive": "Arhivira se samo ono što je odobreno."
+  },
+  "states": {
+    "title": "Jedan dokument, tri faze.",
+    "lead": "Ništa ne postaje službeno bez ljudskog pregleda. Ako netko uredi tekst nakon pregleda, dokument se vraća na ponovni pregled.",
+    "docTitle": "Procjena učinka: korisnička služba",
+    "doc": "RIPD/DPIA",
+    "s1": "Generirala UI",
+    "s1Meta": "Bez službene vrijednosti, čeka pregled",
+    "s1Note": "Po primitku",
+    "s2": "Pregledano",
+    "s2Meta": "Pregledala Juliana Rocha",
+    "s2Note": "Spremno za odobrenje ili odbijanje",
+    "approve": "Odobri",
+    "reject": "Odbij",
+    "s3": "Odobreno",
+    "s3Meta": "Odobrila Ana Silva, sadržaj zaključan",
+    "s3Note": "Službeno i spremno za izvoz u PDF",
+    "pdf": "Preuzmi PDF",
+    "docBody": [
+      "Korisnička služba prikuplja ime, e-poštu i telefon kako bi odgovarala na zahtjeve.",
+      "Podaci se čuvaju pet godina, šifrirani u mirovanju.",
+      "Pristup je ograničen na tim za podršku, a svaki se uvid bilježi."
+    ]
+  },
+  "law": {
+    "title": "Svaka funkcija ima svoj članak.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Evidencija aktivnosti obrade"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Procjena učinka na zaštitu podataka"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Posebna uloga za službenika za zaštitu podataka"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Izolacija i kontrola pristupa prema ulogama"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Incidenti s rokovima za ANPD i ispitanike"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Revizijski trag za pouzdanost"
+      },
+      {
+        "mark": "GDPR 35",
+        "text": "Elementi europske procjene učinka"
+      }
+    ]
+  },
+  "proof": {
+    "value": "Pronašao 30. Odbio 6.",
+    "title": "Kad je temelj postojao, pronašao ga je. Kad nije, odbio je.",
+    "text": "U kontroliranom testu s 40 sintetičkih dokumenata svih 30 pretraga pronašlo je točan odlomak, a svih 6 pitanja bez temelja je odbijeno. Test mjeri mehanizam i ne jamči rezultate sa stvarnim podacima."
+  },
+  "faq": {
+    "title": "Česta pitanja.",
+    "items": [
+      {
+        "q": "Može li UI izmišljati podatke?",
+        "a": "Model ima uputu koristiti samo odobrene odlomke i odbiti kad nisu dovoljni. To smanjuje rizik, ali ga ne uklanja. Zato svaki generirani tekst prolazi ljudski pregled i odobrenje."
+      },
+      {
+        "q": "Zamjenjuje li IABill odvjetnika ili službenika za zaštitu podataka?",
+        "a": "Ne. Organizira postupak i priprema dokumente. Generirani tekstovi nemaju formalnu pravnu provjeru, a konačna odluka uvijek je na vašoj tvrtki."
+      },
+      {
+        "q": "Može li druga tvrtka vidjeti moje podatke?",
+        "a": "Svaka operacija provjerava pripada li resurs vašoj organizaciji, a pretraga UI-ja ograničena je na vaš radni prostor. Ta je izolacija dio automatiziranih testova."
+      },
+      {
+        "q": "Je li prikladan za tvrtke u Europi?",
+        "a": "Da. Svaki radni prostor određuje primjenjive režime, LGPD, GDPR ili oba, a procjena učinka uključuje elemente čl. 35. GDPR-a."
+      },
+      {
+        "q": "Tko može odobriti dokument?",
+        "a": "Pregledati može svaki korisnik, a odobrenje je rezervirano za profil administratora. Nakon odobrenja sadržaj se više ne može uređivati ni ponovno generirati."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Otvorite svoju arhivu.",
+    "lead": "Počinje prazna: UI odgovara tek nakon vašeg prvog odobrenog zapisa.",
+    "placeholder": "Vaša tvrtka",
+    "button": "Otvori moju arhivu",
+    "companyLabel": "Naziv tvrtke"
+  },
+  "footer": {
+    "about": "Usklađenost s LGPD-om i GDPR-om",
+    "madeBy": "Razvio",
+    "contact": "Kontakt",
+    "academic": "Ne zamjenjuje pravni savjet."
+  },
+  "images": {
+    "archive": "Hodnik arhiva s policama punim numeriranih kutija s dokumentima",
+    "ledger": "Stara otvorena knjiga zapisa s rukom pisanim unosima",
+    "cabinet": "Ruka otvara ladicu kartoteke s karticama poredanima po imenu"
+  }
+}

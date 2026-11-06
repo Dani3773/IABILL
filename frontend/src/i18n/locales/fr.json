@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Fonctionnement",
+    "states": "Approbation",
+    "law": "Loi",
+    "faq": "Questions",
+    "login": "Connexion",
+    "signup": "Inscrire l'entreprise",
+    "language": "Langue"
+  },
+  "hero": {
+    "line1": "Sans registre,",
+    "line2": "pas de réponse.",
+    "lead": "IABill rédige les documents LGPD et RGPD de votre entreprise uniquement à partir de ce que vous avez déjà approuvé. Sans base, l'IA refuse au lieu d'inventer."
+  },
+  "demo": {
+    "title": "Interrogez IABill",
+    "choose": "Choisissez une question",
+    "source": "Source approuvée",
+    "noSource": "Aucun registre approuvé n'étaye cette réponse.",
+    "questions": [
+      {
+        "q": "Quel a été le chiffre d'affaires de l'entreprise en 2025 ?",
+        "kind": "refuse",
+        "a": "Le contexte ne contient pas assez de données pour déterminer le chiffre d'affaires annuel de l'entreprise en 2025."
+      },
+      {
+        "q": "Combien de temps conservons-nous les données clients ?",
+        "kind": "answer",
+        "a": "Les données clients sont conservées cinq ans, sur des serveurs de la région de São Paulo, avec chiffrement au repos.",
+        "source": "Politique de conservation, approuvée par Ana Silva"
+      },
+      {
+        "q": "Qui accède aux tickets d'assistance ?",
+        "kind": "answer",
+        "a": "Uniquement l'équipe d'assistance, avec un accès restreint par rôle. Les tickets contiennent le nom, l'e-mail et le téléphone du client.",
+        "source": "Inventaire des données, approuvé par Carlos Mendes"
+      },
+      {
+        "q": "L'entreprise a-t-elle déjà subi une fuite de données ?",
+        "kind": "refuse",
+        "a": "Le contexte ne contient pas assez de données pour dire si l'entreprise a déjà subi une fuite."
+      },
+      {
+        "q": "Qui est le délégué à la protection des données ?",
+        "kind": "answer",
+        "a": "Le délégué est Carlos Mendes ; les personnes concernées le joignent via le canal de confidentialité de l'entreprise.",
+        "source": "Politique de confidentialité, approuvée par Ana Silva"
+      },
+      {
+        "q": "L'équipe est-elle formée à la LGPD ?",
+        "kind": "answer",
+        "a": "Oui. Toute l'équipe suit la formation une fois par an et la présence de chacun est enregistrée.",
+        "source": "Formation de l'équipe, approuvée par Carlos Mendes"
+      },
+      {
+        "q": "Que faisons-nous en cas d'incident ?",
+        "kind": "answer",
+        "a": "Le délégué évalue le cas et, si le risque est significatif, informe l'ANPD et les personnes concernées sous trois jours ouvrés.",
+        "source": "Plan de réponse aux incidents, approuvé par Ana Silva"
+      }
+    ],
+    "stamp": "SANS REGISTRE",
+    "records": [
+      "Politique de conservation",
+      "Inventaire des données",
+      "Politique de confidentialité",
+      "Formation de l'équipe",
+      "Plan de réponse aux incidents"
+    ]
+  },
+  "how": {
+    "title": "L'IA rédige, vous décidez.",
+    "steps": [
+      {
+        "lead": "D'abord, enregistrez ce que fait votre entreprise.",
+        "callLabel": "Vous enregistrez",
+        "call": "Le service client collecte nom, e-mail et téléphone. Conservation de cinq ans. Base légale : exécution du contrat.",
+        "response": "Une fois approuvé, le registre sert de contexte uniquement à votre espace de travail."
+      },
+      {
+        "lead": "Ensuite, demandez le document manquant.",
+        "callLabel": "Vous demandez",
+        "call": "Rédige le rapport d'impact du service client.",
+        "response": "L'IA recherche des extraits approuvés et rédige uniquement à partir d'eux. Tout élément sans base est déclaré incomplet."
+      },
+      {
+        "lead": "Enfin, décidez de ce qui devient officiel.",
+        "callLabel": "Vous décidez",
+        "call": "Relire, rejeter ou approuver.",
+        "response": "Une fois approuvé, le texte est verrouillé. Qui a fait quoi reste dans la piste d'audit, que la base de données empêche de modifier."
+      }
+    ],
+    "archive": "Seul ce qui est approuvé est archivé."
+  },
+  "states": {
+    "title": "Un document, trois étapes.",
+    "lead": "Rien ne devient officiel sans relecture humaine. Si quelqu'un modifie le texte après relecture, le document repart en relecture.",
+    "docTitle": "Rapport d'impact : service client",
+    "doc": "RIPD/DPIA",
+    "s1": "Généré par IA",
+    "s1Meta": "Sans valeur officielle, en attente de relecture",
+    "s1Note": "À l'arrivée",
+    "s2": "Relu",
+    "s2Meta": "Relu par Juliana Rocha",
+    "s2Note": "Prêt à être approuvé ou rejeté",
+    "approve": "Approuver",
+    "reject": "Rejeter",
+    "s3": "Approuvé",
+    "s3Meta": "Approuvé par Ana Silva, contenu verrouillé",
+    "s3Note": "Officiel et prêt pour l'export PDF",
+    "pdf": "Télécharger le PDF",
+    "docBody": [
+      "Le service client collecte nom, e-mail et téléphone pour répondre aux tickets.",
+      "Les données sont conservées cinq ans, avec chiffrement au repos.",
+      "L'accès est limité à l'équipe d'assistance et chaque consultation est journalisée."
+    ]
+  },
+  "law": {
+    "title": "Chaque fonction a son article.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Registre des activités de traitement"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Rapport d'impact sur la protection des données"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Rôle spécifique pour le délégué à la protection des données"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Isolation et contrôle d'accès par rôle"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Incidents avec délais pour l'ANPD et les personnes concernées"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Piste d'audit pour la responsabilité"
+      },
+      {
+        "mark": "RGPD 35",
+        "text": "Éléments de l'analyse d'impact européenne"
+      }
+    ]
+  },
+  "proof": {
+    "value": "Trouvé 30. Refusé 6.",
+    "title": "Quand il y avait une base, il l'a trouvée. Quand il n'y en avait pas, il a refusé.",
+    "text": "Lors d'un test contrôlé sur 40 documents synthétiques, les 30 recherches ont trouvé le bon extrait et les 6 questions sans base ont été refusées. Ce test mesure le mécanisme et ne garantit pas les résultats sur des données réelles."
+  },
+  "faq": {
+    "title": "Questions fréquentes.",
+    "items": [
+      {
+        "q": "L'IA peut-elle inventer des informations ?",
+        "a": "Le modèle a pour consigne d'utiliser uniquement les extraits approuvés et de refuser lorsqu'ils sont insuffisants. Cela réduit le risque sans l'éliminer. C'est pourquoi tout texte généré passe par une relecture et une approbation humaines."
+      },
+      {
+        "q": "IABill remplace-t-il un avocat ou un DPO ?",
+        "a": "Non. Il organise le processus et prépare les documents. Les textes générés n'ont pas de validation juridique formelle et la décision finale revient toujours à votre entreprise."
+      },
+      {
+        "q": "Une autre entreprise peut-elle voir mes données ?",
+        "a": "Chaque opération vérifie que la ressource appartient à votre organisation, et la recherche de l'IA est limitée à votre espace de travail. Cette isolation fait partie des tests automatisés."
+      },
+      {
+        "q": "Est-ce adapté aux entreprises en Europe ?",
+        "a": "Oui. Chaque espace de travail définit les régimes applicables, LGPD, RGPD ou les deux, et le rapport d'impact inclut les éléments de l'art. 35 du RGPD."
+      },
+      {
+        "q": "Qui peut approuver un document ?",
+        "a": "Tout utilisateur peut relire, et l'approbation est réservée au profil administrateur. Une fois approuvé, le contenu ne peut plus être modifié ni régénéré."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Ouvrez vos archives.",
+    "lead": "Elles commencent vides : l'IA ne répond qu'après votre premier registre approuvé.",
+    "placeholder": "Votre entreprise",
+    "button": "Ouvrir mes archives",
+    "companyLabel": "Nom de l'entreprise"
+  },
+  "footer": {
+    "about": "Conformité à la LGPD et au RGPD",
+    "madeBy": "Développé par",
+    "contact": "Contact",
+    "academic": "Ne remplace pas un conseil juridique."
+  },
+  "images": {
+    "archive": "Couloir d'archives avec des étagères remplies de boîtes de documents numérotées",
+    "ledger": "Ancien registre ouvert, avec des inscriptions manuscrites",
+    "cabinet": "Main ouvrant un tiroir de fichier avec des fiches classées par nom"
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Kā tas darbojas",
+    "states": "Apstiprināšana",
+    "law": "Tiesību akti",
+    "faq": "Jautājumi",
+    "login": "Pieslēgties",
+    "signup": "Reģistrēt uzņēmumu",
+    "language": "Valoda"
+  },
+  "hero": {
+    "line1": "Nav ieraksta,",
+    "line2": "nav atbildes.",
+    "lead": "IABill sagatavo jūsu uzņēmuma LGPD un VDAR dokumentus, izmantojot tikai to, ko jau esat apstiprinājis. Ja pamata nav, MI atsakās, nevis izdomā."
+  },
+  "demo": {
+    "title": "Jautājiet IABill",
+    "choose": "Izvēlieties jautājumu",
+    "source": "Apstiprināts avots",
+    "noSource": "Neviens apstiprināts ieraksts neapstiprina šo atbildi.",
+    "questions": [
+      {
+        "q": "Kāds bija uzņēmuma apgrozījums 2025. gadā?",
+        "kind": "refuse",
+        "a": "Kontekstā nepietiek datu, lai noteiktu uzņēmuma 2025. gada apgrozījumu."
+      },
+      {
+        "q": "Cik ilgi glabājam klientu datus?",
+        "kind": "answer",
+        "a": "Klientu dati tiek glabāti piecus gadus serveros Sanpaulu reģionā, šifrēti miera stāvoklī.",
+        "source": "Glabāšanas politika, apstiprināja Ana Silva"
+      },
+      {
+        "q": "Kam ir piekļuve atbalsta pieteikumiem?",
+        "kind": "answer",
+        "a": "Tikai atbalsta komandai ar piekļuvi atbilstoši lomai. Pieteikumos glabājas klienta vārds, e-pasts un tālrunis.",
+        "source": "Datu inventārs, apstiprināja Carlos Mendes"
+      },
+      {
+        "q": "Vai uzņēmumā ir bijusi datu noplūde?",
+        "kind": "refuse",
+        "a": "Kontekstā nepietiek datu, lai atbildētu, vai uzņēmumā ir bijusi datu noplūde."
+      },
+      {
+        "q": "Kas ir datu aizsardzības speciālists?",
+        "kind": "answer",
+        "a": "Speciālists ir Carlos Mendes, un datu subjekti ar viņu sazinās pa uzņēmuma privātuma kanālu.",
+        "source": "Privātuma politika, apstiprināja Ana Silva"
+      },
+      {
+        "q": "Vai komanda apgūst LGPD?",
+        "kind": "answer",
+        "a": "Jā. Visa komanda mācības iziet reizi gadā, un katra dalība tiek reģistrēta.",
+        "source": "Komandas apmācība, apstiprināja Carlos Mendes"
+      },
+      {
+        "q": "Ko darām incidenta gadījumā?",
+        "kind": "answer",
+        "a": "Speciālists izvērtē gadījumu un, ja risks ir būtisks, trīs darbdienu laikā informē ANPD un datu subjektus.",
+        "source": "Incidentu reaģēšanas plāns, apstiprināja Ana Silva"
+      }
+    ],
+    "stamp": "NAV IERAKSTA",
+    "records": [
+      "Glabāšanas politika",
+      "Datu inventārs",
+      "Privātuma politika",
+      "Komandas apmācība",
+      "Incidentu reaģēšanas plāns"
+    ]
+  },
+  "how": {
+    "title": "MI raksta, jūs lemjat.",
+    "steps": [
+      {
+        "lead": "Vispirms reģistrējiet, ko dara jūsu uzņēmums.",
+        "callLabel": "Jūs reģistrējat",
+        "call": "Klientu serviss vāc vārdu, e-pastu un tālruni. Glabāšana piecus gadus. Juridiskais pamats: līguma izpilde.",
+        "response": "Pēc apstiprināšanas ieraksts kļūst par kontekstu tikai jūsu darbvietai."
+      },
+      {
+        "lead": "Pēc tam pieprasiet trūkstošo dokumentu.",
+        "callLabel": "Jūs pieprasāt",
+        "call": "Sagatavo klientu servisa ietekmes novērtējumu.",
+        "response": "MI meklē apstiprinātus fragmentus un raksta tikai no tiem. Tas, kam nav pamata, tiek atzīts par nepilnīgu."
+      },
+      {
+        "lead": "Visbeidzot izlemiet, kas kļūst oficiāls.",
+        "callLabel": "Jūs lemjat",
+        "call": "Pārskatīt, noraidīt vai apstiprināt.",
+        "response": "Pēc apstiprināšanas teksts tiek bloķēts. Kas ko darījis, paliek audita pierakstā, ko datubāze neļauj mainīt."
+      }
+    ],
+    "archive": "Tiek arhivēts tikai apstiprinātais."
+  },
+  "states": {
+    "title": "Viens dokuments, trīs posmi.",
+    "lead": "Bez cilvēka pārbaudes nekas nekļūst oficiāls. Ja kāds rediģē pēc pārbaudes, dokuments atgriežas atkārtotai pārbaudei.",
+    "docTitle": "Ietekmes novērtējums: klientu serviss",
+    "doc": "RIPD/DPIA",
+    "s1": "Izveidoja MI",
+    "s1Meta": "Nav oficiālas vērtības, gaida pārbaudi",
+    "s1Note": "Saņemot",
+    "s2": "Pārbaudīts",
+    "s2Meta": "Pārbaudīja Juliana Rocha",
+    "s2Note": "Gatavs apstiprināšanai vai noraidīšanai",
+    "approve": "Apstiprināt",
+    "reject": "Noraidīt",
+    "s3": "Apstiprināts",
+    "s3Meta": "Apstiprināja Ana Silva, saturs bloķēts",
+    "s3Note": "Oficiāls un gatavs PDF eksportam",
+    "pdf": "Lejupielādēt PDF",
+    "docBody": [
+      "Klientu serviss vāc vārdu, e-pastu un tālruni, lai atbildētu uz pieteikumiem.",
+      "Dati tiek glabāti piecus gadus, šifrēti miera stāvoklī.",
+      "Piekļuve ir tikai atbalsta komandai, un katra skatīšana tiek reģistrēta."
+    ]
+  },
+  "law": {
+    "title": "Katrai funkcijai ir savs pants.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Apstrādes darbību reģistrs"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Novērtējums par ietekmi uz datu aizsardzību"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Atsevišķa loma datu aizsardzības speciālistam"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Izolācija un uz lomām balstīta piekļuves kontrole"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Incidenti ar termiņiem ANPD un datu subjektiem"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Audita pieraksts pārskatatbildībai"
+      },
+      {
+        "mark": "VDAR 35",
+        "text": "Eiropas ietekmes novērtējuma elementi"
+      }
+    ]
+  },
+  "proof": {
+    "value": "Atrada 30. Atteicās 6.",
+    "title": "Kad pamats bija, to atrada. Kad nebija, atteicās.",
+    "text": "Kontrolētā testā ar 40 sintētiskiem dokumentiem visas 30 meklēšanas atrada pareizo fragmentu, un visi 6 jautājumi bez pamata tika noraidīti. Tas mēra mehānismu un negarantē rezultātus ar reāliem datiem."
+  },
+  "faq": {
+    "title": "Biežāk uzdotie jautājumi.",
+    "items": [
+      {
+        "q": "Vai MI var izdomāt informāciju?",
+        "a": "Modelim ir norādīts izmantot tikai apstiprinātus fragmentus un atteikties, ja to nepietiek. Tas samazina risku, bet nenovērš to. Tāpēc katru izveidoto tekstu pārbauda un apstiprina cilvēks."
+      },
+      {
+        "q": "Vai IABill aizstāj juristu vai datu aizsardzības speciālistu?",
+        "a": "Nē. Tas organizē procesu un sagatavo dokumentus. Izveidotajiem tekstiem nav formālas juridiskas validācijas, un galīgais lēmums vienmēr ir jūsu uzņēmuma ziņā."
+      },
+      {
+        "q": "Vai cits uzņēmums var redzēt manus datus?",
+        "a": "Katra darbība pārbauda, vai resurss pieder jūsu organizācijai, un MI meklēšana ir ierobežota ar jūsu darbvietu. Šī izolācija ir daļa no automatizētajiem testiem."
+      },
+      {
+        "q": "Vai tas der uzņēmumiem Eiropā?",
+        "a": "Jā. Katrā darbvietā nosaka piemērojamos režīmus, LGPD, VDAR vai abus, un ietekmes novērtējums ietver VDAR 35. panta elementus."
+      },
+      {
+        "q": "Kas var apstiprināt dokumentu?",
+        "a": "Pārbaudīt var jebkurš lietotājs, bet apstiprināšana ir paredzēta administratora profilam. Pēc apstiprināšanas saturu vairs nevar rediģēt vai izveidot no jauna."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Atveriet savu arhīvu.",
+    "lead": "Tas sākas tukšs: MI atbild tikai pēc jūsu pirmā apstiprinātā ieraksta.",
+    "placeholder": "Jūsu uzņēmums",
+    "button": "Atvērt manu arhīvu",
+    "companyLabel": "Uzņēmuma nosaukums"
+  },
+  "footer": {
+    "about": "Atbilstība LGPD un VDAR",
+    "madeBy": "Izstrādāja",
+    "contact": "Kontakti",
+    "academic": "Neaizstāj juridisku konsultāciju."
+  },
+  "images": {
+    "archive": "Arhīva gaitenis ar plauktiem, kas pilni ar numurētām dokumentu kastēm",
+    "ledger": "Sena atvērta reģistrācijas grāmata ar rokrakstā veiktiem ierakstiem",
+    "cabinet": "Roka atver kartotēkas atvilktni ar kartītēm, kas sakārtotas pēc vārda"
+  }
+}

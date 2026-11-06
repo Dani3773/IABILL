@@ -40,7 +40,33 @@
         "q": "Hat das Unternehmen bereits eine Datenpanne erlitten?",
         "kind": "refuse",
         "a": "Es liegen im Kontext keine ausreichenden Daten vor, um zu beantworten, ob das Unternehmen bereits eine Datenpanne erlitten hat."
+      },
+      {
+        "q": "Wer ist der Datenschutzbeauftragte?",
+        "kind": "answer",
+        "a": "Der Beauftragte ist Carlos Mendes; betroffene Personen erreichen ihn über den Datenschutzkanal des Unternehmens.",
+        "source": "Datenschutzerklärung, genehmigt von Ana Silva"
+      },
+      {
+        "q": "Erhält das Team LGPD-Schulungen?",
+        "kind": "answer",
+        "a": "Ja. Das gesamte Team absolviert die Schulung einmal im Jahr, und die Teilnahme jeder Person wird erfasst.",
+        "source": "Teamschulung, genehmigt von Carlos Mendes"
+      },
+      {
+        "q": "Was tun wir bei einem Vorfall?",
+        "kind": "answer",
+        "a": "Der Beauftragte bewertet den Fall und informiert bei relevantem Risiko die ANPD und die betroffenen Personen innerhalb von drei Werktagen.",
+        "source": "Notfallplan für Vorfälle, genehmigt von Ana Silva"
       }
+    ],
+    "stamp": "KEIN EINTRAG",
+    "records": [
+      "Aufbewahrungsrichtlinie",
+      "Dateninventar",
+      "Datenschutzerklärung",
+      "Teamschulung",
+      "Notfallplan für Vorfälle"
     ]
   },
   "how": {
@@ -64,7 +90,8 @@
         "call": "Überprüfen, ablehnen oder genehmigen.",
         "response": "Nach Genehmigung wird der Text gesperrt. Wer was getan hat, bleibt im Audit-Trail, der von der Datenbank nicht geändert werden kann."
       }
-    ]
+    ],
+    "archive": "Archiviert wird nur, was freigegeben ist."
   },
   "states": {
     "title": "Ein Dokument, drei Zustände.",
@@ -82,7 +109,12 @@
     "s3": "Genehmigt",
     "s3Meta": "Genehmigt von Ana Silva, Inhalt gesperrt",
     "s3Note": "Offiziell und bereit für den PDF-Export",
-    "pdf": "PDF herunterladen"
+    "pdf": "PDF herunterladen",
+    "docBody": [
+      "Der Kundendienst erfasst Name, E-Mail und Telefonnummer, um Anfragen zu beantworten.",
+      "Die Daten werden fünf Jahre lang gespeichert und im Ruhezustand verschlüsselt.",
+      "Der Zugriff ist auf das Support-Team beschränkt, und jede Abfrage wird protokolliert."
+    ]
   },
   "law": {
     "title": "Jede Funktion hat einen Artikel als Grundlage.",
@@ -150,14 +182,19 @@
   "cta": {
     "title": "Beginnen Sie mit dem, was bereits wahr ist.",
     "lead": "Erstellen Sie das Konto Ihres Unternehmens und machen Sie Ihren ersten Eintrag.",
-    "emailLabel": "Ihre Geschäfts-E-Mail",
     "placeholder": "sie@unternehmen.com",
-    "button": "Unternehmen registrieren"
+    "button": "Unternehmen registrieren",
+    "companyLabel": "Firmenname"
   },
   "footer": {
     "about": "Einhaltung von LGPD und DSGVO",
     "madeBy": "Entwickelt von",
     "contact": "Kontakt",
     "academic": "Ersetzt keine Rechtsberatung."
+  },
+  "images": {
+    "archive": "Archivgang mit Regalen voller nummerierter Dokumentenkartons",
+    "ledger": "Altes, aufgeschlagenes Register mit handschriftlichen Einträgen",
+    "cabinet": "Eine Hand öffnet eine Karteischublade mit nach Namen sortierten Karten"
   }
 }

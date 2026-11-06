@@ -40,7 +40,33 @@
         "q": "Har virksomheden oplevet et datalæk?",
         "kind": "refuse",
         "a": "Der er ikke tilstrækkelige data i konteksten til at besvare, om virksomheden har oplevet et datalæk."
+      },
+      {
+        "q": "Hvem er databeskyttelsesrådgiver?",
+        "kind": "answer",
+        "a": "Rådgiveren er Carlos Mendes, og de registrerede kontakter ham via virksomhedens privatlivskanal.",
+        "source": "Privatlivspolitik, godkendt af Ana Silva"
+      },
+      {
+        "q": "Får teamet træning i LGPD?",
+        "kind": "answer",
+        "a": "Ja. Hele teamet gennemfører træningen én gang om året, og hver persons deltagelse registreres.",
+        "source": "Træning af teamet, godkendt af Carlos Mendes"
+      },
+      {
+        "q": "Hvad gør vi ved en hændelse?",
+        "kind": "answer",
+        "a": "Rådgiveren vurderer sagen og underretter, hvis risikoen er væsentlig, ANPD og de registrerede inden for tre arbejdsdage.",
+        "source": "Beredskabsplan for hændelser, godkendt af Ana Silva"
       }
+    ],
+    "stamp": "INGEN REGISTRERING",
+    "records": [
+      "Opbevaringspolitik",
+      "Dataoversigt",
+      "Privatlivspolitik",
+      "Træning af teamet",
+      "Beredskabsplan for hændelser"
     ]
   },
   "how": {
@@ -64,7 +90,8 @@
         "call": "Gennemgå, afvis eller godkend.",
         "response": "Når teksten er godkendt, låses den. Hvem der gjorde hvad, registreres i revisionssporet, som databasen ikke tillader at ændre."
       }
-    ]
+    ],
+    "archive": "Kun det godkendte bliver arkiveret."
   },
   "states": {
     "title": "Ét dokument, tre stadier.",
@@ -82,7 +109,12 @@
     "s3": "Godkendt",
     "s3Meta": "Godkendt af Ana Silva, indhold låst",
     "s3Note": "Officiel og klar til eksport som PDF",
-    "pdf": "Download PDF"
+    "pdf": "Download PDF",
+    "docBody": [
+      "Kundeservice indsamler navn, e-mail og telefonnummer for at besvare henvendelser.",
+      "Oplysningerne opbevares i fem år og er krypteret i hvile.",
+      "Adgangen er begrænset til supportteamet, og hvert opslag logges."
+    ]
   },
   "law": {
     "title": "Hver funktion har en underliggende artikel.",
@@ -150,14 +182,19 @@
   "cta": {
     "title": "Start med det, der allerede er sandt.",
     "lead": "Opret din virksomheds konto og foretag din første registrering.",
-    "emailLabel": "Din arbejds-e-mail",
     "placeholder": "du@virksomhed.com",
-    "button": "Registrer virksomhed"
+    "button": "Registrer virksomhed",
+    "companyLabel": "Virksomhedens navn"
   },
   "footer": {
     "about": "Overholdelse af LGPD og GDPR",
     "madeBy": "Udviklet af",
     "contact": "Kontakt",
     "academic": "Erstatter ikke juridisk rådgivning."
+  },
+  "images": {
+    "archive": "Arkivgang med hylder fulde af nummererede dokumentkasser",
+    "ledger": "Gammel åben protokol med håndskrevne indførsler",
+    "cabinet": "En hånd åbner en kartoteksskuffe med kort sorteret efter navn"
   }
 }

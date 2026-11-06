@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Ako to funguje",
+    "states": "Schválenie",
+    "law": "Zákon",
+    "faq": "Otázky",
+    "login": "Prihlásiť sa",
+    "signup": "Zaregistrovať firmu",
+    "language": "Jazyk"
+  },
+  "hero": {
+    "line1": "Bez záznamu",
+    "line2": "niet odpovede.",
+    "lead": "IABill píše dokumenty LGPD a GDPR vašej firmy len z toho, čo ste už schválili. Keď chýba podklad, AI odmietne namiesto toho, aby si vymýšľala."
+  },
+  "demo": {
+    "title": "Opýtajte sa IABill",
+    "choose": "Vyberte otázku",
+    "source": "Schválený zdroj",
+    "noSource": "Túto odpoveď nepodporuje žiadny schválený záznam.",
+    "questions": [
+      {
+        "q": "Aký bol obrat firmy v roku 2025?",
+        "kind": "refuse",
+        "a": "V kontexte nie je dostatok údajov na určenie ročného obratu firmy v roku 2025."
+      },
+      {
+        "q": "Ako dlho uchovávame údaje zákazníkov?",
+        "kind": "answer",
+        "a": "Údaje zákazníkov sa uchovávajú päť rokov na serveroch v regióne São Paulo so šifrovaním v pokoji.",
+        "source": "Zásady uchovávania, schválila Ana Silva"
+      },
+      {
+        "q": "Kto má prístup k požiadavkám na podporu?",
+        "kind": "answer",
+        "a": "Iba tím podpory s prístupom obmedzeným podľa rolí. Požiadavky obsahujú meno, e-mail a telefón zákazníka.",
+        "source": "Inventár údajov, schválil Carlos Mendes"
+      },
+      {
+        "q": "Došlo vo firme niekedy k úniku údajov?",
+        "kind": "refuse",
+        "a": "V kontexte nie je dostatok údajov na odpoveď, či vo firme niekedy došlo k úniku údajov."
+      },
+      {
+        "q": "Kto je zodpovedná osoba za ochranu údajov?",
+        "kind": "answer",
+        "a": "Zodpovednou osobou je Carlos Mendes a dotknuté osoby ho kontaktujú cez firemný kanál ochrany súkromia.",
+        "source": "Zásady ochrany súkromia, schválila Ana Silva"
+      },
+      {
+        "q": "Absolvuje tím školenie o LGPD?",
+        "kind": "answer",
+        "a": "Áno. Celý tím absolvuje školenie raz ročne a účasť každej osoby sa zaznamenáva.",
+        "source": "Školenie tímu, schválil Carlos Mendes"
+      },
+      {
+        "q": "Čo robíme pri incidente?",
+        "kind": "answer",
+        "a": "Zodpovedná osoba prípad posúdi a pri významnom riziku do troch pracovných dní informuje ANPD a dotknuté osoby.",
+        "source": "Plán reakcie na incidenty, schválila Ana Silva"
+      }
+    ],
+    "stamp": "BEZ ZÁZNAMU",
+    "records": [
+      "Zásady uchovávania",
+      "Inventár údajov",
+      "Zásady ochrany súkromia",
+      "Školenie tímu",
+      "Plán reakcie na incidenty"
+    ]
+  },
+  "how": {
+    "title": "AI píše, vy rozhodujete.",
+    "steps": [
+      {
+        "lead": "Najprv zaznamenajte, čo vaša firma robí.",
+        "callLabel": "Zaznamenávate",
+        "call": "Zákaznícky servis zbiera meno, e-mail a telefón. Uchovávanie päť rokov. Právny základ: plnenie zmluvy.",
+        "response": "Po schválení sa záznam stane kontextom len pre váš pracovný priestor."
+      },
+      {
+        "lead": "Potom požiadajte o chýbajúci dokument.",
+        "callLabel": "Žiadate",
+        "call": "Priprav posúdenie vplyvu pre zákaznícky servis.",
+        "response": "AI vyhľadá schválené úryvky a píše len z nich. Čo nemá podklad, označí ako neúplné."
+      },
+      {
+        "lead": "Nakoniec rozhodnite, čo sa stane oficiálnym.",
+        "callLabel": "Rozhodujete",
+        "call": "Skontrolovať, zamietnuť alebo schváliť.",
+        "response": "Po schválení je text uzamknutý. Kto čo urobil, zostáva v auditnom zázname, ktorý databáza nedovolí zmeniť."
+      }
+    ],
+    "archive": "Archivuje sa len to, čo je schválené."
+  },
+  "states": {
+    "title": "Jeden dokument, tri fázy.",
+    "lead": "Bez ľudskej kontroly sa nič nestane oficiálnym. Ak niekto po kontrole text upraví, dokument sa vráti na novú kontrolu.",
+    "docTitle": "Posúdenie vplyvu: zákaznícky servis",
+    "doc": "RIPD/DPIA",
+    "s1": "Vygenerované AI",
+    "s1Meta": "Bez oficiálnej hodnoty, čaká na kontrolu",
+    "s1Note": "Po doručení",
+    "s2": "Skontrolované",
+    "s2Meta": "Skontrolovala Juliana Rocha",
+    "s2Note": "Pripravené na schválenie alebo zamietnutie",
+    "approve": "Schváliť",
+    "reject": "Zamietnuť",
+    "s3": "Schválené",
+    "s3Meta": "Schválila Ana Silva, obsah uzamknutý",
+    "s3Note": "Oficiálne a pripravené na export do PDF",
+    "pdf": "Stiahnuť PDF",
+    "docBody": [
+      "Zákaznícky servis zbiera meno, e-mail a telefón, aby mohol odpovedať na požiadavky.",
+      "Údaje sa uchovávajú päť rokov so šifrovaním v pokoji.",
+      "Prístup má len tím podpory a každé vyhľadanie sa zaznamenáva."
+    ]
+  },
+  "law": {
+    "title": "Každá funkcia má svoj článok.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Záznamy o spracovateľských činnostiach"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Posúdenie vplyvu na ochranu údajov"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Samostatná rola pre zodpovednú osobu"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Izolácia a riadenie prístupu podľa rolí"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Incidenty s lehotami pre ANPD a dotknuté osoby"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Auditný záznam pre zodpovednosť"
+      },
+      {
+        "mark": "GDPR 35",
+        "text": "Prvky európskeho posúdenia vplyvu"
+      }
+    ]
+  },
+  "proof": {
+    "value": "Našiel 30. Odmietol 6.",
+    "title": "Keď podklad existoval, našiel ho. Keď neexistoval, odmietol.",
+    "text": "V kontrolovanom teste so 40 syntetickými dokumentmi všetkých 30 vyhľadávaní našlo správny úryvok a všetkých 6 otázok bez podkladu bolo odmietnutých. Test meria mechanizmus a nezaručuje výsledky so skutočnými údajmi."
+  },
+  "faq": {
+    "title": "Časté otázky.",
+    "items": [
+      {
+        "q": "Môže si AI vymýšľať informácie?",
+        "a": "Model má pokyn používať len schválené úryvky a odmietnuť, keď nestačia. To znižuje riziko, ale neodstraňuje ho. Preto každý vygenerovaný text prechádza ľudskou kontrolou a schválením."
+      },
+      {
+        "q": "Nahrádza IABill právnika alebo zodpovednú osobu?",
+        "a": "Nie. Organizuje proces a pripravuje dokumenty. Vygenerované texty nemajú formálne právne overenie a konečné rozhodnutie je vždy na vašej firme."
+      },
+      {
+        "q": "Môže iná firma vidieť moje údaje?",
+        "a": "Každá operácia overuje, či zdroj patrí vašej organizácii, a vyhľadávanie AI je obmedzené na váš pracovný priestor. Táto izolácia je súčasťou automatizovaných testov."
+      },
+      {
+        "q": "Je vhodný pre firmy v Európe?",
+        "a": "Áno. Každý pracovný priestor určuje platné režimy, LGPD, GDPR alebo oba, a posúdenie vplyvu obsahuje prvky čl. 35 GDPR."
+      },
+      {
+        "q": "Kto môže schváliť dokument?",
+        "a": "Kontrolovať môže každý používateľ, schvaľovanie je vyhradené pre profil správcu. Po schválení už obsah nemožno upravovať ani znovu vygenerovať."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Otvorte svoj archív.",
+    "lead": "Začína prázdny: AI odpovedá až po vašom prvom schválenom zázname.",
+    "placeholder": "Vaša firma",
+    "button": "Otvoriť môj archív",
+    "companyLabel": "Názov firmy"
+  },
+  "footer": {
+    "about": "Súlad s LGPD a GDPR",
+    "madeBy": "Vyvinul",
+    "contact": "Kontakt",
+    "academic": "Nenahrádza právne poradenstvo."
+  },
+  "images": {
+    "archive": "Chodba archívu s regálmi plnými očíslovaných škatúľ s dokumentmi",
+    "ledger": "Stará otvorená kniha záznamov s ručne písanými zápismi",
+    "cabinet": "Ruka otvára zásuvku kartotéky s kartami zoradenými podľa mena"
+  }
+}

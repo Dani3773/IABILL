@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Conas a oibríonn sé",
+    "states": "Faomhadh",
+    "law": "Dlí",
+    "faq": "Ceisteanna",
+    "login": "Logáil isteach",
+    "signup": "Cláraigh cuideachta",
+    "language": "Teanga"
+  },
+  "hero": {
+    "line1": "Gan taifead,",
+    "line2": "gan freagra.",
+    "lead": "Scríobhann IABill doiciméid LGPD agus GDPR do chuideachta ag úsáid a bhfuil faofa agat cheana féin amháin. Mura bhfuil bonn ann, diúltaíonn an IS in áit rud a chumadh."
+  },
+  "demo": {
+    "title": "Cuir ceist ar IABill",
+    "choose": "Roghnaigh ceist",
+    "source": "Foinse fhaofa",
+    "noSource": "Níl aon taifead faofa ag tacú leis an bhfreagra seo.",
+    "questions": [
+      {
+        "q": "Cén t-ioncam a bhí ag an gcuideachta in 2025?",
+        "kind": "refuse",
+        "a": "Níl go leor sonraí sa chomhthéacs chun ioncam bliantúil na cuideachta in 2025 a dheimhniú."
+      },
+      {
+        "q": "Cá fhad a choinnímid sonraí custaiméirí?",
+        "kind": "answer",
+        "a": "Coinnítear sonraí custaiméirí ar feadh cúig bliana, ar fhreastalaithe i réigiún São Paulo, criptithe agus iad ar stór.",
+        "source": "Beartas coinneála, faofa ag Ana Silva"
+      },
+      {
+        "q": "Cé a bhfuil rochtain aige ar thicéid tacaíochta?",
+        "kind": "answer",
+        "a": "An fhoireann tacaíochta amháin, le rochtain srianta de réir róil. Coinníonn na ticéid ainm, ríomhphost agus uimhir ghutháin an chustaiméara.",
+        "source": "Fardal sonraí, faofa ag Carlos Mendes"
+      },
+      {
+        "q": "An raibh sárú sonraí riamh ag an gcuideachta?",
+        "kind": "refuse",
+        "a": "Níl go leor sonraí sa chomhthéacs chun a rá an raibh sárú sonraí riamh ag an gcuideachta."
+      },
+      {
+        "q": "Cé hé an t-oifigeach cosanta sonraí?",
+        "kind": "answer",
+        "a": "Is é Carlos Mendes an t-oifigeach, agus déanann ábhair sonraí teagmháil leis trí chainéal príobháideachais na cuideachta.",
+        "source": "Beartas príobháideachais, faofa ag Ana Silva"
+      },
+      {
+        "q": "An bhfaigheann an fhoireann oiliúint LGPD?",
+        "kind": "answer",
+        "a": "Faigheann. Déanann an fhoireann ar fad an oiliúint uair sa bhliain agus taifeadtar freastal gach duine.",
+        "source": "Oiliúint foirne, faofa ag Carlos Mendes"
+      },
+      {
+        "q": "Cad a dhéanaimid má tharlaíonn teagmhas?",
+        "kind": "answer",
+        "a": "Déanann an t-oifigeach measúnú ar an gcás agus, má tá an riosca suntasach, tugann sé fógra don ANPD agus d'ábhair sonraí laistigh de thrí lá oibre.",
+        "source": "Plean freagartha ar theagmhais, faofa ag Ana Silva"
+      }
+    ],
+    "stamp": "GAN TAIFEAD",
+    "records": [
+      "Beartas coinneála",
+      "Fardal sonraí",
+      "Beartas príobháideachais",
+      "Oiliúint foirne",
+      "Plean freagartha ar theagmhais"
+    ]
+  },
+  "how": {
+    "title": "Scríobhann an IS, cinneann tusa.",
+    "steps": [
+      {
+        "lead": "Ar dtús, taifead cad a dhéanann do chuideachta.",
+        "callLabel": "Taifeadann tú",
+        "call": "Bailíonn seirbhís do chustaiméirí ainm, ríomhphost agus uimhir ghutháin. Coinneáil cúig bliana. Bonn dlíthiúil: conradh a chomhlíonadh.",
+        "response": "Nuair a fhaomhtar é, ní bhíonn an taifead ina chomhthéacs ach do do spás oibre féin."
+      },
+      {
+        "lead": "Ansin, iarr an doiciméad atá in easnamh.",
+        "callLabel": "Iarrann tú",
+        "call": "Dréachtaigh measúnú tionchair sheirbhís do chustaiméirí.",
+        "response": "Cuardaíonn an IS sleachta faofa agus ní scríobhann sé ach uathu sin. Dearbhaítear aon ní gan bhonn a bheith neamhiomlán."
+      },
+      {
+        "lead": "Ar deireadh, cinn cad a bheidh oifigiúil.",
+        "callLabel": "Cinneann tú",
+        "call": "Athbhreithnigh, diúltaigh nó faomh.",
+        "response": "Nuair a fhaomhtar é, cuirtear glas ar an téacs. Fanann cé a rinne cad sa rian iniúchta, nach ligeann an bunachar sonraí a athrú."
+      }
+    ],
+    "archive": "Ní chomhdaítear ach a bhfuil faofa."
+  },
+  "states": {
+    "title": "Doiciméad amháin, trí chéim.",
+    "lead": "Ní bhíonn aon ní oifigiúil gan athbhreithniú daonna. Má dhéanann duine eagarthóireacht tar éis athbhreithnithe, filleann an doiciméad le haghaidh athbhreithnithe arís.",
+    "docTitle": "Measúnú tionchair: seirbhís do chustaiméirí",
+    "doc": "RIPD/DPIA",
+    "s1": "Ginte ag IS",
+    "s1Meta": "Gan luach oifigiúil, ag feitheamh le hathbhreithniú",
+    "s1Note": "Ar theacht",
+    "s2": "Athbhreithnithe",
+    "s2Meta": "Athbhreithnithe ag Juliana Rocha",
+    "s2Note": "Réidh le faomhadh nó le diúltú",
+    "approve": "Faomh",
+    "reject": "Diúltaigh",
+    "s3": "Faofa",
+    "s3Meta": "Faofa ag Ana Silva, ábhar faoi ghlas",
+    "s3Note": "Oifigiúil agus réidh le heaspórtáil go PDF",
+    "pdf": "Íoslódáil PDF",
+    "docBody": [
+      "Bailíonn seirbhís do chustaiméirí ainm, ríomhphost agus uimhir ghutháin chun ticéid a fhreagairt.",
+      "Coinnítear na sonraí ar feadh cúig bliana, criptithe agus iad ar stór.",
+      "Tá rochtain teoranta don fhoireann tacaíochta agus logáiltear gach cuardach."
+    ]
+  },
+  "law": {
+    "title": "Tá airteagal ag gach feidhm.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Taifead ar ghníomhaíochtaí próiseála"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Measúnú tionchair ar chosaint sonraí"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Ról sonrach don oifigeach cosanta sonraí"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Leithlisiú agus rialú rochtana bunaithe ar ról"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Teagmhais le spriocdhátaí don ANPD agus d'ábhair sonraí"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Rian iniúchta don chuntasacht"
+      },
+      {
+        "mark": "GDPR 35",
+        "text": "Gnéithe den mheasúnú tionchair Eorpach"
+      }
+    ]
+  },
+  "proof": {
+    "value": "Fuair 30. Dhiúltaigh 6.",
+    "title": "Nuair a bhí bonn ann, fuair sé é. Nuair nach raibh, dhiúltaigh sé.",
+    "text": "I dtástáil rialaithe le 40 doiciméad sintéiseach, fuair na 30 cuardach ar fad an sliocht ceart agus diúltaíodh do na 6 cheist gan bhonn. Tomhaiseann sé seo an mheicníocht agus ní ráthaíonn sé torthaí le fíorshonraí."
+  },
+  "faq": {
+    "title": "Ceisteanna coitianta.",
+    "items": [
+      {
+        "q": "An féidir leis an IS faisnéis a chumadh?",
+        "a": "Tugtar treoir don mhúnla gan ach sleachta faofa a úsáid agus diúltú mura leor iad. Laghdaíonn sé sin an riosca ach ní chuireann sé deireadh leis. Dá bhrí sin, déanann duine athbhreithniú agus faomhadh ar gach téacs ginte."
+      },
+      {
+        "q": "An dtagann IABill in áit dlíodóra nó oifigigh chosanta sonraí?",
+        "a": "Ní thagann. Eagraíonn sé an próiseas agus ullmhaíonn sé doiciméid. Níl bailíochtú foirmiúil dlíthiúil ag na téacsanna ginte, agus is ag do chuideachta i gcónaí atá an cinneadh deiridh."
+      },
+      {
+        "q": "An féidir le cuideachta eile mo shonraí a fheiceáil?",
+        "a": "Seiceálann gach oibríocht an le d'eagraíocht an acmhainn, agus tá cuardach an IS teoranta do do spás oibre. Is cuid de na tástálacha uathoibrithe an leithlisiú seo."
+      },
+      {
+        "q": "An bhfuil sé oiriúnach do chuideachtaí san Eoraip?",
+        "a": "Tá. Sainíonn gach spás oibre na córais is infheidhme, LGPD, GDPR nó iad araon, agus cuimsíonn an measúnú tionchair gnéithe d'Airt. 35 den GDPR."
+      },
+      {
+        "q": "Cé atá in ann doiciméad a fhaomhadh?",
+        "a": "Is féidir le húsáideoir ar bith athbhreithniú a dhéanamh, agus tá faomhadh curtha in áirithe don phróifíl riarthóra. Nuair a fhaomhtar é, ní féidir an t-ábhar a chur in eagar ná a athghiniúint a thuilleadh."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Oscail do chartlann.",
+    "lead": "Bíonn sí folamh ar dtús: ní fhreagraíonn an IS ach tar éis do chéad taifid fhaofa.",
+    "placeholder": "Do chuideachta",
+    "button": "Oscail mo chartlann",
+    "companyLabel": "Ainm na cuideachta"
+  },
+  "footer": {
+    "about": "Comhlíonadh LGPD agus GDPR",
+    "madeBy": "Forbartha ag",
+    "contact": "Teagmháil",
+    "academic": "Ní thagann sé in áit comhairle dhlíthiúil."
+  },
+  "images": {
+    "archive": "Conair cartlainne le seilfeanna lán de bhoscaí doiciméad uimhrithe",
+    "ledger": "Seanleabhar taifead, oscailte, le hiontrálacha lámhscríofa",
+    "cabinet": "Lámh ag oscailt tarraiceán comhaid le cártaí in ord ainmneacha"
+  }
+}

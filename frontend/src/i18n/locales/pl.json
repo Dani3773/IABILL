@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Jak to działa",
+    "states": "Zatwierdzanie",
+    "law": "Prawo",
+    "faq": "Pytania",
+    "login": "Zaloguj się",
+    "signup": "Zarejestruj firmę",
+    "language": "Język"
+  },
+  "hero": {
+    "line1": "Bez rejestru",
+    "line2": "nie ma odpowiedzi.",
+    "lead": "IABill tworzy dokumenty LGPD i RODO Twojej firmy wyłącznie na podstawie tego, co już zatwierdzono. Gdy brakuje podstaw, AI odmawia zamiast zmyślać."
+  },
+  "demo": {
+    "title": "Zapytaj IABill",
+    "choose": "Wybierz pytanie",
+    "source": "Zatwierdzone źródło",
+    "noSource": "Żaden zatwierdzony zapis nie potwierdza tej odpowiedzi.",
+    "questions": [
+      {
+        "q": "Jaki był przychód firmy w 2025 roku?",
+        "kind": "refuse",
+        "a": "W kontekście brakuje danych, aby określić roczny przychód firmy w 2025 roku."
+      },
+      {
+        "q": "Jak długo przechowujemy dane klientów?",
+        "kind": "answer",
+        "a": "Dane klientów są przechowywane przez pięć lat na serwerach w regionie São Paulo, z szyfrowaniem w spoczynku.",
+        "source": "Polityka retencji, zatwierdzona przez Anę Silvę"
+      },
+      {
+        "q": "Kto ma dostęp do zgłoszeń pomocy?",
+        "kind": "answer",
+        "a": "Tylko zespół pomocy, z dostępem ograniczonym według ról. Zgłoszenia zawierają imię i nazwisko, e-mail oraz telefon klienta.",
+        "source": "Inwentaryzacja danych, zatwierdzona przez Carlosa Mendesa"
+      },
+      {
+        "q": "Czy w firmie doszło kiedyś do wycieku danych?",
+        "kind": "refuse",
+        "a": "W kontekście brakuje danych, aby stwierdzić, czy w firmie doszło kiedyś do wycieku."
+      },
+      {
+        "q": "Kto jest inspektorem ochrony danych?",
+        "kind": "answer",
+        "a": "Inspektorem jest Carlos Mendes, a osoby, których dane dotyczą, kontaktują się z nim przez firmowy kanał prywatności.",
+        "source": "Polityka prywatności, zatwierdzona przez Anę Silvę"
+      },
+      {
+        "q": "Czy zespół przechodzi szkolenie z LGPD?",
+        "kind": "answer",
+        "a": "Tak. Cały zespół przechodzi szkolenie raz w roku, a obecność każdej osoby jest rejestrowana.",
+        "source": "Szkolenie zespołu, zatwierdzone przez Carlosa Mendesa"
+      },
+      {
+        "q": "Co robimy w razie incydentu?",
+        "kind": "answer",
+        "a": "Inspektor ocenia sprawę i, jeśli ryzyko jest istotne, powiadamia ANPD oraz osoby, których dane dotyczą, w ciągu trzech dni roboczych.",
+        "source": "Plan reagowania na incydenty, zatwierdzony przez Anę Silvę"
+      }
+    ],
+    "stamp": "BRAK ZAPISU",
+    "records": [
+      "Polityka retencji",
+      "Inwentaryzacja danych",
+      "Polityka prywatności",
+      "Szkolenie zespołu",
+      "Plan reagowania na incydenty"
+    ]
+  },
+  "how": {
+    "title": "AI pisze, Ty decydujesz.",
+    "steps": [
+      {
+        "lead": "Najpierw zapisz, co robi Twoja firma.",
+        "callLabel": "Zapisujesz",
+        "call": "Obsługa klienta zbiera imię i nazwisko, e-mail i telefon. Retencja pięć lat. Podstawa prawna: wykonanie umowy.",
+        "response": "Po zatwierdzeniu zapis staje się kontekstem wyłącznie dla Twojej przestrzeni roboczej."
+      },
+      {
+        "lead": "Następnie poproś o brakujący dokument.",
+        "callLabel": "Prosisz",
+        "call": "Przygotuj ocenę skutków dla obsługi klienta.",
+        "response": "AI wyszukuje zatwierdzone fragmenty i pisze tylko na ich podstawie. To, co nie ma podstaw, oznacza jako niekompletne."
+      },
+      {
+        "lead": "Na koniec zdecyduj, co staje się oficjalne.",
+        "callLabel": "Decydujesz",
+        "call": "Sprawdź, odrzuć lub zatwierdź.",
+        "response": "Po zatwierdzeniu tekst jest zablokowany. Kto co zrobił, zostaje w dzienniku audytu, którego baza danych nie pozwala zmienić."
+      }
+    ],
+    "archive": "Archiwizowane jest tylko to, co zatwierdzone."
+  },
+  "states": {
+    "title": "Jeden dokument, trzy etapy.",
+    "lead": "Nic nie staje się oficjalne bez sprawdzenia przez człowieka. Jeśli ktoś edytuje tekst po sprawdzeniu, dokument wraca do weryfikacji.",
+    "docTitle": "Ocena skutków: obsługa klienta",
+    "doc": "RIPD/DPIA",
+    "s1": "Wygenerowano przez AI",
+    "s1Meta": "Bez mocy oficjalnej, czeka na sprawdzenie",
+    "s1Note": "Na początku",
+    "s2": "Sprawdzono",
+    "s2Meta": "Sprawdziła Juliana Rocha",
+    "s2Note": "Gotowe do zatwierdzenia lub odrzucenia",
+    "approve": "Zatwierdź",
+    "reject": "Odrzuć",
+    "s3": "Zatwierdzono",
+    "s3Meta": "Zatwierdziła Ana Silva, treść zablokowana",
+    "s3Note": "Oficjalne i gotowe do eksportu PDF",
+    "pdf": "Pobierz PDF",
+    "docBody": [
+      "Obsługa klienta zbiera imię i nazwisko, e-mail i telefon, aby odpowiadać na zgłoszenia.",
+      "Dane są przechowywane przez pięć lat, z szyfrowaniem w spoczynku.",
+      "Dostęp ma tylko zespół pomocy, a każde wyszukanie jest rejestrowane."
+    ]
+  },
+  "law": {
+    "title": "Każda funkcja ma swój artykuł.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Rejestr czynności przetwarzania"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Ocena skutków dla ochrony danych"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Osobna rola inspektora ochrony danych"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Izolacja i kontrola dostępu oparta na rolach"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Incydenty z terminami dla ANPD i osób, których dane dotyczą"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Dziennik audytu na potrzeby rozliczalności"
+      },
+      {
+        "mark": "RODO 35",
+        "text": "Elementy europejskiej oceny skutków"
+      }
+    ]
+  },
+  "proof": {
+    "value": "Znaleziono 30. Odmówiono 6.",
+    "title": "Gdy była podstawa, znalazł ją. Gdy jej nie było, odmówił.",
+    "text": "W kontrolowanym teście na 40 syntetycznych dokumentach wszystkie 30 wyszukiwań znalazło właściwy fragment, a wszystkie 6 pytań bez podstaw zostało odrzuconych. Test mierzy mechanizm i nie gwarantuje wyników na prawdziwych danych."
+  },
+  "faq": {
+    "title": "Najczęstsze pytania.",
+    "items": [
+      {
+        "q": "Czy AI może zmyślać informacje?",
+        "a": "Model ma polecenie korzystać tylko z zatwierdzonych fragmentów i odmawiać, gdy nie wystarczają. To zmniejsza ryzyko, ale go nie eliminuje. Dlatego każdy wygenerowany tekst przechodzi sprawdzenie i zatwierdzenie przez człowieka."
+      },
+      {
+        "q": "Czy IABill zastępuje prawnika lub inspektora ochrony danych?",
+        "a": "Nie. Porządkuje proces i przygotowuje dokumenty. Wygenerowane teksty nie mają formalnej walidacji prawnej, a ostateczna decyzja zawsze należy do Twojej firmy."
+      },
+      {
+        "q": "Czy inna firma może zobaczyć moje dane?",
+        "a": "Każda operacja sprawdza, czy zasób należy do Twojej organizacji, a wyszukiwanie AI jest ograniczone do Twojej przestrzeni roboczej. Ta izolacja jest częścią testów automatycznych."
+      },
+      {
+        "q": "Czy to rozwiązanie dla firm w Europie?",
+        "a": "Tak. Każda przestrzeń robocza określa obowiązujące przepisy, LGPD, RODO lub oba, a ocena skutków zawiera elementy art. 35 RODO."
+      },
+      {
+        "q": "Kto może zatwierdzić dokument?",
+        "a": "Każdy użytkownik może sprawdzać, a zatwierdzanie jest zastrzeżone dla profilu administratora. Po zatwierdzeniu treści nie można już edytować ani wygenerować ponownie."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Otwórz swoje archiwum.",
+    "lead": "Na początku jest puste: AI odpowiada dopiero po pierwszym zatwierdzonym zapisie.",
+    "placeholder": "Twoja firma",
+    "button": "Otwórz moje archiwum",
+    "companyLabel": "Nazwa firmy"
+  },
+  "footer": {
+    "about": "Zgodność z LGPD i RODO",
+    "madeBy": "Stworzone przez",
+    "contact": "Kontakt",
+    "academic": "Nie zastępuje porady prawnej."
+  },
+  "images": {
+    "archive": "Korytarz archiwum z regałami pełnymi ponumerowanych pudeł z dokumentami",
+    "ledger": "Stara otwarta księga rejestrowa z odręcznymi wpisami",
+    "cabinet": "Dłoń otwierająca szufladę kartoteki z kartami ułożonymi według nazwisk"
+  }
+}

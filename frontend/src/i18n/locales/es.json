@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Cómo funciona",
+    "states": "Aprobación",
+    "law": "Ley",
+    "faq": "Preguntas",
+    "login": "Entrar",
+    "signup": "Registrar empresa",
+    "language": "Idioma"
+  },
+  "hero": {
+    "line1": "Sin registro,",
+    "line2": "sin respuesta.",
+    "lead": "IABill redacta los documentos de LGPD y RGPD de tu empresa usando solo lo que ya aprobaste. Cuando falta base, la IA se niega en lugar de inventar."
+  },
+  "demo": {
+    "title": "Pregunta a IABill",
+    "choose": "Elige una pregunta",
+    "source": "Fuente aprobada",
+    "noSource": "Ningún registro aprobado respalda esta respuesta.",
+    "questions": [
+      {
+        "q": "¿Cuál fue la facturación de la empresa en 2025?",
+        "kind": "refuse",
+        "a": "No hay datos suficientes en el contexto para determinar la facturación anual de la empresa en 2025."
+      },
+      {
+        "q": "¿Durante cuánto tiempo guardamos los datos de clientes?",
+        "kind": "answer",
+        "a": "Los datos de clientes se conservan cinco años, en servidores de la región de São Paulo, con cifrado en reposo.",
+        "source": "Política de conservación, aprobada por Ana Silva"
+      },
+      {
+        "q": "¿Quién accede a los tickets de soporte?",
+        "kind": "answer",
+        "a": "Solo el equipo de soporte, con acceso restringido por función. Los tickets guardan nombre, correo y teléfono del cliente.",
+        "source": "Inventario de datos, aprobado por Carlos Mendes"
+      },
+      {
+        "q": "¿La empresa ha sufrido alguna filtración?",
+        "kind": "refuse",
+        "a": "No hay datos suficientes en el contexto para responder si la empresa ha sufrido alguna filtración."
+      },
+      {
+        "q": "¿Quién es el delegado de protección de datos?",
+        "kind": "answer",
+        "a": "El delegado es Carlos Mendes, y los titulares contactan con él por el canal de privacidad de la empresa.",
+        "source": "Política de privacidad, aprobada por Ana Silva"
+      },
+      {
+        "q": "¿El equipo recibe formación en LGPD?",
+        "kind": "answer",
+        "a": "Sí. Todo el equipo hace la formación una vez al año y se registra la asistencia de cada persona.",
+        "source": "Formación del equipo, aprobada por Carlos Mendes"
+      },
+      {
+        "q": "¿Qué hacemos si hay un incidente?",
+        "kind": "answer",
+        "a": "El delegado evalúa el caso y, si el riesgo es relevante, comunica a la ANPD y a los titulares en un plazo de tres días hábiles.",
+        "source": "Plan de respuesta a incidentes, aprobado por Ana Silva"
+      }
+    ],
+    "stamp": "SIN REGISTRO",
+    "records": [
+      "Política de conservación",
+      "Inventario de datos",
+      "Política de privacidad",
+      "Formación del equipo",
+      "Plan de respuesta a incidentes"
+    ]
+  },
+  "how": {
+    "title": "La IA escribe, tú decides.",
+    "steps": [
+      {
+        "lead": "Primero, registra lo que hace tu empresa.",
+        "callLabel": "Registras",
+        "call": "Atención al cliente recoge nombre, correo y teléfono. Conservación de cinco años. Base legal: ejecución del contrato.",
+        "response": "Una vez aprobado, el registro solo sirve de contexto para tu espacio de trabajo."
+      },
+      {
+        "lead": "Después, pide el documento que falta.",
+        "callLabel": "Pides",
+        "call": "Redacta el informe de impacto de la atención al cliente.",
+        "response": "La IA busca fragmentos aprobados y redacta solo con ellos. Lo que no tiene base se declara incompleto."
+      },
+      {
+        "lead": "Por último, decide qué pasa a ser oficial.",
+        "callLabel": "Decides",
+        "call": "Revisar, rechazar o aprobar.",
+        "response": "Una vez aprobado, el texto queda bloqueado. Quién hizo qué permanece en la pista de auditoría, que la base de datos impide alterar."
+      }
+    ],
+    "archive": "Solo se archiva lo aprobado."
+  },
+  "states": {
+    "title": "Un documento, tres momentos.",
+    "lead": "Nada es oficial sin revisión humana. Si alguien edita después de la revisión, el documento vuelve a revisarse.",
+    "docTitle": "Informe de impacto: atención al cliente",
+    "doc": "RIPD/DPIA",
+    "s1": "Generado por IA",
+    "s1Meta": "Sin valor oficial, pendiente de revisión",
+    "s1Note": "Al llegar",
+    "s2": "Revisado",
+    "s2Meta": "Revisado por Juliana Rocha",
+    "s2Note": "Listo para aprobar o rechazar",
+    "approve": "Aprobar",
+    "reject": "Rechazar",
+    "s3": "Aprobado",
+    "s3Meta": "Aprobado por Ana Silva, contenido bloqueado",
+    "s3Note": "Oficial y listo para exportar en PDF",
+    "pdf": "Descargar PDF",
+    "docBody": [
+      "Atención al cliente recoge nombre, correo y teléfono para responder a los tickets.",
+      "Los datos se conservan cinco años, con cifrado en reposo.",
+      "El acceso se limita al equipo de soporte y cada consulta queda registrada."
+    ]
+  },
+  "law": {
+    "title": "Cada función tiene un artículo.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Registro de las actividades de tratamiento"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Informe de impacto en la protección de datos"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Función específica para el delegado de protección de datos"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Aislamiento y control de acceso por funciones"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Incidentes con plazos para la ANPD y los titulares"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Pista de auditoría para la rendición de cuentas"
+      },
+      {
+        "mark": "RGPD 35",
+        "text": "Elementos de la evaluación de impacto europea"
+      }
+    ]
+  },
+  "proof": {
+    "value": "Encontró 30. Rechazó 6.",
+    "title": "Cuando había base, la encontró. Cuando no la había, se negó.",
+    "text": "En una prueba controlada con 40 documentos sintéticos, las 30 búsquedas hallaron el fragmento correcto y las 6 preguntas sin base fueron rechazadas. Mide el mecanismo y no garantiza resultados con datos reales."
+  },
+  "faq": {
+    "title": "Preguntas frecuentes.",
+    "items": [
+      {
+        "q": "¿La IA puede inventar información?",
+        "a": "El modelo tiene instrucciones de usar solo fragmentos aprobados y de negarse cuando son insuficientes. Esto reduce el riesgo, pero no lo elimina. Por eso todo texto generado pasa por revisión y aprobación humana."
+      },
+      {
+        "q": "¿IABill sustituye a un abogado o a un delegado de protección de datos?",
+        "a": "No. Organiza el proceso y prepara documentos. Los textos generados no tienen validación jurídica formal y la decisión final siempre es de tu empresa."
+      },
+      {
+        "q": "¿Otra empresa puede ver mis datos?",
+        "a": "Cada operación comprueba si el recurso pertenece a tu organización, y la búsqueda de la IA se limita a tu espacio de trabajo. Este aislamiento forma parte de las pruebas automatizadas."
+      },
+      {
+        "q": "¿Sirve para empresas en Europa?",
+        "a": "Sí. Cada espacio de trabajo define los regímenes aplicables, LGPD, RGPD o ambos, y el informe de impacto incluye los elementos del art. 35 del RGPD."
+      },
+      {
+        "q": "¿Quién puede aprobar un documento?",
+        "a": "Cualquier usuario puede revisar, y la aprobación queda reservada al perfil de administrador. Una vez aprobado, el contenido ya no se puede editar ni regenerar."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Abre tu archivo.",
+    "lead": "Empieza vacío: la IA solo responde después de tu primer registro aprobado.",
+    "placeholder": "Tu empresa",
+    "button": "Abrir mi archivo",
+    "companyLabel": "Nombre de la empresa"
+  },
+  "footer": {
+    "about": "Adecuación a la LGPD y al RGPD",
+    "madeBy": "Desarrollado por",
+    "contact": "Contacto",
+    "academic": "No sustituye el asesoramiento jurídico."
+  },
+  "images": {
+    "archive": "Pasillo de un archivo con estanterías llenas de cajas de documentos numeradas",
+    "ledger": "Libro de registro antiguo, abierto, con anotaciones a mano",
+    "cabinet": "Mano abriendo un cajón de fichero con fichas ordenadas por nombre"
+  }
+}

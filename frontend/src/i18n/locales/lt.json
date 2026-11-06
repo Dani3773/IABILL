@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Kaip tai veikia",
+    "states": "Patvirtinimas",
+    "law": "Teisė",
+    "faq": "Klausimai",
+    "login": "Prisijungti",
+    "signup": "Registruoti įmonę",
+    "language": "Kalba"
+  },
+  "hero": {
+    "line1": "Nėra įrašo,",
+    "line2": "nėra atsakymo.",
+    "lead": "IABill rengia jūsų įmonės LGPD ir BDAR dokumentus tik iš to, ką jau patvirtinote. Kai nėra pagrindo, DI atsisako, užuot išsigalvojęs."
+  },
+  "demo": {
+    "title": "Klauskite IABill",
+    "choose": "Pasirinkite klausimą",
+    "source": "Patvirtintas šaltinis",
+    "noSource": "Šio atsakymo nepagrindžia joks patvirtintas įrašas.",
+    "questions": [
+      {
+        "q": "Kokios buvo įmonės pajamos 2025 m.?",
+        "kind": "refuse",
+        "a": "Kontekste nepakanka duomenų įmonės 2025 m. metinėms pajamoms nustatyti."
+      },
+      {
+        "q": "Kiek laiko saugome klientų duomenis?",
+        "kind": "answer",
+        "a": "Klientų duomenys saugomi penkerius metus San Paulo regiono serveriuose, užšifruoti ramybės būsenoje.",
+        "source": "Saugojimo politika, patvirtino Ana Silva"
+      },
+      {
+        "q": "Kas gali matyti pagalbos užklausas?",
+        "kind": "answer",
+        "a": "Tik pagalbos komanda, prieiga apribota pagal vaidmenį. Užklausose saugomas kliento vardas, el. paštas ir telefonas.",
+        "source": "Duomenų inventorius, patvirtino Carlos Mendes"
+      },
+      {
+        "q": "Ar įmonėje yra buvęs duomenų nutekėjimas?",
+        "kind": "refuse",
+        "a": "Kontekste nepakanka duomenų atsakyti, ar įmonėje yra buvęs duomenų nutekėjimas."
+      },
+      {
+        "q": "Kas yra duomenų apsaugos pareigūnas?",
+        "kind": "answer",
+        "a": "Pareigūnas yra Carlos Mendes, o duomenų subjektai su juo susisiekia įmonės privatumo kanalu.",
+        "source": "Privatumo politika, patvirtino Ana Silva"
+      },
+      {
+        "q": "Ar komanda mokoma apie LGPD?",
+        "kind": "answer",
+        "a": "Taip. Visa komanda mokymus baigia kartą per metus, o kiekvieno dalyvavimas registruojamas.",
+        "source": "Komandos mokymai, patvirtino Carlos Mendes"
+      },
+      {
+        "q": "Ką darome įvykus incidentui?",
+        "kind": "answer",
+        "a": "Pareigūnas įvertina atvejį ir, jei rizika reikšminga, per tris darbo dienas praneša ANPD ir duomenų subjektams.",
+        "source": "Reagavimo į incidentus planas, patvirtino Ana Silva"
+      }
+    ],
+    "stamp": "NĖRA ĮRAŠO",
+    "records": [
+      "Saugojimo politika",
+      "Duomenų inventorius",
+      "Privatumo politika",
+      "Komandos mokymai",
+      "Reagavimo į incidentus planas"
+    ]
+  },
+  "how": {
+    "title": "DI rašo, jūs sprendžiate.",
+    "steps": [
+      {
+        "lead": "Pirmiausia užregistruokite, ką daro jūsų įmonė.",
+        "callLabel": "Registruojate",
+        "call": "Klientų aptarnavimas renka vardą, el. paštą ir telefoną. Saugojimas penkerius metus. Teisinis pagrindas: sutarties vykdymas.",
+        "response": "Patvirtintas įrašas tampa kontekstu tik jūsų darbo erdvei."
+      },
+      {
+        "lead": "Tada paprašykite trūkstamo dokumento.",
+        "callLabel": "Prašote",
+        "call": "Parenk klientų aptarnavimo poveikio vertinimą.",
+        "response": "DI ieško patvirtintų ištraukų ir rašo tik iš jų. Tai, kas neturi pagrindo, pažymima kaip neišsamu."
+      },
+      {
+        "lead": "Galiausiai nuspręskite, kas taps oficialu.",
+        "callLabel": "Sprendžiate",
+        "call": "Peržiūrėti, atmesti arba patvirtinti.",
+        "response": "Patvirtintas tekstas užrakinamas. Kas ką padarė, lieka audito žurnale, kurio duomenų bazė neleidžia keisti."
+      }
+    ],
+    "archive": "Archyvuojama tik tai, kas patvirtinta."
+  },
+  "states": {
+    "title": "Vienas dokumentas, trys etapai.",
+    "lead": "Be žmogaus peržiūros niekas netampa oficialu. Jei kas nors redaguoja po peržiūros, dokumentas grąžinamas pakartotinai peržiūrai.",
+    "docTitle": "Poveikio vertinimas: klientų aptarnavimas",
+    "doc": "RIPD/DPIA",
+    "s1": "Sukurta DI",
+    "s1Meta": "Neturi oficialios galios, laukia peržiūros",
+    "s1Note": "Gavus",
+    "s2": "Peržiūrėta",
+    "s2Meta": "Peržiūrėjo Juliana Rocha",
+    "s2Note": "Parengta patvirtinti arba atmesti",
+    "approve": "Patvirtinti",
+    "reject": "Atmesti",
+    "s3": "Patvirtinta",
+    "s3Meta": "Patvirtino Ana Silva, turinys užrakintas",
+    "s3Note": "Oficialu ir parengta eksportuoti į PDF",
+    "pdf": "Atsisiųsti PDF",
+    "docBody": [
+      "Klientų aptarnavimas renka vardą, el. paštą ir telefoną, kad atsakytų į užklausas.",
+      "Duomenys saugomi penkerius metus, užšifruoti ramybės būsenoje.",
+      "Prieiga suteikta tik pagalbos komandai, o kiekviena paieška registruojama."
+    ]
+  },
+  "law": {
+    "title": "Kiekviena funkcija turi straipsnį.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Duomenų tvarkymo veiklos įrašai"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Poveikio duomenų apsaugai vertinimas"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Atskiras duomenų apsaugos pareigūno vaidmuo"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Izoliacija ir vaidmenimis pagrįsta prieigos kontrolė"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Incidentai su terminais ANPD ir duomenų subjektams"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Audito žurnalas atskaitomybei"
+      },
+      {
+        "mark": "BDAR 35",
+        "text": "Europos poveikio vertinimo elementai"
+      }
+    ]
+  },
+  "proof": {
+    "value": "Rado 30. Atsisakė 6.",
+    "title": "Kai pagrindas buvo, jį rado. Kai jo nebuvo, atsisakė.",
+    "text": "Kontroliuojamame bandyme su 40 sintetinių dokumentų visos 30 paieškų rado tinkamą ištrauką, o visi 6 klausimai be pagrindo buvo atmesti. Tai matuoja mechanizmą ir negarantuoja rezultatų su tikrais duomenimis."
+  },
+  "faq": {
+    "title": "Dažni klausimai.",
+    "items": [
+      {
+        "q": "Ar DI gali išsigalvoti informaciją?",
+        "a": "Modeliui nurodyta naudoti tik patvirtintas ištraukas ir atsisakyti, kai jų nepakanka. Tai mažina riziką, bet jos nepašalina. Todėl kiekvieną sukurtą tekstą peržiūri ir patvirtina žmogus."
+      },
+      {
+        "q": "Ar IABill pakeičia teisininką ar duomenų apsaugos pareigūną?",
+        "a": "Ne. Jis organizuoja procesą ir rengia dokumentus. Sukurti tekstai neturi formalaus teisinio patvirtinimo, o galutinis sprendimas visada priklauso jūsų įmonei."
+      },
+      {
+        "q": "Ar kita įmonė gali matyti mano duomenis?",
+        "a": "Kiekviena operacija tikrina, ar išteklius priklauso jūsų organizacijai, o DI paieška apribota jūsų darbo erdve. Ši izoliacija yra automatinių bandymų dalis."
+      },
+      {
+        "q": "Ar tinka Europos įmonėms?",
+        "a": "Taip. Kiekvienoje darbo erdvėje nustatomi taikomi režimai, LGPD, BDAR arba abu, o poveikio vertinime yra BDAR 35 straipsnio elementai."
+      },
+      {
+        "q": "Kas gali patvirtinti dokumentą?",
+        "a": "Peržiūrėti gali bet kuris naudotojas, o patvirtinimas skirtas administratoriaus profiliui. Patvirtinto turinio nebegalima redaguoti ar kurti iš naujo."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Atidarykite savo archyvą.",
+    "lead": "Jis pradedamas tuščias: DI atsako tik po pirmojo patvirtinto įrašo.",
+    "placeholder": "Jūsų įmonė",
+    "button": "Atidaryti mano archyvą",
+    "companyLabel": "Įmonės pavadinimas"
+  },
+  "footer": {
+    "about": "Atitiktis LGPD ir BDAR",
+    "madeBy": "Sukūrė",
+    "contact": "Kontaktai",
+    "academic": "Nepakeičia teisinės konsultacijos."
+  },
+  "images": {
+    "archive": "Archyvo koridorius su lentynomis, pilnomis sunumeruotų dokumentų dėžių",
+    "ledger": "Sena atversta registracijos knyga su ranka rašytais įrašais",
+    "cabinet": "Ranka atidaro kartotekos stalčių su kortelėmis, surūšiuotomis pagal vardą"
+  }
+}

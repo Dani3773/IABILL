@@ -1,0 +1,200 @@
+{
+  "nav": {
+    "how": "Hogyan működik",
+    "states": "Jóváhagyás",
+    "law": "Jogszabály",
+    "faq": "Kérdések",
+    "login": "Belépés",
+    "signup": "Cég regisztrálása",
+    "language": "Nyelv"
+  },
+  "hero": {
+    "line1": "Nincs nyilvántartás,",
+    "line2": "nincs válasz.",
+    "lead": "Az IABill a cége LGPD- és GDPR-dokumentumait kizárólag abból írja meg, amit már jóváhagyott. Ha nincs alap, az MI kitalálás helyett megtagadja a választ."
+  },
+  "demo": {
+    "title": "Kérdezze az IABillt",
+    "choose": "Válasszon kérdést",
+    "source": "Jóváhagyott forrás",
+    "noSource": "Egyetlen jóváhagyott bejegyzés sem támasztja alá ezt a választ.",
+    "questions": [
+      {
+        "q": "Mennyi volt a cég árbevétele 2025-ben?",
+        "kind": "refuse",
+        "a": "A kontextus nem tartalmaz elég adatot a cég 2025-ös éves árbevételének meghatározásához."
+      },
+      {
+        "q": "Meddig őrizzük az ügyféladatokat?",
+        "kind": "answer",
+        "a": "Az ügyféladatokat öt évig őrizzük São Paulo régióbeli szervereken, tárolás közben titkosítva.",
+        "source": "Adatmegőrzési szabályzat, jóváhagyta: Ana Silva"
+      },
+      {
+        "q": "Ki fér hozzá a támogatási jegyekhez?",
+        "kind": "answer",
+        "a": "Csak a támogatási csapat, szerepkör szerint korlátozott hozzáféréssel. A jegyek az ügyfél nevét, e-mail-címét és telefonszámát tartalmazzák.",
+        "source": "Adatleltár, jóváhagyta: Carlos Mendes"
+      },
+      {
+        "q": "Történt már adatszivárgás a cégnél?",
+        "kind": "refuse",
+        "a": "A kontextus nem tartalmaz elég adatot annak megválaszolásához, hogy történt-e már adatszivárgás a cégnél."
+      },
+      {
+        "q": "Ki az adatvédelmi tisztviselő?",
+        "kind": "answer",
+        "a": "A tisztviselő Carlos Mendes, az érintettek a cég adatvédelmi csatornáján érik el.",
+        "source": "Adatvédelmi szabályzat, jóváhagyta: Ana Silva"
+      },
+      {
+        "q": "Kap a csapat LGPD-képzést?",
+        "kind": "answer",
+        "a": "Igen. Az egész csapat évente egyszer részt vesz a képzésen, és mindenki részvételét rögzítjük.",
+        "source": "Csapatképzés, jóváhagyta: Carlos Mendes"
+      },
+      {
+        "q": "Mit teszünk incidens esetén?",
+        "kind": "answer",
+        "a": "A tisztviselő kivizsgálja az esetet, és jelentős kockázat esetén három munkanapon belül értesíti az ANPD-t és az érintetteket.",
+        "source": "Incidenskezelési terv, jóváhagyta: Ana Silva"
+      }
+    ],
+    "stamp": "NINCS BEJEGYZÉS",
+    "records": [
+      "Adatmegőrzési szabályzat",
+      "Adatleltár",
+      "Adatvédelmi szabályzat",
+      "Csapatképzés",
+      "Incidenskezelési terv"
+    ]
+  },
+  "how": {
+    "title": "Az MI ír, Ön dönt.",
+    "steps": [
+      {
+        "lead": "Először rögzítse, mit csinál a cége.",
+        "callLabel": "Ön rögzít",
+        "call": "Az ügyfélszolgálat nevet, e-mail-címet és telefonszámot gyűjt. Ötéves megőrzés. Jogalap: szerződés teljesítése.",
+        "response": "Jóváhagyás után a bejegyzés kizárólag az Ön munkaterületének kontextusa lesz."
+      },
+      {
+        "lead": "Ezután kérje a hiányzó dokumentumot.",
+        "callLabel": "Ön kér",
+        "call": "Készítsd el az ügyfélszolgálat hatásvizsgálatát.",
+        "response": "Az MI jóváhagyott részleteket keres, és csak azokból ír. Ami mögött nincs alap, azt hiányosnak jelöli."
+      },
+      {
+        "lead": "Végül döntse el, mi válik hivatalossá.",
+        "callLabel": "Ön dönt",
+        "call": "Ellenőrzés, elutasítás vagy jóváhagyás.",
+        "response": "Jóváhagyás után a szöveg zárolt. Hogy ki mit tett, az a naplóban marad, amelyet az adatbázis nem enged módosítani."
+      }
+    ],
+    "archive": "Csak a jóváhagyott kerül archívumba."
+  },
+  "states": {
+    "title": "Egy dokumentum, három szakasz.",
+    "lead": "Emberi ellenőrzés nélkül semmi sem válik hivatalossá. Ha valaki az ellenőrzés után szerkeszti, a dokumentum újra ellenőrzésre kerül.",
+    "docTitle": "Hatásvizsgálat: ügyfélszolgálat",
+    "doc": "RIPD/DPIA",
+    "s1": "MI által generált",
+    "s1Meta": "Nincs hivatalos értéke, ellenőrzésre vár",
+    "s1Note": "Érkezéskor",
+    "s2": "Ellenőrizve",
+    "s2Meta": "Ellenőrizte: Juliana Rocha",
+    "s2Note": "Jóváhagyásra vagy elutasításra kész",
+    "approve": "Jóváhagyás",
+    "reject": "Elutasítás",
+    "s3": "Jóváhagyva",
+    "s3Meta": "Jóváhagyta: Ana Silva, tartalom zárolva",
+    "s3Note": "Hivatalos, PDF-exportra kész",
+    "pdf": "PDF letöltése",
+    "docBody": [
+      "Az ügyfélszolgálat nevet, e-mail-címet és telefonszámot gyűjt a jegyek megválaszolásához.",
+      "Az adatokat öt évig őrizzük, tárolás közben titkosítva.",
+      "A hozzáférés a támogatási csapatra korlátozódik, és minden lekérdezést naplózunk."
+    ]
+  },
+  "law": {
+    "title": "Minden funkcióhoz tartozik egy cikk.",
+    "items": [
+      {
+        "mark": "Art. 37",
+        "text": "Adatkezelési tevékenységek nyilvántartása"
+      },
+      {
+        "mark": "Art. 38",
+        "text": "Adatvédelmi hatásvizsgálat"
+      },
+      {
+        "mark": "Art. 41",
+        "text": "Külön szerepkör az adatvédelmi tisztviselőnek"
+      },
+      {
+        "mark": "Art. 46",
+        "text": "Elkülönítés és szerepköralapú hozzáférés"
+      },
+      {
+        "mark": "Art. 48",
+        "text": "Incidensek határidőkkel az ANPD és az érintettek felé"
+      },
+      {
+        "mark": "Art. 6, X",
+        "text": "Napló az elszámoltathatósághoz"
+      },
+      {
+        "mark": "GDPR 35",
+        "text": "Az európai hatásvizsgálat elemei"
+      }
+    ]
+  },
+  "proof": {
+    "value": "30 találat. 6 elutasítás.",
+    "title": "Ha volt alap, megtalálta. Ha nem volt, elutasította.",
+    "text": "Egy 40 szintetikus dokumentummal végzett ellenőrzött teszten mind a 30 keresés a helyes részletet találta meg, és mind a 6 alap nélküli kérdést elutasította. A teszt a mechanizmust méri, és nem garantál eredményt valós adatokkal."
+  },
+  "faq": {
+    "title": "Gyakori kérdések.",
+    "items": [
+      {
+        "q": "Kitalálhat információt az MI?",
+        "a": "A modell utasítása szerint csak jóváhagyott részleteket használhat, és elégtelenség esetén el kell utasítania a választ. Ez csökkenti a kockázatot, de nem szünteti meg. Ezért minden generált szöveget ember ellenőriz és hagy jóvá."
+      },
+      {
+        "q": "Helyettesíti az IABill az ügyvédet vagy a DPO-t?",
+        "a": "Nem. A folyamatot szervezi és dokumentumokat készít elő. A generált szövegek nem rendelkeznek hivatalos jogi validációval, a végső döntés mindig a cégé."
+      },
+      {
+        "q": "Láthatja egy másik cég az adataimat?",
+        "a": "Minden művelet ellenőrzi, hogy az erőforrás az Ön szervezetéhez tartozik-e, és az MI keresése az Ön munkaterületére korlátozódik. Ez az elkülönítés része az automatizált teszteknek."
+      },
+      {
+        "q": "Alkalmas európai cégek számára?",
+        "a": "Igen. Minden munkaterület meghatározza az alkalmazandó szabályokat, LGPD, GDPR vagy mindkettő, és a hatásvizsgálat tartalmazza a GDPR 35. cikkének elemeit."
+      },
+      {
+        "q": "Ki hagyhat jóvá egy dokumentumot?",
+        "a": "Bármely felhasználó ellenőrizhet, a jóváhagyás viszont a rendszergazdai profil joga. Jóváhagyás után a tartalom már nem szerkeszthető és nem generálható újra."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Nyissa meg az archívumát.",
+    "lead": "Üresen indul: az MI csak az első jóváhagyott bejegyzés után válaszol.",
+    "placeholder": "Az Ön cége",
+    "button": "Archívum megnyitása",
+    "companyLabel": "Cégnév"
+  },
+  "footer": {
+    "about": "LGPD- és GDPR-megfelelés",
+    "madeBy": "Fejlesztette:",
+    "contact": "Kapcsolat",
+    "academic": "Nem helyettesíti a jogi tanácsadást."
+  },
+  "images": {
+    "archive": "Archívumfolyosó számozott iratdobozokkal teli polcokkal",
+    "ledger": "Régi, nyitott nyilvántartókönyv kézzel írt bejegyzésekkel",
+    "cabinet": "Kéz kihúz egy kartotékfiókot, benne név szerint rendezett lapokkal"
+  }
+}
