@@ -1,216 +1,132 @@
 .auth {
-  background: #0c1c16;
-  color: #f7ecd0;
+  background: #08090a;
+  color: #f3f0e8;
   font-family: "Switzer", ui-sans-serif, system-ui, sans-serif;
   letter-spacing: -0.01em;
   min-height: 100svh;
+  position: relative;
+}
+
+.auth::after {
+  background: #ffe9bd;
+  content: "";
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  transition: opacity 240ms ease;
+  z-index: 5;
+}
+
+.auth--opening::after {
+  opacity: 1;
 }
 
 .auth__frame {
   display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 6fr);
+  grid-template-columns: minmax(0, 1fr) minmax(380px, 34vw);
   min-height: 100svh;
 }
 
-.auth__side {
-  background: #f3c32b;
-  color: #17130e;
+/* O cofre ocupa a tela toda; o formulário fica sobre a parede escura. */
+.auth__stage {
+  inset: 0;
+  overflow: hidden;
+  position: fixed;
+}
+
+.auth__stage canvas {
+  display: block;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1200ms ease;
+  width: 100%;
+}
+
+.auth__stage canvas.is-ready {
+  opacity: 1;
+}
+
+.auth__main {
+  background: #0a0c0d;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
-  padding: 24px clamp(32px, 4vw, 64px) clamp(40px, 5vw, 72px);
-  position: relative;
-}
-
-/* A porta amarela do fim do corredor: a junta das folhas e as duas rodas. */
-.auth__side::before {
-  background: #17130e;
-  content: "";
-  height: 42%;
-  left: 50%;
-  position: absolute;
-  top: 0;
-  width: 3px;
-}
-
-.auth__door {
-  fill: none;
-  height: auto;
-  left: 50%;
-  position: absolute !important;
-  stroke: #17130e;
-  stroke-width: 7;
-  top: clamp(72px, 13vh, 140px);
-  transform: translateX(-50%);
-  width: clamp(260px, 30vw, 460px);
-}
-
-.auth__side > * {
+  grid-column: 2;
+  min-height: 100svh;
+  padding: 28px clamp(28px, 3.4vw, 56px) 40px;
   position: relative;
 }
 
 .auth__logo {
-  color: #17130e;
+  color: #f3f0e8;
+  font-size: 1.25rem;
   width: fit-content;
 }
 
-.auth__logo--mobile {
-  color: #f7ecd0;
-}
-
-.auth__logo--mobile {
-  display: none;
+.auth__card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  margin: 40px 0;
 }
 
 .auth__title {
   font-family: "Archivo", "Switzer", sans-serif;
-  font-size: clamp(2.75rem, 5.4vw, 6.5rem);
-  font-stretch: 70%;
-  font-weight: 800;
-  letter-spacing: -0.012em;
-  line-height: 0.98;
-  margin: 0;
-  max-width: 11em;
-  text-transform: uppercase;
-}
-
-.auth__lead {
-  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
-  line-height: 1.35;
-  margin: 20px 0 0;
-  max-width: 34ch;
-}
-
-.auth__preview {
-  background: #fffaf0;
-  border-radius: 3px;
-  color: #17130e;
-  font-size: 0.9375rem;
-  line-height: 1.4;
-  margin-top: 28px;
-  max-width: 440px;
-  min-height: 170px;
-  padding: 20px 22px;
-  position: relative;
-  rotate: -0.8deg;
-}
-
-.auth__preview p {
-  color: #4d4433;
-  margin: 8px 0 0;
-}
-
-.auth__preview .auth__preview-label {
-  color: #5f5540;
-  font-size: 0.875rem;
-  margin: 0 0 6px;
-}
-
-.auth__preview h2 {
-  font-family: "Archivo", "Switzer", sans-serif;
-  font-size: 1.625rem;
+  font-size: clamp(2.5rem, 3.5vw, 3.75rem);
   font-stretch: 72%;
   font-weight: 800;
-  line-height: 1.05;
-  margin: 0;
-  overflow-wrap: anywhere;
-  text-transform: uppercase;
-}
-
-.auth__regimes {
-  display: flex;
-  gap: 6px;
-  margin-top: 10px;
-}
-
-.auth__regimes span {
-  border: 2px solid #b4201a;
-  border-radius: 3px;
-  color: #b4201a;
-  font-family: "Archivo", "Switzer", sans-serif;
-  font-size: 0.875rem;
-  font-weight: 800;
-  padding: 0 7px;
-}
-
-.auth__seal {
-  bottom: 8px;
-  position: absolute;
-  right: 8px;
-}
-
-.auth__main {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  justify-content: center;
-  padding: 88px clamp(24px, 5vw, 80px) 48px;
-}
-
-.auth__card {
-  background: #efdcae;
-  border-radius: 0 6px 6px 6px;
-  color: #17130e;
-  display: flex;
-  flex-direction: column;
-  max-width: 500px;
-  padding: 28px;
-  position: relative;
-  width: 100%;
-}
-
-.auth__tabs {
-  bottom: 100%;
-  display: flex;
-  gap: 4px;
-  left: 0;
-  position: absolute;
-}
-
-.auth__tab {
-  background: #c9985c;
-  border: 0;
-  border-radius: 6px 6px 0 0;
-  color: #17130e;
-  cursor: pointer;
-  font-family: "Archivo", "Switzer", sans-serif;
-  font-size: 1.125rem;
-  font-stretch: 78%;
-  font-weight: 800;
+  letter-spacing: -0.012em;
   line-height: 1;
-  padding: 12px 22px 9px;
+  margin: 0;
   text-transform: uppercase;
-  transition: background-color 160ms ease;
 }
 
-.auth__tab[aria-pressed="true"] {
-  background: #efdcae;
+.auth__switch {
+  color: #b8b5ab;
+  font-size: 0.9375rem;
+  margin: 12px 0 30px;
+}
+
+.auth__switch button {
+  background: none;
+  border: 0;
+  color: #f3f0e8;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.auth__switch button:hover {
+  color: #ff8a80;
+}
+
+.auth form > .flex-1:empty {
+  flex: 0 0 8px;
 }
 
 @media (max-width: 860px) {
   .auth__frame {
-    grid-template-columns: minmax(0, 1fr);
+    display: block;
   }
 
-  .auth__side {
-    display: none;
+  .auth__stage {
+    bottom: auto;
+    height: 40svh;
+    mask-image: linear-gradient(#000 72%, transparent);
+    position: absolute;
   }
 
   .auth__main {
-    align-items: stretch;
-    justify-content: flex-start;
-    padding: 20px 20px 40px;
-  }
-
-  .auth__logo--mobile {
-    display: block;
-    margin-bottom: 44px;
+    background: none;
+    min-height: 100svh;
+    padding: 18px 20px 36px;
   }
 
   .auth__card {
-    max-width: none;
-    padding: 22px 20px;
+    justify-content: flex-start;
+    margin: calc(40svh - 34px) 0 0;
   }
 }

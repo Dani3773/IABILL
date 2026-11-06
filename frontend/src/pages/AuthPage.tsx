@@ -1,5 +1,6 @@
 import { Logo } from "../components/brand/Logo";
 import {
+  useEffect,
   useRef,
   useState,
   type FormEvent,
@@ -35,6 +36,7 @@ import { AxiosError } from "axios";
 import { resendConfirmation } from "../api/authService";
 import { Link } from "react-router-dom";
 import "./auth.css";
+import type { VaultScene } from "../components/auth/vaultScene";
 import { loginWithMfa } from "../api/authService";
 
 type SignupStep = 1 | 2 | 3;
@@ -48,9 +50,9 @@ const STEPS: { label: string; icon: typeof Building2 }[] = [
 ];
 
 const INPUT_CLASS =
-  "w-full rounded bg-[#fffaf0] text-[#17130e] text-sm px-3 py-2.5 border border-[#c9b27e] transition-all duration-200 placeholder:text-[#7a6e55] " +
-  "hover:border-[#17130e] focus:outline-none focus:ring-2 focus:ring-[#D92B21]/35 focus:border-[#D92B21] " +
-  "[&:-webkit-autofill]:[-webkit-text-fill-color:#17130e] [&:-webkit-autofill]:[transition:background-color_9999s]";
+  "w-full rounded-md bg-white/[0.06] text-[#f3f0e8] text-[15px] px-3.5 py-3 border border-white/15 transition-all duration-200 placeholder:text-[#7f7c74] " +
+  "hover:border-white/35 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/40 focus:border-[#D92B21] " +
+  "[&:-webkit-autofill]:[-webkit-text-fill-color:#f3f0e8] [&:-webkit-autofill]:[transition:background-color_9999s]";
 const INPUT_WITH_ICON = INPUT_CLASS + " pl-9";
 
 function ApprovalSeal({ size = 96 }: { size?: number }) {
@@ -90,9 +92,9 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="flex items-baseline gap-1.5 text-[11px] font-medium text-[#4d4433] mb-1.5 tracking-wide">
+      <span className="flex items-baseline gap-1.5 text-[13px] font-medium text-[#b8b5ab] mb-1.5 tracking-wide">
         {label}
-        {optional && <span className="text-[#6d614a] font-normal">· opcional</span>}
+        {optional && <span className="text-[#85827a] font-normal">· opcional</span>}
       </span>
       {children}
     </label>
@@ -126,6 +128,9 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const [step, setStep] = useState<SignupStep>(1);
   const [stepDirection, setStepDirection] = useState<StepDirection>("fwd");
   const [justCreated, setJustCreated] = useState(false);
+  const [opening, setOpening] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const sceneRef = useRef<VaultScene | null>(null);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -173,6 +178,50 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   const [mfaCode, setMfaCode] = useState("");
   const [mfaLoading, setMfaLoading] = useState(false);
 
+  async function enterVault() {
+    await sceneRef.current?.open();
+    setOpening(true);
+    await new Promise((resolve) => setTimeout(resolve, 260));
+  }
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let cancelled = false;
+    let scene: VaultScene | null = null;
+    const initialPlate = (workspaceName.trim() || "IABILL").toUpperCase();
+    const handleResize = () => scene?.resize();
+
+    void (async () => {
+      try {
+        const [{ createVaultScene }] = await Promise.all([
+          import("../components/auth/vaultScene"),
+          document.fonts?.ready,
+        ]);
+        if (cancelled) return;
+        scene = createVaultScene(canvas, window.innerWidth < 860, initialPlate);
+        sceneRef.current = scene;
+        canvas.classList.add("is-ready");
+      } catch {
+        canvas.remove();
+      }
+    })();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener("resize", handleResize);
+      scene?.dispose();
+      sceneRef.current = null;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (isSignUpMode) sceneRef.current?.setPlate((workspaceName.trim() || "IABILL").toUpperCase());
+  }, [isSignUpMode, workspaceName]);
+
   function handleCapsLock(e: KeyboardEvent<HTMLInputElement>) {
     setCapsLockOn(e.getModifierState?.("CapsLock") ?? false);
   }
@@ -189,9 +238,11 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
         setMfaStep(true);
         return;
       }
+      await enterVault();
       setAuth(response);
       navigate(response.tenantId ? "/dashboard" : "/platform");
     } catch (err) {
+      sceneRef.current?.deny();
       if (err instanceof AxiosError && err.response?.status === 403) {
         setNeedsConfirmation(true);
         setLoginError(getErrorMessage(err, "Confirme seu e-mail antes de entrar."));
@@ -209,9 +260,11 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
     setMfaLoading(true);
     try {
       const response = await loginWithMfa({ email, password, code: Number(mfaCode) });
+      await enterVault();
       setAuth(response);
       navigate(response.tenantId ? "/dashboard" : "/platform");
     } catch (err) {
+      sceneRef.current?.deny();
       setLoginError(getErrorMessage(err, "Código inválido."));
     } finally {
       setMfaLoading(false);
@@ -357,6 +410,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
         adminPassword,
       });
       setJustCreated(true);
+      void sceneRef.current?.open();
       setSignupSuccess(response.message);
     } catch (err) {
       setSignupError(getErrorMessage(err, "Não foi possível criar a conta. Verifique os dados."));
@@ -374,11 +428,9 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
     setLoginError(null);
   }
 
-  const addressParts = [workspaceStreet, workspaceAddressNumber].filter(Boolean).join(", ");
-  const cityState = [workspaceCity, workspaceState].filter(Boolean).join(" - ");
 
   return (
-    <div className="auth">
+    <div className={opening ? "auth auth--opening" : "auth"}>
       <style>{`
         @keyframes iabill-card-enter {
           from { opacity: 0; transform: translateY(16px) scale(0.985); }
@@ -416,87 +468,31 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
       `}</style>
 
       <div className="auth__frame">
-        <aside className="auth__side">
-          <svg className="auth__door" viewBox="0 0 460 150" aria-hidden="true">
-            <g id="auth-wheel">
-              <circle cx="95" cy="75" r="68" />
-              <circle cx="95" cy="75" r="11" />
-              <path d="M95 64V7M85.5 80.5 36 109M104.5 80.5 154 109" />
-            </g>
-            <use href="#auth-wheel" x="270" />
-          </svg>
+        <div className="auth__stage" aria-hidden="true">
+          <canvas ref={canvasRef} />
+        </div>
+
+        <div className="auth__main">
           <Link to="/" aria-label="IABill" className="auth__logo">
             <Logo />
           </Link>
-          {isSignUpMode ? (
-            <div className="auth__preview-wrap">
-              <h1 className="auth__title">Abra o seu arquivo.</h1>
-              <div className="auth__preview">
-                <p className="auth__preview-label">Pré-visualização</p>
-                <h2>{workspaceName || "Sua empresa aparece aqui"}</h2>
-                {workspaceDocumentId && <p>{formatCnpj(workspaceDocumentId)}</p>}
-                {legalRegimes.length > 0 && (
-                  <div className="auth__regimes">
-                    {legalRegimes.map((r) => (
-                      <span key={r}>{r}</span>
-                    ))}
-                  </div>
-                )}
-                {(addressParts || workspaceNeighborhood || cityState || workspaceCountry) && (
-                  <p>
-                    {addressParts && <>{addressParts}<br /></>}
-                    {workspaceNeighborhood && <>{workspaceNeighborhood}<br /></>}
-                    {cityState && <>{cityState}<br /></>}
-                    {workspaceCountry}
-                  </p>
-                )}
-                {workspacePhone && <p>{workspacePhone}</p>}
-                {justCreated && (
-                  <div className="auth__seal iabill-seal-pop">
-                    <ApprovalSeal size={112} />
-                  </div>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div>
-              <h1 className="auth__title">Seu arquivo está onde você deixou.</h1>
-              <p className="auth__lead">
-                Cada ação sobre dados pessoais fica registrada na trilha de auditoria.
-              </p>
-            </div>
-          )}
-        </aside>
-
-        <div className="auth__main">
-          <Link to="/" aria-label="IABill" className="auth__logo auth__logo--mobile">
-            <Logo />
-          </Link>
-          <div className="auth__card iabill-card-enter">
-          <div className="auth__tabs">
-            <button
-              type="button"
-              aria-pressed={!isSignUpMode}
-              onClick={() => switchMode(false)}
-              className="auth__tab"
-            >
-              Entrar
+          <div
+            className="auth__card iabill-card-enter"
+            onInput={() => sceneRef.current?.tick()}
+          >
+          <h1 className="auth__title">{isSignUpMode ? "Abra o seu arquivo." : "Bem-vindo de volta."}</h1>
+          <p className="auth__switch">
+            {isSignUpMode ? "Já tem conta?" : "Ainda não tem conta?"}{" "}
+            <button type="button" onClick={() => switchMode(!isSignUpMode)}>
+              {isSignUpMode ? "Entrar" : "Cadastrar empresa"}
             </button>
-            <button
-              type="button"
-              aria-pressed={isSignUpMode}
-              onClick={() => switchMode(true)}
-              className="auth__tab"
-            >
-              Cadastrar
-            </button>
-          </div>
+          </p>
 
           {!isSignUpMode && mfaStep ? (
             <form onSubmit={handleMfaSubmit} className="space-y-4 flex-1 flex flex-col">
               <Field label="Código de verificação">
                 <div className="relative">
-                  <ShieldCheck className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <ShieldCheck className="w-4 h-4 text-[#9b988e] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
                     type="text"
                     inputMode="numeric"
@@ -509,7 +505,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                   />
                 </div>
               </Field>
-              <p className="text-xs text-[#5f5540]">
+              <p className="text-xs text-[#9b988e]">
                 Abra seu aplicativo autenticador e digite o código de 6 dígitos.
               </p>
               {loginError && (
@@ -534,7 +530,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               <button
                 type="button"
                 onClick={() => { setMfaStep(false); setMfaCode(""); }}
-                className="text-xs text-[#5f5540] hover:text-[#17130e] text-center"
+                className="text-xs text-[#9b988e] hover:text-[#f3f0e8] text-center"
               >
                 Voltar ao login
               </button>
@@ -543,7 +539,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
             <form onSubmit={handleLogin} className="space-y-4 flex-1 flex flex-col">
               <Field label="E-mail">
                 <div className="relative">
-                  <Mail className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Mail className="w-4 h-4 text-[#9b988e] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
                     type="email"
                     value={email}
@@ -556,13 +552,13 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                 </div>
               </Field>
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-medium text-[#4d4433] tracking-wide">Senha</span>
-                <Link to="/esqueci-senha" className="text-[11px] text-[#b4201a] hover:underline">
+                <span className="text-[13px] font-medium text-[#b8b5ab] tracking-wide">Senha</span>
+                <Link to="/esqueci-senha" className="text-[13px] text-[#ff8a80] hover:underline">
                   Esqueceu a senha?
                 </Link>
               </div>
                 <div className="relative">
-                  <Lock className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Lock className="w-4 h-4 text-[#9b988e] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
                     type={showPassword ? "text" : "password"}
                     value={password}
@@ -580,13 +576,13 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     onClick={() => setShowPassword(!showPassword)}
                     tabIndex={-1}
                     aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5f5540] hover:text-[#17130e] transition-colors"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#9b988e] hover:text-[#f3f0e8] transition-colors"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               {capsLockOn && (
-                <p className="flex items-center gap-1.5 text-xs text-[#8a5a00]">
+                <p className="flex items-center gap-1.5 text-xs text-[#fbbf24]">
                   <AlertTriangle className="w-3.5 h-3.5" /> Caps Lock está ativado
                 </p>
               )}
@@ -601,12 +597,12 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     type="button"
                     onClick={handleResendConfirmation}
                     disabled={resendLoading}
-                    className="text-[#b4201a] hover:underline text-xs disabled:opacity-50"
+                    className="text-[#ff8a80] hover:underline text-xs disabled:opacity-50"
                   >
                     {resendLoading ? "Reenviando..." : "Reenviar e-mail de confirmação"}
                   </button>
                   {resendMessage && (
-                    <p className="text-xs text-[#4d4433] mt-1">{resendMessage}</p>
+                    <p className="text-xs text-[#b8b5ab] mt-1">{resendMessage}</p>
                   )}
                 </div>
               )}
@@ -626,21 +622,21 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                   </>
                 )}
               </button>
-              <p className="flex items-center justify-center gap-1.5 text-sm text-[#6d614a] pt-1">
+              <p className="flex items-center justify-center gap-1.5 text-sm text-[#85827a] pt-1">
                 <ShieldCheck className="w-3 h-3" /> Conexão criptografada
               </p>
             </form>
           ) : justCreated ? (
             <div className="flex-1 flex flex-col items-center justify-center gap-4 py-8 text-center">
-              <div className="iabill-seal-pop md:hidden drop-">
+              <div className="iabill-seal-pop drop-">
                 <ApprovalSeal size={120} />
               </div>
-              <p className="text-lg text-[#17130e]">Conta criada</p>
-              <p className="text-sm text-[#4d4433] max-w-xs">{signupSuccess}</p>
+              <p className="text-lg text-[#f3f0e8]">Conta criada</p>
+              <p className="text-sm text-[#b8b5ab] max-w-xs">{signupSuccess}</p>
               <button
                 type="button"
                 onClick={() => switchMode(false)}
-                className="text-[#b4201a] hover:underline text-sm mt-2"
+                className="text-[#ff8a80] hover:underline text-sm mt-2"
               >
                 Ir para o login
               </button>
@@ -660,22 +656,22 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             isDone
                               ? "bg-[#D92B21] text-white"
                               : isCurrent
-                                ? "border-2 border-[#b4201a] text-[#b4201a] "
-                                : "border border-[#c9b27e] text-[#6d614a]"
+                                ? "border-2 border-[#D92B21] text-[#ff8a80] "
+                                : "border border-white/15 text-[#85827a]"
                           }`}
                         >
                           {isDone ? <Check className="w-3.5 h-3.5" /> : <Icon className="w-3.5 h-3.5" />}
                         </div>
                         <span
-                          className={`text-[11px] hidden sm:block transition-colors duration-300 ${
-                            isCurrent ? "text-[#17130e] font-medium" : isDone ? "text-[#4d4433]" : "text-[#6d614a]"
+                          className={`text-[13px] hidden sm:block transition-colors duration-300 ${
+                            isCurrent ? "text-[#f3f0e8] font-medium" : isDone ? "text-[#b8b5ab]" : "text-[#85827a]"
                           }`}
                         >
                           {label}
                         </span>
                       </div>
                       {i < STEPS.length - 1 && (
-                        <div className="flex-1 h-px bg-[#d9c390] relative overflow-hidden rounded-full">
+                        <div className="flex-1 h-px bg-white/10 relative overflow-hidden rounded-full">
                           <div
                             className={`absolute inset-y-0 left-0 bg-[#D92B21] transition-all duration-500 ease-out ${
                               isDone ? "w-full" : "w-0"
@@ -696,7 +692,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     <>
                       <Field label="CNPJ">
                         <div className="relative">
-                          <Building2 className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <Building2 className="w-4 h-4 text-[#9b988e] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
                             type="text"
                             inputMode="numeric"
@@ -709,13 +705,13 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             className={INPUT_WITH_ICON + " "}
                           />
                           {cnpjLookupLoading && (
-                            <Loader2 className="w-4 h-4 text-[#b4201a] animate-spin absolute right-3 top-1/2 -translate-y-1/2" />
+                            <Loader2 className="w-4 h-4 text-[#ff8a80] animate-spin absolute right-3 top-1/2 -translate-y-1/2" />
                           )}
                         </div>
                       </Field>
                       <Field label="Nome da empresa">
                         <div className="relative">
-                          <Landmark className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <Landmark className="w-4 h-4 text-[#9b988e] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
                             type="text"
                             value={workspaceName}
@@ -734,7 +730,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                       </Field>
                       <Field label="Telefone" optional>
                         <div className="relative">
-                          <Phone className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <Phone className="w-4 h-4 text-[#9b988e] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
                             type="tel"
                             inputMode="numeric"
@@ -747,7 +743,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                         </div>
                       </Field>
                       <div>
-                        <p className="text-[11px] font-medium text-[#4d4433] mb-1.5 tracking-wide">Regime legal aplicável</p>
+                        <p className="text-[13px] font-medium text-[#b8b5ab] mb-1.5 tracking-wide">Regime legal aplicável</p>
                         <div className="flex gap-3">
                           {(["LGPD", "RGPD"] as LegalRegime[]).map((regime) => {
                             const active = legalRegimes.includes(regime);
@@ -759,8 +755,8 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                                 aria-pressed={active}
                                 className={`flex-1 flex items-center justify-center gap-1.5 text-xs font-medium rounded-lg py-2.5 border transition-all duration-200 active:scale-[0.97] ${
                                   active
-                                    ? "bg-[#D92B21]/15 border-[#b4201a] text-[#b4201a] "
-                                    : "border-[#c9b27e] text-[#5f5540] hover:border-[#17130e] hover:text-[#17130e]"
+                                    ? "bg-[#D92B21]/15 border-[#D92B21] text-[#ff8a80] "
+                                    : "border-white/15 text-[#9b988e] hover:border-white/40 hover:text-[#f3f0e8]"
                                 }`}
                               >
                                 {active && <Check className="w-3 h-3" />}
@@ -776,7 +772,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     <>
                       <Field label="País">
                         <div className="relative">
-                          <Globe className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <Globe className="w-4 h-4 text-[#9b988e] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <select
                             value={workspaceCountry}
                             onChange={(e) => {
@@ -787,7 +783,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             className={INPUT_WITH_ICON + " appearance-none cursor-pointer"}
                           >
                             {COUNTRIES.map((c) => (
-                              <option key={c.code} value={c.name} className="bg-[#fffaf0]">
+                              <option key={c.code} value={c.name} className="bg-[#101213]">
                                 {c.name}
                               </option>
                             ))}
@@ -797,7 +793,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
 
                       <Field label="CEP" optional={workspaceCountry !== "Brasil"}>
                         <div className="relative">
-                          <Hash className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <Hash className="w-4 h-4 text-[#9b988e] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
                             type="text"
                             inputMode="numeric"
@@ -809,7 +805,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             className={INPUT_WITH_ICON + " "}
                           />
                           {cepLookupLoading && (
-                            <Loader2 className="w-4 h-4 text-[#b4201a] animate-spin absolute right-3 top-1/2 -translate-y-1/2" />
+                            <Loader2 className="w-4 h-4 text-[#ff8a80] animate-spin absolute right-3 top-1/2 -translate-y-1/2" />
                           )}
                         </div>
                       </Field>
@@ -822,9 +818,9 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                               onChange={(e) => setWorkspaceState(e.target.value)}
                               className={INPUT_CLASS + " appearance-none cursor-pointer"}
                             >
-                              <option value="" className="bg-[#fffaf0]">Selecione</option>
+                              <option value="" className="bg-[#101213]">Selecione</option>
                               {BRAZILIAN_STATES.map((s) => (
-                                <option key={s} value={s} className="bg-[#fffaf0]">
+                                <option key={s} value={s} className="bg-[#101213]">
                                   {s}
                                 </option>
                               ))}
@@ -867,7 +863,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                         <div className="col-span-2">
                           <Field label="Rua" optional>
                             <div className="relative">
-                              <MapPin className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                              <MapPin className="w-4 h-4 text-[#9b988e] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                               <input
                                 type="text"
                                 value={workspaceStreet}
@@ -881,7 +877,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                         </div>
                         <Field label="Número" optional>
                           <div className="relative">
-                            <Hash className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                            <Hash className="w-4 h-4 text-[#9b988e] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                             <input
                               type="text"
                               value={workspaceAddressNumber}
@@ -893,7 +889,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                           </div>
                         </Field>
                       </div>
-                      <p className="text-[11px] text-[#6d614a] pt-1 leading-relaxed">
+                      <p className="text-[13px] text-[#85827a] pt-1 leading-relaxed">
                         {workspaceCountry === "Brasil"
                           ? "Informe o CEP para preencher automaticamente rua, bairro, cidade e estado."
                           : "O endereço é usado nos registros de conformidade da sua organização. Você pode completá-lo depois."}
@@ -904,7 +900,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     <>
                       <Field label="Nome de usuário">
                         <div className="relative">
-                          <UserRound className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <UserRound className="w-4 h-4 text-[#9b988e] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
                             type="text"
                             value={adminUsername}
@@ -917,7 +913,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                       </Field>
                       <Field label="E-mail">
                         <div className="relative">
-                          <Mail className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <Mail className="w-4 h-4 text-[#9b988e] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
                             type="email"
                             value={adminEmail}
@@ -931,7 +927,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                       </Field>
                       <Field label="Senha">
                         <div className="relative">
-                          <Lock className="w-4 h-4 text-[#5f5540] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <Lock className="w-4 h-4 text-[#9b988e] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
                             type={showSignupPassword ? "text" : "password"}
                             value={adminPassword}
@@ -947,7 +943,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             onClick={() => setShowSignupPassword(!showSignupPassword)}
                             tabIndex={-1}
                             aria-label={showSignupPassword ? "Ocultar senha" : "Mostrar senha"}
-                            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5f5540] hover:text-[#17130e] transition-colors"
+                            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#9b988e] hover:text-[#f3f0e8] transition-colors"
                           >
                             {showSignupPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                           </button>
@@ -968,7 +964,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             ))}
                           </div>
                           <p
-                            className="text-[11px] font-medium transition-colors duration-300"
+                            className="text-[13px] font-medium transition-colors duration-300"
                             style={{ color: STRENGTH_META[strength].color }}
                           >
                             Senha {STRENGTH_META[strength].label?.toLowerCase()}
@@ -988,7 +984,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     <button
                       type="button"
                       onClick={goBack}
-                      className="flex items-center gap-1.5 text-sm text-[#4d4433] hover:text-[#17130e] px-3 py-2.5 rounded-lg hover:bg-[#e4cd97] transition-all"
+                      className="flex items-center gap-1.5 text-sm text-[#b8b5ab] hover:text-[#f3f0e8] px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all"
                     >
                       <ArrowLeft className="w-4 h-4" /> Voltar
                     </button>
