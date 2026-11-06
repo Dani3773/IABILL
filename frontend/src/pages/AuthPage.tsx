@@ -513,7 +513,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     placeholder="seu e-mail"
                     className="auth__blank"
                   />
-                  <span>entra</span>
+                  <span>entra </span>
                 </span>
                 <span className="auth__line auth__line--fill">
                   <span>com a senha</span>
