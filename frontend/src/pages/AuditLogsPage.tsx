@@ -6,6 +6,7 @@ import { getErrorMessage } from '../api/errorUtils'
 import type { AuditLog, AuditAction } from '../types/auditLog'
 import { Download } from 'lucide-react'
 
+import { getSystemLanguage, tr } from '../i18n/tr'
 const ACTION_STYLES: Record<AuditAction, string> = {
   CREATE: 'bg-[#D92B21]/12 text-[#0A0A0A]',
   UPDATE: 'bg-blue-50 text-blue-700',
@@ -25,7 +26,7 @@ function handleExportCsv() {
 }
 
 function formatDate(iso: string): string {
-  return new Date(iso).toLocaleString('pt-BR')
+  return new Date(iso).toLocaleString(getSystemLanguage())
 }
 
 function formatMetadata(metadata: Record<string, unknown> | null): string {
@@ -43,45 +44,41 @@ export function AuditLogsPage() {
   useEffect(() => {
     fetchAuditLogs()
       .then(setLogs)
-      .catch((err) => setError(getErrorMessage(err, 'Não foi possível carregar a trilha de auditoria.')))
+      .catch((err) => setError(getErrorMessage(err, tr('Não foi possível carregar a trilha de auditoria.'))))
       .finally(() => setIsLoading(false))
   }, [])
 
-  if (isLoading) return <LoadingSpinner label="Carregando trilha de auditoria..." />
+  if (isLoading) return <LoadingSpinner label={tr('Carregando trilha de auditoria...')} />
   if (error) return <Alert type="error" message={error} />
 
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-xl text-[#0A0A0A] mb-1">Trilha de Auditoria</h2>
-          <p className="text-sm text-[#0A0A0A]/55">
-            Registro imutável de todas as ações realizadas no sistema.
-          </p>
+          <h2 className="text-xl text-[#0A0A0A] mb-1">{tr('Trilha de Auditoria')}</h2>
+          <p className="text-sm text-[#0A0A0A]/55">{tr('Registro imutável de todas as ações realizadas no sistema.')}</p>
         </div>
         <button
           onClick={handleExportCsv}
           className="flex items-center gap-2 bg-[#D92B21] hover:bg-[#B4201A] text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors shrink-0"
         >
-          <Download className="w-4 h-4" />
-          Exportar CSV
-        </button>
+          <Download className="w-4 h-4" />{tr('Exportar CSV')}</button>
       </div>
 
       {logs.length === 0 ? (
         <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-10 text-center">
-          <p className="text-[#0A0A0A]/55 text-sm">Nenhum registro de auditoria ainda.</p>
+          <p className="text-[#0A0A0A]/55 text-sm">{tr('Nenhum registro de auditoria ainda.')}</p>
         </div>
       ) : (
         <div className="bg-white rounded-xl border border-[#0A0A0A]/10 overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-[#0A0A0A]/50 border-b border-[#0A0A0A]/10">
-                <th className="py-3 px-4">Data</th>
-                <th className="py-3 px-4">Usuário</th>
-                <th className="py-3 px-4">Ação</th>
-                <th className="py-3 px-4">Entidade</th>
-                <th className="py-3 px-4">Detalhes</th>
+                <th className="py-3 px-4">{tr('Data')}</th>
+                <th className="py-3 px-4">{tr('Usuário')}</th>
+                <th className="py-3 px-4">{tr('Ação')}</th>
+                <th className="py-3 px-4">{tr('Entidade')}</th>
+                <th className="py-3 px-4">{tr('Detalhes')}</th>
               </tr>
             </thead>
             <tbody>
@@ -91,7 +88,7 @@ export function AuditLogsPage() {
                     {formatDate(log.createdAt)}
                   </td>
                   <td className="py-3 px-4 text-[#0A0A0A]">
-                    {log.username ?? <span className="text-[#0A0A0A]/40 italic">Sistema</span>}
+                    {log.username ?? <span className="text-[#0A0A0A]/40 italic">{tr('Sistema')}</span>}
                   </td>
                   <td className="py-3 px-4">
                     <span className={`text-xs px-2 py-1 rounded font-medium ${ACTION_STYLES[log.action]}`}>

@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import { dismissRipdSuggestion } from "../api/processingActivityService";
 import { ConsentRecordsModal } from "../components/ConsentRecordsModal";
 
+import { getSystemLanguage, tr } from '../i18n/tr'
 export function ProcessingActivitiesPage() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const [activities, setActivities] = useState<ProcessingActivity[]>([]);
@@ -49,7 +50,7 @@ export function ProcessingActivitiesPage() {
         setError(
           getErrorMessage(
             err,
-            "Não foi possível carregar o registro de tratamento.",
+            tr('Não foi possível carregar o registro de tratamento.'),
           ),
         ),
       )
@@ -66,13 +67,13 @@ export function ProcessingActivitiesPage() {
   }
 
   async function handleDelete(id: string) {
-    if (!window.confirm("Remover esta atividade de tratamento do registro?"))
+    if (!window.confirm(tr('Remover esta atividade de tratamento do registro?')))
       return;
     try {
       await deleteProcessingActivity(id);
       setActivities((prev) => prev.filter((a) => a.id !== id));
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível remover a atividade."));
+      setError(getErrorMessage(err, tr('Não foi possível remover a atividade.')));
     }
   }
 
@@ -81,7 +82,7 @@ export function ProcessingActivitiesPage() {
       const updated = await dismissRipdSuggestion(id);
       setActivities((prev) => prev.map((a) => (a.id === id ? updated : a)));
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível dispensar a sugestão."));
+      setError(getErrorMessage(err, tr('Não foi possível dispensar a sugestão.')));
     }
   }
 
@@ -89,26 +90,21 @@ export function ProcessingActivitiesPage() {
     navigate(`/workspaces/${workspaceId}/documents`, {
       state: {
         prefillType: "RIPD_DPIA",
-        prefillTitle: `RIPD/DPIA - ${activity.processName}`,
+        prefillTitle: tr('RIPD/DPIA - {{a}}', { a: activity.processName }),
       },
     });
   }
 
   if (isLoading)
-    return <LoadingSpinner label="Carregando registro de tratamento..." />;
+    return <LoadingSpinner label={tr('Carregando registro de tratamento...')} />;
 
   return (
     <div>
 
       <div className="flex items-center justify-between mb-2">
         <div>
-          <h1 className="text-xl text-[#0A0A0A]">
-            Registro de Operações de Tratamento
-          </h1>
-          <p className="text-sm text-[#0A0A0A]/55 mt-0.5">
-            Inventário estruturado das atividades de tratamento de dados
-            pessoais, no formato recomendado pela ANPD.
-          </p>
+          <h1 className="text-xl text-[#0A0A0A]">{tr('Registro de Operações de Tratamento')}</h1>
+          <p className="text-sm text-[#0A0A0A]/55 mt-0.5">{tr('Inventário estruturado das atividades de tratamento de dados pessoais, no formato recomendado pela ANPD.')}</p>
         </div>
         <button
           onClick={() => {
@@ -116,9 +112,7 @@ export function ProcessingActivitiesPage() {
             setShowModal(true);
           }}
           className="bg-[#D92B21] hover:bg-[#B4201A] text-white text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors shrink-0"
-        >
-          + Nova Atividade
-        </button>
+        >{tr('+ Nova Atividade')}</button>
       </div>
 
       {error && (
@@ -130,9 +124,7 @@ export function ProcessingActivitiesPage() {
       {activities.length === 0 ? (
         <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-10 text-center mt-6">
           <ClipboardList className="w-8 h-8 text-[#0A0A0A]/25 mx-auto mb-3" />
-          <p className="text-[#0A0A0A]/55 text-sm">
-            Nenhuma atividade de tratamento registrada ainda.
-          </p>
+          <p className="text-[#0A0A0A]/55 text-sm">{tr('Nenhuma atividade de tratamento registrada ainda.')}</p>
         </div>
       ) : (
         <div className="space-y-2 mt-6">
@@ -160,9 +152,7 @@ export function ProcessingActivitiesPage() {
                     </span>
                     {activity.involvesSensitiveData && (
                       <span className="flex items-center gap-1 text-[10px] uppercase tracking-wide bg-amber-100 text-amber-700 rounded px-1.5 py-0.5">
-                        <AlertTriangle className="w-3 h-3" />
-                        Dado sensível
-                      </span>
+                        <AlertTriangle className="w-3 h-3" />{tr('Dado sensível')}</span>
                     )}
                   </div>
                   <p className="text-xs text-[#0A0A0A]/60 mb-2">
@@ -170,16 +160,16 @@ export function ProcessingActivitiesPage() {
                   </p>
                   <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-[#0A0A0A]/50">
                     <p>
-                      <span className="text-[#0A0A0A]/70">Titulares:</span>{" "}
+                      <span className="text-[#0A0A0A]/70">{tr('Titulares:')}</span>{" "}
                       {activity.dataSubjectCategories}
                     </p>
                     <p>
-                      <span className="text-[#0A0A0A]/70">Dados:</span>{" "}
+                      <span className="text-[#0A0A0A]/70">{tr('Dados:')}</span>{" "}
                       {activity.personalDataCategories}
                     </p>
                     {activity.retentionPeriod && (
                       <p>
-                        <span className="text-[#0A0A0A]/70">Retenção:</span>{" "}
+                        <span className="text-[#0A0A0A]/70">{tr('Retenção:')}</span>{" "}
                         {activity.retentionPeriod}
                       </p>
                     )}
@@ -187,34 +177,26 @@ export function ProcessingActivitiesPage() {
                   {activity.retentionExpiresAt &&
                     new Date(activity.retentionExpiresAt) < new Date() && (
                       <p className="flex items-center gap-1.5 text-xs text-blue-700 mt-2">
-                        <Clock className="w-3.5 h-3.5 shrink-0" />
-                        Prazo de retenção vencido desde{" "}
-                        {new Date(activity.retentionExpiresAt).toLocaleDateString("pt-BR")}
+                        <Clock className="w-3.5 h-3.5 shrink-0" />{tr('Prazo de retenção vencido desde')}{" "}
+                        {new Date(activity.retentionExpiresAt).toLocaleDateString(getSystemLanguage())}
                       </p>
                     )}
 
                   {activity.involvesSensitiveData &&
                     !activity.ripdSuggestionDismissed && (
                       <div className="flex items-center justify-between gap-2 mt-3 pt-3 border-t border-amber-200">
-                        <p className="text-xs text-amber-700">
-                          Esta atividade envolve dado sensível — considere criar
-                          um RIPD/DPIA para ela.
-                        </p>
+                        <p className="text-xs text-amber-700">{tr('Esta atividade envolve dado sensível — considere criar um RIPD/DPIA para ela.')}</p>
                         <div className="flex gap-3 shrink-0">
                           <button
                             onClick={() => handleCreateRipd(activity)}
                             className="text-xs font-medium text-[#0A0A0A] hover:underline"
-                          >
-                            Criar RIPD/DPIA
-                          </button>
+                          >{tr('Criar RIPD/DPIA')}</button>
                           <button
                             onClick={() =>
                               handleDismissRipdSuggestion(activity.id)
                             }
                             className="text-xs text-[#0A0A0A]/45 hover:text-[#0A0A0A]/70"
-                          >
-                            Dispensar
-                          </button>
+                          >{tr('Dispensar')}</button>
                         </div>
                       </div>
                     )}
@@ -224,7 +206,7 @@ export function ProcessingActivitiesPage() {
                     <button
                       onClick={() => setConsentActivity(activity)}
                       className="text-[#0A0A0A]/40 hover:text-[#B4201A] transition-colors"
-                      title="Prova de consentimento"
+                      title={tr('Prova de consentimento')}
                     >
                       <ShieldCheck className="w-4 h-4" />
                     </button>
@@ -235,14 +217,14 @@ export function ProcessingActivitiesPage() {
                       setShowModal(true);
                     }}
                     className="text-[#0A0A0A]/40 hover:text-[#B4201A] transition-colors"
-                    title="Editar"
+                    title={tr('Editar')}
                   >
                     <Pencil className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDelete(activity.id)}
                     className="text-[#0A0A0A]/40 hover:text-red-600 transition-colors"
-                    title="Remover"
+                    title={tr('Remover')}
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

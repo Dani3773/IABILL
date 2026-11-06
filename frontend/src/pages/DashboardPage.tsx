@@ -11,6 +11,7 @@ import { useWorkspaces } from '../contexts/WorkspaceContext'
 import { formatCnpj } from '../utils/format'
 import type { Workspace } from '../types/workspace'
 
+import { tr, trn } from '../i18n/tr'
 export function DashboardPage() {
   const { role } = useAuth()
   const { refreshWorkspaces } = useWorkspaces()
@@ -29,7 +30,7 @@ export function DashboardPage() {
     setIsLoading(true)
     fetchWorkspaces()
       .then(setWorkspaces)
-      .catch((err) => setError(getErrorMessage(err, 'Não foi possível carregar as unidades.')))
+      .catch((err) => setError(getErrorMessage(err, tr('Não foi possível carregar as unidades.'))))
       .finally(() => setIsLoading(false))
   }
 
@@ -41,24 +42,22 @@ export function DashboardPage() {
     })
   }
 
-  if (isLoading) return <LoadingSpinner label="Carregando unidades..." />
+  if (isLoading) return <LoadingSpinner label={tr('Carregando unidades...')} />
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl text-[#0A0A0A]">Unidades</h1>
+          <h1 className="text-xl text-[#0A0A0A]">{tr('Unidades')}</h1>
           <p className="text-sm text-[#0A0A0A]/50 mt-0.5">
-            {workspaces.length} {workspaces.length === 1 ? "unidade cadastrada" : "unidades cadastradas"}
+            {trn(workspaces.length, '{{n}} unidade cadastrada', '{{n}} unidades cadastradas')}
           </p>
         </div>
         {(role === 'ADMIN' || role === 'SUPER_ADMIN') && (
           <button
             onClick={() => setShowCreateModal(true)}
             className="bg-[#D92B21] hover:bg-[#B4201A] text-white text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors"
-          >
-            + Nova unidade
-          </button>
+          >{tr('+ Nova unidade')}</button>
         )}
       </div>
 
@@ -67,7 +66,7 @@ export function DashboardPage() {
       {workspaces.length === 0 ? (
         <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-10 text-center">
           <Building2 className="w-8 h-8 text-[#0A0A0A]/25 mx-auto mb-3" />
-          <p className="text-[#0A0A0A]/60 text-sm">Nenhuma unidade cadastrada ainda.</p>
+          <p className="text-[#0A0A0A]/60 text-sm">{tr('Nenhuma unidade cadastrada ainda.')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -91,8 +90,8 @@ export function DashboardPage() {
                           setEditing(workspace)
                         }}
                         className="text-[#0A0A0A]/45 hover:text-[#B4201A] transition-colors"
-                        title="Editar unidade"
-                        aria-label={`Editar ${workspace.name}`}
+                        title={tr('Editar unidade')}
+                        aria-label={tr('Editar {{a}}', { a: workspace.name })}
                       >
                         <Pencil className="w-3.5 h-3.5" />
                       </button>
@@ -104,12 +103,12 @@ export function DashboardPage() {
                           : 'bg-[#0A0A0A]/8 text-[#0A0A0A]/60'
                       }`}
                     >
-                      {workspace.type}
+                      {workspace.type === 'MATRIZ' ? tr('Matriz') : tr('Filial')}
                     </span>
                   </div>
                 </div>
                 <h3 className="font-medium text-[#0A0A0A] mb-1">{workspace.name}</h3>
-                <p className="text-xs text-[#0A0A0A]/45 mb-2">CNPJ: {formatCnpj(workspace.documentId)}</p>
+                <p className="text-xs text-[#0A0A0A]/45 mb-2">{tr('CNPJ:')}{' '}{formatCnpj(workspace.documentId)}</p>
                 {location && (
                   <p className="flex items-center gap-1 text-xs text-[#0A0A0A]/45">
                     <MapPin className="w-3 h-3" />

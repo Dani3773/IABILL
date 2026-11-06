@@ -8,6 +8,7 @@ import { Alert } from "../components/Alert";
 import { getErrorMessage } from "../api/errorUtils";
 import { TRAINING_METHOD_LABELS, type Training } from "../types/training";
 
+import { getSystemLanguage, tr, trn } from '../i18n/tr'
 export function TrainingsPage() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export function TrainingsPage() {
     setIsLoading(true);
     fetchTrainings(id)
       .then(setTrainings)
-      .catch((err) => setError(getErrorMessage(err, "Não foi possível carregar os treinamentos.")))
+      .catch((err) => setError(getErrorMessage(err, tr('Não foi possível carregar os treinamentos.'))))
       .finally(() => setIsLoading(false));
   }
 
@@ -34,12 +35,12 @@ export function TrainingsPage() {
   }
 
   async function handleDelete(id: string) {
-    if (!window.confirm("Remover este registro de treinamento?")) return;
+    if (!window.confirm(tr('Remover este registro de treinamento?'))) return;
     try {
       await deleteTraining(id);
       setTrainings((prev) => prev.filter((t) => t.id !== id));
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível remover o treinamento."));
+      setError(getErrorMessage(err, tr('Não foi possível remover o treinamento.')));
     }
   }
 
@@ -47,44 +48,36 @@ export function TrainingsPage() {
     navigate(`/workspaces/${workspaceId}/documents`, {
       state: {
         prefillType: "MATERIAL_TREINAMENTO",
-        prefillTitle: "Material de Treinamento - Conscientização LGPD",
+        prefillTitle: tr('Material de Treinamento - Conscientização LGPD'),
       },
     });
   }
 
-  if (isLoading) return <LoadingSpinner label="Carregando treinamentos..." />;
+  if (isLoading) return <LoadingSpinner label={tr('Carregando treinamentos...')} />;
 
   return (
     <div>
 
       <div className="flex items-center justify-between mb-2 flex-wrap gap-3">
         <div>
-          <h1 className="text-xl text-[#0A0A0A]">Treinamento de Colaboradores</h1>
-          <p className="text-sm text-[#0A0A0A]/55 mt-0.5">
-            Registro de conscientização sobre proteção de dados, conforme boas práticas recomendadas pela ANPD.
-          </p>
+          <h1 className="text-xl text-[#0A0A0A]">{tr('Treinamento de Colaboradores')}</h1>
+          <p className="text-sm text-[#0A0A0A]/55 mt-0.5">{tr('Registro de conscientização sobre proteção de dados, conforme boas práticas recomendadas pela ANPD.')}</p>
         </div>
         <div className="flex gap-2 shrink-0">
           <Link
             to={`/workspaces/${workspaceId}/pilares/treinamento/colaboradores`}
             className="flex items-center gap-1.5 bg-[#0A0A0A]/5 hover:bg-[#0A0A0A]/10 text-[#0A0A0A] text-sm font-medium rounded-lg px-4 py-2.5 transition-colors"
           >
-            <Users className="w-4 h-4" />
-            Colaboradores
-          </Link>
+            <Users className="w-4 h-4" />{tr('Colaboradores')}</Link>
           <button
             onClick={handleGenerateMaterial}
             className="flex items-center gap-1.5 bg-[#D92B21] hover:bg-[#B4201A] text-white text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors"
           >
-            <Sparkles className="w-4 h-4" />
-            Gerar Material com IA
-          </button>
+            <Sparkles className="w-4 h-4" />{tr('Gerar Material com IA')}</button>
           <button
             onClick={() => setShowModal(true)}
             className="bg-[#D92B21] hover:bg-[#B4201A] text-white text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors"
-          >
-            + Novo Treinamento
-          </button>
+          >{tr('+ Novo Treinamento')}</button>
         </div>
       </div>
 
@@ -93,7 +86,7 @@ export function TrainingsPage() {
       {trainings.length === 0 ? (
         <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-10 text-center mt-6">
           <GraduationCap className="w-8 h-8 text-[#0A0A0A]/25 mx-auto mb-3" />
-          <p className="text-[#0A0A0A]/55 text-sm">Nenhum treinamento registrado ainda.</p>
+          <p className="text-[#0A0A0A]/55 text-sm">{tr('Nenhum treinamento registrado ainda.')}</p>
         </div>
       ) : (
         <div className="space-y-2 mt-6">
@@ -109,11 +102,11 @@ export function TrainingsPage() {
                   </div>
                   {training.description && <p className="text-xs text-[#0A0A0A]/60 mb-2">{training.description}</p>}
                   <p className="text-xs text-[#0A0A0A]/50">
-                    {new Date(training.trainingDate).toLocaleDateString("pt-BR")} · {training.attendees.length} participante{training.attendees.length !== 1 ? "s" : ""}: {" "}
+                    {new Date(training.trainingDate).toLocaleDateString(getSystemLanguage())} · {trn(training.attendees.length, '{{n}} participante', '{{n}} participantes')}: {" "}
                     {training.attendees.map((a) => a.name).join(", ")}
                   </p>
                 </div>
-                <button onClick={() => handleDelete(training.id)} className="text-[#0A0A0A]/40 hover:text-red-600 transition-colors shrink-0" title="Remover">
+                <button onClick={() => handleDelete(training.id)} className="text-[#0A0A0A]/40 hover:text-red-600 transition-colors shrink-0" title={tr('Remover')}>
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>

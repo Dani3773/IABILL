@@ -6,6 +6,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { fetchSectors } from "../api/sectorService";
 import type { Sector } from "../types/sector";
 
+import { tr } from '../i18n/tr'
 interface Props {
   workspaceId: string;
   editing: Employee | null;
@@ -44,7 +45,7 @@ export function EmployeeModal({ workspaceId, editing, onClose, onSaved }: Props)
       onSaved(saved);
       onClose();
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível salvar o colaborador."));
+      setError(getErrorMessage(err, tr('Não foi possível salvar o colaborador.')));
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +64,7 @@ export function EmployeeModal({ workspaceId, editing, onClose, onSaved }: Props)
               <UserPlus className="w-4 h-4 text-[#B4201A]" />
             </div>
             <h2 className="text-lg text-[#0A0A0A]">
-              {editing ? "Editar Colaborador" : "Novo Colaborador"}
+              {editing ? tr('Editar Colaborador') : tr('Novo Colaborador')}
             </h2>
           </div>
           <button onClick={onClose} className="text-[#0A0A0A]/40 hover:text-[#0A0A0A] transition-colors">
@@ -73,18 +74,18 @@ export function EmployeeModal({ workspaceId, editing, onClose, onSaved }: Props)
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className={labelClass}>Nome completo</label>
+            <label className={labelClass}>{tr('Nome completo')}</label>
             <input type="text" value={name} onChange={(e) => setName(e.target.value)} required className={inputClass} />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className={labelClass}>Cargo <span className="text-[#0A0A0A]/40">(opcional)</span></label>
+              <label className={labelClass}>{tr('Cargo')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span></label>
               <input type="text" value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} className={inputClass} />
             </div>
             <div>
-              <label className={labelClass}>Setor <span className="text-[#0A0A0A]/40">(opcional)</span></label>
+              <label className={labelClass}>{tr('Setor')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span></label>
               <select value={sectorId} onChange={(e) => setSectorId(e.target.value)} className={inputClass}>
-                <option value="">Sem setor definido</option>
+                <option value="">{tr('Sem setor definido')}</option>
                 {sectors.map((s) => (
                   <option key={s.id} value={s.id}>{s.name}</option>
                 ))}
@@ -92,7 +93,7 @@ export function EmployeeModal({ workspaceId, editing, onClose, onSaved }: Props)
             </div>
           </div>
           <div>
-            <label className={labelClass}>E-mail <span className="text-[#0A0A0A]/40">(opcional, só para registro)</span></label>
+            <label className={labelClass}>{tr('E-mail')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional, só para registro)')}</span></label>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={inputClass} />
           </div>
           <label className="flex items-center gap-2 text-sm text-[#0A0A0A]/70 cursor-pointer">
@@ -101,9 +102,7 @@ export function EmployeeModal({ workspaceId, editing, onClose, onSaved }: Props)
               checked={active}
               onChange={(e) => setActive(e.target.checked)}
               className="rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
-            />
-            Colaborador ativo
-          </label>
+            />{tr('Colaborador ativo')}</label>
 
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
@@ -113,11 +112,9 @@ export function EmployeeModal({ workspaceId, editing, onClose, onSaved }: Props)
               disabled={isLoading}
               className="flex-1 bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
             >
-              {isLoading ? "Salvando..." : editing ? "Salvar alterações" : "Adicionar colaborador"}
+              {isLoading ? tr('Salvando...') : editing ? tr('Salvar alterações') : tr('Adicionar colaborador')}
             </button>
-            <button type="button" onClick={onClose} className="flex-1 bg-[#0A0A0A]/5 hover:bg-[#0A0A0A]/10 text-[#0A0A0A] text-sm font-medium rounded-lg py-2.5 transition-colors">
-              Cancelar
-            </button>
+            <button type="button" onClick={onClose} className="flex-1 bg-[#0A0A0A]/5 hover:bg-[#0A0A0A]/10 text-[#0A0A0A] text-sm font-medium rounded-lg py-2.5 transition-colors">{tr('Cancelar')}</button>
           </div>
         </form>
       </div>

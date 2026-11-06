@@ -1,6 +1,7 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import ptBR from './locales/pt-BR.json'
+import { loadSystemLanguage } from './tr'
 
 // Português do Brasil, mais os 24 idiomas oficiais da União Europeia.
 export const LANGUAGES = [
@@ -90,6 +91,19 @@ i18n.use(initReactI18next).init({
 })
 
 const detected = detectLanguage()
-if (detected !== FALLBACK) void changeLanguage(detected, false)
+
+// Landing e sistema prontos no idioma detectado, antes de o app abrir.
+export const languageReady = Promise.all([
+  detected !== FALLBACK ? changeLanguage(detected, false) : Promise.resolve(),
+  loadSystemLanguage(detected),
+]).catch(() => undefined)
+
+// Trocar de idioma recarrega a página, sem o ?lang= que teria prioridade.
+export function selectLanguage(code: string) {
+  saveLanguage(code)
+  const url = new URL(window.location.href)
+  url.searchParams.delete('lang')
+  window.location.replace(url.toString())
+}
 
 export default i18n

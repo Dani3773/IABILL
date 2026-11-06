@@ -37,20 +37,21 @@ import { Link } from "react-router-dom";
 import "./auth.css";
 import { loginWithMfa } from "../api/authService";
 
+import { tr } from '../i18n/tr'
 type SignupStep = 1 | 2 | 3;
 type LegalRegime = "LGPD" | "RGPD";
 type StepDirection = "fwd" | "back";
 
 const STEPS: { label: string; icon: typeof Building2 }[] = [
-  { label: "Empresa", icon: Building2 },
-  { label: "Endereço", icon: MapPin },
-  { label: "Conta", icon: UserRound },
+  { label: tr('Empresa'), icon: Building2 },
+  { label: tr('Endereço'), icon: MapPin },
+  { label: tr('Conta'), icon: UserRound },
 ];
 
 const INPUT_CLASS =
   "w-full rounded-md bg-white text-[#17130e] text-[15px] px-3.5 py-3 border border-black/25 transition-all duration-200 placeholder:text-[#8a857b] " +
   "hover:border-black/50 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/40 focus:border-[#D92B21] " +
-  "[&:-webkit-autofill]:[-webkit-text-fill-color:#17130e] [&:-webkit-autofill]:[transition:background-color_9999s]";
+  '[&:-webkit-autofill]:[-webkit-text-fill-color:#17130e] [&:-webkit-autofill]:[transition:background-color_9999s]';
 const INPUT_WITH_ICON = INPUT_CLASS + " pl-9";
 
 function ApprovalSeal({ size = 96 }: { size?: number }) {
@@ -62,7 +63,7 @@ function ApprovalSeal({ size = 96 }: { size?: number }) {
       <circle cx="100" cy="100" r="94" fill="none" stroke="#D92B21" strokeWidth="1.5" opacity="0.5" />
       <circle cx="100" cy="100" r="78" fill="none" stroke="#D92B21" strokeWidth="2" />
       <text fill="#D92B21" fontSize="10.5" letterSpacing="3" fontFamily="Switzer, sans-serif">
-        <textPath href="#seal-circle-auth" startOffset="0%">CONTA CRIADA · IABILL · BEM-VINDO ·</textPath>
+        <textPath href="#seal-circle-auth" startOffset="0%">{tr('CONTA CRIADA · IABILL · BEM-VINDO ·')}</textPath>
       </text>
       <g transform="translate(100,100)">
         <circle r="46" fill="none" stroke="#D92B21" strokeWidth="1.5" />
@@ -92,7 +93,7 @@ function Field({
     <label className="block">
       <span className="flex items-baseline gap-1.5 text-[13px] font-medium text-[#4a4640] mb-1.5 tracking-wide">
         {label}
-        {optional && <span className="text-[#6f6a61] font-normal">· opcional</span>}
+        {optional && <span className="text-[#6f6a61] font-normal">{tr('· opcional')}</span>}
       </span>
       {children}
     </label>
@@ -112,10 +113,10 @@ function passwordStrength(pw: string): number {
 
 const STRENGTH_META = [
   { label: "", color: "transparent" },
-  { label: "Fraca", color: "#F87171" },
-  { label: "Média", color: "#FBBF24" },
-  { label: "Boa", color: "#D92B21" },
-  { label: "Forte", color: "#D92B21" },
+  { label: tr('Fraca'), color: "#F87171" },
+  { label: tr('Média'), color: "#FBBF24" },
+  { label: tr('Boa'), color: "#D92B21" },
+  { label: tr('Forte'), color: "#D92B21" },
 ];
 
 export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "signup" }) {
@@ -201,9 +202,9 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
     } catch (err) {
       if (err instanceof AxiosError && err.response?.status === 403) {
         setNeedsConfirmation(true);
-        setLoginError(getErrorMessage(err, "Confirme seu e-mail antes de entrar."));
+        setLoginError(getErrorMessage(err, tr('Confirme seu e-mail antes de entrar.')));
       } else {
-        setLoginError(getErrorMessage(err, "E-mail ou senha inválidos"));
+        setLoginError(getErrorMessage(err, tr('E-mail ou senha inválidos')));
       }
     } finally {
       setLoginLoading(false);
@@ -220,7 +221,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
       setAuth(response);
       navigate(response.tenantId ? "/inicio" : "/platform");
     } catch (err) {
-      setLoginError(getErrorMessage(err, "Código inválido."));
+      setLoginError(getErrorMessage(err, tr('Código inválido.')));
     } finally {
       setMfaLoading(false);
     }
@@ -233,7 +234,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
       const result = await resendConfirmation({ email, password });
       setResendMessage(result.message);
     } catch (err) {
-      setResendMessage(getErrorMessage(err, "Não foi possível reenviar o e-mail."));
+      setResendMessage(getErrorMessage(err, tr('Não foi possível reenviar o e-mail.')));
     } finally {
       setResendLoading(false);
     }
@@ -326,11 +327,11 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
   function goNext() {
     setSignupError(null);
     if (step === 1 && !canAdvanceFromStep1()) {
-      setSignupError("Preencha CNPJ, nome da empresa e selecione ao menos um regime legal.");
+      setSignupError(tr('Preencha CNPJ, nome da empresa e selecione ao menos um regime legal.'));
       return;
     }
     if (step === 2 && !canAdvanceFromStep2()) {
-      setSignupError("Informe o país (código de 2 letras, ex: BR).");
+      setSignupError(tr('Informe o país (código de 2 letras, ex: BR).'));
       return;
     }
     setStepDirection("fwd");
@@ -367,7 +368,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
       setJustCreated(true);
       setSignupSuccess(response.message);
     } catch (err) {
-      setSignupError(getErrorMessage(err, "Não foi possível criar a conta. Verifique os dados."));
+      setSignupError(getErrorMessage(err, tr('Não foi possível criar a conta. Verifique os dados.')));
     } finally {
       setSignupLoading(false);
     }
@@ -427,17 +428,17 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
             <Logo />
           </Link>
           <div className={`auth__card iabill-card-enter${isSignUpMode ? " auth__card--signup" : ""}`}>
-          <h1 className="auth__title">{isSignUpMode ? "Crie a conta da sua empresa" : "Entrar no IABill"}</h1>
+          <h1 className="auth__title">{isSignUpMode ? tr('Crie a conta da sua empresa') : tr('Entrar no IABill')}</h1>
           <p className="auth__switch">
-            {isSignUpMode ? "Já tem conta?" : "Ainda não tem conta?"}{" "}
+            {isSignUpMode ? tr('Já tem conta?') : tr('Ainda não tem conta?')}{" "}
             <button type="button" onClick={() => switchMode(!isSignUpMode)}>
-              {isSignUpMode ? "Entrar" : "Cadastrar empresa"}
+              {isSignUpMode ? tr('Entrar') : tr('Cadastrar empresa')}
             </button>
           </p>
 
           {!isSignUpMode && mfaStep ? (
             <form onSubmit={handleMfaSubmit} className="space-y-4">
-              <Field label="Código de verificação">
+              <Field label={tr('Código de verificação')}>
                 <div className="relative">
                   <ShieldCheck className="w-4 h-4 text-[#6f6a61] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
@@ -453,9 +454,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                   />
                 </div>
               </Field>
-              <p className="text-sm text-[#6f6a61]">
-                Abra seu aplicativo autenticador e digite o código de 6 dígitos.
-              </p>
+              <p className="text-sm text-[#6f6a61]">{tr('Abra seu aplicativo autenticador e digite o código de 6 dígitos.')}</p>
               {loginError && (
                 <div key={loginError} className="iabill-shake">
                   <Alert type="error" message={loginError} />
@@ -464,23 +463,20 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               <button type="submit" disabled={mfaLoading || mfaCode.length !== 6} className="w-full flex items-center justify-center gap-2 bg-[#D92B21] hover:bg-[#B4201A] active:scale-[0.985] disabled:opacity-60 disabled:pointer-events-none text-white text-[15px] font-semibold rounded-md py-3 transition-all duration-200">
                 {mfaLoading ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" /> Verificando...
-                  </>
+                    <Loader2 className="w-4 h-4 animate-spin" />{' '}{tr('Verificando...')}</>
                 ) : (
-                  "Verificar"
+                  tr('Verificar')
                 )}
               </button>
               <button
                 type="button"
                 onClick={() => { setMfaStep(false); setMfaCode(""); }}
                 className="auth__link mx-auto block"
-              >
-                Voltar ao login
-              </button>
+              >{tr('Voltar ao login')}</button>
             </form>
           ) : !isSignUpMode ? (
             <form onSubmit={handleLogin} className="space-y-4">
-              <Field label="E-mail">
+              <Field label={tr('E-mail')}>
                 <div className="relative">
                   <Mail className="w-4 h-4 text-[#6f6a61] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
@@ -491,19 +487,15 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     autoComplete="username"
-                    placeholder="voce@empresa.com"
+                    placeholder={tr('voce@empresa.com')}
                     className={INPUT_WITH_ICON}
                   />
                 </div>
               </Field>
               <div>
                 <div className="flex items-baseline justify-between mb-1.5">
-                  <label htmlFor="login-password" className="text-[13px] font-medium text-[#4a4640] tracking-wide">
-                    Senha
-                  </label>
-                  <Link to="/esqueci-senha" className="auth__link">
-                    Esqueceu a senha?
-                  </Link>
+                  <label htmlFor="login-password" className="text-[13px] font-medium text-[#4a4640] tracking-wide">{tr('Senha')}</label>
+                  <Link to="/esqueci-senha" className="auth__link">{tr('Esqueceu a senha?')}</Link>
                 </div>
                 <div className="relative">
                   <Lock className="w-4 h-4 text-[#6f6a61] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -518,14 +510,14 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     onBlur={() => setCapsLockOn(false)}
                     required
                     autoComplete="current-password"
-                    placeholder="Sua senha"
+                    placeholder={tr('Sua senha')}
                     className={INPUT_WITH_ICON + " pr-10"}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     tabIndex={-1}
-                    aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                    aria-label={showPassword ? tr('Ocultar senha') : tr('Mostrar senha')}
                     className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#6f6a61] hover:text-[#17130e] transition-colors"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -534,8 +526,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               </div>
               {capsLockOn && (
                 <p className="flex items-center gap-1.5 text-sm text-[#8a5a00]">
-                  <AlertTriangle className="w-4 h-4" /> Caps Lock está ativado
-                </p>
+                  <AlertTriangle className="w-4 h-4" />{' '}{tr('Caps Lock está ativado')}</p>
               )}
               {loginError && (
                 <div key={loginError} className="iabill-shake">
@@ -550,7 +541,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     disabled={resendLoading}
                     className="auth__link disabled:opacity-50"
                   >
-                    {resendLoading ? "Reenviando..." : "Reenviar e-mail de confirmação"}
+                    {resendLoading ? tr('Reenviando...') : tr('Reenviar e-mail de confirmação')}
                   </button>
                   {resendMessage && <p className="text-sm text-[#4a4640] mt-1">{resendMessage}</p>}
                 </div>
@@ -558,11 +549,9 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               <button type="submit" disabled={loginLoading} className="w-full flex items-center justify-center gap-2 bg-[#D92B21] hover:bg-[#B4201A] active:scale-[0.985] disabled:opacity-60 disabled:pointer-events-none text-white text-[15px] font-semibold rounded-md py-3 transition-all duration-200">
                 {loginLoading ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" /> Entrando...
-                  </>
+                    <Loader2 className="w-4 h-4 animate-spin" />{' '}{tr('Entrando...')}</>
                 ) : (
-                  <>
-                    Entrar <ArrowRight className="w-4 h-4" />
+                  <>{tr('Entrar')}{' '}<ArrowRight className="w-4 h-4" />
                   </>
                 )}
               </button>
@@ -572,15 +561,13 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
               <div className="iabill-seal-pop drop-">
                 <ApprovalSeal size={120} />
               </div>
-              <p className="text-lg text-[#17130e]">Conta criada</p>
+              <p className="text-lg text-[#17130e]">{tr('Conta criada')}</p>
               <p className="text-sm text-[#4a4640] max-w-xs">{signupSuccess}</p>
               <button
                 type="button"
                 onClick={() => switchMode(false)}
                 className="text-[#B4201A] hover:underline text-sm mt-2"
-              >
-                Ir para o login
-              </button>
+              >{tr('Ir para o login')}</button>
             </div>
           ) : (
             <div className="flex-1 flex flex-col">
@@ -631,7 +618,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                 >
                   {step === 1 && (
                     <>
-                      <Field label="CNPJ">
+                      <Field label={tr('CNPJ')}>
                         <div className="relative">
                           <Building2 className="w-4 h-4 text-[#6f6a61] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
@@ -650,7 +637,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                           )}
                         </div>
                       </Field>
-                      <Field label="Nome da empresa">
+                      <Field label={tr('Nome da empresa')}>
                         <div className="relative">
                           <Landmark className="w-4 h-4 text-[#6f6a61] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
@@ -659,7 +646,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             onChange={(e) => setWorkspaceName(e.target.value)}
                             required
                             autoComplete="off"
-                            placeholder="Razão social"
+                            placeholder={tr('Razão social')}
                             className={
                               INPUT_WITH_ICON +
                               (cnpjAutofilled
@@ -669,7 +656,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                           />
                         </div>
                       </Field>
-                      <Field label="Telefone" optional>
+                      <Field label={tr('Telefone')} optional>
                         <div className="relative">
                           <Phone className="w-4 h-4 text-[#6f6a61] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
@@ -684,7 +671,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                         </div>
                       </Field>
                       <div>
-                        <p className="text-[13px] font-medium text-[#4a4640] mb-1.5 tracking-wide">Regime legal aplicável</p>
+                        <p className="text-[13px] font-medium text-[#4a4640] mb-1.5 tracking-wide">{tr('Regime legal aplicável')}</p>
                         <div className="flex gap-3">
                           {(["LGPD", "RGPD"] as LegalRegime[]).map((regime) => {
                             const active = legalRegimes.includes(regime);
@@ -701,7 +688,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                                 }`}
                               >
                                 {active && <Check className="w-3 h-3" />}
-                                {regime === "LGPD" ? "LGPD (Brasil)" : "RGPD (UE)"}
+                                {regime === "LGPD" ? tr('LGPD (Brasil)') : tr('RGPD (UE)')}
                               </button>
                             );
                           })}
@@ -711,7 +698,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                   )}
                   {step === 2 && (
                     <>
-                      <Field label="País">
+                      <Field label={tr('País')}>
                         <div className="relative">
                           <Globe className="w-4 h-4 text-[#6f6a61] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <select
@@ -732,7 +719,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                         </div>
                       </Field>
 
-                      <Field label="CEP" optional={workspaceCountry !== "Brasil"}>
+                      <Field label={tr('CEP')} optional={workspaceCountry !== "Brasil"}>
                         <div className="relative">
                           <Hash className="w-4 h-4 text-[#6f6a61] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
@@ -742,7 +729,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             onChange={(e) => setWorkspacePostalCode(formatCep(e.target.value))}
                             onBlur={workspaceCountry === "Brasil" ? handleCepBlur : undefined}
                             autoComplete="off"
-                            placeholder={workspaceCountry === "Brasil" ? "00000-000" : "Código postal"}
+                            placeholder={workspaceCountry === "Brasil" ? "00000-000" : tr('Código postal')}
                             className={INPUT_WITH_ICON + " "}
                           />
                           {cepLookupLoading && (
@@ -752,14 +739,14 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                       </Field>
 
                       <div className="grid grid-cols-2 gap-2">
-                        <Field label="Estado">
+                        <Field label={tr('Estado')}>
                           {workspaceCountry === "Brasil" ? (
                             <select
                               value={workspaceState}
                               onChange={(e) => setWorkspaceState(e.target.value)}
                               className={INPUT_CLASS + " appearance-none cursor-pointer"}
                             >
-                              <option value="" className="bg-white">Selecione</option>
+                              <option value="" className="bg-white">{tr('Selecione')}</option>
                               {BRAZILIAN_STATES.map((s) => (
                                 <option key={s} value={s} className="bg-white">
                                   {s}
@@ -772,37 +759,37 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                               value={workspaceState}
                               onChange={(e) => setWorkspaceState(e.target.value)}
                               autoComplete="off"
-                              placeholder="Estado/Região"
+                              placeholder={tr('Estado/Região')}
                               className={INPUT_CLASS}
                             />
                           )}
                         </Field>
-                        <Field label="Cidade" optional>
+                        <Field label={tr('Cidade')} optional>
                           <input
                             type="text"
                             value={workspaceCity}
                             onChange={(e) => setWorkspaceCity(e.target.value)}
                             autoComplete="off"
-                            placeholder="Florianópolis"
+                            placeholder={tr('Florianópolis')}
                             className={INPUT_CLASS}
                           />
                         </Field>
                       </div>
 
-                      <Field label="Bairro" optional>
+                      <Field label={tr('Bairro')} optional>
                         <input
                           type="text"
                           value={workspaceNeighborhood}
                           onChange={(e) => setWorkspaceNeighborhood(e.target.value)}
                           autoComplete="off"
-                          placeholder="Centro"
+                          placeholder={tr('Centro')}
                           className={INPUT_CLASS}
                         />
                       </Field>
 
                       <div className="grid grid-cols-3 gap-2">
                         <div className="col-span-2">
-                          <Field label="Rua" optional>
+                          <Field label={tr('Rua')} optional>
                             <div className="relative">
                               <MapPin className="w-4 h-4 text-[#6f6a61] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                               <input
@@ -810,13 +797,13 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                                 value={workspaceStreet}
                                 onChange={(e) => setWorkspaceStreet(e.target.value)}
                                 autoComplete="off"
-                                placeholder="Av. Beira-Mar Norte"
+                                placeholder={tr('Av. Beira-Mar Norte')}
                                 className={INPUT_WITH_ICON}
                               />
                             </div>
                           </Field>
                         </div>
-                        <Field label="Número" optional>
+                        <Field label={tr('Número')} optional>
                           <div className="relative">
                             <Hash className="w-4 h-4 text-[#6f6a61] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                             <input
@@ -832,14 +819,14 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                       </div>
                       <p className="text-[13px] text-[#6f6a61] pt-1 leading-relaxed">
                         {workspaceCountry === "Brasil"
-                          ? "Informe o CEP para preencher automaticamente rua, bairro, cidade e estado."
-                          : "O endereço é usado nos registros de conformidade da sua organização. Você pode completá-lo depois."}
+                          ? tr('Informe o CEP para preencher automaticamente rua, bairro, cidade e estado.')
+                          : tr('O endereço é usado nos registros de conformidade da sua organização. Você pode completá-lo depois.')}
                       </p>
                     </>
                   )}
                   {step === 3 && (
                     <>
-                      <Field label="Nome de usuário">
+                      <Field label={tr('Nome de usuário')}>
                         <div className="relative">
                           <UserRound className="w-4 h-4 text-[#6f6a61] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
@@ -847,12 +834,12 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             value={adminUsername}
                             onChange={(e) => setAdminUsername(e.target.value)}
                             required
-                            placeholder="Como devemos te chamar"
+                            placeholder={tr('Como devemos te chamar')}
                             className={INPUT_WITH_ICON}
                           />
                         </div>
                       </Field>
-                      <Field label="E-mail">
+                      <Field label={tr('E-mail')}>
                         <div className="relative">
                           <Mail className="w-4 h-4 text-[#6f6a61] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
@@ -861,12 +848,12 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             onChange={(e) => setAdminEmail(e.target.value)}
                             required
                             autoComplete="username"
-                            placeholder="voce@empresa.com"
+                            placeholder={tr('voce@empresa.com')}
                             className={INPUT_WITH_ICON}
                           />
                         </div>
                       </Field>
-                      <Field label="Senha">
+                      <Field label={tr('Senha')}>
                         <div className="relative">
                           <Lock className="w-4 h-4 text-[#6f6a61] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
@@ -876,14 +863,14 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                             minLength={8}
                             required
                             autoComplete="new-password"
-                            placeholder="Mínimo 8 caracteres"
+                            placeholder={tr('Mínimo 8 caracteres')}
                             className={INPUT_WITH_ICON + " pr-10"}
                           />
                           <button
                             type="button"
                             onClick={() => setShowSignupPassword(!showSignupPassword)}
                             tabIndex={-1}
-                            aria-label={showSignupPassword ? "Ocultar senha" : "Mostrar senha"}
+                            aria-label={showSignupPassword ? tr('Ocultar senha') : tr('Mostrar senha')}
                             className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#6f6a61] hover:text-[#17130e] transition-colors"
                           >
                             {showSignupPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -907,8 +894,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                           <p
                             className="text-[13px] font-medium transition-colors duration-300"
                             style={{ color: STRENGTH_META[strength].color }}
-                          >
-                            Senha {STRENGTH_META[strength].label?.toLowerCase()}
+                          >{tr('Senha')}{' '}{STRENGTH_META[strength].label?.toLowerCase()}
                           </p>
                         </div>
                       )}
@@ -927,16 +913,14 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                       onClick={goBack}
                       className="flex items-center gap-1.5 text-sm text-[#4a4640] hover:text-[#17130e] px-3 py-2.5 rounded-lg hover:bg-black/5 transition-all"
                     >
-                      <ArrowLeft className="w-4 h-4" /> Voltar
-                    </button>
+                      <ArrowLeft className="w-4 h-4" />{' '}{tr('Voltar')}</button>
                   )}
                   {step < 3 ? (
                     <button
                       type="button"
                       onClick={goNext}
                       className="flex-1 flex items-center justify-center gap-1.5 bg-[#D92B21] hover:bg-[#B4201A] active:scale-[0.985] text-white text-sm font-semibold rounded-lg py-2.5 transition-all duration-200 "
-                    >
-                      Continuar <ArrowRight className="w-4 h-4" />
+                    >{tr('Continuar')}{' '}<ArrowRight className="w-4 h-4" />
                     </button>
                   ) : (
                     <button
@@ -946,10 +930,9 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: "login" | "s
                     >
                       {signupLoading ? (
                         <>
-                          <Loader2 className="w-4 h-4 animate-spin" /> Criando...
-                        </>
+                          <Loader2 className="w-4 h-4 animate-spin" />{' '}{tr('Criando...')}</>
                       ) : (
-                        "Criar conta"
+                        tr('Criar conta')
                       )}
                     </button>
                   )}

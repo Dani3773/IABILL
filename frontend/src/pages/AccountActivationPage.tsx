@@ -7,6 +7,7 @@ import { getErrorMessage } from "../api/errorUtils";
 import { Alert } from "../components/Alert";
 import { CheckCircle2 } from "lucide-react";
 
+import { tr } from '../i18n/tr'
 export function AccountActivationPage() {
   const { token } = useParams<{ token: string }>();
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ export function AccountActivationPage() {
     if (!token) return;
 
     if (password !== confirmPassword) {
-      setMessage("As senhas não coincidem.");
+      setMessage(tr('As senhas não coincidem.'));
       return;
     }
 
@@ -51,7 +52,7 @@ export function AccountActivationPage() {
       setTimeout(() => navigate("/inicio"), 1200);
     } catch (err) {
       setStatus("error");
-      setMessage(getErrorMessage(err, "Não foi possível ativar a conta."));
+      setMessage(getErrorMessage(err, tr('Não foi possível ativar a conta.')));
     }
   }
 
@@ -61,19 +62,15 @@ export function AccountActivationPage() {
         {status === "success" ? (
           <div>
             <CheckCircle2 className="w-8 h-8 text-emerald-700 mb-4" />
-            <h1 className="auth__title auth__title--spaced">Conta ativada</h1>
-            <p className="auth__switch mt-0! mb-0!">Abrindo o sistema...</p>
+            <h1 className="auth__title auth__title--spaced">{tr('Conta ativada')}</h1>
+            <p className="auth__switch mt-0! mb-0!">{tr('Abrindo o sistema...')}</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            <h1 className="auth__title auth__title--spaced">
-              Ative sua conta
-            </h1>
-            <p className="auth__switch mt-0! mb-2!">
-              Defina sua senha para acessar o IABill
-            </p>
+            <h1 className="auth__title auth__title--spaced">{tr('Ative sua conta')}</h1>
+            <p className="auth__switch mt-0! mb-2!">{tr('Defina sua senha para acessar o IABill')}</p>
 
-            <AuthField label="Seu e-mail">
+            <AuthField label={tr('Seu e-mail')}>
               <input
                 type="email"
                 value={email}
@@ -84,7 +81,7 @@ export function AccountActivationPage() {
                 className={AUTH_INPUT_CLASS}
               />
             </AuthField>
-            <AuthField label="Nova senha">
+            <AuthField label={tr('Nova senha')}>
               <input
                 type="password"
                 autoComplete="new-password"
@@ -92,11 +89,11 @@ export function AccountActivationPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={8}
-                placeholder="Mínimo 8 caracteres"
+                placeholder={tr('Mínimo 8 caracteres')}
                 className={AUTH_INPUT_CLASS}
               />
             </AuthField>
-            <AuthField label="Confirme a senha">
+            <AuthField label={tr('Confirme a senha')}>
               <input
                 type="password"
                 autoComplete="new-password"
@@ -115,7 +112,7 @@ export function AccountActivationPage() {
               disabled={status === "activating"}
               className={AUTH_BUTTON_CLASS}
             >
-              {status === "activating" ? "Ativando..." : "Ativar conta e entrar"}
+              {status === "activating" ? tr('Ativando...') : tr('Ativar conta e entrar')}
             </button>
           </form>
         )}

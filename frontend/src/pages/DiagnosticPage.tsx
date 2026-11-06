@@ -4,6 +4,7 @@ import { ArrowLeft, ClipboardCheck, CheckCircle2 } from "lucide-react";
 import { createActionItem } from "../api/actionItemService";
 import { confirmAdequacyItem } from "../api/adequacyService";
 
+import { tr, trn } from '../i18n/tr'
 interface Question {
   id: string;
   text: string;
@@ -15,59 +16,59 @@ interface Question {
 const QUESTIONS: Question[] = [
   {
     id: "dpo",
-    text: "Sua empresa tem um Encarregado de Dados (DPO) formalmente designado?",
-    legalBasis: "Art. 41 da LGPD",
-    actionTitle: "Designar um Encarregado de Dados (DPO)",
-    actionDescription: "Atribua o papel de DPO a um colaborador sem conflito de interesse (evite acumular com cargos de TI, Marketing, RH ou Financeiro, conforme orientação da ANPD). Acesse a aba Usuários para atribuir o papel.",
+    text: tr('Sua empresa tem um Encarregado de Dados (DPO) formalmente designado?'),
+    legalBasis: tr('Art. 41 da LGPD'),
+    actionTitle: tr('Designar um Encarregado de Dados (DPO)'),
+    actionDescription: tr('Atribua o papel de DPO a um colaborador sem conflito de interesse (evite acumular com cargos de TI, Marketing, RH ou Financeiro, conforme orientação da ANPD). Acesse a aba Usuários para atribuir o papel.'),
   },
   {
     id: "ropa",
-    text: "As atividades de tratamento de dados pessoais já estão registradas (inventário/ROPA)?",
-    legalBasis: "Art. 37 da LGPD, Guia ANPD",
-    actionTitle: "Preencher o Registro de Operações de Tratamento (ROPA)",
-    actionDescription: "Cadastre as atividades de tratamento de dados da empresa no menu Inventário / ROPA.",
+    text: tr('As atividades de tratamento de dados pessoais já estão registradas (inventário/ROPA)?'),
+    legalBasis: tr('Art. 37 da LGPD, Guia ANPD'),
+    actionTitle: tr('Preencher o Registro de Operações de Tratamento (ROPA)'),
+    actionDescription: tr('Cadastre as atividades de tratamento de dados da empresa no menu Inventário / ROPA.'),
   },
   {
     id: "psi",
-    text: "Existe uma Política de Segurança da Informação (PSI) documentada?",
-    legalBasis: "Guia de Segurança da Informação da ANPD",
-    actionTitle: "Gerar a Política de Segurança da Informação (PSI)",
-    actionDescription: "Crie um documento do tipo PSI na aba Documentos, cobrindo senhas, backup, controle de acesso e demais tópicos recomendados pela ANPD.",
+    text: tr('Existe uma Política de Segurança da Informação (PSI) documentada?'),
+    legalBasis: tr('Guia de Segurança da Informação da ANPD'),
+    actionTitle: tr('Gerar a Política de Segurança da Informação (PSI)'),
+    actionDescription: tr('Crie um documento do tipo PSI na aba Documentos, cobrindo senhas, backup, controle de acesso e demais tópicos recomendados pela ANPD.'),
   },
   {
     id: "training",
-    text: "Os colaboradores já passaram por treinamento/conscientização sobre proteção de dados?",
-    legalBasis: "Guia de Segurança da Informação da ANPD",
-    actionTitle: "Registrar o primeiro treinamento de colaboradores",
-    actionDescription: "Cadastre os colaboradores e registre um treinamento no menu Treinamento.",
+    text: tr('Os colaboradores já passaram por treinamento/conscientização sobre proteção de dados?'),
+    legalBasis: tr('Guia de Segurança da Informação da ANPD'),
+    actionTitle: tr('Registrar o primeiro treinamento de colaboradores'),
+    actionDescription: tr('Cadastre os colaboradores e registre um treinamento no menu Treinamento.'),
   },
   {
     id: "dsr",
-    text: "O processo de atendimento a solicitações de titulares de dados está sendo usado/divulgado?",
-    legalBasis: "Art. 18 da LGPD",
-    actionTitle: "Divulgar o Portal de Solicitação do Titular",
-    actionDescription: "Compartilhe o link público do Portal de Solicitação do Titular com clientes/funcionários (disponível na aba Solicitações).",
+    text: tr('O processo de atendimento a solicitações de titulares de dados está sendo usado/divulgado?'),
+    legalBasis: tr('Art. 18 da LGPD'),
+    actionTitle: tr('Divulgar o Portal de Solicitação do Titular'),
+    actionDescription: tr('Compartilhe o link público do Portal de Solicitação do Titular com clientes/funcionários (disponível na aba Solicitações).'),
   },
   {
     id: "incident",
-    text: "A equipe está familiarizada com o processo de resposta a incidentes de segurança?",
-    legalBasis: "Art. 48 da LGPD",
-    actionTitle: "Revisar o processo de resposta a incidentes",
-    actionDescription: "Familiarize a equipe com o módulo de Incidentes e os passos de notificação à ANPD e aos titulares.",
+    text: tr('A equipe está familiarizada com o processo de resposta a incidentes de segurança?'),
+    legalBasis: tr('Art. 48 da LGPD'),
+    actionTitle: tr('Revisar o processo de resposta a incidentes'),
+    actionDescription: tr('Familiarize a equipe com o módulo de Incidentes e os passos de notificação à ANPD e aos titulares.'),
   },
   {
     id: "vendor",
-    text: "Os fornecedores com acesso a dados pessoais têm contrato de proteção de dados (DPA) assinado?",
-    legalBasis: "Art. 39 da LGPD",
-    actionTitle: "Confirmar DPAs assinados com fornecedores",
-    actionDescription: "Cadastre os fornecedores no menu Fornecedores e confirme se há DPA assinado com cada um.",
+    text: tr('Os fornecedores com acesso a dados pessoais têm contrato de proteção de dados (DPA) assinado?'),
+    legalBasis: tr('Art. 39 da LGPD'),
+    actionTitle: tr('Confirmar DPAs assinados com fornecedores'),
+    actionDescription: tr('Cadastre os fornecedores no menu Fornecedores e confirme se há DPA assinado com cada um.'),
   },
   {
     id: "mfa",
-    text: "A verificação em duas etapas (MFA) está ativada nas contas de acesso ao sistema?",
-    legalBasis: "Guia de Segurança da Informação da ANPD",
-    actionTitle: "Ativar a verificação em duas etapas (MFA)",
-    actionDescription: "Ative o MFA no menu de perfil, na sidebar, para reforçar a segurança de acesso.",
+    text: tr('A verificação em duas etapas (MFA) está ativada nas contas de acesso ao sistema?'),
+    legalBasis: tr('Guia de Segurança da Informação da ANPD'),
+    actionTitle: tr('Ativar a verificação em duas etapas (MFA)'),
+    actionDescription: tr('Ative o MFA no menu de perfil, na sidebar, para reforçar a segurança de acesso.'),
   },
 ];
 
@@ -125,18 +126,16 @@ export function DiagnosticPage() {
         <div className="w-14 h-14 rounded-full bg-[#D92B21]/15 flex items-center justify-center mx-auto mb-4">
           <CheckCircle2 className="w-7 h-7 text-[#0A0A0A]" />
         </div>
-        <h1 className="text-xl text-[#0A0A0A] mb-2">Diagnóstico concluído</h1>
+        <h1 className="text-xl text-[#0A0A0A] mb-2">{tr('Diagnóstico concluído')}</h1>
         <p className="text-sm text-[#0A0A0A]/55 mb-6">
           {createdCount > 0
-            ? `${createdCount} tarefa${createdCount !== 1 ? "s foram" : " foi"} adicionada${createdCount !== 1 ? "s" : ""} ao Plano de Ação, com base nas respostas.`
-            : "Ótimo — nenhuma lacuna identificada nas perguntas deste diagnóstico."}
+            ? trn(createdCount, '{{n}} tarefa foi adicionada ao Plano de Ação, com base nas respostas.', '{{n}} tarefas foram adicionadas ao Plano de Ação, com base nas respostas.')
+            : tr('Ótimo — nenhuma lacuna identificada nas perguntas deste diagnóstico.')}
         </p>
         <button
           onClick={() => navigate(`/workspaces/${workspaceId}/action-plan`)}
           className="bg-[#D92B21] hover:bg-[#B4201A] text-white text-sm font-semibold rounded-lg px-5 py-2.5 transition-colors"
-        >
-          Ver Plano de Ação
-        </button>
+        >{tr('Ver Plano de Ação')}</button>
       </div>
     );
   }
@@ -147,16 +146,13 @@ export function DiagnosticPage() {
         to={`/workspaces/${workspaceId}/pilares`}
         className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
       >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        Voltar ao Guia LGPD
-      </Link>
+        <ArrowLeft className="w-3.5 h-3.5" />{tr('Voltar ao Guia LGPD')}</Link>
 
       <div className="flex items-center gap-2.5 mb-1">
         <ClipboardCheck className="w-5 h-5 text-[#B4201A]" />
-        <h1 className="text-xl text-[#0A0A0A]">Diagnóstico Inicial</h1>
+        <h1 className="text-xl text-[#0A0A0A]">{tr('Diagnóstico Inicial')}</h1>
       </div>
-      <p className="text-sm text-[#0A0A0A]/55 mb-6">
-        Pergunta {step + 1} de {QUESTIONS.length}
+      <p className="text-sm text-[#0A0A0A]/55 mb-6">{tr('Pergunta')}{' '}{step + 1}{' '}{tr('de')}{' '}{QUESTIONS.length}
       </p>
 
       <div className="bg-white rounded-xl p-6 border border-[#0A0A0A]/10">
@@ -170,16 +166,12 @@ export function DiagnosticPage() {
             onClick={() => answer(true)}
             disabled={isSubmitting}
             className="flex-1 bg-[#D92B21]/10 hover:bg-[#D92B21]/20 disabled:opacity-50 text-[#0A0A0A] text-sm font-semibold rounded-lg py-2.5 transition-colors"
-          >
-            Sim
-          </button>
+          >{tr('Sim')}</button>
           <button
             onClick={() => answer(false)}
             disabled={isSubmitting}
             className="flex-1 bg-[#0A0A0A]/5 hover:bg-[#0A0A0A]/10 disabled:opacity-50 text-[#0A0A0A] text-sm font-semibold rounded-lg py-2.5 transition-colors"
-          >
-            Não
-          </button>
+          >{tr('Não')}</button>
         </div>
       </div>
 

@@ -3,6 +3,7 @@ import { CheckCircle2, AlertTriangle, Circle } from "lucide-react";
 import { fetchComplianceSummary } from "../api/complianceSummaryService";
 import type { ComplianceSummary } from "../types/complianceSummary";
 
+import { tr, trn } from '../i18n/tr'
 interface Props {
   workspaceId: string;
 }
@@ -18,92 +19,92 @@ interface Row {
 function buildRows(s: ComplianceSummary): Row[] {
   const rows: Row[] = [];
   rows.push({
-    label: "Encarregado (DPO)",
+    label: tr('Encarregado (DPO)'),
     status: s.dpoDesignated ? "ok" : "warning",
     detail: s.dpoDesignated
-      ? `${s.dpoName} designado como Encarregado`
-      : "Nenhum Encarregado designado, tema de monitoramento recente da ANPD",
+      ? tr('{{a}} designado como Encarregado', { a: s.dpoName })
+      : tr('Nenhum Encarregado designado, tema de monitoramento recente da ANPD'),
   });
   rows.push({
-    label: "Inventário / ROPA",
+    label: tr('Inventário / ROPA'),
     status: s.ropaActivityCount > 0 ? "ok" : "neutral",
     detail: s.ropaActivityCount > 0
-      ? `${s.ropaActivityCount} atividade${s.ropaActivityCount !== 1 ? "s" : ""} de tratamento cadastrada${s.ropaActivityCount !== 1 ? "s" : ""}`
-      : "Nenhuma atividade cadastrada ainda",
+      ? trn(s.ropaActivityCount, '{{n}} atividade de tratamento cadastrada', '{{n}} atividades de tratamento cadastradas')
+      : tr('Nenhuma atividade cadastrada ainda'),
   });
   if (s.consentActivitiesTotal > 0) {
     rows.push({
-      label: "Prova de Consentimento",
+      label: tr('Prova de Consentimento'),
       status: s.consentActivitiesMissingProof > 0 ? "warning" : "ok",
       detail: s.consentActivitiesMissingProof > 0
-        ? `${s.consentActivitiesMissingProof} de ${s.consentActivitiesTotal} atividade${s.consentActivitiesTotal !== 1 ? "s" : ""} sem prova coletada ainda`
-        : `${s.consentActivitiesTotal} atividade${s.consentActivitiesTotal !== 1 ? "s" : ""} com base em Consentimento, todas com prova coletada`,
+        ? tr('{{a}} de {{b}} com base em Consentimento sem prova coletada ainda', { a: s.consentActivitiesMissingProof, b: s.consentActivitiesTotal })
+        : trn(s.consentActivitiesTotal, '{{n}} atividade com base em Consentimento, com prova coletada', '{{n}} atividades com base em Consentimento, todas com prova coletada'),
     });
   }
   rows.push({
-    label: "Prazo de Retenção",
+    label: tr('Prazo de Retenção'),
     status: s.retentionOverdueCount > 0 ? "warning" : "neutral",
     detail: s.retentionOverdueCount > 0
-      ? `${s.retentionOverdueCount} atividade${s.retentionOverdueCount !== 1 ? "s" : ""} com prazo de retenção vencido`
-      : "Nenhuma atividade com prazo de retenção vencido cadastrado",
+      ? trn(s.retentionOverdueCount, '{{n}} atividade com prazo de retenção vencido', '{{n}} atividades com prazo de retenção vencido')
+      : tr('Nenhuma atividade com prazo de retenção vencido cadastrado'),
   });
   const vendorsMissingDpa = s.vendorsTotal - s.vendorsWithDpaSigned;
   rows.push({
-    label: "Fornecedores / DPA",
+    label: tr('Fornecedores / DPA'),
     status: s.vendorsTotal === 0 ? "neutral" : vendorsMissingDpa > 0 ? "warning" : "ok",
     detail: s.vendorsTotal === 0
-      ? "Nenhum fornecedor cadastrado"
+      ? tr('Nenhum fornecedor cadastrado')
       : vendorsMissingDpa > 0
-        ? `${vendorsMissingDpa} de ${s.vendorsTotal} sem DPA assinado`
-        : `${s.vendorsTotal} fornecedor${s.vendorsTotal !== 1 ? "es" : ""}, todos com DPA assinado`,
+        ? tr('{{a}} de {{b}} sem DPA assinado', { a: vendorsMissingDpa, b: s.vendorsTotal })
+        : trn(s.vendorsTotal, '{{n}} fornecedor, com DPA assinado', '{{n}} fornecedores, todos com DPA assinado'),
   });
 
   const untrainedCount = s.employeesActiveTotal - s.employeesTrainedCount;
   rows.push({
-    label: "Treinamento de Colaboradores",
+    label: tr('Treinamento de Colaboradores'),
     status: s.employeesActiveTotal === 0 ? "neutral" : untrainedCount > 0 ? "warning" : "ok",
     detail: s.employeesActiveTotal === 0
-      ? "Nenhum colaborador cadastrado"
+      ? tr('Nenhum colaborador cadastrado')
       : untrainedCount > 0
-        ? `${untrainedCount} de ${s.employeesActiveTotal} colaboradores ainda não treinados`
-        : `Todos os ${s.employeesActiveTotal} colaboradores ativos já treinados`,
+        ? tr('{{a}} de {{b}} colaboradores ainda não treinados', { a: untrainedCount, b: s.employeesActiveTotal })
+        : tr('Todos os {{a}} colaboradores ativos já treinados', { a: s.employeesActiveTotal }),
   });
 
   rows.push({
-    label: "Documentos",
+    label: tr('Documentos'),
     status: s.documentsOverdueCount > 0 ? "warning" : "ok",
     detail: s.documentsOverdueCount > 0
-      ? `${s.documentsOverdueCount} documento${s.documentsOverdueCount !== 1 ? "s" : ""} com revisão vencida`
-      : "Nenhum documento com revisão vencida",
+      ? trn(s.documentsOverdueCount, '{{n}} documento com revisão vencida', '{{n}} documentos com revisão vencida')
+      : tr('Nenhum documento com revisão vencida'),
   });
 
   rows.push({
-    label: "Incidentes",
+    label: tr('Incidentes'),
     status: s.incidentsOpenCount > 0 ? "warning" : "ok",
     detail: s.incidentsOpenCount > 0
-      ? `${s.incidentsOpenCount} incidente${s.incidentsOpenCount !== 1 ? "s" : ""} em aberto`
-      : "Nenhum incidente em aberto",
+      ? trn(s.incidentsOpenCount, '{{n}} incidente em aberto', '{{n}} incidentes em aberto')
+      : tr('Nenhum incidente em aberto'),
   });
   if (s.incidentNotificationOverdueCount > 0) {
     rows.push({
-      label: "Prazo de Notificação",
+      label: tr('Prazo de Notificação'),
       status: "warning",
-      detail: `${s.incidentNotificationOverdueCount} incidente${s.incidentNotificationOverdueCount !== 1 ? "s" : ""} com prazo de notificação à ANPD vencido`,
+      detail: trn(s.incidentNotificationOverdueCount, '{{n}} incidente com prazo de notificação à ANPD vencido', '{{n}} incidentes com prazo de notificação à ANPD vencido'),
     });
   }
   rows.push({
-    label: "Política de Privacidade",
+    label: tr('Política de Privacidade'),
     status: s.privacyPolicyPublished ? "ok" : "neutral",
     detail: s.privacyPolicyPublished
-      ? "Publicada e acessível publicamente"
-      : "Ainda não publicada externamente",
+      ? tr('Publicada e acessível publicamente')
+      : tr('Ainda não publicada externamente'),
   });
   rows.push({
-    label: "Solicitações de Titulares",
+    label: tr('Solicitações de Titulares'),
     status: s.dsrPendingCount > 0 ? "warning" : "ok",
     detail: s.dsrPendingCount > 0
-      ? `${s.dsrPendingCount} ${s.dsrPendingCount !== 1 ? "solicitações pendentes" : "solicitação pendente"}`
-      : "Nenhuma solicitação pendente",
+      ? `${s.dsrPendingCount} ${s.dsrPendingCount !== 1 ? tr('solicitações pendentes') : tr('solicitação pendente')}`
+      : tr('Nenhuma solicitação pendente'),
   });
 
   return rows;
@@ -129,7 +130,7 @@ export function ComplianceChecklist({ workspaceId }: Props) {
   if (isLoading) {
     return (
       <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-5 mb-6">
-        <p className="text-sm text-[#0A0A0A]/40">Carregando resumo de conformidade...</p>
+        <p className="text-sm text-[#0A0A0A]/40">{tr('Carregando resumo de conformidade...')}</p>
       </div>
     );
   }
@@ -140,7 +141,7 @@ export function ComplianceChecklist({ workspaceId }: Props) {
 
   return (
     <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-5 mb-6">
-      <h3 className="text-sm font-medium text-[#0A0A0A]/70 mb-3">Resumo de Conformidade</h3>
+      <h3 className="text-sm font-medium text-[#0A0A0A]/70 mb-3">{tr('Resumo de Conformidade')}</h3>
       <div className="space-y-2">
         {rows.map((row) => (
           <div key={row.label} className="flex items-center gap-3 text-sm">
@@ -150,9 +151,7 @@ export function ComplianceChecklist({ workspaceId }: Props) {
           </div>
         ))}
       </div>
-      <p className="text-[11px] text-[#0A0A0A]/35 mt-4 pt-3 border-t border-[#0A0A0A]/8">
-        Resumo baseado nos dados cadastrados no sistema, não representa comparação com outras empresas.
-      </p>
+      <p className="text-[11px] text-[#0A0A0A]/35 mt-4 pt-3 border-t border-[#0A0A0A]/8">{tr('Resumo baseado nos dados cadastrados no sistema, não representa comparação com outras empresas.')}</p>
     </div>
   );
 }

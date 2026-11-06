@@ -24,6 +24,7 @@ import type { ComplianceSummary } from "../types/complianceSummary";
 import type { Document } from "../types/document";
 import type { ActionItem } from "../types/actionItem";
 
+import { tr, trn } from '../i18n/tr'
 type Tone = "danger" | "warning" | "info";
 
 interface AttentionRow {
@@ -31,10 +32,6 @@ interface AttentionRow {
   title: string;
   detail: string;
   to: string;
-}
-
-function plural(count: number, singular: string, pluralForm: string) {
-  return `${count} ${count === 1 ? singular : pluralForm}`;
 }
 
 function buildAttention(
@@ -50,48 +47,48 @@ function buildAttention(
     if (summary.incidentNotificationOverdueCount > 0) {
       rows.push({
         tone: "danger",
-        title: `${plural(summary.incidentNotificationOverdueCount, "incidente", "incidentes")} com prazo vencido`,
-        detail: "A comunicação à ANPD passou do prazo calculado.",
+        title: trn(summary.incidentNotificationOverdueCount, '{{n}} incidente com prazo vencido', '{{n}} incidentes com prazo vencido'),
+        detail: tr('A comunicação à ANPD passou do prazo calculado.'),
         to: `${base}/incidents`,
       });
     }
     if (summary.incidentsOpenCount > 0) {
       rows.push({
         tone: "warning",
-        title: `${plural(summary.incidentsOpenCount, "incidente aberto", "incidentes abertos")}`,
-        detail: "Acompanhe a avaliação e as notificações.",
+        title: trn(summary.incidentsOpenCount, '{{n}} incidente aberto', '{{n}} incidentes abertos'),
+        detail: tr('Acompanhe a avaliação e as notificações.'),
         to: `${base}/incidents`,
       });
     }
     if (summary.dsrPendingCount > 0) {
       rows.push({
         tone: "warning",
-        title: `${plural(summary.dsrPendingCount, "solicitação pendente", "solicitações pendentes")}`,
-        detail: "Pedidos de titulares aguardando resposta.",
+        title: trn(summary.dsrPendingCount, '{{n}} solicitação pendente', '{{n}} solicitações pendentes'),
+        detail: tr('Pedidos de titulares aguardando resposta.'),
         to: `${base}/data-subject-requests`,
       });
     }
     if (!summary.dpoDesignated) {
       rows.push({
         tone: "warning",
-        title: "Encarregado (DPO) não designado",
-        detail: "Tema de monitoramento recente da ANPD.",
+        title: tr('Encarregado (DPO) não designado'),
+        detail: tr('Tema de monitoramento recente da ANPD.'),
         to: canManageUsers ? "/users" : `${base}/pilares/quem-e-quem`,
       });
     }
     if (summary.retentionOverdueCount > 0) {
       rows.push({
         tone: "warning",
-        title: `${plural(summary.retentionOverdueCount, "atividade", "atividades")} com retenção vencida`,
-        detail: "Revise o prazo de guarda no inventário.",
+        title: trn(summary.retentionOverdueCount, '{{n}} atividade com retenção vencida', '{{n}} atividades com retenção vencida'),
+        detail: tr('Revise o prazo de guarda no inventário.'),
         to: `${base}/pilares/ropa`,
       });
     }
     if (summary.consentActivitiesMissingProof > 0) {
       rows.push({
         tone: "warning",
-        title: `${plural(summary.consentActivitiesMissingProof, "atividade", "atividades")} sem prova de consentimento`,
-        detail: "Colete a prova pelo link público da atividade.",
+        title: trn(summary.consentActivitiesMissingProof, '{{n}} atividade sem prova de consentimento', '{{n}} atividades sem prova de consentimento'),
+        detail: tr('Colete a prova pelo link público da atividade.'),
         to: `${base}/pilares/ropa`,
       });
     }
@@ -104,8 +101,8 @@ function buildAttention(
   if (needsReview > 0) {
     rows.push({
       tone: "warning",
-      title: `${plural(needsReview, "documento precisa", "documentos precisam")} de revisão`,
-      detail: "Revisão recomendada ou periódica vencida.",
+      title: trn(needsReview, '{{n}} documento precisa de revisão', '{{n}} documentos precisam de revisão'),
+      detail: tr('Revisão recomendada ou periódica vencida.'),
       to: `${base}/documents?atencao=1`,
     });
   }
@@ -114,8 +111,8 @@ function buildAttention(
   if (generated > 0) {
     rows.push({
       tone: "info",
-      title: `${plural(generated, "documento aguardando", "documentos aguardando")} revisão humana`,
-      detail: "Gerados por IA, ainda sem revisão.",
+      title: trn(generated, '{{n}} documento aguardando revisão humana', '{{n}} documentos aguardando revisão humana'),
+      detail: tr('Gerados por IA, ainda sem revisão.'),
       to: `${base}/documents?status=GENERATED`,
     });
   }
@@ -124,8 +121,8 @@ function buildAttention(
   if (reviewed > 0) {
     rows.push({
       tone: "info",
-      title: `${plural(reviewed, "documento aguardando", "documentos aguardando")} aprovação`,
-      detail: "Já revisados, falta a aprovação final.",
+      title: trn(reviewed, '{{n}} documento aguardando aprovação', '{{n}} documentos aguardando aprovação'),
+      detail: tr('Já revisados, falta a aprovação final.'),
       to: `${base}/documents?status=REVIEWED`,
     });
   }
@@ -135,8 +132,8 @@ function buildAttention(
     if (missingDpa > 0) {
       rows.push({
         tone: "info",
-        title: `${plural(missingDpa, "fornecedor", "fornecedores")} sem DPA assinado`,
-        detail: "O contrato confirma como eles tratam os dados.",
+        title: trn(missingDpa, '{{n}} fornecedor sem DPA assinado', '{{n}} fornecedores sem DPA assinado'),
+        detail: tr('O contrato confirma como eles tratam os dados.'),
         to: `${base}/pilares/fornecedores`,
       });
     }
@@ -144,16 +141,16 @@ function buildAttention(
     if (untrained > 0) {
       rows.push({
         tone: "info",
-        title: `${plural(untrained, "colaborador", "colaboradores")} sem treinamento`,
-        detail: "Registre a conscientização de cada pessoa.",
+        title: trn(untrained, '{{n}} colaborador sem treinamento', '{{n}} colaboradores sem treinamento'),
+        detail: tr('Registre a conscientização de cada pessoa.'),
         to: `${base}/pilares/treinamento`,
       });
     }
     if (!summary.privacyPolicyPublished) {
       rows.push({
         tone: "info",
-        title: "Política de privacidade não publicada",
-        detail: "Aprove e publique para gerar o link público.",
+        title: tr('Política de privacidade não publicada'),
+        detail: tr('Aprove e publique para gerar o link público.'),
         to: `${base}/documents?tipo=POLITICA_PRIVACIDADE`,
       });
     }
@@ -163,8 +160,8 @@ function buildAttention(
   if (openActions > 0) {
     rows.push({
       tone: "info",
-      title: `${plural(openActions, "tarefa aberta", "tarefas abertas")} no plano de ação`,
-      detail: "Pendentes ou em andamento.",
+      title: trn(openActions, '{{n}} tarefa aberta no plano de ação', '{{n}} tarefas abertas no plano de ação'),
+      detail: tr('Pendentes ou em andamento.'),
       to: `${base}/action-plan`,
     });
   }
@@ -205,7 +202,7 @@ export function HomePage() {
     setQuestion("");
   }
 
-  if (isLoading) return <LoadingSpinner label="Carregando a unidade..." />;
+  if (isLoading) return <LoadingSpinner label={tr('Carregando a unidade...')} />;
 
   const base = `/workspaces/${workspaceId}`;
   const canManageUsers = role === "ADMIN" || role === "SUPER_ADMIN";
@@ -218,10 +215,10 @@ export function HomePage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl text-[#0A0A0A]">{currentWorkspace?.name ?? "Início"}</h1>
+        <h1 className="text-xl text-[#0A0A0A]">{currentWorkspace?.name ?? tr('Início')}</h1>
         {currentWorkspace && (
           <p className="text-sm text-[#0A0A0A]/55 mt-0.5">
-            {currentWorkspace.type === "MATRIZ" ? "Matriz" : "Filial"} · CNPJ{" "}
+            {currentWorkspace.type === "MATRIZ" ? tr('Matriz') : tr('Filial')}{' '}{tr('· CNPJ')}{" "}
             {formatCnpj(currentWorkspace.documentId)}
           </p>
         )}
@@ -236,17 +233,15 @@ export function HomePage() {
           type="text"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
-          aria-label="Pergunte ao assistente"
-          placeholder="Pergunte sobre os documentos desta unidade..."
+          aria-label={tr('Pergunte ao assistente')}
+          placeholder={tr('Pergunte sobre os documentos desta unidade...')}
           className="flex-1 min-w-0 bg-transparent text-[15px] text-[#0A0A0A] py-1.5 focus:outline-none placeholder:text-[#0A0A0A]/50"
         />
         <button
           type="submit"
           disabled={!question.trim()}
           className="bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors shrink-0"
-        >
-          Perguntar
-        </button>
+        >{tr('Perguntar')}</button>
       </form>
 
       <Link
@@ -255,43 +250,40 @@ export function HomePage() {
       >
         <span className="flex items-center justify-between gap-3">
           <span className="min-w-0">
-            <span className="block text-[13px] text-[#0A0A0A]/60">Caminho de Adequação</span>
+            <span className="block text-[13px] text-[#0A0A0A]/60">{tr('Caminho de Adequação')}</span>
             <span className="block text-base text-[#0A0A0A]">
               {path.nextStage
-                ? `Etapa ${path.nextStage.number} de ${path.stages.length}: ${path.nextStage.title}`
-                : "Todas as etapas concluídas"}
+                ? tr('Etapa {{a}} de {{b}}: {{c}}', { a: path.nextStage.number, b: path.stages.length, c: path.nextStage.title })
+                : tr('Todas as etapas concluídas')}
             </span>
           </span>
           <span className="flex items-center gap-1.5 text-sm font-semibold text-[#B4201A] shrink-0">
-            {path.nextStage ? "Continuar" : "Revisar"} <ArrowRight className="w-4 h-4" />
+            {path.nextStage ? tr('Continuar') : tr('Revisar')} <ArrowRight className="w-4 h-4" />
           </span>
         </span>
         <span className="block h-1.5 rounded-full bg-[#0A0A0A]/8 overflow-hidden mt-3">
           <span className="block h-full bg-[#D92B21] rounded-full" style={{ width: `${path.percent}%` }} />
         </span>
         <span className="block text-[13px] text-[#0A0A0A]/60 mt-1.5">
-          {path.doneCount} de {path.totalCount} itens concluídos
-        </span>
+          {path.doneCount}{' '}{tr('de')}{' '}{path.totalCount}{' '}{tr('itens concluídos')}</span>
       </Link>
 
       {failed && (
         <div className="mb-4">
-          <Alert type="error" message="Parte das informações não pôde ser carregada. Atualize a página." />
+          <Alert type="error" message={tr('Parte das informações não pôde ser carregada. Atualize a página.')} />
         </div>
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-6 items-start">
         <section className="bg-white rounded-xl border border-[#0A0A0A]/10">
-          <h2 className="text-base text-[#0A0A0A] px-5 py-4 border-b border-[#0A0A0A]/8">
-            Precisa de atenção
-            {attention.length > 0 && (
+          <h2 className="text-base text-[#0A0A0A] px-5 py-4 border-b border-[#0A0A0A]/8">{tr('Precisa de atenção')}{attention.length > 0 && (
               <span className="ml-2 text-sm text-[#0A0A0A]/50">{attention.length}</span>
             )}
           </h2>
           {attention.length === 0 ? (
             <div className="flex items-center gap-3 px-5 py-8">
               <CheckCircle2 className="w-5 h-5 text-emerald-700 shrink-0" />
-              <p className="text-sm text-[#0A0A0A]/70">Nada pendente nesta unidade.</p>
+              <p className="text-sm text-[#0A0A0A]/70">{tr('Nada pendente nesta unidade.')}</p>
             </div>
           ) : (
             <ul>
@@ -326,32 +318,32 @@ export function HomePage() {
 
         <div className="space-y-6">
           <section className="bg-white rounded-xl border border-[#0A0A0A]/10 px-5 py-4">
-            <h2 className="text-base text-[#0A0A0A] mb-1">Panorama</h2>
+            <h2 className="text-base text-[#0A0A0A] mb-1">{tr('Panorama')}</h2>
             <Stat
-              label="Documentos aprovados"
-              value={`${approved} de ${documents.length}`}
+              label={tr('Documentos aprovados')}
+              value={`${approved} ${tr('de')} ${documents.length}`}
               to={`${base}/documents`}
             />
             {summary && (
               <>
                 <Stat
-                  label="Atividades no inventário"
+                  label={tr('Atividades no inventário')}
                   value={String(summary.ropaActivityCount)}
                   to={`${base}/pilares/ropa`}
                 />
                 <Stat
-                  label="Fornecedores com DPA"
-                  value={`${summary.vendorsWithDpaSigned} de ${summary.vendorsTotal}`}
+                  label={tr('Fornecedores com DPA')}
+                  value={`${summary.vendorsWithDpaSigned} ${tr('de')} ${summary.vendorsTotal}`}
                   to={`${base}/pilares/fornecedores`}
                 />
                 <Stat
-                  label="Colaboradores treinados"
-                  value={`${summary.employeesTrainedCount} de ${summary.employeesActiveTotal}`}
+                  label={tr('Colaboradores treinados')}
+                  value={`${summary.employeesTrainedCount} ${tr('de')} ${summary.employeesActiveTotal}`}
                   to={`${base}/pilares/treinamento`}
                 />
                 <Stat
-                  label="Encarregado (DPO)"
-                  value={summary.dpoName ?? "Não designado"}
+                  label={tr('Encarregado (DPO)')}
+                  value={summary.dpoName ?? tr('Não designado')}
                   to={canManageUsers ? "/users" : `${base}/pilares/quem-e-quem`}
                 />
               </>
@@ -360,13 +352,11 @@ export function HomePage() {
 
           <section className="bg-white rounded-xl border border-[#0A0A0A]/10 px-5 py-4">
             <div className="flex items-baseline justify-between mb-1">
-              <h2 className="text-base text-[#0A0A0A]">Documentos recentes</h2>
-              <Link to={`${base}/documents`} className="text-[13px] text-[#B4201A] hover:underline">
-                Ver todos
-              </Link>
+              <h2 className="text-base text-[#0A0A0A]">{tr('Documentos recentes')}</h2>
+              <Link to={`${base}/documents`} className="text-[13px] text-[#B4201A] hover:underline">{tr('Ver todos')}</Link>
             </div>
             {recent.length === 0 ? (
-              <p className="text-sm text-[#0A0A0A]/60 py-2">Nenhum documento ainda.</p>
+              <p className="text-sm text-[#0A0A0A]/60 py-2">{tr('Nenhum documento ainda.')}</p>
             ) : (
               recent.map((doc) => (
                 <Link

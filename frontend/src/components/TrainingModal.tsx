@@ -6,6 +6,7 @@ import { getErrorMessage } from "../api/errorUtils";
 import { TRAINING_METHOD_LABELS, type Training, type TrainingMethod } from "../types/training";
 import type { Employee } from "../types/employee";
 
+import { tr, trn } from '../i18n/tr'
 interface Props {
   workspaceId: string;
   onClose: () => void;
@@ -33,7 +34,7 @@ export function TrainingModal({ workspaceId, onClose, onSaved }: Props) {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (attendeeIds.length === 0) {
-      setError("Selecione ao menos um participante.");
+      setError(tr('Selecione ao menos um participante.'));
       return;
     }
     setError(null);
@@ -50,7 +51,7 @@ export function TrainingModal({ workspaceId, onClose, onSaved }: Props) {
       onSaved(saved);
       onClose();
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível registrar o treinamento."));
+      setError(getErrorMessage(err, tr('Não foi possível registrar o treinamento.')));
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +69,7 @@ export function TrainingModal({ workspaceId, onClose, onSaved }: Props) {
             <div className="w-8 h-8 rounded-lg bg-[#D92B21]/10 flex items-center justify-center">
               <GraduationCap className="w-4 h-4 text-[#B4201A]" />
             </div>
-            <h2 className="text-lg text-[#0A0A0A]">Registrar Treinamento</h2>
+            <h2 className="text-lg text-[#0A0A0A]">{tr('Registrar Treinamento')}</h2>
           </div>
           <button onClick={onClose} className="text-[#0A0A0A]/40 hover:text-[#0A0A0A] transition-colors">
             <X className="w-5 h-5" />
@@ -77,16 +78,16 @@ export function TrainingModal({ workspaceId, onClose, onSaved }: Props) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className={labelClass}>Título</label>
-            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required placeholder="Ex: Conscientização sobre LGPD - Turma 2026" className={inputClass} />
+            <label className={labelClass}>{tr('Título')}</label>
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required placeholder={tr('Ex: Conscientização sobre LGPD - Turma 2026')} className={inputClass} />
           </div>
           <div>
-            <label className={labelClass}>Descrição <span className="text-[#0A0A0A]/40">(opcional)</span></label>
+            <label className={labelClass}>{tr('Descrição')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span></label>
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={2} className={inputClass} />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className={labelClass}>Método</label>
+              <label className={labelClass}>{tr('Método')}</label>
               <select value={method} onChange={(e) => setMethod(e.target.value as TrainingMethod)} className={inputClass}>
                 {Object.entries(TRAINING_METHOD_LABELS).map(([value, label]) => (
                   <option key={value} value={value}>{label}</option>
@@ -94,17 +95,15 @@ export function TrainingModal({ workspaceId, onClose, onSaved }: Props) {
               </select>
             </div>
             <div>
-              <label className={labelClass}>Data</label>
+              <label className={labelClass}>{tr('Data')}</label>
               <input type="date" value={trainingDate} onChange={(e) => setTrainingDate(e.target.value)} required className={inputClass} />
             </div>
           </div>
 
           <div>
-            <label className={labelClass}>Participantes ({attendeeIds.length} selecionado{attendeeIds.length !== 1 ? "s" : ""})</label>
+            <label className={labelClass}>{trn(attendeeIds.length, 'Participantes ({{n}} selecionado)', 'Participantes ({{n}} selecionados)')}</label>
             {employees.length === 0 ? (
-              <p className="text-xs text-[#0A0A0A]/50">
-                Nenhum colaborador cadastrado ainda. Cadastre colaboradores na tela de Colaboradores antes de registrar um treinamento.
-              </p>
+              <p className="text-xs text-[#0A0A0A]/50">{tr('Nenhum colaborador cadastrado ainda. Cadastre colaboradores na tela de Colaboradores antes de registrar um treinamento.')}</p>
             ) : (
               <div className="max-h-40 overflow-y-auto border border-[#0A0A0A]/10 rounded-lg divide-y divide-[#0A0A0A]/8">
                 {employees.map((employee) => (
@@ -127,11 +126,9 @@ export function TrainingModal({ workspaceId, onClose, onSaved }: Props) {
 
           <div className="flex gap-3 pt-2">
             <button type="submit" disabled={isLoading} className="flex-1 bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors">
-              {isLoading ? "Registrando..." : "Registrar treinamento"}
+              {isLoading ? tr('Registrando...') : tr('Registrar treinamento')}
             </button>
-            <button type="button" onClick={onClose} className="flex-1 bg-[#0A0A0A]/5 hover:bg-[#0A0A0A]/10 text-[#0A0A0A] text-sm font-medium rounded-lg py-2.5 transition-colors">
-              Cancelar
-            </button>
+            <button type="button" onClick={onClose} className="flex-1 bg-[#0A0A0A]/5 hover:bg-[#0A0A0A]/10 text-[#0A0A0A] text-sm font-medium rounded-lg py-2.5 transition-colors">{tr('Cancelar')}</button>
           </div>
         </form>
       </div>

@@ -7,11 +7,12 @@ import { getErrorMessage } from "../api/errorUtils";
 import type { Vendor } from "../types/vendor";
 import type { TransferSafeguard } from "../types/vendor";
 
+import { tr } from '../i18n/tr'
 const TRANSFER_SAFEGUARD_LABELS: Record<TransferSafeguard, string> = {
-  DECISAO_ADEQUACAO: "Decisão de Adequação",
-  CLAUSULAS_CONTRATUAIS_PADRAO: "Cláusulas Contratuais Padrão",
-  CONSENTIMENTO_ESPECIFICO: "Consentimento Específico do Titular",
-  OUTRO: "Outro",
+  DECISAO_ADEQUACAO: tr('Decisão de Adequação'),
+  CLAUSULAS_CONTRATUAIS_PADRAO: tr('Cláusulas Contratuais Padrão'),
+  CONSENTIMENTO_ESPECIFICO: tr('Consentimento Específico do Titular'),
+  OUTRO: tr('Outro'),
 };
 
 interface Props {
@@ -66,7 +67,7 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
     setIsLoading(true);
     if (dpaSigned && !dpaSignedAt) {
       setError(
-        'Informe a data de assinatura do DPA, ou desmarque a opção "DPA assinado".',
+        tr('Informe a data de assinatura do DPA, ou desmarque a opção "DPA assinado".'),
       );
       return;
     }
@@ -92,7 +93,7 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
       onSaved(saved);
       onClose();
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível salvar o fornecedor."));
+      setError(getErrorMessage(err, tr('Não foi possível salvar o fornecedor.')));
     } finally {
       setIsLoading(false);
     }
@@ -111,7 +112,7 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
               <Truck className="w-4 h-4 text-[#B4201A]" />
             </div>
             <h2 className="text-lg text-[#0A0A0A]">
-              {editing ? "Editar Fornecedor" : "Novo Fornecedor"}
+              {editing ? tr('Editar Fornecedor') : tr('Novo Fornecedor')}
             </h2>
           </div>
           <button
@@ -124,15 +125,14 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className={labelClass}>
-              Setor <span className="text-[#0A0A0A]/40">(opcional)</span>
+            <label className={labelClass}>{tr('Setor')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span>
             </label>
             <select
               value={sectorId}
               onChange={(e) => setSectorId(e.target.value)}
               className={inputClass}
             >
-              <option value="">Sem setor definido</option>
+              <option value="">{tr('Sem setor definido')}</option>
               {sectors.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name}
@@ -141,39 +141,37 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
             </select>
           </div>
           <div>
-            <label className={labelClass}>Nome do fornecedor</label>
+            <label className={labelClass}>{tr('Nome do fornecedor')}</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              placeholder="Ex: AWS, Operadora de Plano de Saúde X"
+              placeholder={tr('Ex: AWS, Operadora de Plano de Saúde X')}
               className={inputClass}
             />
           </div>
 
           <div>
-            <label className={labelClass}>Serviço prestado</label>
+            <label className={labelClass}>{tr('Serviço prestado')}</label>
             <textarea
               value={serviceProvided}
               onChange={(e) => setServiceProvided(e.target.value)}
               required
               rows={2}
-              placeholder="Ex: Infraestrutura de nuvem, gestão de benefícios"
+              placeholder={tr('Ex: Infraestrutura de nuvem, gestão de benefícios')}
               className={inputClass}
             />
           </div>
 
           <div>
-            <label className={labelClass}>
-              Categorias de dado compartilhado
-            </label>
+            <label className={labelClass}>{tr('Categorias de dado compartilhado')}</label>
             <textarea
               value={sharedDataCategories}
               onChange={(e) => setSharedDataCategories(e.target.value)}
               required
               rows={2}
-              placeholder="Ex: dados de identificação, dados bancários"
+              placeholder={tr('Ex: dados de identificação, dados bancários')}
               className={inputClass}
             />
           </div>
@@ -185,18 +183,14 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
                 checked={dpaSigned}
                 onChange={(e) => setDpaSigned(e.target.checked)}
                 className="rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
-              />
-              DPA assinado
-            </label>
+              />{tr('DPA assinado')}</label>
             <label className="flex items-center gap-2 text-sm text-[#0A0A0A]/70 cursor-pointer">
               <input
                 type="checkbox"
                 checked={securityClausesConfirmed}
                 onChange={(e) => setSecurityClausesConfirmed(e.target.checked)}
                 className="rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
-              />
-              Cláusulas de segurança confirmadas
-            </label>
+              />{tr('Cláusulas de segurança confirmadas')}</label>
           </div>
 
                     <div className="border-t border-[#0A0A0A]/8 pt-4">
@@ -206,46 +200,41 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
                 checked={involvesInternationalTransfer}
                 onChange={(e) => setInvolvesInternationalTransfer(e.target.checked)}
                 className="rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
-              />
-              Envolve transferência internacional de dados
-            </label>
-            <p className="text-xs text-[#0A0A0A]/45 mb-3">
-              Marque se este fornecedor está sediado fora do Brasil, ou processa dado em servidor fora do país.
-            </p>
+              />{tr('Envolve transferência internacional de dados')}</label>
+            <p className="text-xs text-[#0A0A0A]/45 mb-3">{tr('Marque se este fornecedor está sediado fora do Brasil, ou processa dado em servidor fora do país.')}</p>
             {involvesInternationalTransfer && (
               <div className="space-y-3">
                 <div>
-                  <label className={labelClass}>País de destino</label>
+                  <label className={labelClass}>{tr('País de destino')}</label>
                   <input
                     type="text"
                     value={destinationCountry}
                     onChange={(e) => setDestinationCountry(e.target.value)}
-                    placeholder="Ex: Estados Unidos, Irlanda"
+                    placeholder={tr('Ex: Estados Unidos, Irlanda')}
                     className={inputClass}
                   />
                 </div>
                 <div>
-                  <label className={labelClass}>Garantia de proteção usada</label>
+                  <label className={labelClass}>{tr('Garantia de proteção usada')}</label>
                   <select
                     value={transferSafeguard}
                     onChange={(e) => setTransferSafeguard(e.target.value as TransferSafeguard)}
                     className={inputClass}
                   >
-                    <option value="">Selecione</option>
+                    <option value="">{tr('Selecione')}</option>
                     {Object.entries(TRANSFER_SAFEGUARD_LABELS).map(([value, label]) => (
                       <option key={value} value={value}>{label}</option>
                     ))}
                   </select>
                 </div>
                 <div>
-                  <label className={labelClass}>
-                    Detalhes da garantia <span className="text-[#0A0A0A]/40">(opcional)</span>
+                  <label className={labelClass}>{tr('Detalhes da garantia')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span>
                   </label>
                   <textarea
                     value={transferSafeguardDetails}
                     onChange={(e) => setTransferSafeguardDetails(e.target.value)}
                     rows={2}
-                    placeholder="Ex: qual cláusula específica, ou detalhe da decisão de adequação aplicável"
+                    placeholder={tr('Ex: qual cláusula específica, ou detalhe da decisão de adequação aplicável')}
                     className={inputClass}
                   />
                 </div>
@@ -255,7 +244,7 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
 
           {dpaSigned && (
             <div>
-              <label className={labelClass}>Data de assinatura do DPA</label>
+              <label className={labelClass}>{tr('Data de assinatura do DPA')}</label>
               <input
                 type="date"
                 value={dpaSignedAt}
@@ -267,8 +256,7 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
           )}
 
           <div>
-            <label className={labelClass}>
-              Observações <span className="text-[#0A0A0A]/40">(opcional)</span>
+            <label className={labelClass}>{tr('Observações')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span>
             </label>
             <textarea
               value={observations}
@@ -287,18 +275,16 @@ export function VendorModal({ workspaceId, editing, onClose, onSaved }: Props) {
               className="flex-1 bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
             >
               {isLoading
-                ? "Salvando..."
+                ? tr('Salvando...')
                 : editing
-                  ? "Salvar alterações"
-                  : "Adicionar fornecedor"}
+                  ? tr('Salvar alterações')
+                  : tr('Adicionar fornecedor')}
             </button>
             <button
               type="button"
               onClick={onClose}
               className="flex-1 bg-[#0A0A0A]/5 hover:bg-[#0A0A0A]/10 text-[#0A0A0A] text-sm font-medium rounded-lg py-2.5 transition-colors"
-            >
-              Cancelar
-            </button>
+            >{tr('Cancelar')}</button>
           </div>
         </form>
       </div>

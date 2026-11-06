@@ -13,6 +13,7 @@ import { useWorkspaces } from '../contexts/WorkspaceContext'
 import type { ChatConversation, ChatMessage } from '../types/chat'
 import type { SemanticSearchResult } from '../types/search'
 
+import { getSystemLanguage, tr } from '../i18n/tr'
 type View = 'list' | 'conversation'
 
 const INPUT_CLASS =
@@ -54,7 +55,7 @@ export function AssistantPanel({ workspaceId }: { workspaceId: string }) {
     setError(null)
     listConversations(workspaceId)
       .then(setConversations)
-      .catch((err) => setError(getErrorMessage(err, 'Não foi possível carregar as conversas.')))
+      .catch((err) => setError(getErrorMessage(err, tr('Não foi possível carregar as conversas.'))))
       .finally(() => setIsLoading(false))
   }
 
@@ -71,7 +72,7 @@ export function AssistantPanel({ workspaceId }: { workspaceId: string }) {
     try {
       setMessages(await getConversationMessages(conversationId))
     } catch (err) {
-      setError(getErrorMessage(err, 'Não foi possível carregar a conversa.'))
+      setError(getErrorMessage(err, tr('Não foi possível carregar a conversa.')))
     } finally {
       setIsLoading(false)
     }
@@ -89,7 +90,7 @@ export function AssistantPanel({ workspaceId }: { workspaceId: string }) {
       const assistantMessage = await sendConversationMessage(conversationId, text)
       setMessages((prev) => [...prev, assistantMessage])
     } catch (err) {
-      setError(getErrorMessage(err, 'O assistente não conseguiu responder agora.'))
+      setError(getErrorMessage(err, tr('O assistente não conseguiu responder agora.')))
     } finally {
       setIsSending(false)
     }
@@ -107,7 +108,7 @@ export function AssistantPanel({ workspaceId }: { workspaceId: string }) {
       setIsLoading(false)
       if (question) await sendMessage(conversation.id, question)
     } catch (err) {
-      setError(getErrorMessage(err, 'Não foi possível iniciar uma nova conversa.'))
+      setError(getErrorMessage(err, tr('Não foi possível iniciar uma nova conversa.')))
       setIsLoading(false)
     }
   }
@@ -149,7 +150,7 @@ export function AssistantPanel({ workspaceId }: { workspaceId: string }) {
     try {
       setResults(await semanticSearch(workspaceId, query))
     } catch (err) {
-      setSearchError(getErrorMessage(err, 'Não foi possível realizar a busca.'))
+      setSearchError(getErrorMessage(err, tr('Não foi possível realizar a busca.')))
     } finally {
       setIsSearching(false)
     }
@@ -164,7 +165,7 @@ export function AssistantPanel({ workspaceId }: { workspaceId: string }) {
 
   return (
     <aside
-      aria-label="Assistente IABill"
+      aria-label={tr('Assistente IABill')}
       className="fixed inset-0 z-50 lg:static lg:z-auto lg:w-96 lg:shrink-0 h-full bg-white lg:border-l border-[#0A0A0A]/10 flex flex-col"
     >
       <div className="flex items-center justify-between gap-2 px-4 py-3 border-b border-[#0A0A0A]/10">
@@ -172,7 +173,7 @@ export function AssistantPanel({ workspaceId }: { workspaceId: string }) {
           {assistantMode === 'chat' && view === 'conversation' && (
             <button
               onClick={handleBackToList}
-              aria-label="Voltar às conversas"
+              aria-label={tr('Voltar às conversas')}
               className="text-[#0A0A0A]/55 hover:text-[#0A0A0A]"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -180,7 +181,7 @@ export function AssistantPanel({ workspaceId }: { workspaceId: string }) {
           )}
           <Sparkles className="w-4 h-4 text-[#B4201A] shrink-0" />
           <div className="min-w-0">
-            <p className="text-sm font-medium text-[#0A0A0A] truncate">Assistente IABill</p>
+            <p className="text-sm font-medium text-[#0A0A0A] truncate">{tr('Assistente IABill')}</p>
             {currentWorkspace && (
               <p className="text-xs text-[#0A0A0A]/55 truncate">{currentWorkspace.name}</p>
             )}
@@ -191,8 +192,8 @@ export function AssistantPanel({ workspaceId }: { workspaceId: string }) {
             <button
               onClick={() => void startConversation()}
               className="text-[#0A0A0A]/55 hover:text-[#0A0A0A]"
-              title="Nova conversa"
-              aria-label="Nova conversa"
+              title={tr('Nova conversa')}
+              aria-label={tr('Nova conversa')}
             >
               <Plus className="w-4 h-4" />
             </button>
@@ -200,7 +201,7 @@ export function AssistantPanel({ workspaceId }: { workspaceId: string }) {
           <button
             onClick={closeAssistant}
             className="text-[#0A0A0A]/55 hover:text-[#0A0A0A]"
-            aria-label="Fechar assistente"
+            aria-label={tr('Fechar assistente')}
           >
             <X className="w-4 h-4" />
           </button>
@@ -209,11 +210,9 @@ export function AssistantPanel({ workspaceId }: { workspaceId: string }) {
 
       <div className="flex border-b border-[#0A0A0A]/10 px-2">
         <button className={tabClass(assistantMode === 'chat')} onClick={() => setAssistantMode('chat')}>
-          <Sparkles className="w-3.5 h-3.5" /> Perguntar
-        </button>
+          <Sparkles className="w-3.5 h-3.5" />{' '}{tr('Perguntar')}</button>
         <button className={tabClass(assistantMode === 'search')} onClick={() => setAssistantMode('search')}>
-          <Search className="w-3.5 h-3.5" /> Buscar trechos
-        </button>
+          <Search className="w-3.5 h-3.5" />{' '}{tr('Buscar trechos')}</button>
       </div>
 
       {assistantMode === 'search' ? (
@@ -223,26 +222,24 @@ export function AssistantPanel({ workspaceId }: { workspaceId: string }) {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              aria-label="Buscar nos documentos"
-              placeholder="Ex: por quanto tempo os dados ficam guardados?"
+              aria-label={tr('Buscar nos documentos')}
+              placeholder={tr('Ex: por quanto tempo os dados ficam guardados?')}
               className={INPUT_CLASS}
             />
-            <button type="submit" disabled={isSearching || !query.trim()} className={SUBMIT_CLASS} aria-label="Buscar">
+            <button type="submit" disabled={isSearching || !query.trim()} className={SUBMIT_CLASS} aria-label={tr('Buscar')}>
               <Search className="w-4 h-4" />
             </button>
           </form>
           <div className="flex-1 overflow-y-auto p-3 space-y-2">
             {!hasSearched && (
-              <p className="text-sm text-[#0A0A0A]/60 text-center mt-6 px-4">
-                Busca por significado nos documentos desta unidade, não só por palavra-chave.
-              </p>
+              <p className="text-sm text-[#0A0A0A]/60 text-center mt-6 px-4">{tr('Busca por significado nos documentos desta unidade, não só por palavra-chave.')}</p>
             )}
-            {isSearching && <p className="text-sm text-[#0A0A0A]/60 text-center mt-4">Buscando...</p>}
+            {isSearching && <p className="text-sm text-[#0A0A0A]/60 text-center mt-4">{tr('Buscando...')}</p>}
             {searchError && <p className="text-sm text-red-700 text-center">{searchError}</p>}
             {!isSearching && !searchError && hasSearched && results.length === 0 && (
               <div className="text-center mt-8">
                 <FileSearch className="w-7 h-7 text-[#0A0A0A]/25 mx-auto mb-2" />
-                <p className="text-sm text-[#0A0A0A]/60">Nenhum resultado encontrado para essa busca.</p>
+                <p className="text-sm text-[#0A0A0A]/60">{tr('Nenhum resultado encontrado para essa busca.')}</p>
               </div>
             )}
             {!isSearching &&
@@ -261,11 +258,9 @@ export function AssistantPanel({ workspaceId }: { workspaceId: string }) {
       ) : view === 'list' ? (
         <>
           <div className="flex-1 overflow-y-auto px-3 py-3 space-y-2">
-            {isLoading && <p className="text-sm text-[#0A0A0A]/60 text-center mt-4">Carregando...</p>}
+            {isLoading && <p className="text-sm text-[#0A0A0A]/60 text-center mt-4">{tr('Carregando...')}</p>}
             {!isLoading && conversations.length === 0 && (
-              <p className="text-sm text-[#0A0A0A]/60 text-center mt-8 px-4">
-                Pergunte sobre os documentos e tarefas desta unidade.
-              </p>
+              <p className="text-sm text-[#0A0A0A]/60 text-center mt-8 px-4">{tr('Pergunte sobre os documentos e tarefas desta unidade.')}</p>
             )}
             {conversations.map((c) => (
               <button
@@ -273,9 +268,9 @@ export function AssistantPanel({ workspaceId }: { workspaceId: string }) {
                 onClick={() => handleOpenConversation(c.id)}
                 className="w-full text-left bg-[#fbfaf6] hover:bg-[#0A0A0A]/6 rounded-lg px-3 py-2.5 transition-colors"
               >
-                <p className="text-sm text-[#0A0A0A] truncate">{c.title ?? 'Nova conversa'}</p>
+                <p className="text-sm text-[#0A0A0A] truncate">{c.title ?? tr('Nova conversa')}</p>
                 <p className="text-xs text-[#0A0A0A]/55 mt-0.5">
-                  {new Date(c.updatedAt).toLocaleString('pt-BR')}
+                  {new Date(c.updatedAt).toLocaleString(getSystemLanguage())}
                 </p>
               </button>
             ))}
@@ -286,7 +281,7 @@ export function AssistantPanel({ workspaceId }: { workspaceId: string }) {
       ) : (
         <>
           <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
-            {isLoading && <p className="text-sm text-[#0A0A0A]/60 text-center mt-4">Carregando...</p>}
+            {isLoading && <p className="text-sm text-[#0A0A0A]/60 text-center mt-4">{tr('Carregando...')}</p>}
             {messages.map((msg) => (
               <div key={msg.id} className={`flex ${msg.role === 'USER' ? 'justify-end' : 'justify-start'}`}>
                 <div
@@ -310,7 +305,7 @@ export function AssistantPanel({ workspaceId }: { workspaceId: string }) {
             ))}
             {isSending && (
               <div className="flex justify-start">
-                <div className="bg-[#f3f1ea] rounded-lg px-3 py-2 text-sm text-[#0A0A0A]/60">Pensando...</div>
+                <div className="bg-[#f3f1ea] rounded-lg px-3 py-2 text-sm text-[#0A0A0A]/60">{tr('Pensando...')}</div>
               </div>
             )}
             {error && <p className="text-sm text-red-700 text-center">{error}</p>}
@@ -339,12 +334,12 @@ function ChatInput({
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        aria-label="Mensagem para o assistente"
-        placeholder="Pergunte ou peça uma ação..."
+        aria-label={tr('Mensagem para o assistente')}
+        placeholder={tr('Pergunte ou peça uma ação...')}
         disabled={disabled}
         className={INPUT_CLASS}
       />
-      <button type="submit" disabled={disabled || !value.trim()} className={SUBMIT_CLASS} aria-label="Enviar">
+      <button type="submit" disabled={disabled || !value.trim()} className={SUBMIT_CLASS} aria-label={tr('Enviar')}>
         <Send className="w-4 h-4" />
       </button>
     </form>

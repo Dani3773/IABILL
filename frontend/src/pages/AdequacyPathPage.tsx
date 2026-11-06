@@ -9,6 +9,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useAdequacyPath } from "../hooks/useAdequacyPath";
 import type { PathCheck, PathStage } from "../utils/adequacyPath";
 
+import { getSystemLanguage, tr } from '../i18n/tr'
 function StageMarker({ stage, active }: { stage: PathStage; active: boolean }) {
   if (stage.status === "done") {
     return (
@@ -60,13 +61,12 @@ function CheckRow({
       <div className="min-w-0 flex-1">
         <p className={`text-[15px] font-medium ${check.state === "na" ? "text-[#0A0A0A]/55" : "text-[#0A0A0A]"}`}>
           {check.label}
-          {check.state === "na" && <span className="font-normal"> · não se aplica</span>}
+          {check.state === "na" && <span className="font-normal">{' '}{tr('· não se aplica')}</span>}
         </p>
         <p className="text-sm text-[#0A0A0A]/65 mt-0.5">{check.hint}</p>
         {check.confirmation && (
-          <p className="text-[13px] text-[#0A0A0A]/60 mt-1">
-            Registrado por {check.confirmation.confirmedByName} em{" "}
-            {new Date(check.confirmation.confirmedAt).toLocaleDateString("pt-BR")}
+          <p className="text-[13px] text-[#0A0A0A]/60 mt-1">{tr('Registrado por')}{' '}{check.confirmation.confirmedByName}{' '}{tr('em')}{" "}
+            {new Date(check.confirmation.confirmedAt).toLocaleDateString(getSystemLanguage())}
             {isManual && canConfirm && (
               <>
                 {" · "}
@@ -75,17 +75,13 @@ function CheckRow({
                   onClick={onRevoke}
                   disabled={busy}
                   className="text-[#B4201A] hover:underline disabled:opacity-50"
-                >
-                  Desfazer
-                </button>
+                >{tr('Desfazer')}</button>
               </>
             )}
           </p>
         )}
         {isManual && pending && !canConfirm && (
-          <p className="text-[13px] text-[#0A0A0A]/60 mt-1">
-            Um administrador ou o Encarregado confirma este item.
-          </p>
+          <p className="text-[13px] text-[#0A0A0A]/60 mt-1">{tr('Um administrador ou o Encarregado confirma este item.')}</p>
         )}
         {pending && (
           <div className="flex flex-wrap items-center gap-2 mt-2.5">
@@ -144,7 +140,7 @@ export function AdequacyPathPage() {
     }
   }, [requested]);
 
-  if (isLoading) return <LoadingSpinner label="Montando o caminho..." />;
+  if (isLoading) return <LoadingSpinner label={tr('Montando o caminho...')} />;
 
   function openStage(id: string) {
     setSearchParams({ etapa: id }, { replace: true });
@@ -159,7 +155,7 @@ export function AdequacyPathPage() {
       else await revokeAdequacyItem(workspaceId, check.manualItem);
       await reload();
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível salvar este item."));
+      setError(getErrorMessage(err, tr('Não foi possível salvar este item.')));
     } finally {
       setBusyItem(null);
     }
@@ -171,9 +167,8 @@ export function AdequacyPathPage() {
   return (
     <div>
       <div className="mb-5">
-        <h1 className="text-xl text-[#0A0A0A]">Caminho de Adequação</h1>
-        <p className="text-sm text-[#0A0A0A]/60 mt-0.5">
-          Siga as etapas em ordem. Aplicável a esta unidade: {regimes.join(" e ")}.
+        <h1 className="text-xl text-[#0A0A0A]">{tr('Caminho de Adequação')}</h1>
+        <p className="text-sm text-[#0A0A0A]/60 mt-0.5">{tr('Siga as etapas em ordem. Aplicável a esta unidade:')}{' '}{regimes.join(" e ")}.
         </p>
       </div>
 
@@ -181,11 +176,11 @@ export function AdequacyPathPage() {
         <div className="flex items-baseline justify-between gap-3 mb-2">
           <p className="text-sm font-medium text-[#0A0A0A]">
             {path.nextStage
-              ? `Próxima etapa: ${path.nextStage.number}. ${path.nextStage.title}`
-              : "Todas as etapas concluídas"}
+              ? tr('Próxima etapa: {{a}}. {{b}}', { a: path.nextStage.number, b: path.nextStage.title })
+              : tr('Todas as etapas concluídas')}
           </p>
           <p className="text-sm text-[#0A0A0A]/65 shrink-0">
-            {path.doneCount} de {path.totalCount} itens
+            {path.doneCount}{' '}{tr('de')}{' '}{path.totalCount}{' '}{tr('itens')}
           </p>
         </div>
         <div
@@ -193,7 +188,7 @@ export function AdequacyPathPage() {
           aria-valuenow={path.percent}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label="Progresso do Caminho de Adequação"
+          aria-label={tr('Progresso do Caminho de Adequação')}
           className="h-2 rounded-full bg-[#0A0A0A]/8 overflow-hidden"
         >
           <div className="h-full bg-[#D92B21] rounded-full transition-all" style={{ width: `${path.percent}%` }} />
@@ -201,15 +196,12 @@ export function AdequacyPathPage() {
       </div>
 
       {!path.nextStage && (
-        <div className="mb-5 bg-emerald-50 border border-emerald-200 rounded-xl px-5 py-4 text-sm text-emerald-900">
-          Você cumpriu todas as etapas e tem as evidências registradas no sistema. Mantenha a etapa
-          de Manutenção em dia. Isso não substitui orientação jurídica.
-        </div>
+        <div className="mb-5 bg-emerald-50 border border-emerald-200 rounded-xl px-5 py-4 text-sm text-emerald-900">{tr('Você cumpriu todas as etapas e tem as evidências registradas no sistema. Mantenha a etapa de Manutenção em dia. Isso não substitui orientação jurídica.')}</div>
       )}
 
       {failed && (
         <div className="mb-5">
-          <Alert type="error" message="Parte das informações não pôde ser carregada, então alguns itens podem aparecer como pendentes. Atualize a página." />
+          <Alert type="error" message={tr('Parte das informações não pôde ser carregada, então alguns itens podem aparecer como pendentes. Atualize a página.')} />
         </div>
       )}
       {error && (
@@ -219,7 +211,7 @@ export function AdequacyPathPage() {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)] gap-5 items-start">
-        <nav aria-label="Etapas do caminho" className="bg-white rounded-xl border border-[#0A0A0A]/10 p-2">
+        <nav aria-label={tr('Etapas do caminho')} className="bg-white rounded-xl border border-[#0A0A0A]/10 p-2">
           <ol>
             {path.stages.map((item) => {
               const active = item.id === stage.id;
@@ -246,13 +238,12 @@ export function AdequacyPathPage() {
         </nav>
 
         <section ref={detailRef} className="bg-white rounded-xl border border-[#0A0A0A]/10 px-5 py-5 scroll-mt-4">
-          <p className="text-[13px] text-[#0A0A0A]/60">
-            Etapa {stage.number} de {path.stages.length}
+          <p className="text-[13px] text-[#0A0A0A]/60">{tr('Etapa')}{' '}{stage.number}{' '}{tr('de')}{' '}{path.stages.length}
           </p>
           <h2 className="text-lg text-[#0A0A0A] mt-0.5">{stage.title}</h2>
           <p className="text-[15px] text-[#0A0A0A]/75 mt-2 leading-relaxed">{stage.why}</p>
 
-          <h3 className="text-sm font-medium text-[#0A0A0A] mt-5 mb-2">O que a lei pede</h3>
+          <h3 className="text-sm font-medium text-[#0A0A0A] mt-5 mb-2">{tr('O que a lei pede')}</h3>
           <ul className="space-y-1.5">
             {stage.citations.map((citation) => (
               <li key={`${citation.regime}-${citation.reference}`} className="flex items-baseline gap-2 text-sm">
@@ -270,12 +261,11 @@ export function AdequacyPathPage() {
               to={stage.guide.to}
               className="inline-flex items-center gap-1.5 text-[13px] text-[#B4201A] hover:underline mt-3"
             >
-              <BookOpen className="w-3.5 h-3.5" />
-              Entender melhor: {stage.guide.label}
+              <BookOpen className="w-3.5 h-3.5" />{tr('Entender melhor:')}{' '}{stage.guide.label}
             </Link>
           )}
 
-          <h3 className="text-sm font-medium text-[#0A0A0A] mt-5 mb-1">O que fazer</h3>
+          <h3 className="text-sm font-medium text-[#0A0A0A] mt-5 mb-1">{tr('O que fazer')}</h3>
           <ul>
             {stage.checks.map((check) => (
               <CheckRow
@@ -314,10 +304,7 @@ export function AdequacyPathPage() {
         </section>
       </div>
 
-      <p className="text-[13px] text-[#0A0A0A]/55 mt-5">
-        O caminho organiza o que a lei pede e registra o que foi feito. Ele não é um parecer jurídico nem
-        garante conformidade. Consulte um profissional para decisões específicas.
-      </p>
+      <p className="text-[13px] text-[#0A0A0A]/55 mt-5">{tr('O caminho organiza o que a lei pede e registra o que foi feito. Ele não é um parecer jurídico nem garante conformidade. Consulte um profissional para decisões específicas.')}</p>
     </div>
   );
 }

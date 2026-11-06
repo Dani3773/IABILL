@@ -5,6 +5,7 @@ import { startMfaSetup, confirmMfaSetup } from "../api/authService";
 import { getErrorMessage } from "../api/errorUtils";
 import { Alert } from "./Alert";
 
+import { tr } from '../i18n/tr'
 interface Props {
   onClose: () => void;
   onEnabled: () => void;
@@ -24,7 +25,7 @@ export function MfaSetupModal({ onClose, onEnabled }: Props) {
         const dataUrl = await QRCode.toDataURL(result.otpAuthUri);
         setQrDataUrl(dataUrl);
       })
-      .catch((err) => setError(getErrorMessage(err, "Não foi possível iniciar a configuração de MFA.")));
+      .catch((err) => setError(getErrorMessage(err, tr('Não foi possível iniciar a configuração de MFA.'))));
   }, []);
 
   async function handleSubmit(e: FormEvent) {
@@ -37,10 +38,10 @@ export function MfaSetupModal({ onClose, onEnabled }: Props) {
         onEnabled();
         onClose();
       } else {
-        setError("Código inválido. Confira o aplicativo autenticador e tente novamente.");
+        setError(tr('Código inválido. Confira o aplicativo autenticador e tente novamente.'));
       }
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível confirmar o código."));
+      setError(getErrorMessage(err, tr('Não foi possível confirmar o código.')));
     } finally {
       setIsLoading(false);
     }
@@ -54,30 +55,24 @@ export function MfaSetupModal({ onClose, onEnabled }: Props) {
             <div className="w-8 h-8 rounded-lg bg-[#D92B21]/10 flex items-center justify-center">
               <ShieldCheck className="w-4 h-4 text-[#B4201A]" />
             </div>
-            <h2 className="text-lg text-[#0A0A0A]">Ativar Verificação em 2 Etapas</h2>
+            <h2 className="text-lg text-[#0A0A0A]">{tr('Ativar Verificação em 2 Etapas')}</h2>
           </div>
           <button onClick={onClose} className="text-[#0A0A0A]/40 hover:text-[#0A0A0A] transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <p className="text-sm text-[#0A0A0A]/60 mb-4">
-          Escaneie o código abaixo com o Google Authenticator, Authy ou outro aplicativo compatível.
-        </p>
+        <p className="text-sm text-[#0A0A0A]/60 mb-4">{tr('Escaneie o código abaixo com o Google Authenticator, Authy ou outro aplicativo compatível.')}</p>
 
         {qrDataUrl ? (
-          <img src={qrDataUrl} alt="QR Code para configurar MFA" className="mx-auto mb-4 rounded-lg" />
+          <img src={qrDataUrl} alt={tr('QR Code para configurar MFA')} className="mx-auto mb-4 rounded-lg" />
         ) : (
-          <div className="h-48 flex items-center justify-center text-sm text-[#0A0A0A]/40">
-            Gerando código...
-          </div>
+          <div className="h-48 flex items-center justify-center text-sm text-[#0A0A0A]/40">{tr('Gerando código...')}</div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-medium text-[#0A0A0A]/60 mb-1.5">
-              Digite o código gerado pelo aplicativo
-            </label>
+            <label className="block text-xs font-medium text-[#0A0A0A]/60 mb-1.5">{tr('Digite o código gerado pelo aplicativo')}</label>
             <input
               type="text"
               inputMode="numeric"
@@ -96,7 +91,7 @@ export function MfaSetupModal({ onClose, onEnabled }: Props) {
             disabled={isLoading || code.length !== 6}
             className="w-full bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
           >
-            {isLoading ? "Confirmando..." : "Confirmar e ativar"}
+            {isLoading ? tr('Confirmando...') : tr('Confirmar e ativar')}
           </button>
         </form>
       </div>

@@ -1,3 +1,4 @@
+import { tr } from '../../i18n/tr'
 interface Props {
   className?: string
   showWordmark?: boolean
@@ -18,7 +19,7 @@ export function Logo({ className, showWordmark = true }: Props) {
   return (
     <span className={`iabill-logo ${className ?? ''}`}>
       <LogoMark className="iabill-logo__mark" />
-      {showWordmark && <span className="iabill-logo__word">IABill</span>}
+      {showWordmark && <span className="iabill-logo__word">{tr('IABill')}</span>}
     </span>
   )
 }

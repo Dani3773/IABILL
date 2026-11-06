@@ -8,6 +8,7 @@ import { Alert } from "../components/Alert";
 import { getErrorMessage } from "../api/errorUtils";
 import type { Vendor } from "../types/vendor";
 
+import { getSystemLanguage, tr } from '../i18n/tr'
 export function VendorsPage() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const [vendors, setVendors] = useState<Vendor[]>([]);
@@ -25,7 +26,7 @@ export function VendorsPage() {
     setIsLoading(true);
     fetchVendors(id)
       .then(setVendors)
-      .catch((err) => setError(getErrorMessage(err, "Não foi possível carregar os fornecedores.")))
+      .catch((err) => setError(getErrorMessage(err, tr('Não foi possível carregar os fornecedores.'))))
       .finally(() => setIsLoading(false));
   }
 
@@ -37,33 +38,29 @@ export function VendorsPage() {
   }
 
   async function handleDelete(id: string) {
-    if (!window.confirm("Remover este fornecedor do registro?")) return;
+    if (!window.confirm(tr('Remover este fornecedor do registro?'))) return;
     try {
       await deleteVendor(id);
       setVendors((prev) => prev.filter((v) => v.id !== id));
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível remover o fornecedor."));
+      setError(getErrorMessage(err, tr('Não foi possível remover o fornecedor.')));
     }
   }
 
-  if (isLoading) return <LoadingSpinner label="Carregando fornecedores..." />;
+  if (isLoading) return <LoadingSpinner label={tr('Carregando fornecedores...')} />;
 
   return (
     <div>
 
       <div className="flex items-center justify-between mb-2">
         <div>
-          <h1 className="text-xl text-[#0A0A0A]">Fornecedores e Terceiros</h1>
-          <p className="text-sm text-[#0A0A0A]/55 mt-0.5">
-            Registro de fornecedores/operadores com acesso a dados pessoais, conforme Art. 39 da LGPD.
-          </p>
+          <h1 className="text-xl text-[#0A0A0A]">{tr('Fornecedores e Terceiros')}</h1>
+          <p className="text-sm text-[#0A0A0A]/55 mt-0.5">{tr('Registro de fornecedores/operadores com acesso a dados pessoais, conforme Art. 39 da LGPD.')}</p>
         </div>
         <button
           onClick={() => { setEditing(null); setShowModal(true); }}
           className="bg-[#D92B21] hover:bg-[#B4201A] text-white text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors shrink-0"
-        >
-          + Novo Fornecedor
-        </button>
+        >{tr('+ Novo Fornecedor')}</button>
       </div>
 
       {error && <div className="my-4"><Alert type="error" message={error} /></div>}
@@ -71,7 +68,7 @@ export function VendorsPage() {
       {vendors.length === 0 ? (
         <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-10 text-center mt-6">
           <Truck className="w-8 h-8 text-[#0A0A0A]/25 mx-auto mb-3" />
-          <p className="text-[#0A0A0A]/55 text-sm">Nenhum fornecedor registrado ainda.</p>
+          <p className="text-[#0A0A0A]/55 text-sm">{tr('Nenhum fornecedor registrado ainda.')}</p>
         </div>
       ) : (
         <div className="space-y-2 mt-6">
@@ -89,31 +86,32 @@ export function VendorsPage() {
                   </div>
                   <p className="text-xs text-[#0A0A0A]/60 mb-2">{vendor.serviceProvided}</p>
                   <p className="text-xs text-[#0A0A0A]/50 mb-3">
-                    <span className="text-[#0A0A0A]/70">Dados compartilhados:</span> {vendor.sharedDataCategories}
+                    <span className="text-[#0A0A0A]/70">{tr('Dados compartilhados:')}</span> {vendor.sharedDataCategories}
                   </p>
                   <div className="flex items-center gap-4 text-xs">
                     <span className={`flex items-center gap-1 ${vendor.dpaSigned ? "text-[#0A0A0A]" : "text-[#0A0A0A]/40"}`}>
-                      {vendor.dpaSigned ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
-                      DPA {vendor.dpaSigned ? `assinado${vendor.dpaSignedAt ? ` em ${new Date(vendor.dpaSignedAt).toLocaleDateString("pt-BR")}` : ""}` : "não assinado"}
+                      {vendor.dpaSigned ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}{vendor.dpaSigned
+                        ? vendor.dpaSignedAt
+                          ? tr('DPA assinado em {{a}}', { a: new Date(vendor.dpaSignedAt).toLocaleDateString(getSystemLanguage()) })
+                          : tr('DPA assinado')
+                        : tr('DPA não assinado')}
                     </span>
                     <span className={`flex items-center gap-1 ${vendor.securityClausesConfirmed ? "text-[#0A0A0A]" : "text-[#0A0A0A]/40"}`}>
-                      {vendor.securityClausesConfirmed ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
-                      Cláusulas de segurança
-                    </span>
+                      {vendor.securityClausesConfirmed ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}{tr('Cláusulas de segurança')}</span>
                   </div>
                 </div>
                 <div className="flex gap-2 shrink-0">
                   <button
                     onClick={() => { setEditing(vendor); setShowModal(true); }}
                     className="text-[#0A0A0A]/40 hover:text-[#B4201A] transition-colors"
-                    title="Editar"
+                    title={tr('Editar')}
                   >
                     <Pencil className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDelete(vendor.id)}
                     className="text-[#0A0A0A]/40 hover:text-red-600 transition-colors"
-                    title="Remover"
+                    title={tr('Remover')}
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

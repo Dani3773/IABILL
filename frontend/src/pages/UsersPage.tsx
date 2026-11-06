@@ -7,6 +7,7 @@ import { Alert } from '../components/Alert'
 import { getErrorMessage } from '../api/errorUtils'
 import type { User } from '../types/user'
 
+import { tr, trn } from '../i18n/tr'
 export function UsersPage() {
   const [users, setUsers] = useState<User[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -17,7 +18,7 @@ export function UsersPage() {
   useEffect(() => {
     fetchUsers()
       .then(setUsers)
-      .catch((err) => setError(getErrorMessage(err, 'Não foi possível carregar os usuários.')))
+      .catch((err) => setError(getErrorMessage(err, tr('Não foi possível carregar os usuários.'))))
       .finally(() => setIsLoading(false))
   }, [])
 
@@ -35,23 +36,21 @@ export function UsersPage() {
     }
   }
 
-  if (isLoading) return <LoadingSpinner label="Carregando usuários..." />
+  if (isLoading) return <LoadingSpinner label={tr('Carregando usuários...')} />
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-xl text-[#0A0A0A]">Usuários</h2>
+          <h2 className="text-xl text-[#0A0A0A]">{tr('Usuários')}</h2>
           <p className="text-sm text-[#0A0A0A]/50 mt-0.5">
-            {users.length} {users.length === 1 ? "usuário cadastrado" : "usuários cadastrados"}
+            {trn(users.length, '{{n}} usuário cadastrado', '{{n}} usuários cadastrados')}
           </p>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
           className="bg-[#D92B21] hover:bg-[#B4201A] text-white text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors"
-        >
-          + Novo Usuário
-        </button>
+        >{tr('+ Novo Usuário')}</button>
       </div>
 
       {error && <div className="mb-4"><Alert type="error" message={error} /></div>}
@@ -68,9 +67,7 @@ export function UsersPage() {
             </div>
             <div className="flex items-center gap-3">
               {user.dpoSubstitute && (
-                <span className="text-xs px-2 py-1 rounded font-medium bg-[#D92B21]/12 text-[#0A0A0A]">
-                  Substituto
-                </span>
+                <span className="text-xs px-2 py-1 rounded font-medium bg-[#D92B21]/12 text-[#0A0A0A]">{tr('Substituto')}</span>
               )}
               <span
                 className={`text-xs px-2 py-1 rounded font-medium ${
@@ -86,15 +83,13 @@ export function UsersPage() {
                   onClick={() => handleToggleSubstitute(user.id)}
                   className="text-sm text-[#0A0A0A] hover:underline font-medium"
                 >
-                  {user.dpoSubstitute ? 'Remover substituto' : 'Marcar como substituto'}
+                  {user.dpoSubstitute ? tr('Remover substituto') : tr('Marcar como substituto')}
                 </button>
               )}
               <button
                 onClick={() => setAssigningUser(user)}
                 className="text-sm text-[#0A0A0A] hover:underline font-medium"
-              >
-                Gerenciar workspaces
-              </button>
+              >{tr('Gerenciar unidades')}</button>
             </div>
           </div>
         ))}

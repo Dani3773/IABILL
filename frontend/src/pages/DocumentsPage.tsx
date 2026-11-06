@@ -18,6 +18,7 @@ import {
   DOCUMENT_TYPE_SHORT_LABELS,
 } from "../utils/documentLabels";
 
+import { getSystemLanguage, tr, trn } from '../i18n/tr'
 const FILTER_CLASS =
   "rounded-lg bg-white text-sm text-[#0A0A0A] px-3 py-2.5 border border-[#0A0A0A]/20 hover:border-[#0A0A0A]/40 focus:outline-none focus:border-[#D92B21] transition-colors";
 
@@ -49,7 +50,7 @@ export function DocumentsPage() {
     fetchDocumentsByWorkspace(workspaceId)
       .then(setDocuments)
       .catch((err) =>
-        setError(getErrorMessage(err, "Não foi possível carregar os documentos.")),
+        setError(getErrorMessage(err, tr('Não foi possível carregar os documentos.'))),
       )
       .finally(() => setIsLoading(false));
   }, [workspaceId]);
@@ -75,7 +76,7 @@ export function DocumentsPage() {
       const updated = await dismissReviewFlag(documentId);
       setDocuments((prev) => prev.map((d) => (d.id === documentId ? updated : d)));
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível dispensar o aviso."));
+      setError(getErrorMessage(err, tr('Não foi possível dispensar o aviso.')));
     }
   }
 
@@ -117,24 +118,22 @@ export function DocumentsPage() {
       );
   }, [documents, titleQuery, typeFilter, statusFilter, attentionOnly]);
 
-  if (isLoading) return <LoadingSpinner label="Carregando documentos..." />;
+  if (isLoading) return <LoadingSpinner label={tr('Carregando documentos...')} />;
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl text-[#0A0A0A]">Documentos</h1>
+          <h1 className="text-xl text-[#0A0A0A]">{tr('Documentos')}</h1>
           <p className="text-sm text-[#0A0A0A]/50 mt-0.5">
-            {documents.length} {documents.length === 1 ? "documento" : "documentos"}
-            {attentionCount > 0 && ` · ${attentionCount} ${attentionCount === 1 ? "precisa" : "precisam"} de revisão`}
+            {trn(documents.length, '{{n}} documento', '{{n}} documentos')}
+            {attentionCount > 0 && trn(attentionCount, ' · {{n}} precisa de revisão', ' · {{n}} precisam de revisão')}
           </p>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
           className="bg-[#D92B21] hover:bg-[#B4201A] text-white text-sm font-semibold rounded-lg px-4 py-2.5 transition-colors"
-        >
-          + Novo Documento
-        </button>
+        >{tr('+ Novo Documento')}</button>
       </div>
 
       {error && <div className="mb-4"><Alert type="error" message={error} /></div>}
@@ -142,7 +141,7 @@ export function DocumentsPage() {
       {documents.length === 0 ? (
         <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-10 text-center">
           <FileText className="w-8 h-8 text-[#0A0A0A]/25 mx-auto mb-3" />
-          <p className="text-[#0A0A0A]/60 text-sm">Nenhum documento cadastrado ainda nesta unidade.</p>
+          <p className="text-[#0A0A0A]/60 text-sm">{tr('Nenhum documento cadastrado ainda nesta unidade.')}</p>
         </div>
       ) : (
         <>
@@ -153,18 +152,18 @@ export function DocumentsPage() {
                 type="search"
                 value={titleQuery}
                 onChange={(e) => setTitleQuery(e.target.value)}
-                aria-label="Buscar documento pelo título"
-                placeholder="Buscar pelo título"
+                aria-label={tr('Buscar documento pelo título')}
+                placeholder={tr('Buscar pelo título')}
                 className={`${FILTER_CLASS} w-full pl-9`}
               />
             </div>
             <select
               value={typeFilter}
               onChange={(e) => setFilter("tipo", e.target.value)}
-              aria-label="Filtrar por tipo"
+              aria-label={tr('Filtrar por tipo')}
               className={FILTER_CLASS}
             >
-              <option value="">Todos os tipos</option>
+              <option value="">{tr('Todos os tipos')}</option>
               {(Object.keys(DOCUMENT_TYPE_LABELS) as DocumentType[]).map((type) => (
                 <option key={type} value={type}>
                   {DOCUMENT_TYPE_SHORT_LABELS[type]}
@@ -174,10 +173,10 @@ export function DocumentsPage() {
             <select
               value={statusFilter}
               onChange={(e) => setFilter("status", e.target.value)}
-              aria-label="Filtrar por status"
+              aria-label={tr('Filtrar por status')}
               className={FILTER_CLASS}
             >
-              <option value="">Todos os status</option>
+              <option value="">{tr('Todos os status')}</option>
               {(Object.keys(DOCUMENT_STATUS_LABELS) as DocumentStatus[]).map((status) => (
                 <option key={status} value={status}>
                   {DOCUMENT_STATUS_LABELS[status]}
@@ -192,17 +191,14 @@ export function DocumentsPage() {
                 attentionOnly ? "border-[#D92B21] text-[#B4201A] bg-[#D92B21]/8" : ""
               }`}
             >
-              <AlertTriangle className="w-3.5 h-3.5" />
-              Precisam de revisão
-            </button>
+              <AlertTriangle className="w-3.5 h-3.5" />{tr('Precisam de revisão')}</button>
             {hasFilters && (
               <button
                 type="button"
                 onClick={clearFilters}
                 className="flex items-center gap-1 text-sm text-[#0A0A0A]/65 hover:text-[#0A0A0A] px-1 py-2"
               >
-                <X className="w-3.5 h-3.5" /> Limpar
-              </button>
+                <X className="w-3.5 h-3.5" />{' '}{tr('Limpar')}</button>
             )}
           </div>
 
@@ -211,21 +207,19 @@ export function DocumentsPage() {
             onClick={() => openAssistant("search")}
             className="flex items-center gap-1.5 text-[13px] text-[#B4201A] hover:underline mb-3"
           >
-            <Sparkles className="w-3.5 h-3.5" />
-            Procurar por assunto dentro dos documentos
-          </button>
+            <Sparkles className="w-3.5 h-3.5" />{tr('Procurar por assunto dentro dos documentos')}</button>
 
           {visibleDocuments.length === 0 ? (
             <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-10 text-center">
-              <p className="text-[#0A0A0A]/60 text-sm">Nenhum documento com esses filtros.</p>
+              <p className="text-[#0A0A0A]/60 text-sm">{tr('Nenhum documento com esses filtros.')}</p>
             </div>
           ) : (
             <div className="bg-white rounded-xl border border-[#0A0A0A]/10 overflow-hidden">
               <div className="hidden md:grid grid-cols-[minmax(0,1fr)_190px_120px_100px] gap-4 px-4 py-2.5 border-b border-[#0A0A0A]/10 text-xs font-medium text-[#0A0A0A]/60">
-                <span>Documento</span>
-                <span>Tipo</span>
-                <span>Status</span>
-                <span>Criado em</span>
+                <span>{tr('Documento')}</span>
+                <span>{tr('Tipo')}</span>
+                <span>{tr('Status')}</span>
+                <span>{tr('Criado em')}</span>
               </div>
               {visibleDocuments.map((doc) => (
                 <div key={doc.id} className="relative border-b border-[#0A0A0A]/8 last:border-0 hover:bg-[#0A0A0A]/3 transition-colors">
@@ -249,7 +243,7 @@ export function DocumentsPage() {
                       </span>
                     </span>
                     <span className="order-4 md:order-none text-[13px] text-[#0A0A0A]/65 text-right md:text-left">
-                      {new Date(doc.createdAt).toLocaleDateString("pt-BR")}
+                      {new Date(doc.createdAt).toLocaleDateString(getSystemLanguage())}
                     </span>
                   </Link>
 
@@ -257,25 +251,20 @@ export function DocumentsPage() {
                     <div className="flex items-center justify-between gap-3 px-4 pb-3 md:pl-10.5">
                       <p className="flex items-center gap-1.5 text-[13px] text-amber-800 min-w-0">
                         <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-                        <span>
-                          Revisão recomendada
-                          {doc.reviewRecommendedReason && ` — ${doc.reviewRecommendedReason}`}
+                        <span>{tr('Revisão recomendada')}{doc.reviewRecommendedReason && ` — ${doc.reviewRecommendedReason}`}
                         </span>
                       </p>
                       <button
                         onClick={(e) => handleDismissReviewFlag(e, doc.id)}
                         className="text-[13px] text-[#0A0A0A]/65 hover:text-[#0A0A0A] shrink-0 font-medium"
-                      >
-                        Dispensar
-                      </button>
+                      >{tr('Dispensar')}</button>
                     </div>
                   )}
 
                   {isOverdue(doc) && (
                     <p className="flex items-center gap-1.5 text-[13px] text-blue-700 px-4 pb-3 md:pl-10.5">
-                      <Clock className="w-3.5 h-3.5 shrink-0" />
-                      Revisão periódica vencida desde{" "}
-                      {new Date(doc.reviewDueAt!).toLocaleDateString("pt-BR")}
+                      <Clock className="w-3.5 h-3.5 shrink-0" />{tr('Revisão periódica vencida desde')}{" "}
+                      {new Date(doc.reviewDueAt!).toLocaleDateString(getSystemLanguage())}
                     </p>
                   )}
                 </div>

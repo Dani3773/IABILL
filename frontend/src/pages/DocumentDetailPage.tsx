@@ -24,6 +24,7 @@ import { ArrowLeft, Download } from "lucide-react";
 import { renderMarkdown } from "../utils/markdown";
 import { DOCUMENT_STATUS_LABELS, DOCUMENT_STATUS_STYLES } from "../utils/documentLabels";
 
+import { getSystemLanguage, tr } from '../i18n/tr'
 export function DocumentDetailPage() {
   const { documentId } = useParams<{ documentId: string }>();
   const { role } = useAuth();
@@ -41,13 +42,13 @@ export function DocumentDetailPage() {
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
 
   const DOCUMENT_TYPE_LABELS: Record<DocumentType, string> = {
-    INVENTARIO_DADOS: "Inventário de Dados",
-    POLITICA_PRIVACIDADE: "Política de Privacidade",
-    RELATORIO_CONFORMIDADE: "Relatório de Conformidade",
-    RAT: "RAT (Registro de Atividades de Tratamento)",
-    RIPD_DPIA: "RIPD/DPIA (Relatório de Impacto à Proteção de Dados)",
-    POLITICA_SEGURANCA_INFORMACAO: "Política de Segurança da Informação (PSI)",
-    MATERIAL_TREINAMENTO: "Material de Treinamento/Conscientização",
+    INVENTARIO_DADOS: tr('Inventário de Dados'),
+    POLITICA_PRIVACIDADE: tr('Política de Privacidade'),
+    RELATORIO_CONFORMIDADE: tr('Relatório de Conformidade'),
+    RAT: tr('RAT (Registro de Atividades de Tratamento)'),
+    RIPD_DPIA: tr('RIPD/DPIA (Relatório de Impacto à Proteção de Dados)'),
+    POLITICA_SEGURANCA_INFORMACAO: tr('Política de Segurança da Informação (PSI)'),
+    MATERIAL_TREINAMENTO: tr('Material de Treinamento/Conscientização'),
   };
 
   useEffect(() => {
@@ -90,7 +91,7 @@ export function DocumentDetailPage() {
         setDocument(doc);
         setEditedContent(doc.generatedContent ?? "");
       })
-      .catch((err) => setError(getErrorMessage(err, "Não foi possível carregar o documento.")))
+      .catch((err) => setError(getErrorMessage(err, tr('Não foi possível carregar o documento.'))))
       .finally(() => setIsLoading(false));
   }
 
@@ -107,9 +108,9 @@ export function DocumentDetailPage() {
       await generateDocumentContent(documentId, { instruction });
       loadDocument(documentId);
       setInstruction("");
-      setSuccessMessage("Conteúdo gerado com sucesso pela IA.");
+      setSuccessMessage(tr('Conteúdo gerado com sucesso pela IA.'));
     } catch (err) {
-      setError(getErrorMessage(err, "Falha ao gerar conteúdo. Tente novamente."));
+      setError(getErrorMessage(err, tr('Falha ao gerar conteúdo. Tente novamente.')));
     } finally {
       setIsActionLoading(false);
     }
@@ -122,9 +123,9 @@ export function DocumentDetailPage() {
     try {
       const updated = await updateDocumentContent(documentId, editedContent);
       setDocument(updated);
-      setSuccessMessage("Conteúdo salvo.");
+      setSuccessMessage(tr('Conteúdo salvo.'));
     } catch (err) {
-      setError(getErrorMessage(err, "Falha ao salvar o conteúdo."));
+      setError(getErrorMessage(err, tr('Falha ao salvar o conteúdo.')));
     } finally {
       setIsActionLoading(false);
     }
@@ -137,9 +138,9 @@ export function DocumentDetailPage() {
     try {
       const updated = await reviewDocument(documentId);
       setDocument(updated);
-      setSuccessMessage("Documento marcado como revisado.");
+      setSuccessMessage(tr('Documento marcado como revisado.'));
     } catch (err) {
-      setError(getErrorMessage(err, "Falha ao marcar como revisado."));
+      setError(getErrorMessage(err, tr('Falha ao marcar como revisado.')));
     } finally {
       setIsActionLoading(false);
     }
@@ -154,9 +155,9 @@ export function DocumentDetailPage() {
       setDocument(updated);
       setRejectionReason("");
       setShowRejectionForm(false);
-      setSuccessMessage("Documento rejeitado e devolvido para rascunho.");
+      setSuccessMessage(tr('Documento rejeitado e devolvido para rascunho.'));
     } catch (err) {
-      setError(getErrorMessage(err, "Falha ao rejeitar o documento."));
+      setError(getErrorMessage(err, tr('Falha ao rejeitar o documento.')));
     } finally {
       setIsActionLoading(false);
     }
@@ -169,9 +170,9 @@ export function DocumentDetailPage() {
     try {
       const updated = await approveDocument(documentId);
       setDocument(updated);
-      setSuccessMessage("Documento aprovado.");
+      setSuccessMessage(tr('Documento aprovado.'));
     } catch (err) {
-      setError(getErrorMessage(err, "Falha ao aprovar. Verifique se você tem permissão de ADMIN."));
+      setError(getErrorMessage(err, tr('Falha ao aprovar. Verifique se você tem permissão de ADMIN.')));
     } finally {
       setIsActionLoading(false);
     }
@@ -185,12 +186,12 @@ export function DocumentDetailPage() {
         (d) => d.type === "POLITICA_PRIVACIDADE" && d.isPublished && d.id !== documentId,
       );
       const message = other
-        ? `Já existe uma Política de Privacidade publicada ("${other.title}"). Publicar esta substituirá a versão atual. Deseja continuar?`
-        : "Publicar esta Política de Privacidade a tornará acessível publicamente, sem necessidade de login. Deseja continuar?";
+        ? tr('Já existe uma Política de Privacidade publicada ("{{a}}"). Publicar esta substituirá a versão atual. Deseja continuar?', { a: other.title })
+        : tr('Publicar esta Política de Privacidade a tornará acessível publicamente, sem necessidade de login. Deseja continuar?');
       if (!window.confirm(message)) return;
       await handlePublish();
     } catch {
-      if (window.confirm("Publicar esta Política de Privacidade a tornará acessível publicamente. Deseja continuar?")) {
+      if (window.confirm(tr('Publicar esta Política de Privacidade a tornará acessível publicamente. Deseja continuar?'))) {
         await handlePublish();
       }
     }
@@ -203,9 +204,9 @@ export function DocumentDetailPage() {
     try {
       const updated = await publishDocument(documentId);
       setDocument(updated);
-      setSuccessMessage("Política de Privacidade publicada.");
+      setSuccessMessage(tr('Política de Privacidade publicada.'));
     } catch (err) {
-      setError(getErrorMessage(err, "Falha ao publicar. Verifique se você tem permissão de ADMIN."));
+      setError(getErrorMessage(err, tr('Falha ao publicar. Verifique se você tem permissão de ADMIN.')));
     } finally {
       setIsActionLoading(false);
     }
@@ -218,9 +219,9 @@ export function DocumentDetailPage() {
     try {
       const updated = await unpublishDocument(documentId);
       setDocument(updated);
-      setSuccessMessage("Política de Privacidade despublicada.");
+      setSuccessMessage(tr('Política de Privacidade despublicada.'));
     } catch (err) {
-      setError(getErrorMessage(err, "Falha ao despublicar."));
+      setError(getErrorMessage(err, tr('Falha ao despublicar.')));
     } finally {
       setIsActionLoading(false);
     }
@@ -233,14 +234,14 @@ export function DocumentDetailPage() {
     try {
       await downloadDocumentPdf(documentId, document.title);
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível gerar o PDF."));
+      setError(getErrorMessage(err, tr('Não foi possível gerar o PDF.')));
     } finally {
       setIsActionLoading(false);
     }
   }
 
-  if (isLoading) return <LoadingSpinner label="Carregando documento..." />;
-  if (!document) return <Alert type="error" message="Documento não encontrado." />;
+  if (isLoading) return <LoadingSpinner label={tr('Carregando documento...')} />;
+  if (!document) return <Alert type="error" message={tr('Documento não encontrado.')} />;
 
   const inputClass =
     "w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] mb-3";
@@ -251,9 +252,7 @@ export function DocumentDetailPage() {
         to={`/workspaces/${document.workspaceId}/documents`}
         className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
       >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        Voltar aos Documentos
-      </Link>
+        <ArrowLeft className="w-3.5 h-3.5" />{tr('Voltar aos Documentos')}</Link>
 
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-xl text-[#0A0A0A]">{document.title}</h2>
@@ -269,9 +268,7 @@ export function DocumentDetailPage() {
           disabled={isActionLoading}
           className="flex items-center gap-1.5 bg-[#0A0A0A]/8 hover:bg-[#0A0A0A]/15 disabled:opacity-50 text-[#0A0A0A] text-sm font-medium rounded-lg px-4 py-2 transition-colors mb-4"
         >
-          <Download className="w-3.5 h-3.5" />
-          Baixar PDF
-        </button>
+          <Download className="w-3.5 h-3.5" />{tr('Baixar PDF')}</button>
       )}
 
       <div className="space-y-3 mb-4">
@@ -281,12 +278,12 @@ export function DocumentDetailPage() {
 
       {document.status === "DRAFT" && (
         <div className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 mb-4">
-          <label className="block text-sm text-[#0A0A0A]/70 mb-2">Instrução para a IA</label>
+          <label className="block text-sm text-[#0A0A0A]/70 mb-2">{tr('Instrução para a IA')}</label>
           <textarea
             value={instruction}
             onChange={(e) => setInstruction(e.target.value)}
             rows={3}
-            placeholder="Ex: Escreva um resumo sobre a retenção de dados e base legal utilizada"
+            placeholder={tr('Ex: Escreva um resumo sobre a retenção de dados e base legal utilizada')}
             className={inputClass}
           />
           <button
@@ -294,33 +291,31 @@ export function DocumentDetailPage() {
             disabled={isActionLoading || !instruction.trim()}
             className="bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white font-semibold rounded-lg px-4 py-2 transition-colors"
           >
-            {isActionLoading ? "Gerando..." : "Gerar com IA"}
+            {isActionLoading ? tr('Gerando...') : tr('Gerar com IA')}
           </button>
         </div>
       )}
 
       {document.status !== "APPROVED" && (
         <div className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 mb-4">
-          <label className="block text-sm text-[#0A0A0A]/70 mb-2">Conteúdo</label>
+          <label className="block text-sm text-[#0A0A0A]/70 mb-2">{tr('Conteúdo')}</label>
           <textarea
             value={editedContent}
             onChange={(e) => setEditedContent(e.target.value)}
             rows={10}
-            placeholder="Digite o conteúdo manualmente, ou use 'Gerar com IA' acima"
+            placeholder={tr('Digite o conteúdo manualmente, ou use \'Gerar com IA\' acima')}
             className={inputClass}
           />
           <button
             onClick={handleSaveContent}
             disabled={isActionLoading || editedContent === (document.generatedContent ?? "")}
             className="bg-[#0A0A0A]/8 hover:bg-[#0A0A0A]/15 disabled:opacity-50 text-[#0A0A0A] text-sm font-medium rounded-lg px-4 py-2 transition-colors"
-          >
-            Salvar edição manual
-          </button>
+          >{tr('Salvar edição manual')}</button>
         </div>
       )}
       {document.status === "APPROVED" && document.generatedContent !== null && (
         <div className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 mb-4">
-          <label className="block text-sm text-[#0A0A0A]/70 mb-2">Conteúdo (aprovado, somente leitura)</label>
+          <label className="block text-sm text-[#0A0A0A]/70 mb-2">{tr('Conteúdo (aprovado, somente leitura)')}</label>
           <div
             className="text-sm text-[#0A0A0A]/85 leading-relaxed max-h-96 overflow-y-auto bg-[#fbfaf6] rounded-lg p-4"
             dangerouslySetInnerHTML={{ __html: renderMarkdown(document.generatedContent) }}
@@ -335,30 +330,24 @@ export function DocumentDetailPage() {
               onClick={handleReview}
               disabled={isActionLoading}
               className="bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white font-semibold rounded-lg px-4 py-2 transition-colors"
-            >
-              Marcar como Revisado
-            </button>
+            >{tr('Marcar como Revisado')}</button>
           )}
           {(role === "ADMIN" || role === "SUPER_ADMIN") && document.status === "REVIEWED" && (
             <button
               onClick={handleApprove}
               disabled={isActionLoading}
               className="bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white font-semibold rounded-lg px-4 py-2 transition-colors"
-            >
-              Aprovar
-            </button>
+            >{tr('Aprovar')}</button>
           )}
           {!showRejectionForm ? (
             <button
               onClick={() => setShowRejectionForm(true)}
               disabled={isActionLoading}
               className="bg-red-50 hover:bg-red-100 disabled:opacity-50 text-red-700 font-medium rounded-lg px-4 py-2 transition-colors"
-            >
-              Rejeitar
-            </button>
+            >{tr('Rejeitar')}</button>
           ) : (
             <div className="w-full bg-white rounded-xl p-4 border border-red-200 mt-2">
-              <label className="block text-sm text-[#0A0A0A]/70 mb-2">Motivo da rejeição</label>
+              <label className="block text-sm text-[#0A0A0A]/70 mb-2">{tr('Motivo da rejeição')}</label>
               <textarea
                 value={rejectionReason}
                 onChange={(e) => setRejectionReason(e.target.value)}
@@ -370,15 +359,11 @@ export function DocumentDetailPage() {
                   onClick={handleReject}
                   disabled={isActionLoading || !rejectionReason.trim()}
                   className="bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors"
-                >
-                  Confirmar rejeição
-                </button>
+                >{tr('Confirmar rejeição')}</button>
                 <button
                   onClick={() => setShowRejectionForm(false)}
                   className="text-[#0A0A0A]/50 hover:text-[#0A0A0A]/75 text-sm px-4 py-2"
-                >
-                  Cancelar
-                </button>
+                >{tr('Cancelar')}</button>
               </div>
             </div>
           )}
@@ -387,20 +372,19 @@ export function DocumentDetailPage() {
 
       {document.status === "APPROVED" && document.type === "POLITICA_PRIVACIDADE" && (
         <div className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 mt-4">
-          <h3 className="text-sm font-medium text-[#0A0A0A]/70 mb-3">Publicação Pública</h3>
+          <h3 className="text-sm font-medium text-[#0A0A0A]/70 mb-3">{tr('Publicação Pública')}</h3>
           {document.isPublished ? (
             <>
-              <p className="text-sm text-[#0A0A0A] mb-3">
-                ✓ Publicada{" "}
-                {document.publishedAt && `em ${new Date(document.publishedAt).toLocaleString("pt-BR")}`}
+              <p className="text-sm text-[#0A0A0A] mb-3">{tr('✓ Publicada')}{" "}
+                {document.publishedAt && tr('em {{a}}', { a: new Date(document.publishedAt).toLocaleString(getSystemLanguage()) })}
               </p>
               {publicUrl && (
                 <div className="flex items-center gap-4 mb-3 bg-[#fbfaf6] rounded-lg p-3">
                   {qrDataUrl && (
-                    <img src={qrDataUrl} alt="QR Code da política pública" className="w-20 h-20 rounded-lg bg-white p-1" />
+                    <img src={qrDataUrl} alt={tr('QR Code da política pública')} className="w-20 h-20 rounded-lg bg-white p-1" />
                   )}
                   <div className="min-w-0">
-                    <p className="text-xs text-[#0A0A0A]/55 mb-1">Link público para compartilhar:</p>
+                    <p className="text-xs text-[#0A0A0A]/55 mb-1">{tr('Link público para compartilhar:')}</p>
                     <button
                       type="button"
                       onClick={() => window.open(publicUrl, "_blank", "noopener,noreferrer")}
@@ -415,18 +399,14 @@ export function DocumentDetailPage() {
                 onClick={handleUnpublish}
                 disabled={isActionLoading}
                 className="bg-[#0A0A0A]/8 hover:bg-[#0A0A0A]/15 disabled:opacity-50 text-[#0A0A0A] text-sm font-medium rounded-lg px-4 py-2 transition-colors"
-              >
-                Despublicar
-              </button>
+              >{tr('Despublicar')}</button>
             </>
           ) : (
             <button
               onClick={handlePublishClick}
               disabled={isActionLoading}
               className="bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors"
-            >
-              Publicar
-            </button>
+            >{tr('Publicar')}</button>
           )}
         </div>
       )}

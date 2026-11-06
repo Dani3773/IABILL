@@ -1,30 +1,31 @@
 import type { DocumentStatus, DocumentType } from '../types/document'
 
+import { tr } from '../i18n/tr'
 export const DOCUMENT_TYPE_LABELS: Record<DocumentType, string> = {
-  INVENTARIO_DADOS: 'Inventário de Dados',
-  POLITICA_PRIVACIDADE: 'Política de Privacidade',
-  RELATORIO_CONFORMIDADE: 'Relatório de Conformidade',
-  RAT: 'RAT (Registro de Atividades de Tratamento)',
-  RIPD_DPIA: 'RIPD/DPIA (Relatório de Impacto à Proteção de Dados)',
-  POLITICA_SEGURANCA_INFORMACAO: 'Política de Segurança da Informação (PSI)',
-  MATERIAL_TREINAMENTO: 'Material de Treinamento/Conscientização',
+  INVENTARIO_DADOS: tr('Inventário de Dados'),
+  POLITICA_PRIVACIDADE: tr('Política de Privacidade'),
+  RELATORIO_CONFORMIDADE: tr('Relatório de Conformidade'),
+  RAT: tr('RAT (Registro de Atividades de Tratamento)'),
+  RIPD_DPIA: tr('RIPD/DPIA (Relatório de Impacto à Proteção de Dados)'),
+  POLITICA_SEGURANCA_INFORMACAO: tr('Política de Segurança da Informação (PSI)'),
+  MATERIAL_TREINAMENTO: tr('Material de Treinamento/Conscientização'),
 }
 
 export const DOCUMENT_TYPE_SHORT_LABELS: Record<DocumentType, string> = {
-  INVENTARIO_DADOS: 'Inventário de Dados',
-  POLITICA_PRIVACIDADE: 'Política de Privacidade',
-  RELATORIO_CONFORMIDADE: 'Relatório de Conformidade',
-  RAT: 'RAT',
-  RIPD_DPIA: 'RIPD/DPIA',
-  POLITICA_SEGURANCA_INFORMACAO: 'Segurança da Informação',
-  MATERIAL_TREINAMENTO: 'Treinamento',
+  INVENTARIO_DADOS: tr('Inventário de Dados'),
+  POLITICA_PRIVACIDADE: tr('Política de Privacidade'),
+  RELATORIO_CONFORMIDADE: tr('Relatório de Conformidade'),
+  RAT: tr('RAT'),
+  RIPD_DPIA: tr('RIPD/DPIA'),
+  POLITICA_SEGURANCA_INFORMACAO: tr('Segurança da Informação'),
+  MATERIAL_TREINAMENTO: tr('Treinamento'),
 }
 
 export const DOCUMENT_STATUS_LABELS: Record<DocumentStatus, string> = {
-  DRAFT: 'Rascunho',
-  GENERATED: 'Gerado por IA',
-  REVIEWED: 'Revisado',
-  APPROVED: 'Aprovado',
+  DRAFT: tr('Rascunho'),
+  GENERATED: tr('Gerado por IA'),
+  REVIEWED: tr('Revisado'),
+  APPROVED: tr('Aprovado'),
 }
 
 export const DOCUMENT_STATUS_STYLES: Record<DocumentStatus, string> = {

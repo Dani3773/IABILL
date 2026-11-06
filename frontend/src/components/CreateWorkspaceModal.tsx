@@ -6,6 +6,7 @@ import type { Workspace, WorkspaceRequest } from "../types/workspace";
 import { getErrorMessage } from "../api/errorUtils";
 import { COUNTRIES, BRAZILIAN_STATES } from "../constants/locations";
 
+import { tr } from '../i18n/tr'
 interface Props {
   editing?: Workspace | null;
   onClose: () => void;
@@ -80,7 +81,7 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
     e.preventDefault();
     if (!tenantId) return;
     if (legalRegimes.length === 0) {
-      setError("Selecione ao menos um regime legal aplicável.");
+      setError(tr('Selecione ao menos um regime legal aplicável.'));
       return;
     }
     setError(null);
@@ -109,7 +110,7 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
       onCreated(workspace);
       onClose();
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível salvar a unidade."));
+      setError(getErrorMessage(err, tr('Não foi possível salvar a unidade.')));
     } finally {
       setIsLoading(false);
     }
@@ -127,7 +128,7 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
             <div className="w-8 h-8 rounded-lg bg-[#D92B21]/10 flex items-center justify-center">
               <Building2 className="w-4 h-4 text-[#B4201A]" />
             </div>
-            <h2 className="text-lg text-[#0A0A0A]">{editing ? "Editar unidade" : "Nova unidade"}</h2>
+            <h2 className="text-lg text-[#0A0A0A]">{editing ? tr('Editar unidade') : tr('Nova unidade')}</h2>
           </div>
           <button onClick={onClose} className="text-[#0A0A0A]/40 hover:text-[#0A0A0A] transition-colors">
             <X className="w-5 h-5" />
@@ -136,52 +137,52 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
 
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label className={labelClass}>Nome</label>
+            <label className={labelClass}>{tr('Nome')}</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              placeholder="Ex: Filial São Paulo"
+              placeholder={tr('Ex: Filial São Paulo')}
               className={inputClass}
             />
           </div>
 
           <div>
-            <label className={labelClass}>Tipo</label>
+            <label className={labelClass}>{tr('Tipo')}</label>
             <select value={type} onChange={(e) => setType(e.target.value as "MATRIZ" | "FILIAL")} className={inputClass}>
-              <option value="FILIAL">Filial</option>
-              <option value="MATRIZ">Matriz</option>
+              <option value="FILIAL">{tr('Filial')}</option>
+              <option value="MATRIZ">{tr('Matriz')}</option>
             </select>
           </div>
 
           <div>
-            <label className={labelClass}>CNPJ</label>
+            <label className={labelClass}>{tr('CNPJ')}</label>
             <input
               type="text"
               value={documentId}
               onChange={(e) => setDocumentId(formatCnpj(e.target.value))}
               required
               autoComplete="off"
-              placeholder="Somente números"
+              placeholder={tr('Somente números')}
               className={inputClass}
             />
           </div>
 
           <div>
-            <label className={labelClass}>Telefone</label>
+            <label className={labelClass}>{tr('Telefone')}</label>
             <input
               type="text"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               autoComplete="off"
-              placeholder="Opcional"
+              placeholder={tr('Opcional')}
               className={inputClass}
             />
           </div>
 
           <div>
-            <label className={labelClass}>País</label>
+            <label className={labelClass}>{tr('País')}</label>
             <select
               value={country}
               onChange={(e) => {
@@ -200,7 +201,7 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
           </div>
 
           <div>
-            <label className={labelClass}>{country === "Brasil" ? "CEP" : "Código postal"}</label>
+            <label className={labelClass}>{country === "Brasil" ? tr('CEP') : tr('Código postal')}</label>
             <div className="relative">
               <input
                 type="text"
@@ -209,23 +210,21 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
                 onChange={(e) => setPostalCode(formatCep(e.target.value))}
                 onBlur={country === "Brasil" ? handleCepBlur : undefined}
                 autoComplete="off"
-                placeholder={country === "Brasil" ? "00000-000" : "Código postal"}
+                placeholder={country === "Brasil" ? "00000-000" : tr('Código postal')}
                 className={inputClass}
               />
               {cepLookupLoading && (
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#0A0A0A]">
-                  buscando...
-                </span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#0A0A0A]">{tr('buscando...')}</span>
               )}
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className={labelClass}>Estado</label>
+              <label className={labelClass}>{tr('Estado')}</label>
               {country === "Brasil" ? (
                 <select value={state} onChange={(e) => setState(e.target.value)} className={inputClass}>
-                  <option value="">Selecione</option>
+                  <option value="">{tr('Selecione')}</option>
                   {BRAZILIAN_STATES.map((s) => (
                     <option key={s} value={s}>
                       {s}
@@ -238,13 +237,13 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
                   value={state}
                   onChange={(e) => setState(e.target.value)}
                   autoComplete="off"
-                  placeholder="Estado/Região"
+                  placeholder={tr('Estado/Região')}
                   className={inputClass}
                 />
               )}
             </div>
             <div>
-              <label className={labelClass}>Cidade</label>
+              <label className={labelClass}>{tr('Cidade')}</label>
               <input
                 type="text"
                 value={city}
@@ -256,7 +255,7 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
           </div>
 
           <div>
-            <label className={labelClass}>Bairro</label>
+            <label className={labelClass}>{tr('Bairro')}</label>
             <input
               type="text"
               value={neighborhood}
@@ -268,7 +267,7 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
 
           <div className="grid grid-cols-3 gap-2">
             <div className="col-span-2">
-              <label className={labelClass}>Rua</label>
+              <label className={labelClass}>{tr('Rua')}</label>
               <input
                 type="text"
                 value={street}
@@ -278,7 +277,7 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
               />
             </div>
             <div>
-              <label className={labelClass}>Número</label>
+              <label className={labelClass}>{tr('Número')}</label>
               <input
                 type="text"
                 value={addressNumber}
@@ -290,7 +289,7 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
           </div>
 
           <div>
-            <label className={labelClass}>Regime legal aplicável</label>
+            <label className={labelClass}>{tr('Regime legal aplicável')}</label>
             <div className="flex gap-4">
               <label className="flex items-center gap-1.5 text-sm text-[#0A0A0A]/70">
                 <input
@@ -298,18 +297,14 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
                   checked={legalRegimes.includes("LGPD")}
                   onChange={() => toggleLegalRegime("LGPD")}
                   className="rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
-                />
-                LGPD
-              </label>
+                />{tr('LGPD')}</label>
               <label className="flex items-center gap-1.5 text-sm text-[#0A0A0A]/70">
                 <input
                   type="checkbox"
                   checked={legalRegimes.includes("RGPD")}
                   onChange={() => toggleLegalRegime("RGPD")}
                   className="rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
-                />
-                RGPD
-              </label>
+                />{tr('RGPD')}</label>
             </div>
           </div>
 
@@ -321,15 +316,13 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
               disabled={isLoading}
               className="flex-1 bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
             >
-              {isLoading ? "Salvando..." : editing ? "Salvar alterações" : "Criar"}
+              {isLoading ? tr('Salvando...') : editing ? tr('Salvar alterações') : tr('Criar')}
             </button>
             <button
               type="button"
               onClick={onClose}
               className="flex-1 bg-[#0A0A0A]/5 hover:bg-[#0A0A0A]/10 text-[#0A0A0A] text-sm font-medium rounded-lg py-2.5 transition-colors"
-            >
-              Cancelar
-            </button>
+            >{tr('Cancelar')}</button>
           </div>
         </form>
       </div>

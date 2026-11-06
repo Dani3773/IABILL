@@ -6,6 +6,7 @@ import type { Workspace } from "../types/workspace";
 import type { WorkspaceMembership } from "../types/user";
 import { getErrorMessage } from "../api/errorUtils";
 
+import { tr } from '../i18n/tr'
 interface Props {
   userId: string;
   username: string;
@@ -49,7 +50,7 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
       );
       setSelectedWorkspaceId(nextAvailable?.id ?? "");
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível vincular a unidade."));
+      setError(getErrorMessage(err, tr('Não foi possível vincular a unidade.')));
     } finally {
       setIsLoading(false);
     }
@@ -66,8 +67,7 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
             <div className="w-8 h-8 rounded-lg bg-[#D92B21]/10 flex items-center justify-center">
               <Building2 className="w-4 h-4 text-[#B4201A]" />
             </div>
-            <h2 className="text-lg text-[#0A0A0A]">
-              Unidades de {username}
+            <h2 className="text-lg text-[#0A0A0A]">{tr('Unidades de')}{' '}{username}
             </h2>
           </div>
           <button
@@ -79,9 +79,9 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
         </div>
 
         <div className="mb-4">
-          <p className="text-xs font-medium text-[#0A0A0A]/60 mb-2">Já vinculado a:</p>
+          <p className="text-xs font-medium text-[#0A0A0A]/60 mb-2">{tr('Já vinculado a:')}</p>
           {memberships.length === 0 ? (
-            <p className="text-sm text-[#0A0A0A]/40">Nenhuma unidade ainda.</p>
+            <p className="text-sm text-[#0A0A0A]/40">{tr('Nenhuma unidade ainda.')}</p>
           ) : (
             <ul className="space-y-1.5">
               {memberships.map((m) => (
@@ -99,9 +99,7 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
 
         {availableWorkspaces.length > 0 && (
           <div className="border-t border-[#0A0A0A]/10 pt-4">
-            <label className="block text-xs font-medium text-[#0A0A0A]/60 mb-1.5">
-              Vincular a uma nova unidade
-            </label>
+            <label className="block text-xs font-medium text-[#0A0A0A]/60 mb-1.5">{tr('Vincular a uma nova unidade')}</label>
             <div className="flex gap-2">
               <select
                 value={selectedWorkspaceId}
@@ -118,9 +116,7 @@ export function AssignWorkspaceModal({ userId, username, onClose }: Props) {
                 onClick={handleAssign}
                 disabled={isLoading}
                 className="bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors shrink-0"
-              >
-                Vincular
-              </button>
+              >{tr('Vincular')}</button>
             </div>
           </div>
         )}

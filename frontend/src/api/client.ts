@@ -1,8 +1,16 @@
 import axios from 'axios'
+import { getSystemLanguage } from '../i18n/tr'
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1'
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
+})
+
+// O backend usa este cabeçalho para responder mensagens e gerar conteúdo no
+// idioma escolhido.
+apiClient.interceptors.request.use((config) => {
+  config.headers.set('Accept-Language', getSystemLanguage())
+  return config
 })
 
 // Intercepta globalmente a resposta especifica de tenant desativado, sem

@@ -4,6 +4,7 @@ import { ShieldCheck, CheckCircle2 } from "lucide-react";
 import { fetchPublicConsentInfo, submitConsent } from "../api/consentService";
 import { getErrorMessage } from "../api/errorUtils";
 
+import { tr } from '../i18n/tr'
 export function PublicConsentPage() {
   const { activityId } = useParams<{ activityId: string }>();
   const [loading, setLoading] = useState(true);
@@ -41,7 +42,7 @@ export function PublicConsentPage() {
       await submitConsent(activityId, { consenterName: name, consenterEmail: email });
       setSubmitted(true);
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível registrar seu consentimento."));
+      setError(getErrorMessage(err, tr('Não foi possível registrar seu consentimento.')));
     } finally {
       setIsSubmitting(false);
     }
@@ -49,9 +50,7 @@ export function PublicConsentPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#FBF8F8] flex items-center justify-center text-[#0A0A0A]/50 text-sm">
-        Carregando...
-      </div>
+      <div className="min-h-screen bg-[#FBF8F8] flex items-center justify-center text-[#0A0A0A]/50 text-sm">{tr('Carregando...')}</div>
     );
   }
 
@@ -59,10 +58,8 @@ export function PublicConsentPage() {
     return (
       <div className="min-h-screen bg-[#FBF8F8] flex items-center justify-center px-4">
         <div className="max-w-md text-center">
-          <h1 className="text-[#0A0A0A] text-lg font-semibold mb-2">Link inválido</h1>
-          <p className="text-[#0A0A0A]/55 text-sm">
-            Não encontramos nenhuma atividade correspondente a este link.
-          </p>
+          <h1 className="text-[#0A0A0A] text-lg font-semibold mb-2">{tr('Link inválido')}</h1>
+          <p className="text-[#0A0A0A]/55 text-sm">{tr('Não encontramos nenhuma atividade correspondente a este link.')}</p>
         </div>
       </div>
     );
@@ -75,9 +72,8 @@ export function PublicConsentPage() {
           <div className="w-14 h-14 rounded-full bg-[#D92B21]/15 flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="w-7 h-7 text-[#0A0A0A]" />
           </div>
-          <h1 className="text-[#0A0A0A] text-lg font-semibold mb-2">Consentimento registrado</h1>
-          <p className="text-[#0A0A0A]/55 text-sm">
-            Obrigado. Seu consentimento foi registrado com sucesso junto a {workspaceName}.
+          <h1 className="text-[#0A0A0A] text-lg font-semibold mb-2">{tr('Consentimento registrado')}</h1>
+          <p className="text-[#0A0A0A]/55 text-sm">{tr('Obrigado. Seu consentimento foi registrado com sucesso junto a')}{' '}{workspaceName}.
           </p>
         </div>
       </div>
@@ -87,9 +83,7 @@ export function PublicConsentPage() {
   return (
     <div className="min-h-screen bg-[#FBF8F8] px-4 py-12">
       <div className="max-w-lg mx-auto">
-        <p className="text-xs tracking-widest text-[#0A0A0A] uppercase mb-2">
-          Termo de Consentimento · Art. 8º LGPD
-        </p>
+        <p className="text-xs tracking-widest text-[#0A0A0A] uppercase mb-2">{tr('Termo de Consentimento · Art. 8º LGPD')}</p>
         <h1 className="text-[#0A0A0A] text-2xl mb-1">{workspaceName}</h1>
         <p className="text-[#0A0A0A]/55 text-sm mb-6">{processName}</p>
 
@@ -99,7 +93,7 @@ export function PublicConsentPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4 bg-white rounded-xl p-6 border border-[#0A0A0A]/10">
           <div>
-            <label className="block text-sm text-[#0A0A0A]/70 mb-1">Seu nome completo</label>
+            <label className="block text-sm text-[#0A0A0A]/70 mb-1">{tr('Seu nome completo')}</label>
             <input
               type="text"
               value={name}
@@ -109,7 +103,7 @@ export function PublicConsentPage() {
             />
           </div>
           <div>
-            <label className="block text-sm text-[#0A0A0A]/70 mb-1">Seu e-mail</label>
+            <label className="block text-sm text-[#0A0A0A]/70 mb-1">{tr('Seu e-mail')}</label>
             <input
               type="email"
               value={email}
@@ -125,9 +119,7 @@ export function PublicConsentPage() {
               onChange={(e) => setAgreed(e.target.checked)}
               required
               className="mt-0.5 rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
-            />
-            Li e concordo com a finalidade de tratamento de dados descrita acima.
-          </label>
+            />{tr('Li e concordo com a finalidade de tratamento de dados descrita acima.')}</label>
 
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
@@ -137,7 +129,7 @@ export function PublicConsentPage() {
             className="w-full flex items-center justify-center gap-2 bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
           >
             <ShieldCheck className="w-4 h-4" />
-            {isSubmitting ? "Registrando..." : "Confirmar consentimento"}
+            {isSubmitting ? tr('Registrando...') : tr('Confirmar consentimento')}
           </button>
         </form>
       </div>

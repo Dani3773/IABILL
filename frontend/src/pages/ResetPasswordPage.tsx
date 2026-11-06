@@ -6,6 +6,7 @@ import { getErrorMessage } from "../api/errorUtils";
 import { Alert } from "../components/Alert";
 import { CheckCircle2 } from "lucide-react";
 
+import { tr } from '../i18n/tr'
 export function ResetPasswordPage() {
   const { token } = useParams<{ token: string }>();
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export function ResetPasswordPage() {
     if (!token) return;
 
     if (newPassword !== confirmPassword) {
-      setMessage("As senhas não coincidem.");
+      setMessage(tr('As senhas não coincidem.'));
       return;
     }
 
@@ -37,7 +38,7 @@ export function ResetPasswordPage() {
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       setStatus("error");
-      setMessage(getErrorMessage(err, "Não foi possível redefinir a senha."));
+      setMessage(getErrorMessage(err, tr('Não foi possível redefinir a senha.')));
     }
   }
 
@@ -47,16 +48,14 @@ export function ResetPasswordPage() {
         {status === "success" ? (
           <div>
             <CheckCircle2 className="w-8 h-8 text-emerald-700 mb-4" />
-            <h1 className="auth__title auth__title--spaced">Senha redefinida</h1>
-            <p className="auth__switch mt-0! mb-0!">Redirecionando para o login...</p>
+            <h1 className="auth__title auth__title--spaced">{tr('Senha redefinida')}</h1>
+            <p className="auth__switch mt-0! mb-0!">{tr('Redirecionando para o login...')}</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            <h1 className="auth__title auth__title--spaced">
-              Defina sua nova senha
-            </h1>
+            <h1 className="auth__title auth__title--spaced">{tr('Defina sua nova senha')}</h1>
 
-            <AuthField label="Nova senha">
+            <AuthField label={tr('Nova senha')}>
               <input
                 type="password"
                 autoComplete="new-password"
@@ -64,11 +63,11 @@ export function ResetPasswordPage() {
                 onChange={(e) => setNewPassword(e.target.value)}
                 required
                 minLength={8}
-                placeholder="Mínimo 8 caracteres"
+                placeholder={tr('Mínimo 8 caracteres')}
                 className={AUTH_INPUT_CLASS}
               />
             </AuthField>
-            <AuthField label="Confirme a senha">
+            <AuthField label={tr('Confirme a senha')}>
               <input
                 type="password"
                 autoComplete="new-password"
@@ -88,13 +87,11 @@ export function ResetPasswordPage() {
               disabled={status === "loading"}
               className={AUTH_BUTTON_CLASS}
             >
-              {status === "loading" ? "Redefinindo..." : "Redefinir senha"}
+              {status === "loading" ? tr('Redefinindo...') : tr('Redefinir senha')}
             </button>
 
             <p className="text-center">
-              <Link to="/login" className="auth__link">
-                Voltar ao login
-              </Link>
+              <Link to="/login" className="auth__link">{tr('Voltar ao login')}</Link>
             </p>
           </form>
         )}

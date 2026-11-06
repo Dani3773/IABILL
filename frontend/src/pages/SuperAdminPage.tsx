@@ -6,6 +6,7 @@ import { Alert } from '../components/Alert'
 import { getErrorMessage } from '../api/errorUtils'
 import type { PlatformTenantSummary } from '../types/platform'
 
+import { getSystemLanguage, tr } from '../i18n/tr'
 export function SuperAdminPage() {
   const navigate = useNavigate()
   const [tenants, setTenants] = useState<PlatformTenantSummary[]>([])
@@ -15,18 +16,16 @@ export function SuperAdminPage() {
   useEffect(() => {
     fetchAllTenants()
       .then(setTenants)
-      .catch((err) => setError(getErrorMessage(err, 'Não foi possível carregar os tenants.')))
+      .catch((err) => setError(getErrorMessage(err, tr('Não foi possível carregar os tenants.'))))
       .finally(() => setIsLoading(false))
   }, [])
 
-  if (isLoading) return <LoadingSpinner label="Carregando visão da plataforma..." />
+  if (isLoading) return <LoadingSpinner label={tr('Carregando visão da plataforma...')} />
 
   return (
     <div>
-      <h2 className="text-xl text-[#0A0A0A] mb-1">Visão Geral da Plataforma</h2>
-      <p className="text-sm text-[#0A0A0A]/55 mb-6">
-        Todas as empresas cadastradas no IABill ({tenants.length} no total).
-      </p>
+      <h2 className="text-xl text-[#0A0A0A] mb-1">{tr('Visão Geral da Plataforma')}</h2>
+      <p className="text-sm text-[#0A0A0A]/55 mb-6">{tr('Todas as empresas cadastradas no IABill (')}{tenants.length}{' '}{tr('no total).')}</p>
 
       {error && <div className="mb-4"><Alert type="error" message={error} /></div>}
 
@@ -34,12 +33,12 @@ export function SuperAdminPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="text-left text-[#0A0A0A]/50 border-b border-[#0A0A0A]/10">
-              <th className="py-3 px-4">Empresa</th>
-              <th className="py-3 px-4">Cadastrada em</th>
-              <th className="py-3 px-4 text-center">Usuários</th>
-              <th className="py-3 px-4 text-center">Unidades</th>
-              <th className="py-3 px-4 text-center">Documentos</th>
-              <th className="py-3 px-4 text-center">Status</th>
+              <th className="py-3 px-4">{tr('Empresa')}</th>
+              <th className="py-3 px-4">{tr('Cadastrada em')}</th>
+              <th className="py-3 px-4 text-center">{tr('Usuários')}</th>
+              <th className="py-3 px-4 text-center">{tr('Unidades')}</th>
+              <th className="py-3 px-4 text-center">{tr('Documentos')}</th>
+              <th className="py-3 px-4 text-center">{tr('Status')}</th>
             </tr>
           </thead>
           <tbody>
@@ -51,7 +50,7 @@ export function SuperAdminPage() {
               >
                 <td className="py-3 px-4 text-[#0A0A0A] font-medium">{t.name}</td>
                 <td className="py-3 px-4 text-[#0A0A0A]/60 whitespace-nowrap">
-                  {new Date(t.createdAt).toLocaleDateString('pt-BR')}
+                  {new Date(t.createdAt).toLocaleDateString(getSystemLanguage())}
                 </td>
                 <td className="py-3 px-4 text-center text-[#0A0A0A]/70">{t.userCount}</td>
                 <td className="py-3 px-4 text-center text-[#0A0A0A]/70">{t.workspaceCount}</td>
@@ -62,7 +61,7 @@ export function SuperAdminPage() {
                       t.active ? 'bg-[#D92B21]/12 text-[#0A0A0A]' : 'bg-red-50 text-red-700'
                     }`}
                   >
-                    {t.active ? 'Ativo' : 'Inativo'}
+                    {t.active ? tr('Ativo') : tr('Inativo')}
                   </span>
                 </td>
               </tr>

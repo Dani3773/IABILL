@@ -5,6 +5,7 @@ import { fetchConsentRecords } from "../api/consentService";
 import { getErrorMessage } from "../api/errorUtils";
 import type { ConsentRecord } from "../types/consent";
 
+import { getSystemLanguage, tr } from '../i18n/tr'
 interface Props {
   activityId: string;
   activityName: string;
@@ -22,7 +23,7 @@ export function ConsentRecordsModal({ activityId, activityName, onClose }: Props
   useEffect(() => {
     fetchConsentRecords(activityId)
       .then(setRecords)
-      .catch((err) => setError(getErrorMessage(err, "Não foi possível carregar os consentimentos.")))
+      .catch((err) => setError(getErrorMessage(err, tr('Não foi possível carregar os consentimentos.'))))
       .finally(() => setIsLoading(false));
 
     QRCode.toDataURL(publicUrl)
@@ -38,7 +39,7 @@ export function ConsentRecordsModal({ activityId, activityName, onClose }: Props
             <div className="w-8 h-8 rounded-lg bg-[#D92B21]/10 flex items-center justify-center">
               <ShieldCheck className="w-4 h-4 text-[#B4201A]" />
             </div>
-            <h2 className="text-lg text-[#0A0A0A]">Prova de Consentimento</h2>
+            <h2 className="text-lg text-[#0A0A0A]">{tr('Prova de Consentimento')}</h2>
           </div>
           <button onClick={onClose} className="text-[#0A0A0A]/40 hover:text-[#0A0A0A] transition-colors">
             <X className="w-5 h-5" />
@@ -49,10 +50,10 @@ export function ConsentRecordsModal({ activityId, activityName, onClose }: Props
 
         <div className="flex items-center gap-4 mb-6 bg-[#fbfaf6] rounded-lg p-4">
           {qrDataUrl && (
-            <img src={qrDataUrl} alt="QR Code de consentimento" className="w-20 h-20 rounded-lg bg-white p-1" />
+            <img src={qrDataUrl} alt={tr('QR Code de consentimento')} className="w-20 h-20 rounded-lg bg-white p-1" />
           )}
           <div className="min-w-0">
-            <p className="text-xs text-[#0A0A0A]/55 mb-1">Link para coletar consentimento:</p>
+            <p className="text-xs text-[#0A0A0A]/55 mb-1">{tr('Link para coletar consentimento:')}</p>
             <button
               type="button"
               onClick={() => window.open(publicUrl, "_blank", "noopener,noreferrer")}
@@ -63,16 +64,15 @@ export function ConsentRecordsModal({ activityId, activityName, onClose }: Props
           </div>
         </div>
 
-        <h3 className="text-sm font-medium text-[#0A0A0A]/70 mb-2">
-          Consentimentos registrados ({records.length})
+        <h3 className="text-sm font-medium text-[#0A0A0A]/70 mb-2">{tr('Consentimentos registrados (')}{records.length})
         </h3>
 
         {error && <p className="text-red-600 text-sm mb-2">{error}</p>}
 
         {isLoading ? (
-          <p className="text-sm text-[#0A0A0A]/40">Carregando...</p>
+          <p className="text-sm text-[#0A0A0A]/40">{tr('Carregando...')}</p>
         ) : records.length === 0 ? (
-          <p className="text-sm text-[#0A0A0A]/50">Nenhum consentimento registrado ainda.</p>
+          <p className="text-sm text-[#0A0A0A]/50">{tr('Nenhum consentimento registrado ainda.')}</p>
         ) : (
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {records.map((r) => (
@@ -80,8 +80,8 @@ export function ConsentRecordsModal({ activityId, activityName, onClose }: Props
                 <p className="font-medium text-[#0A0A0A]">{r.consenterName}</p>
                 <p className="text-xs text-[#0A0A0A]/55">{r.consenterEmail}</p>
                 <p className="text-xs text-[#0A0A0A]/45 mt-1">
-                  {new Date(r.consentedAt).toLocaleString("pt-BR")}
-                  {r.ipAddress && ` · IP: ${r.ipAddress}`}
+                  {new Date(r.consentedAt).toLocaleString(getSystemLanguage())}
+                  {r.ipAddress && tr(' · IP: {{a}}', { a: r.ipAddress })}
                 </p>
               </div>
             ))}

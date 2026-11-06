@@ -5,6 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 import type { User, UserRole } from "../types/user";
 import { getErrorMessage } from "../api/errorUtils";
 
+import { tr } from '../i18n/tr'
 interface Props {
   onClose: () => void;
   onCreated: (user: User) => void;
@@ -57,7 +58,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
       onCreated(user);
       onClose();
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível criar o usuário."));
+      setError(getErrorMessage(err, tr('Não foi possível criar o usuário.')));
     } finally {
       setIsLoading(false);
     }
@@ -75,7 +76,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
             <div className="w-8 h-8 rounded-lg bg-[#D92B21]/10 flex items-center justify-center">
               <UserPlus className="w-4 h-4 text-[#B4201A]" />
             </div>
-            <h2 className="text-lg text-[#0A0A0A]">Novo Usuário</h2>
+            <h2 className="text-lg text-[#0A0A0A]">{tr('Novo Usuário')}</h2>
           </div>
           <button onClick={onClose} className="text-[#0A0A0A]/40 hover:text-[#0A0A0A] transition-colors">
             <X className="w-5 h-5" />
@@ -84,7 +85,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className={labelClass}>Nome de usuário</label>
+            <label className={labelClass}>{tr('Nome de usuário')}</label>
             <input
               type="text"
               value={username}
@@ -95,7 +96,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
           </div>
 
           <div>
-            <label className={labelClass}>E-mail</label>
+            <label className={labelClass}>{tr('E-mail')}</label>
             <input
               type="email"
               value={email}
@@ -106,23 +107,22 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
           </div>
 
           <div>
-            <label className={labelClass}>Papel</label>
+            <label className={labelClass}>{tr('Papel')}</label>
             <select value={role} onChange={(e) => setRole(e.target.value as UserRole)} className={inputClass}>
-              <option value="USER">Usuário</option>
-              <option value="DPO">Encarregado de Dados (DPO)</option>
-              <option value="ADMIN">Administrador</option>
+              <option value="USER">{tr('Usuário')}</option>
+              <option value="DPO">{tr('Encarregado de Dados (DPO)')}</option>
+              <option value="ADMIN">{tr('Administrador')}</option>
             </select>
           </div>
 
           <div>
-            <label className={labelClass}>
-              Cargo na empresa <span className="text-[#0A0A0A]/40">(opcional)</span>
+            <label className={labelClass}>{tr('Cargo na empresa')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span>
             </label>
             <input
               type="text"
               value={jobTitle}
               onChange={(e) => setJobTitle(e.target.value)}
-              placeholder="Ex: Analista de RH"
+              placeholder={tr('Ex: Analista de RH')}
               className={inputClass}
             />
           </div>
@@ -131,13 +131,8 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 flex gap-2.5">
               <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
               <div>
-                <p className="text-xs text-amber-800 font-medium mb-1">Possível conflito de interesse</p>
-                <p className="text-xs text-amber-700/90 leading-relaxed">
-                  Segundo a ANPD, o Encarregado (DPO) não deveria acumular cargos de chefia/gerência em áreas
-                  como TI, Marketing, RH ou Financeiro, responsáveis pela decisão sobre como os dados são
-                  tratados, isso pode comprometer a independência exigida do papel. Considere indicar outra
-                  pessoa, ou avaliar um DPO terceirizado.
-                </p>
+                <p className="text-xs text-amber-800 font-medium mb-1">{tr('Possível conflito de interesse')}</p>
+                <p className="text-xs text-amber-700/90 leading-relaxed">{tr('Segundo a ANPD, o Encarregado (DPO) não deveria acumular cargos de chefia/gerência em áreas como TI, Marketing, RH ou Financeiro, responsáveis pela decisão sobre como os dados são tratados, isso pode comprometer a independência exigida do papel. Considere indicar outra pessoa, ou avaliar um DPO terceirizado.')}</p>
               </div>
             </div>
           )}
@@ -148,26 +143,21 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
                 checked={dpoSubstitute}
                 onChange={(e) => setDpoSubstitute(e.target.checked)}
                 className="rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
-              />
-              É substituto do Encarregado (DPO), não o titular principal
-            </label>
+              />{tr('É substituto do Encarregado (DPO), não o titular principal')}</label>
           )}
           <div>
-            <label className={labelClass}>
-              Cargo no comitê de LGPD <span className="text-[#0A0A0A]/40">(opcional)</span>
+            <label className={labelClass}>{tr('Cargo no comitê de LGPD')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span>
             </label>
             <input
               type="text"
               value={committeeRole}
               onChange={(e) => setCommitteeRole(e.target.value)}
-              placeholder="Ex: Membro titular"
+              placeholder={tr('Ex: Membro titular')}
               className={inputClass}
             />
           </div>
 
-          <p className="text-xs text-[#0A0A0A]/45">
-            O usuário receberá um e-mail de convite para definir sua própria senha e ativar o acesso.
-          </p>
+          <p className="text-xs text-[#0A0A0A]/45">{tr('O usuário receberá um e-mail de convite para definir sua própria senha e ativar o acesso.')}</p>
 
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
@@ -177,15 +167,13 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
               disabled={isLoading}
               className="flex-1 bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
             >
-              {isLoading ? "Enviando convite..." : "Convidar"}
+              {isLoading ? tr('Enviando convite...') : tr('Convidar')}
             </button>
             <button
               type="button"
               onClick={onClose}
               className="flex-1 bg-[#0A0A0A]/5 hover:bg-[#0A0A0A]/10 text-[#0A0A0A] text-sm font-medium rounded-lg py-2.5 transition-colors"
-            >
-              Cancelar
-            </button>
+            >{tr('Cancelar')}</button>
           </div>
         </form>
       </div>

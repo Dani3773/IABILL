@@ -16,20 +16,21 @@ import type {
 import QRCode from "qrcode";
 import { fetchWorkspaces } from "../api/workspaceService";
 
+import { getSystemLanguage, tr, trn } from '../i18n/tr'
 const TYPE_LABELS: Record<DataSubjectRequestType, string> = {
-  ACCESS: "Acesso",
-  CORRECTION: "Correção",
-  DELETION: "Eliminação",
-  PORTABILITY: "Portabilidade",
-  ANONYMIZATION: "Anonimização",
-  CONSENT_REVOCATION: "Revogação de Consentimento",
+  ACCESS: tr('Acesso'),
+  CORRECTION: tr('Correção'),
+  DELETION: tr('Eliminação'),
+  PORTABILITY: tr('Portabilidade'),
+  ANONYMIZATION: tr('Anonimização'),
+  CONSENT_REVOCATION: tr('Revogação de Consentimento'),
 };
 
 const STATUS_LABELS: Record<DataSubjectRequestStatus, string> = {
-  RECEIVED: "Recebida",
-  IN_PROGRESS: "Em Andamento",
-  COMPLETED: "Concluída",
-  REJECTED: "Rejeitada",
+  RECEIVED: tr('Recebida'),
+  IN_PROGRESS: tr('Em Andamento'),
+  COMPLETED: tr('Concluída'),
+  REJECTED: tr('Rejeitada'),
 };
 
 const STATUS_STYLES: Record<DataSubjectRequestStatus, string> = {
@@ -92,7 +93,7 @@ export function DataSubjectRequestsPage() {
       .then(setRequests)
       .catch((err) =>
         setError(
-          getErrorMessage(err, "Não foi possível carregar as solicitações."),
+          getErrorMessage(err, tr('Não foi possível carregar as solicitações.')),
         ),
       )
       .finally(() => setIsLoading(false));
@@ -110,7 +111,7 @@ export function DataSubjectRequestsPage() {
       const updated = await updateDataSubjectRequestStatus(id, { status });
       setRequests((prev) => prev.map((r) => (r.id === id ? updated : r)));
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível atualizar o status."));
+      setError(getErrorMessage(err, tr('Não foi possível atualizar o status.')));
     }
   }
 
@@ -128,7 +129,7 @@ export function DataSubjectRequestsPage() {
       setRejectionReason("");
     } catch (err) {
       setError(
-        getErrorMessage(err, "Não foi possível rejeitar a solicitação."),
+        getErrorMessage(err, tr('Não foi possível rejeitar a solicitação.')),
       );
     }
   }
@@ -154,36 +155,18 @@ export function DataSubjectRequestsPage() {
     (r) => r.status === "RECEIVED" || r.status === "IN_PROGRESS",
   ).length;
 
-  if (isLoading) return <LoadingSpinner label="Carregando solicitações..." />;
+  if (isLoading) return <LoadingSpinner label={tr('Carregando solicitações...')} />;
 
   return (
     <div>
-      <h1 className="text-xl text-[#0A0A0A] mb-1">
-        Direitos do Titular
-      </h1>
-      <p className="text-sm text-[#0A0A0A]/55 mb-2">
-        Solicitações recebidas via portal público, conforme Art. 18 da LGPD.
-      </p>
-      <div className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 mb-6 text-xs text-[#0A0A0A]/60 leading-relaxed">
-        A LGPD garante a qualquer titular o direito de solicitar{" "}
-        <span className="font-medium text-[#0A0A0A]">acesso</span> aos seus
-        dados, <span className="font-medium text-[#0A0A0A]">correção</span> de
-        dados incorretos,{" "}
-        <span className="font-medium text-[#0A0A0A]">eliminação</span> quando
-        aplicável,{" "}
-        <span className="font-medium text-[#0A0A0A]">portabilidade</span> para
-        outro fornecedor,{" "}
-        <span className="font-medium text-[#0A0A0A]">anonimização</span>, e{" "}
-        <span className="font-medium text-[#0A0A0A]">
-          revogação de consentimento
-        </span>{" "}
-        a qualquer momento. Toda solicitação recebida aqui já gera
-        automaticamente uma tarefa vinculada no Plano de Ação. Pelo Art. 19 da
-        LGPD, a declaração completa de confirmação de existência ou de acesso
-        aos dados deve ser fornecida em até 15 dias, e os demais direitos
-        seguem os prazos previstos em regulamento, recomendando-se atender sem
-        demora.
-      </div>
+      <h1 className="text-xl text-[#0A0A0A] mb-1">{tr('Direitos do Titular')}</h1>
+      <p className="text-sm text-[#0A0A0A]/55 mb-2">{tr('Solicitações recebidas via portal público, conforme Art. 18 da LGPD.')}</p>
+      <div className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 mb-6 text-xs text-[#0A0A0A]/60 leading-relaxed">{tr('A LGPD garante a qualquer titular o direito de solicitar')}{" "}
+        <span className="font-medium text-[#0A0A0A]">{tr('acesso')}</span>{' '}{tr('aos seus dados,')}{' '}<span className="font-medium text-[#0A0A0A]">{tr('correção')}</span>{' '}{tr('de dados incorretos,')}{" "}
+        <span className="font-medium text-[#0A0A0A]">{tr('eliminação')}</span>{' '}{tr('quando aplicável,')}{" "}
+        <span className="font-medium text-[#0A0A0A]">{tr('portabilidade')}</span>{' '}{tr('para outro fornecedor,')}{" "}
+        <span className="font-medium text-[#0A0A0A]">{tr('anonimização')}</span>{tr(', e')}{" "}
+        <span className="font-medium text-[#0A0A0A]">{tr('revogação de consentimento')}</span>{" "}{tr('a qualquer momento. Toda solicitação recebida aqui já gera automaticamente uma tarefa vinculada no Plano de Ação. Pelo Art. 19 da LGPD, a declaração completa de confirmação de existência ou de acesso aos dados deve ser fornecida em até 15 dias, e os demais direitos seguem os prazos previstos em regulamento, recomendando-se atender sem demora.')}</div>
 
       {error && (
         <div className="mb-4">
@@ -196,15 +179,13 @@ export function DataSubjectRequestsPage() {
           {qrDataUrl && (
             <img
               src={qrDataUrl}
-              alt="QR Code do portal de solicitação"
+              alt={tr('QR Code do portal de solicitação')}
               className="w-20 h-20 rounded-lg bg-[#fbfaf6] p-1"
             />
           )}
           <div className="min-w-0 flex-1">
             <p className="flex items-center gap-1.5 text-xs font-medium text-[#0A0A0A]/70 mb-1">
-              <QrCode className="w-3.5 h-3.5" />
-              Link público do portal, compartilhe com clientes e funcionários
-            </p>
+              <QrCode className="w-3.5 h-3.5" />{tr('Link público do portal, compartilhe com clientes e funcionários')}</p>
             <button
               type="button"
               onClick={() =>
@@ -225,7 +206,7 @@ export function DataSubjectRequestsPage() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Buscar por nome ou e-mail"
+            placeholder={tr('Buscar por nome ou e-mail')}
             className="w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] text-sm pl-8 pr-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
           />
         </div>
@@ -236,7 +217,7 @@ export function DataSubjectRequestsPage() {
           }
           className="text-sm rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:border-[#0A0A0A]"
         >
-          <option value="ALL">Todos os tipos</option>
+          <option value="ALL">{tr('Todos os tipos')}</option>
           {Object.entries(TYPE_LABELS).map(([value, label]) => (
             <option key={value} value={value}>
               {label}
@@ -250,7 +231,7 @@ export function DataSubjectRequestsPage() {
           }
           className="text-sm rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:border-[#0A0A0A]"
         >
-          <option value="ALL">Todos os status</option>
+          <option value="ALL">{tr('Todos os status')}</option>
           {Object.entries(STATUS_LABELS).map(([value, label]) => (
             <option key={value} value={value}>
               {label}
@@ -262,16 +243,15 @@ export function DataSubjectRequestsPage() {
           onChange={(e) => setSortOrder(e.target.value as SortOrder)}
           className="text-sm rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:border-[#0A0A0A]"
         >
-          <option value="recent">Mais recentes primeiro</option>
-          <option value="oldest">Mais antigas primeiro</option>
+          <option value="recent">{tr('Mais recentes primeiro')}</option>
+          <option value="oldest">{tr('Mais antigas primeiro')}</option>
         </select>
       </div>
 
       <p className="text-xs text-[#0A0A0A]/45 mb-3">
-        {filtered.length} de {requests.length} solicitaç
-        {requests.length !== 1 ? "ões" : "ão"}
+        {tr(requests.length === 1 ? '{{a}} de {{b}} solicitação' : '{{a}} de {{b}} solicitações', { a: filtered.length, b: requests.length })}
         {pendingCount > 0 &&
-          `, ${pendingCount} pendente${pendingCount !== 1 ? "s" : ""}`}
+          trn(pendingCount, ', {{n}} pendente', ', {{n}} pendentes')}
       </p>
 
       {filtered.length === 0 ? (
@@ -279,8 +259,8 @@ export function DataSubjectRequestsPage() {
           <Inbox className="w-8 h-8 text-[#0A0A0A]/25 mx-auto mb-3" />
           <p className="text-[#0A0A0A]/55 text-sm">
             {requests.length === 0
-              ? "Nenhuma solicitação recebida ainda."
-              : "Nenhuma solicitação corresponde aos filtros."}
+              ? tr('Nenhuma solicitação recebida ainda.')
+              : tr('Nenhuma solicitação corresponde aos filtros.')}
           </p>
         </div>
       ) : (
@@ -300,7 +280,7 @@ export function DataSubjectRequestsPage() {
                       {TYPE_LABELS[r.requestType]}
                     </span>
                     <span className="text-[10px] text-[#0A0A0A]/40">
-                      {new Date(r.createdAt).toLocaleDateString("pt-BR")}
+                      {new Date(r.createdAt).toLocaleDateString(getSystemLanguage())}
                     </span>
                   </div>
                   <p className="text-xs text-[#0A0A0A]/60">
@@ -328,8 +308,7 @@ export function DataSubjectRequestsPage() {
                 </select>
               </div>
               {r.status === "REJECTED" && r.rejectionReason && (
-                <p className="text-xs text-red-700 mt-2 pt-2 border-t border-[#0A0A0A]/8">
-                  Motivo da rejeição: {r.rejectionReason}
+                <p className="text-xs text-red-700 mt-2 pt-2 border-t border-[#0A0A0A]/8">{tr('Motivo da rejeição:')}{' '}{r.rejectionReason}
                 </p>
               )}
             </div>
@@ -340,14 +319,12 @@ export function DataSubjectRequestsPage() {
       {rejectingId && (
         <div className="fixed inset-0 bg-[#0A0A0A]/40 flex items-center justify-center px-4 z-50">
           <div className="w-full max-w-sm bg-white rounded-xl p-6 shadow-2xl border border-red-200">
-            <h3 className="text-[#0A0A0A] font-semibold mb-2">
-              Motivo da rejeição
-            </h3>
+            <h3 className="text-[#0A0A0A] font-semibold mb-2">{tr('Motivo da rejeição')}</h3>
             <textarea
               value={rejectionReason}
               onChange={(e) => setRejectionReason(e.target.value)}
               rows={3}
-              placeholder="Explique por que esta solicitação está sendo rejeitada"
+              placeholder={tr('Explique por que esta solicitação está sendo rejeitada')}
               className="w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-400 mb-4 placeholder:text-[#0A0A0A]/40"
             />
             <div className="flex gap-2">
@@ -355,18 +332,14 @@ export function DataSubjectRequestsPage() {
                 onClick={confirmRejection}
                 disabled={!rejectionReason.trim()}
                 className="flex-1 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2 transition-colors"
-              >
-                Confirmar rejeição
-              </button>
+              >{tr('Confirmar rejeição')}</button>
               <button
                 onClick={() => {
                   setRejectingId(null);
                   setRejectionReason("");
                 }}
                 className="flex-1 bg-[#0A0A0A]/5 hover:bg-[#0A0A0A]/10 text-[#0A0A0A] text-sm font-medium rounded-lg py-2 transition-colors"
-              >
-                Cancelar
-              </button>
+              >{tr('Cancelar')}</button>
             </div>
           </div>
         </div>

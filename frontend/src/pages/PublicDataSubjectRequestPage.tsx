@@ -5,13 +5,14 @@ import { getErrorMessage } from "../api/errorUtils";
 import type { DataSubjectRequestType } from "../types/dataSubjectRequest";
 import { CheckCircle2 } from "lucide-react";
 
+import { tr } from '../i18n/tr'
 const TYPE_LABELS: Record<DataSubjectRequestType, string> = {
-  ACCESS: "Acesso aos meus dados",
-  CORRECTION: "Correção de dados incorretos",
-  DELETION: "Eliminação (exclusão) dos meus dados",
-  PORTABILITY: "Portabilidade dos meus dados",
-  ANONYMIZATION: "Anonimização dos meus dados",
-  CONSENT_REVOCATION: "Revogação de consentimento",
+  ACCESS: tr('Acesso aos meus dados'),
+  CORRECTION: tr('Correção de dados incorretos'),
+  DELETION: tr('Eliminação (exclusão) dos meus dados'),
+  PORTABILITY: tr('Portabilidade dos meus dados'),
+  ANONYMIZATION: tr('Anonimização dos meus dados'),
+  CONSENT_REVOCATION: tr('Revogação de consentimento'),
 };
 
 export function PublicDataSubjectRequestPage() {
@@ -62,7 +63,7 @@ export function PublicDataSubjectRequestPage() {
       });
       setSubmitted(true);
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível enviar sua solicitação. Tente novamente."));
+      setError(getErrorMessage(err, tr('Não foi possível enviar sua solicitação. Tente novamente.')));
     } finally {
       setIsSubmitting(false);
     }
@@ -70,9 +71,7 @@ export function PublicDataSubjectRequestPage() {
 
   if (loadingCompany) {
     return (
-      <div className="min-h-screen bg-[#FBF8F8] flex items-center justify-center text-[#0A0A0A]/50 text-sm">
-        Carregando...
-      </div>
+      <div className="min-h-screen bg-[#FBF8F8] flex items-center justify-center text-[#0A0A0A]/50 text-sm">{tr('Carregando...')}</div>
     );
   }
 
@@ -80,14 +79,9 @@ export function PublicDataSubjectRequestPage() {
     return (
       <div className="min-h-screen bg-[#FBF8F8] flex items-center justify-center px-4">
         <div className="max-w-md text-center">
-          <h1 className="text-[#0A0A0A] text-lg font-semibold mb-2">Empresa não encontrada</h1>
-          <p className="text-[#0A0A0A]/55 text-sm">
-            O link que você acessou não corresponde a nenhuma empresa cadastrada no IABill. Confirme o link com
-            quem forneceu, ou entre em contato diretamente com a empresa.
-          </p>
-          <Link to="/" className="text-[#0A0A0A] hover:underline text-sm mt-4 inline-block font-medium">
-            Voltar ao início
-          </Link>
+          <h1 className="text-[#0A0A0A] text-lg font-semibold mb-2">{tr('Empresa não encontrada')}</h1>
+          <p className="text-[#0A0A0A]/55 text-sm">{tr('O link que você acessou não corresponde a nenhuma empresa cadastrada no IABill. Confirme o link com quem forneceu, ou entre em contato diretamente com a empresa.')}</p>
+          <Link to="/" className="text-[#0A0A0A] hover:underline text-sm mt-4 inline-block font-medium">{tr('Voltar ao início')}</Link>
         </div>
       </div>
     );
@@ -100,11 +94,8 @@ export function PublicDataSubjectRequestPage() {
           <div className="w-14 h-14 rounded-full bg-[#D92B21]/15 flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="w-7 h-7 text-[#0A0A0A]" />
           </div>
-          <h1 className="text-[#0A0A0A] text-lg font-semibold mb-2">Solicitação enviada</h1>
-          <p className="text-[#0A0A0A]/55 text-sm">
-            Sua solicitação foi recebida por <strong className="text-[#0A0A0A]">{companyName}</strong> e será
-            analisada. Você pode ser contatado pelo e-mail informado para dar continuidade ao processo.
-          </p>
+          <h1 className="text-[#0A0A0A] text-lg font-semibold mb-2">{tr('Solicitação enviada')}</h1>
+          <p className="text-[#0A0A0A]/55 text-sm">{tr('Sua solicitação foi recebida por')}{' '}<strong className="text-[#0A0A0A]">{companyName}</strong>{' '}{tr('e será analisada. Você pode ser contatado pelo e-mail informado para dar continuidade ao processo.')}</p>
         </div>
       </div>
     );
@@ -113,17 +104,12 @@ export function PublicDataSubjectRequestPage() {
   return (
     <div className="min-h-screen bg-[#FBF8F8] px-4 py-12">
       <div className="max-w-lg mx-auto">
-        <p className="text-xs tracking-widest text-[#0A0A0A] uppercase mb-2">
-          Portal de solicitação do titular · Art. 18 LGPD
-        </p>
+        <p className="text-xs tracking-widest text-[#0A0A0A] uppercase mb-2">{tr('Portal de solicitação do titular · Art. 18 LGPD')}</p>
         <h1 className="text-[#0A0A0A] text-2xl mb-1">{companyName}</h1>
-        <p className="text-[#0A0A0A]/55 text-sm mb-8">
-          Use este formulário para solicitar acesso, correção, eliminação, portabilidade ou anonimização dos seus
-          dados pessoais tratados por esta empresa.
-        </p>
+        <p className="text-[#0A0A0A]/55 text-sm mb-8">{tr('Use este formulário para solicitar acesso, correção, eliminação, portabilidade ou anonimização dos seus dados pessoais tratados por esta empresa.')}</p>
         <form onSubmit={handleSubmit} className="space-y-4 bg-white rounded-xl p-6 border border-[#0A0A0A]/10">
           <div>
-            <label className="block text-sm text-[#0A0A0A]/70 mb-1">Seu nome completo</label>
+            <label className="block text-sm text-[#0A0A0A]/70 mb-1">{tr('Seu nome completo')}</label>
             <input
               type="text"
               value={requesterName}
@@ -133,7 +119,7 @@ export function PublicDataSubjectRequestPage() {
             />
           </div>
           <div>
-            <label className="block text-sm text-[#0A0A0A]/70 mb-1">Seu e-mail</label>
+            <label className="block text-sm text-[#0A0A0A]/70 mb-1">{tr('Seu e-mail')}</label>
             <input
               type="email"
               value={requesterEmail}
@@ -143,7 +129,7 @@ export function PublicDataSubjectRequestPage() {
             />
           </div>
           <div>
-            <label className="block text-sm text-[#0A0A0A]/70 mb-1">CPF (opcional, ajuda a empresa a te localizar)</label>
+            <label className="block text-sm text-[#0A0A0A]/70 mb-1">{tr('CPF (opcional, ajuda a empresa a te localizar)')}</label>
             <input
               type="text"
               inputMode="numeric"
@@ -154,7 +140,7 @@ export function PublicDataSubjectRequestPage() {
             />
           </div>
           <div>
-            <label className="block text-sm text-[#0A0A0A]/70 mb-1">Tipo de solicitação</label>
+            <label className="block text-sm text-[#0A0A0A]/70 mb-1">{tr('Tipo de solicitação')}</label>
             <select
               value={requestType}
               onChange={(e) => setRequestType(e.target.value as DataSubjectRequestType)}
@@ -168,13 +154,13 @@ export function PublicDataSubjectRequestPage() {
             </select>
           </div>
           <div>
-            <label className="block text-sm text-[#0A0A0A]/70 mb-1">Descreva sua solicitação</label>
+            <label className="block text-sm text-[#0A0A0A]/70 mb-1">{tr('Descreva sua solicitação')}</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
               rows={4}
-              placeholder="Ex: Gostaria de saber quais dados meus vocês possuem, e desde quando."
+              placeholder={tr('Ex: Gostaria de saber quais dados meus vocês possuem, e desde quando.')}
               className="w-full rounded-lg bg-[#FBF8F8] text-[#0A0A0A] px-3 py-2 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] placeholder:text-[#0A0A0A]/40"
             />
           </div>
@@ -184,7 +170,7 @@ export function PublicDataSubjectRequestPage() {
             disabled={isSubmitting}
             className="w-full bg-[#0A0A0A] hover:bg-[#2A2A2A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
           >
-            {isSubmitting ? "Enviando..." : "Enviar solicitação"}
+            {isSubmitting ? tr('Enviando...') : tr('Enviar solicitação')}
           </button>
         </form>
       </div>

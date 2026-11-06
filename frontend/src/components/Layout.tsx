@@ -17,6 +17,7 @@ import {
   Home,
   Inbox,
   ListChecks,
+  Languages,
   LogOut,
   Menu,
   Route,
@@ -37,11 +38,13 @@ import { AvatarImage } from "../components/AvatarImage";
 import { MfaSetupModal } from "../components/MfaSetupModal";
 import { fetchMfaStatus, disableMfa } from "../api/authService";
 
+import { SYSTEM_LANGUAGES, getSystemLanguage, tr } from '../i18n/tr'
+import { LanguageSwitcher } from './LanguageSwitcher'
 const ROLE_LABELS: Record<string, string> = {
-  ADMIN: "Administrador",
-  USER: "Usuário",
-  DPO: "Encarregado de Dados (DPO)",
-  SUPER_ADMIN: "Super Administrador",
+  ADMIN: tr('Administrador'),
+  USER: tr('Usuário'),
+  DPO: tr('Encarregado de Dados (DPO)'),
+  SUPER_ADMIN: tr('Super Administrador'),
 };
 
 interface NavItem {
@@ -65,10 +68,10 @@ function buildWorkspaceNav(base: string): NavGroup[] {
   return [
     {
       items: [
-        { label: "Início", path: `${base}/inicio`, icon: Home },
-        { label: "Caminho de Adequação", path: `${base}/caminho`, icon: Route },
+        { label: tr('Início'), path: `${base}/inicio`, icon: Home },
+        { label: tr('Caminho de Adequação'), path: `${base}/caminho`, icon: Route },
         {
-          label: "Documentos",
+          label: tr('Documentos'),
           path: `${base}/documents`,
           icon: FileText,
           isActive: (pathname) =>
@@ -77,26 +80,26 @@ function buildWorkspaceNav(base: string): NavGroup[] {
       ],
     },
     {
-      label: "Registros",
+      label: tr('Registros'),
       items: [
-        { label: "Inventário / ROPA", path: `${base}/pilares/ropa`, icon: ClipboardList },
-        { label: "Fornecedores", path: `${base}/pilares/fornecedores`, icon: Truck },
-        { label: "Setores", path: `${base}/pilares/setores`, icon: Building2 },
-        { label: "Treinamento", path: `${base}/pilares/treinamento`, icon: GraduationCap },
+        { label: tr('Inventário / ROPA'), path: `${base}/pilares/ropa`, icon: ClipboardList },
+        { label: tr('Fornecedores'), path: `${base}/pilares/fornecedores`, icon: Truck },
+        { label: tr('Setores'), path: `${base}/pilares/setores`, icon: Building2 },
+        { label: tr('Treinamento'), path: `${base}/pilares/treinamento`, icon: GraduationCap },
       ],
     },
     {
-      label: "Demandas",
+      label: tr('Demandas'),
       items: [
-        { label: "Solicitações", path: `${base}/data-subject-requests`, icon: Inbox },
-        { label: "Incidentes", path: `${base}/incidents`, icon: AlertTriangle },
-        { label: "Plano de Ação", path: `${base}/action-plan`, icon: ListChecks },
+        { label: tr('Solicitações'), path: `${base}/data-subject-requests`, icon: Inbox },
+        { label: tr('Incidentes'), path: `${base}/incidents`, icon: AlertTriangle },
+        { label: tr('Plano de Ação'), path: `${base}/action-plan`, icon: ListChecks },
       ],
     },
     {
       items: [
         {
-          label: "Guia LGPD",
+          label: tr('Guia LGPD'),
           path: `${base}/pilares`,
           icon: BookOpen,
           isActive: (pathname) =>
@@ -170,7 +173,7 @@ function Shell() {
   async function handleDisableMfa() {
     if (
       !window.confirm(
-        "Desativar a verificação em 2 etapas? Sua conta ficará protegida só por senha.",
+        tr('Desativar a verificação em 2 etapas? Sua conta ficará protegida só por senha.'),
       )
     )
       return;
@@ -183,9 +186,9 @@ function Shell() {
   }
 
   const footerItems: NavItem[] = [
-    { label: "Unidades", path: "/dashboard", icon: Building, onlyWithoutUnit: true },
-    { label: "Ajuda", path: "/ajuda", icon: HelpCircle },
-    { label: "Plataforma", path: "/platform", icon: Shield, superAdminOnly: true },
+    { label: tr('Unidades'), path: "/dashboard", icon: Building, onlyWithoutUnit: true },
+    { label: tr('Ajuda'), path: "/ajuda", icon: HelpCircle },
+    { label: tr('Plataforma'), path: "/platform", icon: Shield, superAdminOnly: true },
   ].filter((item: NavItem) => {
     const passesAdminCheck = !item.adminOnly || role === "ADMIN" || role === "SUPER_ADMIN";
     const passesSuperAdminCheck = !item.superAdminOnly || role === "SUPER_ADMIN";
@@ -198,8 +201,8 @@ function Shell() {
   const accountItems: NavItem[] =
     tenantId !== null && (role === "ADMIN" || role === "SUPER_ADMIN")
       ? [
-          { label: "Usuários", path: "/users", icon: Users },
-          { label: "Auditoria", path: "/audit-logs", icon: ScrollText },
+          { label: tr('Usuários'), path: "/users", icon: Users },
+          { label: tr('Auditoria'), path: "/audit-logs", icon: ScrollText },
         ]
       : [];
 
@@ -240,7 +243,7 @@ function Shell() {
     <div className="flex h-dvh bg-[#fbfaf6] overflow-hidden">
       {mobileOpen && (
         <button
-          aria-label="Fechar menu"
+          aria-label={tr('Fechar menu')}
           onClick={() => setMobileOpen(false)}
           className="fixed inset-0 z-40 bg-black/50 md:hidden"
         />
@@ -261,7 +264,7 @@ function Shell() {
           <button
             onClick={() => setCollapsed((v) => !v)}
             className="hidden md:block text-[#9b968b] hover:text-white transition-colors"
-            title={collapsed ? "Expandir menu" : "Recolher menu"}
+            title={collapsed ? tr('Expandir menu') : tr('Recolher menu')}
           >
             {collapsed ? (
               <ChevronsRight className="w-4 h-4" />
@@ -272,7 +275,7 @@ function Shell() {
           <button
             onClick={() => setMobileOpen(false)}
             className="md:hidden text-[#9b968b] hover:text-white"
-            aria-label="Fechar menu"
+            aria-label={tr('Fechar menu')}
           >
             <X className="w-5 h-5" />
           </button>
@@ -294,7 +297,7 @@ function Shell() {
                   {currentWorkspace.name}
                 </span>
                 <span className="block text-[11px] text-[#9b968b]">
-                  {currentWorkspace.type === "MATRIZ" ? "Matriz" : "Filial"}
+                  {currentWorkspace.type === "MATRIZ" ? tr('Matriz') : tr('Filial')}
                 </span>
               </span>
               <ChevronsUpDown
@@ -324,9 +327,7 @@ function Shell() {
                 <Link
                   to="/dashboard"
                   className="block px-3 py-2.5 text-sm text-[#c8c3b8] hover:bg-white/8 hover:text-white border-t border-white/10 transition-colors"
-                >
-                  Gerenciar unidades
-                </Link>
+                >{tr('Gerenciar unidades')}</Link>
               </div>
             )}
           </div>
@@ -341,18 +342,18 @@ function Shell() {
                 else openAssistant();
               }}
               aria-pressed={assistantOpen}
-              title={collapsed ? "Assistente IA" : undefined}
+              title={collapsed ? tr('Assistente IA') : undefined}
               className={`flex items-center gap-2.5 w-full rounded-lg px-3 py-2 text-sm font-semibold text-white bg-[#D92B21] hover:bg-[#B4201A] transition-colors ${
                 collapsed ? "md:justify-center" : ""
               }`}
             >
               <Sparkles className="w-4 h-4 shrink-0" />
-              <span className={collapsed ? "md:hidden" : ""}>Assistente IA</span>
+              <span className={collapsed ? "md:hidden" : ""}>{tr('Assistente IA')}</span>
             </button>
           </div>
         )}
 
-        <nav aria-label="Menu principal" className="iabill-side-scroll flex-1 min-h-0 overflow-y-auto p-3 flex flex-col gap-2">
+        <nav aria-label={tr('Menu principal')} className="iabill-side-scroll flex-1 min-h-0 overflow-y-auto p-3 flex flex-col gap-2">
           {workspaceGroups.map((group, index) => (
             <div key={group.label ?? index} className="space-y-0.5">
               {group.label && !collapsed && (
@@ -388,8 +389,7 @@ function Shell() {
                   </p>
                 )}
                 {committeeRole && (
-                  <p className="text-[11px] text-[#FFB3AD] mt-0.5 truncate">
-                    Comitê LGPD: {committeeRole}
+                  <p className="text-[11px] text-[#FFB3AD] mt-0.5 truncate">{tr('Comitê LGPD:')}{' '}{committeeRole}
                   </p>
                 )}
               </div>
@@ -418,9 +418,7 @@ function Shell() {
                 className="flex items-center justify-between gap-2.5 w-full px-3 py-2.5 text-sm font-medium text-[#e5e0d6] hover:bg-white/5 transition-colors border-b border-white/10"
               >
                 <span className="flex items-center gap-2.5">
-                  <ShieldCheck className="w-4 h-4" />
-                  Verificação em 2 Etapas
-                </span>
+                  <ShieldCheck className="w-4 h-4" />{tr('Verificação em 2 Etapas')}</span>
                 <span
                   className={`text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded ${
                     mfaEnabled
@@ -428,16 +426,24 @@ function Shell() {
                       : "bg-white/5 text-[#9b968b]"
                   }`}
                 >
-                  {mfaEnabled ? "Ativa" : "Inativa"}
+                  {mfaEnabled ? tr('Ativa') : tr('Inativa')}
                 </span>
               </button>
+              <label className="flex items-center gap-2.5 w-full px-3 py-2 text-sm font-medium text-[#e5e0d6] border-b border-white/10">
+                <Languages className="w-4 h-4 shrink-0" />
+                {tr('Idioma')}
+                <LanguageSwitcher
+                  className="ml-auto min-w-0 max-w-[9.5rem] rounded border border-white/15 bg-[#17130e] px-1.5 py-1 text-xs text-[#e5e0d6]"
+                  languages={SYSTEM_LANGUAGES}
+                  value={getSystemLanguage()}
+                  label={tr('Idioma do sistema')}
+                />
+              </label>
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-2.5 w-full px-3 py-2.5 text-sm font-medium text-red-400 hover:bg-red-950/40 transition-colors"
               >
-                <LogOut className="w-4 h-4" />
-                Sair
-              </button>
+                <LogOut className="w-4 h-4" />{tr('Sair')}</button>
             </div>
           )}
           <button
@@ -468,14 +474,14 @@ function Shell() {
 
       <div className="flex-1 min-w-0 h-full flex flex-col">
         <header className="md:hidden flex items-center gap-3 px-4 h-14 bg-[#17130e] text-white shrink-0">
-          <button onClick={() => setMobileOpen(true)} aria-label="Abrir menu">
+          <button onClick={() => setMobileOpen(true)} aria-label={tr('Abrir menu')}>
             <Menu className="w-5 h-5" />
           </button>
           <span className="min-w-0 flex-1 truncate text-sm font-medium">
             {currentWorkspace?.name ?? "IABill"}
           </span>
           {currentWorkspace && (
-            <button onClick={() => openAssistant()} aria-label="Abrir assistente" className="text-[#FFB3AD]">
+            <button onClick={() => openAssistant()} aria-label={tr('Abrir assistente')} className="text-[#FFB3AD]">
               <Sparkles className="w-5 h-5" />
             </button>
           )}

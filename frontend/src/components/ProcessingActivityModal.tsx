@@ -15,6 +15,7 @@ import {
   type ProcessingActivity,
 } from "../types/processingActivity";
 
+import { tr } from '../i18n/tr'
 interface Props {
   workspaceId: string;
   editing: ProcessingActivity | null;
@@ -97,7 +98,7 @@ export function ProcessingActivityModal({
       setError(
         getErrorMessage(
           err,
-          "Não foi possível salvar a atividade de tratamento.",
+          tr('Não foi possível salvar a atividade de tratamento.'),
         ),
       );
     } finally {
@@ -119,8 +120,8 @@ export function ProcessingActivityModal({
             </div>
             <h2 className="text-lg text-[#0A0A0A]">
               {editing
-                ? "Editar Atividade de Tratamento"
-                : "Nova Atividade de Tratamento"}
+                ? tr('Editar Atividade de Tratamento')
+                : tr('Nova Atividade de Tratamento')}
             </h2>
           </div>
           <button
@@ -132,7 +133,7 @@ export function ProcessingActivityModal({
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className={labelClass}>Regime legal aplicável</label>
+            <label className={labelClass}>{tr('Regime legal aplicável')}</label>
             <select
               value={applicableRegime}
               onChange={(e) => {
@@ -156,15 +157,14 @@ export function ProcessingActivityModal({
             </select>
           </div>
           <div>
-            <label className={labelClass}>
-              Setor <span className="text-[#0A0A0A]/40">(opcional)</span>
+            <label className={labelClass}>{tr('Setor')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span>
             </label>
             <select
               value={sectorId}
               onChange={(e) => setSectorId(e.target.value)}
               className={inputClass}
             >
-              <option value="">Sem setor definido</option>
+              <option value="">{tr('Sem setor definido')}</option>
               {sectors.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name}
@@ -173,31 +173,31 @@ export function ProcessingActivityModal({
             </select>
           </div>
           <div>
-            <label className={labelClass}>Nome do processo</label>
+            <label className={labelClass}>{tr('Nome do processo')}</label>
             <input
               type="text"
               value={processName}
               onChange={(e) => setProcessName(e.target.value)}
               required
-              placeholder="Ex: Folha de Pagamento, Recrutamento e Seleção"
+              placeholder={tr('Ex: Folha de Pagamento, Recrutamento e Seleção')}
               className={inputClass}
             />
           </div>
 
           <div>
-            <label className={labelClass}>Finalidade</label>
+            <label className={labelClass}>{tr('Finalidade')}</label>
             <textarea
               value={purpose}
               onChange={(e) => setPurpose(e.target.value)}
               required
               rows={2}
-              placeholder="Para que esse processo trata os dados?"
+              placeholder={tr('Para que esse processo trata os dados?')}
               className={inputClass}
             />
           </div>
 
           <div>
-            <label className={labelClass}>Hipótese legal (base legal)</label>
+            <label className={labelClass}>{tr('Hipótese legal (base legal)')}</label>
             <select
               value={legalBasis}
               onChange={(e) => setLegalBasis(e.target.value as LegalBasis)}
@@ -219,75 +219,71 @@ export function ProcessingActivityModal({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className={labelClass}>Categorias de titulares</label>
+              <label className={labelClass}>{tr('Categorias de titulares')}</label>
               <textarea
                 value={dataSubjectCategories}
                 onChange={(e) => setDataSubjectCategories(e.target.value)}
                 required
                 rows={2}
-                placeholder="Ex: funcionários, candidatos a vaga"
+                placeholder={tr('Ex: funcionários, candidatos a vaga')}
                 className={inputClass}
               />
             </div>
             <div>
-              <label className={labelClass}>Dados pessoais tratados</label>
+              <label className={labelClass}>{tr('Dados pessoais tratados')}</label>
               <textarea
                 value={personalDataCategories}
                 onChange={(e) => setPersonalDataCategories(e.target.value)}
                 required
                 rows={2}
-                placeholder="Ex: nome, CPF, dados bancários"
+                placeholder={tr('Ex: nome, CPF, dados bancários')}
                 className={inputClass}
               />
             </div>
           </div>
 
           <div>
-            <label className={labelClass}>
-              Compartilhamento de dados{" "}
-              <span className="text-[#0A0A0A]/40">(opcional)</span>
+            <label className={labelClass}>{tr('Compartilhamento de dados')}{" "}
+              <span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span>
             </label>
             <textarea
               value={dataSharing}
               onChange={(e) => setDataSharing(e.target.value)}
               rows={2}
-              placeholder="Com quem esses dados são compartilhados, se houver"
+              placeholder={tr('Com quem esses dados são compartilhados, se houver')}
               className={inputClass}
             />
           </div>
 
           <div>
-            <label className={labelClass}>
-              Medidas de segurança{" "}
-              <span className="text-[#0A0A0A]/40">(opcional)</span>
+            <label className={labelClass}>{tr('Medidas de segurança')}{" "}
+              <span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span>
             </label>
             <textarea
               value={securityMeasures}
               onChange={(e) => setSecurityMeasures(e.target.value)}
               rows={2}
-              placeholder="Ex: criptografia, controle de acesso"
+              placeholder={tr('Ex: criptografia, controle de acesso')}
               className={inputClass}
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className={labelClass}>
-                Período de armazenamento{" "}
-                <span className="text-[#0A0A0A]/40">(opcional)</span>
+              <label className={labelClass}>{tr('Período de armazenamento')}{" "}
+                <span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span>
               </label>
               <input
                 type="text"
                 value={retentionPeriod}
                 onChange={(e) => setRetentionPeriod(e.target.value)}
-                placeholder="Ex: 5 anos após desligamento"
+                placeholder={tr('Ex: 5 anos após desligamento')}
                 className={inputClass}
               />
             </div>
             <div>
-              <label className={labelClass}>
-                Data limite de retenção{" "}
-                <span className="text-[#0A0A0A]/40">(opcional)</span>
+              <label className={labelClass}>{tr('Data limite de retenção')}{" "}
+                <span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span>
               </label>
               <input
                 type="date"
@@ -303,13 +299,10 @@ export function ProcessingActivityModal({
               checked={involvesSensitiveData}
               onChange={(e) => setInvolvesSensitiveData(e.target.checked)}
               className="rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
-            />
-            Envolve dado pessoal sensível
-          </label>
+            />{tr('Envolve dado pessoal sensível')}</label>
 
           <div>
-            <label className={labelClass}>
-              Observações <span className="text-[#0A0A0A]/40">(opcional)</span>
+            <label className={labelClass}>{tr('Observações')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span>
             </label>
             <textarea
               value={observations}
@@ -328,18 +321,16 @@ export function ProcessingActivityModal({
               className="flex-1 bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
             >
               {isLoading
-                ? "Salvando..."
+                ? tr('Salvando...')
                 : editing
-                  ? "Salvar alterações"
-                  : "Adicionar atividade"}
+                  ? tr('Salvar alterações')
+                  : tr('Adicionar atividade')}
             </button>
             <button
               type="button"
               onClick={onClose}
               className="flex-1 bg-[#0A0A0A]/5 hover:bg-[#0A0A0A]/10 text-[#0A0A0A] text-sm font-medium rounded-lg py-2.5 transition-colors"
-            >
-              Cancelar
-            </button>
+            >{tr('Cancelar')}</button>
           </div>
         </form>
       </div>

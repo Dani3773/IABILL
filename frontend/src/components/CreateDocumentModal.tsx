@@ -4,6 +4,7 @@ import { createDocument } from "../api/documentService";
 import type { Document, DocumentType } from "../types/document";
 import { getErrorMessage } from "../api/errorUtils";
 
+import { tr } from '../i18n/tr'
 interface Props {
   workspaceId: string;
   onClose: () => void;
@@ -13,13 +14,13 @@ interface Props {
 }
 
 const DOCUMENT_TYPE_LABELS: Record<DocumentType, string> = {
-  INVENTARIO_DADOS: "Inventário de Dados",
-  POLITICA_PRIVACIDADE: "Política de Privacidade",
-  RELATORIO_CONFORMIDADE: "Relatório de Conformidade",
-  RAT: "RAT (Registro de Atividades de Tratamento)",
-  RIPD_DPIA: "RIPD/DPIA (Relatório de Impacto à Proteção de Dados)",
-  POLITICA_SEGURANCA_INFORMACAO: "Política de Segurança da Informação (PSI)",
-  MATERIAL_TREINAMENTO: "Material de Treinamento/Conscientização",
+  INVENTARIO_DADOS: tr('Inventário de Dados'),
+  POLITICA_PRIVACIDADE: tr('Política de Privacidade'),
+  RELATORIO_CONFORMIDADE: tr('Relatório de Conformidade'),
+  RAT: tr('RAT (Registro de Atividades de Tratamento)'),
+  RIPD_DPIA: tr('RIPD/DPIA (Relatório de Impacto à Proteção de Dados)'),
+  POLITICA_SEGURANCA_INFORMACAO: tr('Política de Segurança da Informação (PSI)'),
+  MATERIAL_TREINAMENTO: tr('Material de Treinamento/Conscientização'),
 };
 
 export function CreateDocumentModal({ workspaceId, onClose, onCreated, initialType, initialTitle }: Props) {
@@ -41,7 +42,7 @@ export function CreateDocumentModal({ workspaceId, onClose, onCreated, initialTy
       onCreated(document);
       onClose();
     } catch (err) {
-      setError(getErrorMessage(err, "Não foi possível criar o documento."));
+      setError(getErrorMessage(err, tr('Não foi possível criar o documento.')));
     } finally {
       setIsLoading(false);
     }
@@ -55,7 +56,7 @@ export function CreateDocumentModal({ workspaceId, onClose, onCreated, initialTy
             <div className="w-8 h-8 rounded-lg bg-[#D92B21]/10 flex items-center justify-center">
               <FileText className="w-4 h-4 text-[#B4201A]" />
             </div>
-            <h2 className="text-lg text-[#0A0A0A]">Novo Documento</h2>
+            <h2 className="text-lg text-[#0A0A0A]">{tr('Novo Documento')}</h2>
           </div>
           <button
             onClick={onClose}
@@ -67,18 +68,18 @@ export function CreateDocumentModal({ workspaceId, onClose, onCreated, initialTy
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-medium text-[#0A0A0A]/60 mb-1.5">Título</label>
+            <label className="block text-xs font-medium text-[#0A0A0A]/60 mb-1.5">{tr('Título')}</label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
-              placeholder="Ex: Relatório de Conformidade - Q3 2026"
+              placeholder={tr('Ex: Relatório de Conformidade - Q3 2026')}
               className="w-full rounded-lg bg-[#fbfaf6] text-[#0A0A0A] text-sm px-3 py-2.5 border border-[#0A0A0A]/10 focus:outline-none focus:ring-2 focus:ring-[#D92B21]/30 focus:border-[#0A0A0A] transition-all placeholder:text-[#0A0A0A]/35"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#0A0A0A]/60 mb-1.5">Tipo de Documento</label>
+            <label className="block text-xs font-medium text-[#0A0A0A]/60 mb-1.5">{tr('Tipo de Documento')}</label>
             <select
               value={type}
               onChange={(e) => setType(e.target.value as DocumentType)}
@@ -100,15 +101,13 @@ export function CreateDocumentModal({ workspaceId, onClose, onCreated, initialTy
               disabled={isLoading}
               className="flex-1 bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors"
             >
-              {isLoading ? "Criando..." : "Criar"}
+              {isLoading ? tr('Criando...') : tr('Criar')}
             </button>
             <button
               type="button"
               onClick={onClose}
               className="flex-1 bg-[#0A0A0A]/5 hover:bg-[#0A0A0A]/10 text-[#0A0A0A] text-sm font-medium rounded-lg py-2.5 transition-colors"
-            >
-              Cancelar
-            </button>
+            >{tr('Cancelar')}</button>
           </div>
         </form>
       </div>
