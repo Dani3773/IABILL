@@ -36,6 +36,7 @@ export interface ProcessingActivity {
   involvesChildrenData: boolean
   involvesInternationalTransfer: boolean
   internationalTransferDetails: string | null
+  specialCategoryException: SpecialCategoryException | null
   createdAt: string
   updatedAt: string
 }
@@ -61,6 +62,7 @@ export interface ProcessingActivityRequest {
   involvesChildrenData: boolean
   involvesInternationalTransfer: boolean
   internationalTransferDetails?: string
+  specialCategoryException?: SpecialCategoryException
 }
 
 export const LEGAL_BASIS_LABELS: Record<LegalBasis, string> = {
@@ -74,6 +76,32 @@ export const LEGAL_BASIS_LABELS: Record<LegalBasis, string> = {
   PROTECAO_DO_CREDITO: 'Proteção do crédito',
   EXECUCAO_POLITICAS_PUBLICAS: 'Execução de políticas públicas',
   ESTUDOS_POR_ORGAO_PESQUISA: 'Estudos por órgão de pesquisa',
+}
+
+// Exceções do Art. 9, n.º 2 do RGPD para categorias especiais de dados.
+export type SpecialCategoryException =
+  | 'EXPLICIT_CONSENT'
+  | 'EMPLOYMENT_SOCIAL_SECURITY'
+  | 'VITAL_INTERESTS'
+  | 'NOT_FOR_PROFIT_BODY'
+  | 'MADE_PUBLIC_BY_SUBJECT'
+  | 'LEGAL_CLAIMS'
+  | 'SUBSTANTIAL_PUBLIC_INTEREST'
+  | 'HEALTH_OR_SOCIAL_CARE'
+  | 'PUBLIC_HEALTH'
+  | 'ARCHIVING_RESEARCH'
+
+export const SPECIAL_CATEGORY_EXCEPTION_LABELS: Record<SpecialCategoryException, string> = {
+  EXPLICIT_CONSENT: 'a) Consentimento explícito',
+  EMPLOYMENT_SOCIAL_SECURITY: 'b) Direito do trabalho e segurança social',
+  VITAL_INTERESTS: 'c) Interesses vitais, titular incapaz de consentir',
+  NOT_FOR_PROFIT_BODY: 'd) Fundação, associação ou organismo sem fins lucrativos',
+  MADE_PUBLIC_BY_SUBJECT: 'e) Dados tornados públicos pelo próprio titular',
+  LEGAL_CLAIMS: 'f) Declaração, exercício ou defesa de direitos em processo',
+  SUBSTANTIAL_PUBLIC_INTEREST: 'g) Interesse público importante, com base em lei',
+  HEALTH_OR_SOCIAL_CARE: 'h) Medicina preventiva ou do trabalho, saúde ou ação social',
+  PUBLIC_HEALTH: 'i) Saúde pública',
+  ARCHIVING_RESEARCH: 'j) Arquivo de interesse público, investigação científica ou estatística',
 }
 
 export const LEGAL_REGIME_LABELS: Record<'LGPD' | 'RGPD', string> = {

@@ -47,8 +47,13 @@ export async function approveDocument(id: string): Promise<Document> {
   return response.data
 }
 
-export async function updateDocumentContent(id: string, content: string): Promise<Document> {
-  const response = await apiClient.put<Document>(`/documents/${id}/content`, { content })
+// source "PDF" registra na auditoria que o texto veio de um PDF lido no navegador.
+export async function updateDocumentContent(
+  id: string,
+  content: string,
+  origin?: { source: 'PDF'; fileName: string },
+): Promise<Document> {
+  const response = await apiClient.put<Document>(`/documents/${id}/content`, { content, ...origin })
   return response.data
 }
 

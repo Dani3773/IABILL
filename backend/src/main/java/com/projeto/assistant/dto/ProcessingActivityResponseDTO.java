@@ -31,6 +31,7 @@ public record ProcessingActivityResponseDTO(
         boolean involvesChildrenData,
         boolean involvesInternationalTransfer,
         String internationalTransferDetails,
+        com.projeto.assistant.model.SpecialCategoryException specialCategoryException,
         Instant createdAt,
         Instant updatedAt
 ) {
@@ -59,6 +60,7 @@ public record ProcessingActivityResponseDTO(
                 activity.isInvolvesChildrenData(),
                 activity.isInvolvesInternationalTransfer(),
                 activity.getInternationalTransferDetails(),
+                activity.getSpecialCategoryException(),
                 activity.getCreatedAt(),
                 activity.getUpdatedAt()
         );

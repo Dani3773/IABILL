@@ -19,6 +19,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 // Escopo da busca semantica: cobre matriz e filiais da mesma empresa, e nunca
@@ -31,6 +32,7 @@ class SemanticSearchScopeIntegrationTest extends IntegrationTestBase {
     @Autowired private DocumentRepository documentRepository;
     @Autowired private DocumentChunkRepository documentChunkRepository;
     @MockitoBean private GeminiEmbeddingService geminiEmbeddingService;
+    @MockitoBean private GeminiGenerationService geminiGenerationService;
 
     private UUID tenantAId;
     private UUID tenantBId;
@@ -76,6 +78,24 @@ class SemanticSearchScopeIntegrationTest extends IntegrationTestBase {
     void unidadeDeOutraEmpresaEhNegada() {
         assertThatThrownBy(() -> documentChunkService.semanticSearch(unidadeBId, "qualquer", 5, tenantAId))
                 .isInstanceOf(AccessDeniedException.class);
+    }
+
+    @Test
+    void semDocumentoAprovadoNaEmpresaRecusaSemChamarOModelo() {
+        Tenant vazia = tenant("Empresa sem documentos");
+        Workspace unidade = workspace(vazia, "Unidade vazia", WorkspaceType.MATRIZ);
+        Document rascunho = new Document();
+        rascunho.setWorkspace(unidade);
+        rascunho.setType(DocumentType.POLITICA_PRIVACIDADE);
+        rascunho.setTitle("Rascunho");
+        rascunho.setStatus(DocumentStatus.DRAFT);
+        rascunho = documentRepository.save(rascunho);
+        UUID documentoId = rascunho.getId();
+
+        assertThatThrownBy(() -> documentChunkService.generateAssistedContent(documentoId, "politica de privacidade", vazia.getId(), UUID.randomUUID()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(DocumentChunkService.NO_CONTEXT_MESSAGE);
+        verifyNoInteractions(geminiGenerationService);
     }
 
     private Tenant tenant(String name) {

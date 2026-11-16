@@ -66,6 +66,11 @@ public class Workspace {
     @Column(name = "eu_representative")
     private String euRepresentative;
 
+    // Agente de pequeno porte (Resolucao CD/ANPD 2/2022): prazos em dobro na LGPD,
+    // inclusive o de comunicacao de incidente.
+    @Column(name = "small_processing_agent", nullable = false)
+    private boolean smallProcessingAgent = false;
+
     @ElementCollection(targetClass = LegalRegime.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "workspace_legal_regimes", joinColumns = @JoinColumn(name = "workspace_id"))
     @Enumerated(EnumType.STRING)

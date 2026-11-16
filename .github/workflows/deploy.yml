@@ -92,6 +92,9 @@ jobs:
       - name: Sync to S3 (assets com cache longo, hash no nome garante atualizacao)
         run: aws s3 sync dist/ s3://iabill-frontend --delete --exclude "index.html" --cache-control "public, max-age=31536000, immutable"
 
+      - name: Reenvia .mjs como JavaScript (worker do leitor de PDF precisa do tipo certo)
+        run: aws s3 cp dist/assets/ s3://iabill-frontend/assets/ --recursive --exclude "*" --include "*.mjs" --content-type "text/javascript" --cache-control "public, max-age=31536000, immutable"
+
       - name: Sync index.html (sem cache - sempre revalida antes de servir)
         run: aws s3 cp dist/index.html s3://iabill-frontend/index.html --cache-control "no-cache, no-store, must-revalidate"
 

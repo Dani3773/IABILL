@@ -42,6 +42,7 @@ public record ProcessingActivityRequestDTO(
         String automatedDecisionSafeguards,
         boolean involvesChildrenData,
         boolean involvesInternationalTransfer,
-        String internationalTransferDetails
+        String internationalTransferDetails,
+        com.projeto.assistant.model.SpecialCategoryException specialCategoryException
 ) {
 }

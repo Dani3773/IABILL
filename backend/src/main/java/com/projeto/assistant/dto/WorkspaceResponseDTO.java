@@ -24,6 +24,7 @@ public record WorkspaceResponseDTO(
         String phone,
         Set<LegalRegime> legalRegimes,
         String euRepresentative,
+        boolean smallProcessingAgent,
         Instant createdAt
 ) {
     public static WorkspaceResponseDTO fromEntity(Workspace workspace) {
@@ -43,6 +44,7 @@ public record WorkspaceResponseDTO(
                 workspace.getPhone(),
                 workspace.getLegalRegimes(),
                 workspace.getEuRepresentative(),
+                workspace.isSmallProcessingAgent(),
                 workspace.getCreatedAt()
         );
     }

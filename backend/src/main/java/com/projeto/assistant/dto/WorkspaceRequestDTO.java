@@ -38,6 +38,7 @@ public record WorkspaceRequestDTO(
         @NotNull(message = "Ao menos um regime legal deve ser selecionado")
         Set<LegalRegime> legalRegimes,
         @jakarta.validation.constraints.Size(max = 255)
-        String euRepresentative
+        String euRepresentative,
+        Boolean smallProcessingAgent
 ) {
 }

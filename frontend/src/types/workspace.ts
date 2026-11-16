@@ -14,6 +14,7 @@ export interface Workspace {
   phone: string | null
   legalRegimes: ('LGPD' | 'RGPD')[]
   euRepresentative: string | null
+  smallProcessingAgent: boolean
   createdAt: string
 }
 
@@ -32,4 +33,5 @@ export interface WorkspaceRequest {
   phone?: string
   legalRegimes: ('LGPD' | 'RGPD')[]
   euRepresentative?: string
+  smallProcessingAgent?: boolean
 }

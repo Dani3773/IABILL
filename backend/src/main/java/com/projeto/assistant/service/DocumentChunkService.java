@@ -6,6 +6,7 @@ import com.projeto.assistant.repository.DocumentChunkRepository;
 import com.projeto.assistant.repository.DocumentRepository;
 import com.projeto.assistant.dto.DocumentResponseDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.projeto.assistant.dto.SemanticSearchResultDTO;
@@ -24,6 +25,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class DocumentChunkService {
 
+    public static final String NO_CONTEXT_MESSAGE =
+            "Ainda não há documentos aprovados da empresa que sirvam de base para a IA. "
+            + "Envie o PDF de um documento que vocês já têm, ou escreva o conteúdo manualmente.";
+
     private final DocumentRepository documentRepository;
     private final DocumentChunkRepository documentChunkRepository;
     private final TextChunker textChunker;
@@ -32,6 +37,12 @@ public class DocumentChunkService {
     private final AuditLogService auditLogService;
     private final GeminiGenerationService geminiGenerationService;
     private final RateLimiterService rateLimiterService;
+
+    // Semelhança mínima para um trecho servir de contexto. Em 0, só a ausência total
+    // de documentos aprovados leva à recusa sem chamar o modelo. Um valor maior precisa
+    // ser calibrado com o conjunto de avaliação antes de ser usado em produção.
+    @Value("${app.rag.min-similarity:0}")
+    private double minSimilarity;
 
     // Recebe o texto bruto de um documento, quebra em pedacos, gera embedding
     // de cada um via Gemini, e salva tudo vinculado ao Document.
@@ -90,9 +101,25 @@ public class DocumentChunkService {
                         chunk.getDocument().getTitle(),
                         chunk.getChunkIndex(),
                         chunk.getContent(),
-                        chunk.getDocument().getWorkspace().getName()
+                        chunk.getDocument().getWorkspace().getName(),
+                        cosineSimilarity(queryEmbedding, chunk.getEmbedding())
                 ))
                 .toList();
+    }
+
+    static double cosineSimilarity(float[] a, float[] b) {
+        if (a == null || b == null || a.length != b.length) {
+            return 0;
+        }
+        double dot = 0;
+        double normA = 0;
+        double normB = 0;
+        for (int i = 0; i < a.length; i++) {
+            dot += a[i] * b[i];
+            normA += a[i] * a[i];
+            normB += b[i] * b[i];
+        }
+        return normA == 0 || normB == 0 ? 0 : dot / (Math.sqrt(normA) * Math.sqrt(normB));
     }
 
     private String toVectorLiteral(float[] embedding) {
@@ -120,8 +147,17 @@ public class DocumentChunkService {
         // Passo 1 (Retrieval): busca os trechos mais relevantes do proprio workspace,
         // medindo a latencia dessa etapa separada da geracao.
         Instant retrievalStart = Instant.now();
-        List<SemanticSearchResultDTO> relevantChunks = semanticSearch(workspaceId, instruction, 5, authTenantId);
+        List<SemanticSearchResultDTO> relevantChunks = semanticSearch(workspaceId, instruction, 5, authTenantId).stream()
+                .filter(chunk -> chunk.similarity() >= minSimilarity)
+                .toList();
         long retrievalLatencyMs = Duration.between(retrievalStart, Instant.now()).toMillis();
+
+        // Sem nenhum trecho aprovado que sirva de base, a recusa acontece aqui, por
+        // regra de código, sem chamar o modelo (e sem gastar tokens). O usuário é
+        // orientado a trazer o documento que já existe ou a escrever o conteúdo.
+        if (relevantChunks.isEmpty()) {
+            throw new IllegalArgumentException(NO_CONTEXT_MESSAGE);
+        }
 
         String context = relevantChunks.stream()
                 .map(SemanticSearchResultDTO::asContext)

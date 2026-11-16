@@ -4,6 +4,7 @@ import com.projeto.assistant.dto.DocumentRequestDTO;
 import com.projeto.assistant.dto.DocumentResponseDTO;
 import com.projeto.assistant.model.Document;
 import com.projeto.assistant.model.User;
+import com.projeto.assistant.model.UserRole;
 import com.projeto.assistant.model.Workspace;
 import com.projeto.assistant.repository.DocumentRepository;
 import com.projeto.assistant.repository.UserRepository;
@@ -97,12 +98,19 @@ public class DocumentService {
 
     @Transactional
     public DocumentResponseDTO updateContent(UUID documentId, String content, UUID authTenantId, UUID authUserId) {
+        return updateContent(documentId, content, null, null, authTenantId, authUserId);
+    }
+
+    @Transactional
+    public DocumentResponseDTO updateContent(UUID documentId, String content, String source, String fileName,
+                                             UUID authTenantId, UUID authUserId) {
         Document document = getValidatedDocument(documentId, authTenantId);
         if (document.getStatus() == DocumentStatus.APPROVED) {
             throw new IllegalArgumentException("Documento aprovado não pode ser alterado");
         }
         DocumentStatus previousStatus = document.getStatus();
         document.setGeneratedContent(content);
+        document.setReviewedBy(null);
         // Documento so com conteudo manual (sem nunca passar pela IA) tambem precisa
         // avancar de DRAFT para GENERATED, senao fica preso sem caminho de aprovacao -
         // "Marcar como Revisado" exige status GENERATED independente da origem do conteudo.
@@ -112,9 +120,16 @@ public class DocumentService {
             document.setStatus(DocumentStatus.GENERATED);
         }
         Document saved = documentRepository.save(document);
-        Map<String, Object> metadata = previousStatus == saved.getStatus()
-                ? Map.of("field", "generatedContent")
-                : Map.of("field", "generatedContent", "statusChange", previousStatus + " -> " + saved.getStatus());
+        Map<String, Object> metadata = new java.util.HashMap<>();
+        metadata.put("field", "generatedContent");
+        if (previousStatus != saved.getStatus()) {
+            metadata.put("statusChange", previousStatus + " -> " + saved.getStatus());
+        }
+        boolean fromPdf = "PDF".equalsIgnoreCase(source);
+        metadata.put("source", fromPdf ? "PDF" : "MANUAL");
+        if (fromPdf && fileName != null && !fileName.isBlank()) {
+            metadata.put("fileName", fileName);
+        }
         auditLogService.record(authTenantId, authUserId, AuditAction.UPDATE, AuditEntityType.DOCUMENT, documentId, metadata);
         return DocumentResponseDTO.fromEntity(saved);
     }
@@ -128,6 +143,7 @@ public class DocumentService {
         }
 
         document.setStatus(DocumentStatus.REVIEWED);
+        document.setReviewedBy(authUserId);
         Document saved = documentRepository.save(document);
 
         auditLogService.record(authTenantId, authUserId, AuditAction.UPDATE, AuditEntityType.DOCUMENT, documentId,
@@ -142,11 +158,26 @@ public class DocumentService {
         if (document.getStatus() != DocumentStatus.REVIEWED) {
             throw new IllegalArgumentException("Só é possível aprovar documentos com status REVIEWED (atual: " + document.getStatus() + ")");
         }
+        // Segregação de funções: quem revisou não aprova, se a empresa tiver outro
+        // Administrador para aprovar. Em empresa com um só Administrador a mesma
+        // pessoa pode fazer as duas etapas, e a auditoria registra isso.
+        UUID reviewer = document.getReviewedBy();
+        boolean selfApproval = reviewer != null && reviewer.equals(authUserId);
+        if (selfApproval && hasAnotherAdmin(authTenantId, authUserId)) {
+            throw new IllegalArgumentException(
+                    "Quem revisou o documento não pode aprová-lo. Peça a outro Administrador para aprovar.");
+        }
         document.setStatus(DocumentStatus.APPROVED);
         document.setReviewDueAt(Instant.now().plus(365, ChronoUnit.DAYS));
         Document saved = documentRepository.save(document);
+        Map<String, Object> approvalMetadata = new java.util.HashMap<>();
+        approvalMetadata.put("statusChange", "REVIEWED -> APPROVED");
+        approvalMetadata.put("selfApproval", selfApproval);
+        if (reviewer != null) {
+            approvalMetadata.put("reviewedBy", reviewer.toString());
+        }
         auditLogService.record(authTenantId, authUserId, AuditAction.APPROVE, AuditEntityType.DOCUMENT, documentId,
-                Map.of("statusChange", "REVIEWED -> APPROVED"));
+                approvalMetadata);
         // Um documento recem-aprovado pode conter informacao que torna outros
         // documentos ja fechados desatualizados - sinaliza os demais para revisao.
         flagRelatedDocumentsForReview(document.getWorkspace().getId(), documentId, document.getTitle());
@@ -159,6 +190,11 @@ public class DocumentService {
             documentChunkService.processContent(documentId, saved.getGeneratedContent(), authTenantId, authUserId);
         }
         return DocumentResponseDTO.fromEntity(saved);
+    }
+
+    private boolean hasAnotherAdmin(UUID tenantId, UUID userId) {
+        return userRepository.findByTenantId(tenantId).stream()
+                .anyMatch(u -> !u.getId().equals(userId) && u.getRole() == UserRole.ADMIN);
     }
 
     private Document getValidatedDocument(UUID documentId, UUID authTenantId) {
@@ -183,6 +219,7 @@ public class DocumentService {
 
         DocumentStatus previousStatus = document.getStatus();
         document.setStatus(DocumentStatus.DRAFT);
+        document.setReviewedBy(null);
         Document saved = documentRepository.save(document);
 
         auditLogService.record(authTenantId, authUserId, AuditAction.REJECT, AuditEntityType.DOCUMENT, documentId,

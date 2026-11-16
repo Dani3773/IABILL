@@ -147,7 +147,9 @@
   "Workspace não encontrado, {}": "Unit not found, {}",
   "Workspace não encontrado: {}": "Unit not found: {}",
   "dd/MM/yyyy 'às' HH:mm": "dd/MM/yyyy 'at' HH:mm",
-  "de": "of"
+  "de": "of",
+  "Quem revisou o documento não pode aprová-lo. Peça a outro Administrador para aprovar.": "Whoever reviewed the document cannot approve it. Ask another Administrator to approve it.",
+  "Ainda não há documentos aprovados da empresa que sirvam de base para a IA. Envie o PDF de um documento que vocês já têm, ou escreva o conteúdo manualmente.": "The company has no approved documents yet for the AI to build on. Upload the PDF of a document you already have, or write the content manually."
  },
  "pt-PT": {
   "A IA retornou um formato inesperado. Tente novamente.": "A IA devolveu um formato inesperado. Tente novamente.",
@@ -228,6 +230,8 @@
   "Você não tem acesso a este workspace": "Não tem acesso a esta unidade",
   "Você não tem permissão para executar esta ação": "Não tem permissão para executar esta ação",
   "Workspace não encontrado, {}": "Unidade não encontrada, {}",
-  "Workspace não encontrado: {}": "Unidade não encontrada: {}"
+  "Workspace não encontrado: {}": "Unidade não encontrada: {}",
+  "Quem revisou o documento não pode aprová-lo. Peça a outro Administrador para aprovar.": "Quem reviu o documento não o pode aprovar. Peça a outro Administrador para o aprovar.",
+  "Ainda não há documentos aprovados da empresa que sirvam de base para a IA. Envie o PDF de um documento que vocês já têm, ou escreva o conteúdo manualmente.": "A empresa ainda não tem documentos aprovados que sirvam de base para a IA. Envie o PDF de um documento que já tenham, ou escreva o conteúdo manualmente."
  }
 }

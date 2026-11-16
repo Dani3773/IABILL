@@ -16,18 +16,7 @@ import { useWorkspaces } from '../contexts/WorkspaceContext'
 import type { Incident, IncidentSeverity, IncidentStatus } from '../types/incident'
 
 import { getSystemLanguage, tr } from '../i18n/tr'
-// Soma N dias UTEIS a uma data, pulando sabados e domingos - usado pro prazo
-// de notificacao a ANPD (3 dias uteis, Resolucao CD/ANPD 15/2024).
-function addBusinessDays(start: Date, days: number): Date {
-  const result = new Date(start)
-  let added = 0
-  while (added < days) {
-    result.setDate(result.getDate() + 1)
-    const day = result.getDay()
-    if (day !== 0 && day !== 6) added++
-  }
-  return result
-}
+import { addBrazilianBusinessDays } from '../utils/businessDays'
 
 // LGPD: ANPD e titulares têm o mesmo prazo de 3 dias úteis (Resolução CD/ANPD 15/2024, Arts. 6º e 9º).
 // RGPD: autoridade de controlo em 72 horas (Art. 33.º); titular sem demora injustificada (Art. 34.º).
@@ -37,15 +26,18 @@ function getNotificationDeadlineInfo(
   target: string,
   rgpdOnly: boolean,
   isAuthority: boolean,
+  smallAgent: boolean,
 ): { text: string; urgent: boolean } | null {
   if (notifiedAt) return null
   if (rgpdOnly && !isAuthority) {
     return { text: tr('Se o risco for elevado, comunicar sem demora injustificada'), urgent: false }
   }
   const discovered = new Date(incident.discoveredAt)
+  // LGPD: 3 dias úteis; em dobro (6) para agente de pequeno porte (Resolução CD/ANPD 2/2022).
+  const lgpdDays = smallAgent ? 6 : 3
   const deadline = rgpdOnly
     ? new Date(discovered.getTime() + 72 * 60 * 60 * 1000)
-    : addBusinessDays(discovered, 3)
+    : addBrazilianBusinessDays(discovered, lgpdDays)
   const now = new Date()
   const formattedDeadline = rgpdOnly
     ? deadline.toLocaleString(getSystemLanguage(), { dateStyle: 'short', timeStyle: 'short' })
@@ -54,7 +46,7 @@ function getNotificationDeadlineInfo(
     return { text: tr('Prazo para notificar {{a}} vencido desde {{b}}', { a: target, b: formattedDeadline }), urgent: true }
   }
   return {
-    text: tr('Notificar {{a}} até {{b}} ({{c}})', { a: target, b: formattedDeadline, c: rgpdOnly ? tr('72 horas') : tr('3 dias úteis') }),
+    text: tr('Notificar {{a}} até {{b}} ({{c}})', { a: target, b: formattedDeadline, c: rgpdOnly ? tr('72 horas') : smallAgent ? tr('6 dias úteis, prazo em dobro de pequeno porte') : tr('3 dias úteis') }),
     urgent: false,
   }
 }
@@ -100,6 +92,7 @@ export function IncidentsPage() {
   const { currentWorkspace } = useWorkspaces()
   const regimes = currentWorkspace?.legalRegimes ?? []
   const rgpdOnly = regimes.includes('RGPD') && !regimes.includes('LGPD')
+  const smallAgent = currentWorkspace?.smallProcessingAgent ?? false
   const authorityLabel = rgpdOnly ? tr('a autoridade de controlo') : tr('a ANPD')
   const { workspaceId } = useParams<{ workspaceId: string }>()
   const [incidents, setIncidents] = useState<Incident[]>([])
@@ -324,7 +317,7 @@ export function IncidentsPage() {
                   <div className="flex flex-col gap-0.5">
                     <button onClick={() => handleNotifyAnpd(incident.id)} className="text-blue-700 hover:underline font-medium text-left">{tr('Registrar notificação à autoridade')}</button>
                     {(() => {
-                      const deadlineInfo = getNotificationDeadlineInfo(incident, incident.anpdNotifiedAt, authorityLabel, rgpdOnly, true)
+                      const deadlineInfo = getNotificationDeadlineInfo(incident, incident.anpdNotifiedAt, authorityLabel, rgpdOnly, true, smallAgent)
                       if (!deadlineInfo) return null
                       return (
                         <span className={deadlineInfo.urgent ? "text-red-600 font-medium" : "text-[#0A0A0A]/45"}>
@@ -344,7 +337,7 @@ export function IncidentsPage() {
                       className="text-[#0A0A0A] hover:underline font-medium text-left"
                     >{tr('Registrar notificação aos titulares')}</button>
                     {(() => {
-                      const deadlineInfo = getNotificationDeadlineInfo(incident, incident.dataSubjectsNotifiedAt, tr('os titulares'), rgpdOnly, false)
+                      const deadlineInfo = getNotificationDeadlineInfo(incident, incident.dataSubjectsNotifiedAt, tr('os titulares'), rgpdOnly, false, smallAgent)
                       if (!deadlineInfo) return null
                       return (
                         <span className={deadlineInfo.urgent ? "text-red-600 font-medium" : "text-[#0A0A0A]/45"}>

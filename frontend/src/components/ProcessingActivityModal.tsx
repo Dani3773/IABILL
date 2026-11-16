@@ -10,6 +10,8 @@ import {
 import { getErrorMessage } from "../api/errorUtils";
 import {
   LEGAL_BASIS_LABELS,
+  SPECIAL_CATEGORY_EXCEPTION_LABELS,
+  type SpecialCategoryException,
   legalBasisLabel,
   legalRegimeLabel,
   LEGAL_REGIME_LABELS,
@@ -69,6 +71,7 @@ export function ProcessingActivityModal({
   const [involvesChildrenData, setInvolvesChildrenData] = useState(editing?.involvesChildrenData ?? false);
   const [involvesInternationalTransfer, setInvolvesInternationalTransfer] = useState(editing?.involvesInternationalTransfer ?? false);
   const [internationalTransferDetails, setInternationalTransferDetails] = useState(editing?.internationalTransferDetails ?? "");
+  const [specialCategoryException, setSpecialCategoryException] = useState<SpecialCategoryException | "">(editing?.specialCategoryException ?? "");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [applicableRegime, setApplicableRegime] = useState<"LGPD" | "RGPD">(
@@ -104,6 +107,7 @@ export function ProcessingActivityModal({
         involvesChildrenData,
         involvesInternationalTransfer,
         internationalTransferDetails: involvesInternationalTransfer ? internationalTransferDetails || undefined : undefined,
+        specialCategoryException: involvesSensitiveData && applicableRegime === "RGPD" && specialCategoryException ? specialCategoryException : undefined,
       };
       const saved = editing
         ? await updateProcessingActivity(editing.id, payload)
@@ -317,7 +321,20 @@ export function ProcessingActivityModal({
               className="rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
             />{tr('Envolve dado pessoal sensível')}</label>
           {involvesSensitiveData && applicableRegime === "RGPD" && (
-            <p className="text-xs text-amber-700/90 leading-relaxed -mt-2">{tr('No RGPD, categorias especiais de dados exigem, além da base do Art. 6, uma das exceções do Art. 9, n.º 2 (por exemplo, consentimento explícito ou obrigações de direito do trabalho). Indique a exceção usada nas observações.')}</p>
+            <div className="-mt-1">
+              <label className={labelClass}>{tr('Exceção do Art. 9, n.º 2 do RGPD')}</label>
+              <select
+                value={specialCategoryException}
+                onChange={(e) => setSpecialCategoryException(e.target.value as SpecialCategoryException | "")}
+                className={inputClass}
+              >
+                <option value="">{tr('Selecione a exceção usada')}</option>
+                {(Object.keys(SPECIAL_CATEGORY_EXCEPTION_LABELS) as SpecialCategoryException[]).map((value) => (
+                  <option key={value} value={value}>{tr(SPECIAL_CATEGORY_EXCEPTION_LABELS[value])}</option>
+                ))}
+              </select>
+              <p className="text-xs text-amber-700/90 leading-relaxed mt-1">{tr('No RGPD, categorias especiais de dados exigem, além da base do Art. 6, uma destas exceções.')}</p>
+            </div>
           )}
 
           <label className="flex items-center gap-2 text-sm text-[#0A0A0A]/70 cursor-pointer">

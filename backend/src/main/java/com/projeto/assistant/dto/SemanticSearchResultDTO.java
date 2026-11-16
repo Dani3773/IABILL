@@ -9,7 +9,9 @@ public record SemanticSearchResultDTO(
         String documentTitle,
         int chunkIndex,
         String content,
-        String workspaceName
+        String workspaceName,
+        // Semelhança de cosseno com a consulta, de -1 a 1 (1 = mesmo sentido).
+        double similarity
 ) {
     // Texto do trecho como entra no prompt, com a unidade e o documento de origem.
     public String asContext() {

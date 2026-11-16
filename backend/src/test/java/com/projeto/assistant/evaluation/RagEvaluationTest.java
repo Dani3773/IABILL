@@ -214,10 +214,18 @@ class RagEvaluationTest extends IntegrationTestBase {
                     : fixtureDocIds.values().iterator().next(); // qualquer doc do workspace populado
 
             boolean vazio = workspaceAlvo.equals("vazio");
-            DocumentGenerationResponseDTO response = documentChunkService.generateAssistedContent(
-                    documentIdParaTeste, query, vazio ? tenantVazioId : tenantId, vazio ? authUserVazioId : authUserId);
-
-            boolean recusouCorretamente = contemFraseDeRecusa(response.generatedContent());
+            // Sem nenhum documento, a recusa acontece antes do modelo (regra de código).
+            boolean recusouCorretamente;
+            String textoGerado;
+            try {
+                DocumentGenerationResponseDTO response = documentChunkService.generateAssistedContent(
+                        documentIdParaTeste, query, vazio ? tenantVazioId : tenantId, vazio ? authUserVazioId : authUserId);
+                textoGerado = response.generatedContent();
+                recusouCorretamente = contemFraseDeRecusa(textoGerado);
+            } catch (IllegalArgumentException semContexto) {
+                textoGerado = semContexto.getMessage();
+                recusouCorretamente = DocumentChunkService.NO_CONTEXT_MESSAGE.equals(textoGerado);
+            }
 
             Map<String, Object> row = new LinkedHashMap<>();
             row.put("case_id", id);
@@ -226,7 +234,7 @@ class RagEvaluationTest extends IntegrationTestBase {
             row.put("query", query);
             row.put("recusou_corretamente", recusouCorretamente);
             row.put("generated_text_preview",
-                    response.generatedContent().substring(0, Math.min(150, response.generatedContent().length())));
+                    textoGerado.substring(0, Math.min(150, textoGerado.length())));
             resultRows.add(row);
         }
     }

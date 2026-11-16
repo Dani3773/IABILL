@@ -67,6 +67,10 @@ public class Document {
     @Column(name = "review_due_at")
     private Instant reviewDueAt;
 
+    // Quem marcou como revisado; a aprovação exige outra pessoa quando houver.
+    @Column(name = "reviewed_by")
+    private UUID reviewedBy;
+
     @PrePersist
     void onCreate() {
         Instant now = Instant.now();

@@ -100,6 +100,7 @@ public class PlatformService {
         workspace.setAddressNumber(request.addressNumber());
         workspace.setPhone(request.phone());
         workspace.setEuRepresentative(request.euRepresentative());
+        workspace.setSmallProcessingAgent(Boolean.TRUE.equals(request.smallProcessingAgent()));
         workspace.setLegalRegimes(request.legalRegimes());
         workspaceRepository.save(workspace);
         auditLogService.record(workspace.getTenant().getId(), authUserId, AuditAction.UPDATE, AuditEntityType.WORKSPACE, workspaceId,

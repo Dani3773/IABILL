@@ -28,6 +28,7 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
   const [addressNumber, setAddressNumber] = useState(editing?.addressNumber ?? "");
   const [phone, setPhone] = useState(editing?.phone ?? "");
   const [euRepresentative, setEuRepresentative] = useState(editing?.euRepresentative ?? "");
+  const [smallProcessingAgent, setSmallProcessingAgent] = useState(editing?.smallProcessingAgent ?? false);
   const [legalRegimes, setLegalRegimes] = useState<("LGPD" | "RGPD")[]>(editing?.legalRegimes ?? ["LGPD"]);
   const [cepLookupLoading, setCepLookupLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -103,6 +104,7 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
         phone: phone || undefined,
         legalRegimes,
         euRepresentative: legalRegimes.includes("RGPD") ? euRepresentative || undefined : undefined,
+        smallProcessingAgent: legalRegimes.includes("LGPD") && smallProcessingAgent,
       };
       const workspace = saveOverride
         ? await saveOverride(payload)
@@ -309,6 +311,19 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
                 />{tr('RGPD')}</label>
             </div>
           </div>
+
+          {legalRegimes.includes("LGPD") && (
+            <div>
+              <label className="flex items-center gap-2 text-sm text-[#0A0A0A]/70 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={smallProcessingAgent}
+                  onChange={(e) => setSmallProcessingAgent(e.target.checked)}
+                  className="rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
+                />{tr('Agente de tratamento de pequeno porte')}</label>
+              <p className="text-xs text-[#0A0A0A]/50 mt-1 leading-relaxed">{tr('Resolução CD/ANPD 2/2022: microempresas, empresas de pequeno porte e startups que não fazem tratamento de alto risco. Têm prazos em dobro, inclusive para comunicar incidentes.')}</p>
+            </div>
+          )}
 
           {legalRegimes.includes("RGPD") && (
             <div>

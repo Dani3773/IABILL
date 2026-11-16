@@ -87,10 +87,13 @@ public class DocumentController {
             @Valid @RequestBody DocumentContentUpdateRequestDTO request,
             @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
             @RequestAttribute(JwtAuthenticationFilter.ATTR_USER_ID) UUID authUserId) {
-        return documentService.updateContent(documentId, request.content(), authTenantId, authUserId);
+        return documentService.updateContent(documentId, request.content(), request.source(), request.fileName(), authTenantId, authUserId);
     }
 
+    // Revisar e rejeitar são decisões de conformidade: ficam com Administrador e
+    // Encarregado. O Usuário continua podendo criar, escrever e gerar com IA.
     @PutMapping("/{documentId}/review")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DPO')")
     public DocumentResponseDTO markReviewed(
             @PathVariable UUID documentId,
             @RequestAttribute(JwtAuthenticationFilter.ATTR_TENANT_ID) UUID authTenantId,
@@ -108,6 +111,7 @@ public class DocumentController {
     }
 
     @PutMapping("/{documentId}/reject")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DPO')")
     public DocumentResponseDTO reject(
             @PathVariable UUID documentId,
             @Valid @RequestBody DocumentRejectionRequestDTO request,

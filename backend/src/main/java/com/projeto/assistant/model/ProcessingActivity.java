@@ -80,6 +80,11 @@ public class ProcessingActivity {
     @Column(name = "international_transfer_details", columnDefinition = "TEXT")
     private String internationalTransferDetails;
 
+    // Art. 9.º, n.º 2 RGPD: exceção usada para categorias especiais de dados
+    @Enumerated(EnumType.STRING)
+    @Column(name = "special_category_exception", length = 40)
+    private SpecialCategoryException specialCategoryException;
+
     @Column(columnDefinition = "TEXT")
     private String observations;
 

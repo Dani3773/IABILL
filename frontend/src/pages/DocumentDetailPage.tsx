@@ -14,13 +14,14 @@ import {
 } from "../api/documentService";
 import { getErrorMessage } from "../api/errorUtils";
 import { useAuth } from "../contexts/AuthContext";
+import { extractPdfText, MAX_PDF_BYTES, PdfWithoutTextError } from "../utils/pdfText";
 import { useWorkspaces } from "../contexts/WorkspaceContext";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Alert } from "../components/Alert";
 import type { Document, DocumentType } from "../types/document";
 import QRCode from "qrcode";
 import { fetchWorkspaces } from "../api/workspaceService";
-import { ArrowLeft, Download } from "lucide-react";
+import { ArrowLeft, Download, Upload } from "lucide-react";
 import { renderMarkdown } from "../utils/markdown";
 import { DOCUMENT_STATUS_LABELS, DOCUMENT_STATUS_STYLES } from "../utils/documentLabels";
 
@@ -28,6 +29,7 @@ import { getSystemLanguage, tr } from '../i18n/tr'
 export function DocumentDetailPage() {
   const { documentId } = useParams<{ documentId: string }>();
   const { role } = useAuth();
+  const canReview = role === "ADMIN" || role === "DPO" || role === "SUPER_ADMIN";
   const { selectWorkspace } = useWorkspaces();
   const [document, setDocument] = useState<Document | null>(null);
   const [editedContent, setEditedContent] = useState("");
@@ -131,6 +133,35 @@ export function DocumentDetailPage() {
     }
   }
 
+  // Lê o texto do PDF no navegador e salva como conteúdo; o documento segue o
+  // mesmo caminho de revisão e aprovação de um texto digitado.
+  async function handlePdfSelected(file: File | undefined) {
+    if (!documentId || !file) return;
+    clearMessages();
+    if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
+      setError(tr('Escolha um arquivo PDF.'));
+      return;
+    }
+    if (file.size > MAX_PDF_BYTES) {
+      setError(tr('O PDF passa de 10 MB.'));
+      return;
+    }
+    setIsActionLoading(true);
+    try {
+      const text = await extractPdfText(file);
+      const updated = await updateDocumentContent(documentId, text, { source: "PDF", fileName: file.name });
+      setDocument(updated);
+      setEditedContent(updated.generatedContent ?? "");
+      setSuccessMessage(tr('Texto do PDF carregado. Confira e corrija o conteúdo antes de enviar para revisão.'));
+    } catch (err) {
+      setError(err instanceof PdfWithoutTextError
+        ? tr('Este PDF não tem texto selecionável (parece digitalizado). Copie o texto manualmente.')
+        : getErrorMessage(err, tr('Não foi possível ler o PDF.')));
+    } finally {
+      setIsActionLoading(false);
+    }
+  }
+
   async function handleReview() {
     if (!documentId) return;
     setIsActionLoading(true);
@@ -172,7 +203,7 @@ export function DocumentDetailPage() {
       setDocument(updated);
       setSuccessMessage(tr('Documento aprovado.'));
     } catch (err) {
-      setError(getErrorMessage(err, tr('Falha ao aprovar. Verifique se você tem permissão de ADMIN.')));
+      setError(getErrorMessage(err, tr('Falha ao aprovar. Verifique se você tem permissão de Administrador.')));
     } finally {
       setIsActionLoading(false);
     }
@@ -311,6 +342,19 @@ export function DocumentDetailPage() {
             disabled={isActionLoading || editedContent === (document.generatedContent ?? "")}
             className="bg-[#0A0A0A]/8 hover:bg-[#0A0A0A]/15 disabled:opacity-50 text-[#0A0A0A] text-sm font-medium rounded-lg px-4 py-2 transition-colors"
           >{tr('Salvar edição manual')}</button>
+          <label className={`ml-2 inline-flex items-center gap-1.5 bg-[#0A0A0A]/8 hover:bg-[#0A0A0A]/15 text-[#0A0A0A] text-sm font-medium rounded-lg px-4 py-2 transition-colors ${isActionLoading ? "opacity-50 pointer-events-none" : "cursor-pointer"}`}>
+            <Upload className="w-3.5 h-3.5" />{tr('Enviar PDF existente')}
+            <input
+              type="file"
+              accept="application/pdf,.pdf"
+              className="hidden"
+              onChange={(e) => {
+                void handlePdfSelected(e.target.files?.[0]);
+                e.target.value = "";
+              }}
+            />
+          </label>
+          <p className="text-xs text-[#0A0A0A]/50 mt-2">{tr('O PDF é lido no seu navegador e só o texto é salvo. Use quando a empresa já tem o documento pronto, ou quando não quiser usar a IA.')}</p>
         </div>
       )}
       {document.status === "APPROVED" && document.generatedContent !== null && (
@@ -325,7 +369,7 @@ export function DocumentDetailPage() {
 
       {(document.status === "GENERATED" || document.status === "REVIEWED") && (
         <div className="flex flex-wrap gap-3">
-          {document.status === "GENERATED" && (
+          {canReview && document.status === "GENERATED" && (
             <button
               onClick={handleReview}
               disabled={isActionLoading}
@@ -339,7 +383,9 @@ export function DocumentDetailPage() {
               className="bg-[#D92B21] hover:bg-[#B4201A] disabled:opacity-50 text-white font-semibold rounded-lg px-4 py-2 transition-colors"
             >{tr('Aprovar')}</button>
           )}
-          {!showRejectionForm ? (
+          {!canReview ? (
+            <p className="text-xs text-[#0A0A0A]/55 self-center">{tr('A revisão e a aprovação ficam com o Administrador ou o Encarregado.')}</p>
+          ) : !showRejectionForm ? (
             <button
               onClick={() => setShowRejectionForm(true)}
               disabled={isActionLoading}

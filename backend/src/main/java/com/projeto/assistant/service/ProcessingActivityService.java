@@ -4,6 +4,7 @@ import com.projeto.assistant.dto.ProcessingActivityRequestDTO;
 import com.projeto.assistant.dto.ProcessingActivityResponseDTO;
 import com.projeto.assistant.model.ProcessingActivity;
 import com.projeto.assistant.model.Workspace;
+import com.projeto.assistant.model.LegalRegime;
 import com.projeto.assistant.repository.ProcessingActivityRepository;
 import com.projeto.assistant.repository.WorkspaceRepository;
 import com.projeto.assistant.model.AuditAction;
@@ -69,6 +70,9 @@ public class ProcessingActivityService {
         activity.setInvolvesChildrenData(request.involvesChildrenData());
         activity.setInvolvesInternationalTransfer(request.involvesInternationalTransfer());
         activity.setInternationalTransferDetails(request.involvesInternationalTransfer() ? request.internationalTransferDetails() : null);
+        // A excecao do Art. 9 so faz sentido em atividade RGPD com dado sensivel.
+        activity.setSpecialCategoryException(request.applicableRegime() == LegalRegime.RGPD && request.involvesSensitiveData()
+                ? request.specialCategoryException() : null);
         activity.setCreatedBy(authUserId);
 
         ProcessingActivity saved = processingActivityRepository.save(activity);
@@ -128,6 +132,9 @@ public class ProcessingActivityService {
         activity.setInvolvesChildrenData(request.involvesChildrenData());
         activity.setInvolvesInternationalTransfer(request.involvesInternationalTransfer());
         activity.setInternationalTransferDetails(request.involvesInternationalTransfer() ? request.internationalTransferDetails() : null);
+        // A excecao do Art. 9 so faz sentido em atividade RGPD com dado sensivel.
+        activity.setSpecialCategoryException(request.applicableRegime() == LegalRegime.RGPD && request.involvesSensitiveData()
+                ? request.specialCategoryException() : null);
 
         ProcessingActivity saved = processingActivityRepository.save(activity);
 

@@ -114,4 +114,49 @@ class DocumentServiceTest {
 
         assertThat(result.status()).isEqualTo(DocumentStatus.DRAFT);
     }
+
+    @Test
+    void approve_whenReviewerApprovesAndAnotherAdminExists_shouldBeBlocked() {
+        document.setStatus(DocumentStatus.REVIEWED);
+        document.setReviewedBy(authUserId);
+        when(documentRepository.findById(document.getId())).thenReturn(Optional.of(document));
+        when(userRepository.findByTenantId(tenantId)).thenReturn(List.of(admin(authUserId), admin(UUID.randomUUID())));
+
+        assertThatThrownBy(() -> documentService.approve(document.getId(), tenantId, authUserId))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("outro Administrador");
+    }
+
+    @Test
+    void approve_whenReviewerIsTheOnlyAdmin_shouldBeAllowed() {
+        document.setStatus(DocumentStatus.REVIEWED);
+        document.setReviewedBy(authUserId);
+        when(documentRepository.findById(document.getId())).thenReturn(Optional.of(document));
+        when(documentRepository.save(document)).thenReturn(document);
+        when(documentRepository.findByWorkspaceIdAndStatusIn(any(), any())).thenReturn(List.of());
+        when(userRepository.findByTenantId(tenantId)).thenReturn(List.of(admin(authUserId)));
+
+        var result = documentService.approve(document.getId(), tenantId, authUserId);
+
+        assertThat(result.status()).isEqualTo(DocumentStatus.APPROVED);
+    }
+
+    @Test
+    void reject_shouldClearReviewer() {
+        document.setStatus(DocumentStatus.REVIEWED);
+        document.setReviewedBy(authUserId);
+        when(documentRepository.findById(document.getId())).thenReturn(Optional.of(document));
+        when(documentRepository.save(document)).thenReturn(document);
+
+        documentService.reject(document.getId(), "motivo", tenantId, authUserId);
+
+        assertThat(document.getReviewedBy()).isNull();
+    }
+
+    private static User admin(UUID id) {
+        User user = new User();
+        user.setId(id);
+        user.setRole(com.projeto.assistant.model.UserRole.ADMIN);
+        return user;
+    }
 }
