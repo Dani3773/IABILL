@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { useLegalRegime } from '../hooks/useLegalRegime'
 import { UserPlus, X, AlertTriangle } from "lucide-react";
 import { createUser } from "../api/userService";
 import { useAuth } from "../contexts/AuthContext";
@@ -27,6 +28,7 @@ function hasDpoConflict(jobTitle: string): boolean {
 }
 
 export function CreateUserModal({ onClose, onCreated }: Props) {
+  const { lr, lawName } = useLegalRegime()
   const { tenantId } = useAuth();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -132,7 +134,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
               <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
               <div>
                 <p className="text-xs text-amber-800 font-medium mb-1">{tr('Possível conflito de interesse')}</p>
-                <p className="text-xs text-amber-700/90 leading-relaxed">{tr('Segundo a ANPD, o Encarregado (DPO) não deveria acumular cargos de chefia/gerência em áreas como TI, Marketing, RH ou Financeiro, responsáveis pela decisão sobre como os dados são tratados, isso pode comprometer a independência exigida do papel. Considere indicar outra pessoa, ou avaliar um DPO terceirizado.')}</p>
+                <p className="text-xs text-amber-700/90 leading-relaxed">{lr(tr('Segundo a ANPD, o Encarregado (DPO) não deveria acumular cargos de chefia/gerência em áreas como TI, Marketing, RH ou Financeiro, responsáveis pela decisão sobre como os dados são tratados, isso pode comprometer a independência exigida do papel. Considere indicar outra pessoa, ou avaliar um DPO terceirizado.'), tr('Pelo Art. 38, n.º 6 do RGPD, o encarregado não pode ter funções que resultem em conflito de interesses, como chefiar TI, Marketing, RH ou Financeiro, áreas que decidem como os dados são tratados. Considere indicar outra pessoa, ou avaliar um encarregado externo.'), tr('Pela ANPD e pelo Art. 38, n.º 6 do RGPD, o Encarregado (DPO) não deve acumular cargos de chefia em áreas que decidem como os dados são tratados, como TI, Marketing, RH ou Financeiro. Considere indicar outra pessoa, ou avaliar um DPO terceirizado.'))}</p>
               </div>
             </div>
           )}
@@ -146,7 +148,7 @@ export function CreateUserModal({ onClose, onCreated }: Props) {
               />{tr('É substituto do Encarregado (DPO), não o titular principal')}</label>
           )}
           <div>
-            <label className={labelClass}>{tr('Cargo no comitê de LGPD')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span>
+            <label className={labelClass}>{tr('Cargo no comitê de {{lei}}', { lei: lawName })}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span>
             </label>
             <input
               type="text"

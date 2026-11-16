@@ -4,6 +4,7 @@ export type DataSubjectRequestStatus = 'RECEIVED' | 'IN_PROGRESS' | 'COMPLETED' 
 export interface PublicWorkspaceInfo {
   found: boolean
   workspaceName: string | null
+  legalRegimes?: ('LGPD' | 'RGPD')[]
 }
 
 export interface DataSubjectRequestSubmission {

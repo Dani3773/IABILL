@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLegalRegime } from '../hooks/useLegalRegime'
 import { useParams } from "react-router-dom";
 import { Truck, CheckCircle2, XCircle, Trash2, Pencil } from "lucide-react";
 import { fetchVendors, deleteVendor } from "../api/vendorService";
@@ -10,6 +11,7 @@ import type { Vendor } from "../types/vendor";
 
 import { getSystemLanguage, tr } from '../i18n/tr'
 export function VendorsPage() {
+  const { lr } = useLegalRegime()
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const [vendors, setVendors] = useState<Vendor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -55,7 +57,7 @@ export function VendorsPage() {
       <div className="flex items-center justify-between mb-2">
         <div>
           <h1 className="text-xl text-[#0A0A0A]">{tr('Fornecedores e Terceiros')}</h1>
-          <p className="text-sm text-[#0A0A0A]/55 mt-0.5">{tr('Registro de fornecedores/operadores com acesso a dados pessoais, conforme Art. 39 da LGPD.')}</p>
+          <p className="text-sm text-[#0A0A0A]/55 mt-0.5">{lr(tr('Registro de fornecedores/operadores com acesso a dados pessoais, conforme Art. 39 da LGPD.'), tr('Registro de fornecedores/subcontratantes com acesso a dados pessoais, conforme Art. 28 do RGPD.'), tr('Registro de fornecedores com acesso a dados pessoais, conforme Art. 39 da LGPD (operadores) e Art. 28 do RGPD (subcontratantes).'))}</p>
         </div>
         <button
           onClick={() => { setEditing(null); setShowModal(true); }}

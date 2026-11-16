@@ -1,14 +1,16 @@
 import { useParams, Link } from "react-router-dom";
+import { useLegalRegime } from '../hooks/useLegalRegime'
 import { ArrowLeft, Scale } from "lucide-react";
 
 import { tr } from '../i18n/tr'
+import { RegimeSections, RegimeText } from '../components/RegimeContent'
 interface Principio {
   nome: string;
   explicacao: string;
   exemplo: string;
 }
 
-const PRINCIPIOS: Principio[] = [
+const PRINCIPIOS_LGPD: Principio[] = [
   {
     nome: tr('Finalidade'),
     explicacao: tr('O dado só pode ser tratado para um propósito específico, legítimo, e explícito. Não dá pra coletar dado "para o que der".'),
@@ -61,7 +63,46 @@ const PRINCIPIOS: Principio[] = [
   },
 ];
 
+const PRINCIPIOS_RGPD: Principio[] = [
+  {
+    nome: tr('Licitude, Lealdade e Transparência'),
+    explicacao: tr('O tratamento precisa de uma base legal do Art. 6, deve ser leal com o titular, e ele precisa saber de forma clara o que é feito com os seus dados.'),
+    exemplo: tr('Uma Política de Privacidade escrita em linguagem simples, que diz quais dados são usados e para quê, atende a este princípio.'),
+  },
+  {
+    nome: tr('Limitação das Finalidades'),
+    explicacao: tr('Os dados são recolhidos para finalidades determinadas, explícitas e legítimas, e não podem depois ser usados de forma incompatível com elas.'),
+    exemplo: tr('Usar o e-mail recolhido para enviar a fatura numa campanha de marketing, sem base legal própria, viola este princípio.'),
+  },
+  {
+    nome: tr('Minimização dos Dados'),
+    explicacao: tr('Os dados devem ser adequados, pertinentes e limitados ao necessário para a finalidade.'),
+    exemplo: tr('Pedir data de nascimento para um cadastro de newsletter, sem nenhum uso real para essa informação, viola a minimização.'),
+  },
+  {
+    nome: tr('Exatidão'),
+    explicacao: tr('Os dados devem ser exatos e atualizados; os inexatos devem ser apagados ou retificados sem demora.'),
+    exemplo: tr('Manter o endereço antigo de um cliente que já avisou da mudança, sem atualizar, é uma falha deste princípio.'),
+  },
+  {
+    nome: tr('Limitação da Conservação'),
+    explicacao: tr('Os dados só podem ser guardados de forma que identifique o titular durante o tempo necessário para a finalidade.'),
+    exemplo: tr('O campo de data limite de retenção de cada atividade do ROPA existe para cumprir este princípio.'),
+  },
+  {
+    nome: tr('Integridade e Confidencialidade'),
+    explicacao: tr('O tratamento deve garantir a segurança dos dados, com medidas técnicas e organizativas contra acesso não autorizado, perda ou destruição.'),
+    exemplo: tr('Controle de acesso por papel, criptografia, e senha protegida por hash, todos já implementados no próprio sistema, são exemplos práticos deste princípio.'),
+  },
+  {
+    nome: tr('Responsabilidade'),
+    explicacao: tr('O responsável pelo tratamento cumpre os princípios e tem de conseguir demonstrar esse cumprimento (Art. 5, n.º 2).'),
+    exemplo: tr('É exatamente essa a função da trilha de auditoria imutável do sistema, cada ação relevante fica registrada e pode ser reconstruída depois.'),
+  },
+];
+
 export function PrincipiosPage() {
+  const { lr, lawName } = useLegalRegime()
   const { workspaceId } = useParams<{ workspaceId: string }>();
 
   return (
@@ -70,16 +111,17 @@ export function PrincipiosPage() {
         to={`/workspaces/${workspaceId}/pilares`}
         className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
       >
-        <ArrowLeft className="w-3.5 h-3.5" />{tr('Voltar ao Guia LGPD')}</Link>
+        <ArrowLeft className="w-3.5 h-3.5" />{tr('Voltar ao Guia {{lei}}', { lei: lawName })}</Link>
 
       <div className="flex items-center gap-2.5 mb-1">
         <Scale className="w-5 h-5 text-[#B4201A]" />
-        <h1 className="text-xl text-[#0A0A0A]">{tr('Princípios da LGPD')}</h1>
+        <h1 className="text-xl text-[#0A0A0A]">{lr(tr('Princípios da LGPD'), tr('Princípios do RGPD'), tr('Princípios da LGPD e do RGPD'))}</h1>
       </div>
-      <p className="text-sm text-[#0A0A0A]/55 mb-6">{tr('Art. 6º da Lei nº 13.709/2018. Toda decisão sobre tratamento de dados pessoais deveria conseguir se justificar por pelo menos um desses dez princípios.')}</p>
+      <p className="text-sm text-[#0A0A0A]/55 mb-6"><RegimeText lgpd={tr('Art. 6º da Lei nº 13.709/2018. Toda decisão sobre tratamento de dados pessoais deveria conseguir se justificar por pelo menos um desses dez princípios.')} rgpd={tr('Art. 5 do Regulamento (UE) 2016/679. Toda decisão sobre tratamento de dados pessoais deveria conseguir se justificar por estes sete princípios.')} /></p>
 
+      <RegimeSections lgpd={PRINCIPIOS_LGPD} rgpd={PRINCIPIOS_RGPD} render={(principios) => (
       <div className="space-y-4">
-        {PRINCIPIOS.map((p, i) => (
+        {principios.map((p, i) => (
           <div key={p.nome} className="bg-white rounded-xl p-5 border border-[#0A0A0A]/10">
             <div className="flex items-baseline gap-2 mb-2">
               <span className="text-xs text-[#B4201A]">{String(i + 1).padStart(2, "0")}</span>
@@ -93,6 +135,7 @@ export function PrincipiosPage() {
           </div>
         ))}
       </div>
+      )} />
     </div>
   );
 }

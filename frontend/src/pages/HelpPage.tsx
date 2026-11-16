@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLegalRegime } from '../hooks/useLegalRegime'
 import { Link } from "react-router-dom";
 import {
   ArrowLeft,
@@ -25,14 +26,18 @@ interface Section {
   body: { heading?: string; text: string }[];
 }
 
-const SECTIONS: Section[] = [
+type Lr = (lgpd: string, rgpd: string, ambos?: string) => string;
+
+// O texto da Ajuda segue a lei da unidade atual (LGPD, RGPD ou as duas).
+function buildSections(lr: Lr, lawName: string): Section[] {
+  return [
   {
     id: "primeiros-passos",
     title: tr('Primeiros Passos'),
     icon: Rocket,
     body: [
       {
-        text: tr('O IABill organiza a adequação da sua empresa à LGPD/RGPD em módulos, reunidos no menu lateral e explicados no Guia LGPD, mais um fluxo de geração assistida de documentos por IA. Nenhum conteúdo gerado por IA vira oficial sozinho, sempre passa por revisão humana antes de valer.'),
+        text: tr('O IABill organiza a adequação da sua empresa à LGPD/RGPD em módulos, reunidos no menu lateral e explicados no Guia {{lei}}, mais um fluxo de geração assistida de documentos por IA. Nenhum conteúdo gerado por IA vira oficial sozinho, sempre passa por revisão humana antes de valer.', { lei: lawName }),
       },
       {
         heading: tr('Um caminho recomendado, passo a passo'),
@@ -50,15 +55,15 @@ const SECTIONS: Section[] = [
   },
     {
     id: "estrutura-pilares",
-    title: tr('Como o Guia LGPD Está Organizado'),
+    title: tr('Como o Guia {{lei}} Está Organizado', { lei: lawName }),
     icon: ClipboardList,
     body: [
       {
-        text: tr('O Guia LGPD é o mapa geral da adequação da sua empresa, organizada em três estágios, do conteúdo que se estuda até o que se opera no dia a dia.'),
+        text: tr('O Guia {{lei}} é o mapa geral da adequação da sua empresa, organizada em três estágios, do conteúdo que se estuda até o que se opera no dia a dia.', { lei: lawName }),
       },
       {
         heading: tr('1. Fundamentos Legais'),
-        text: tr('Conteúdo de estudo, sem tela de gestão própria, Comitê de LGPD, Glossário de Termos, Quem é Quem, Princípios da LGPD, Base Legal, Retenção e Descarte, Evidências e Monitoramento, e O que Acontece se Não Cumprir. Vale começar por aqui se você ainda não conhece bem a LGPD.'),
+        text: tr('Conteúdo de estudo, sem tela de gestão própria, Comitê de {{lei}}, Glossário de Termos, Quem é Quem, Princípios, Base Legal, Retenção e Descarte, Evidências e Monitoramento, e O que Acontece se Não Cumprir. Vale começar por aqui se você ainda não conhece bem {{leiArtigo}}.', { lei: lawName, leiArtigo: lr(tr('a LGPD'), tr('o RGPD'), tr('a LGPD e o RGPD')) }),
       },
       {
         heading: tr('2. Operação do Dia a Dia'),
@@ -76,7 +81,7 @@ const SECTIONS: Section[] = [
     icon: ClipboardCheck,
     body: [
       {
-        text: tr('Questionário de 8 perguntas sim/não, cada uma baseada num artigo real da LGPD ou guia da ANPD (DPO, ROPA, PSI, Treinamento, Direitos do Titular, Incidentes, Fornecedores, MFA).'),
+        text: lr(tr('Questionário de 8 perguntas sim/não, cada uma baseada num artigo real da LGPD ou guia da ANPD (DPO, ROPA, PSI, Treinamento, Direitos do Titular, Incidentes, Fornecedores, MFA).'), tr('Questionário de 8 perguntas sim/não, cada uma baseada num artigo real do RGPD (DPO, ROPA, PSI, Treinamento, Direitos do Titular, Incidentes, Fornecedores, MFA).'), tr('Questionário de 8 perguntas sim/não, cada uma baseada num artigo real da LGPD e do RGPD (DPO, ROPA, PSI, Treinamento, Direitos do Titular, Incidentes, Fornecedores, MFA).')),
       },
       {
         heading: tr('O que acontece com cada resposta'),
@@ -90,7 +95,7 @@ const SECTIONS: Section[] = [
     icon: ClipboardList,
     body: [
       {
-        text: tr('Registro estruturado das atividades de tratamento de dados pessoais da empresa, no formato recomendado pela ANPD, mais completo que um documento de texto livre.'),
+        text: lr(tr('Registro estruturado das atividades de tratamento de dados pessoais da empresa, no formato recomendado pela ANPD, mais completo que um documento de texto livre.'), tr('Registro estruturado das atividades de tratamento de dados pessoais da empresa, com o conteúdo exigido pelo Art. 30 do RGPD, mais completo que um documento de texto livre.'), tr('Registro estruturado das atividades de tratamento de dados pessoais da empresa, no formato recomendado pela ANPD e com o conteúdo do Art. 30 do RGPD.')),
       },
       {
         heading: tr('Regime legal e hipótese legal'),
@@ -130,7 +135,7 @@ const SECTIONS: Section[] = [
     icon: Truck,
     body: [
       {
-        text: tr('Registro de fornecedores e operadores que têm acesso a dados pessoais em nome da sua empresa (Art. 39 da LGPD), nuvem, folha de pagamento, ferramentas de IA, etc.'),
+        text: lr(tr('Registro de fornecedores e operadores que têm acesso a dados pessoais em nome da sua empresa (Art. 39 da LGPD), nuvem, folha de pagamento, ferramentas de IA, etc.'), tr('Registro de fornecedores e subcontratantes que têm acesso a dados pessoais em nome da sua empresa (Art. 28 do RGPD), nuvem, folha de pagamento, ferramentas de IA, etc.'), tr('Registro de fornecedores que têm acesso a dados pessoais em nome da sua empresa (Art. 39 da LGPD e Art. 28 do RGPD), nuvem, folha de pagamento, ferramentas de IA, etc.')),
       },
       {
         text: tr('Para cada fornecedor, registre o serviço prestado, quais categorias de dado são compartilhadas, e se existe um DPA (contrato de proteção de dados) assinado.'),
@@ -181,7 +186,7 @@ const SECTIONS: Section[] = [
     icon: ShieldAlert,
     body: [
       {
-        text: tr('Registro de incidentes e vazamentos de dados pessoais (Art. 48 da LGPD), com notificação à ANPD e aos titulares tratadas como duas obrigações separadas, cada uma com seu próprio registro de data.'),
+        text: lr(tr('Registro de incidentes e vazamentos de dados pessoais (Art. 48 da LGPD), com notificação à ANPD e aos titulares tratadas como duas obrigações separadas, cada uma com seu próprio registro de data.'), tr('Registro de violações de dados pessoais (Arts. 33 e 34 do RGPD), com notificação à autoridade de controlo e aos titulares tratadas como duas obrigações separadas, cada uma com seu próprio registro de data.'), tr('Registro de incidentes de dados pessoais (Art. 48 da LGPD e Arts. 33 e 34 do RGPD), com notificação à autoridade e aos titulares tratadas como duas obrigações separadas, cada uma com seu próprio registro de data.')),
       },
       {
         heading: tr('Prazo de notificação'),
@@ -195,7 +200,7 @@ const SECTIONS: Section[] = [
     icon: Inbox,
     body: [
       {
-        text: tr('Portal público (Art. 18 da LGPD) onde qualquer pessoa pode solicitar acesso, correção, eliminação, portabilidade, anonimização ou revogação de consentimento dos seus dados, sem precisar de conta no sistema.'),
+        text: lr(tr('Portal público (Art. 18 da LGPD) onde qualquer pessoa pode solicitar acesso, correção, eliminação, portabilidade, anonimização ou revogação de consentimento dos seus dados, sem precisar de conta no sistema.'), tr('Portal público (Arts. 15 a 22 do RGPD) onde qualquer pessoa pode pedir acesso, retificação, apagamento, portabilidade, oposição ou retirada do consentimento, sem precisar de conta no sistema.'), tr('Portal público (Art. 18 da LGPD e Arts. 15 a 22 do RGPD) onde qualquer pessoa pode solicitar acesso, correção, eliminação, portabilidade, oposição ou revogação de consentimento, sem precisar de conta no sistema.')),
       },
       {
         text: tr('Toda solicitação recebida gera automaticamente uma tarefa vinculada no Plano de Ação da empresa.'),
@@ -215,14 +220,14 @@ const SECTIONS: Section[] = [
   },
     {
     id: "anpd-contato",
-    title: tr('Se a ANPD Entrar em Contato'),
+    title: lr(tr('Se a ANPD Entrar em Contato'), tr('Se a Autoridade de Controlo Entrar em Contato'), tr('Se a ANPD ou a Autoridade de Controlo Entrar em Contato')),
     icon: ShieldAlert,
     body: [
       {
-        text: tr('Em 2026, a ANPD monitorou a indicação do Encarregado e a existência de um canal com os titulares em 56 agentes de tratamento. Se sua empresa receber uma notificação, pedido de esclarecimento, ou for alvo de fiscalização, mantenha a calma e reúna a documentação disponível no sistema.'),
+        text: lr(tr('Em 2026, a ANPD monitorou a indicação do Encarregado e a existência de um canal com os titulares em 56 agentes de tratamento. Se sua empresa receber uma notificação, pedido de esclarecimento, ou for alvo de fiscalização, mantenha a calma e reúna a documentação disponível no sistema.'), tr('Cada país da União Europeia tem a sua autoridade de controlo; em Portugal, a CNPD. Se sua empresa receber uma notificação, pedido de esclarecimento, ou for alvo de fiscalização, mantenha a calma e reúna a documentação disponível no sistema; pelo Art. 31 do RGPD, a empresa deve cooperar com a autoridade.'), tr('A ANPD, no Brasil, e as autoridades de controlo europeias, como a CNPD em Portugal, fiscalizam ativamente. Se sua empresa receber uma notificação, pedido de esclarecimento, ou for alvo de fiscalização, mantenha a calma e reúna a documentação disponível no sistema.')),
       },
       {
-        heading: tr('O que a ANPD costuma pedir'),
+        heading: tr('O que {{autoridade}} costuma pedir', { autoridade: lr(tr('a ANPD'), tr('a autoridade de controlo'), tr('a ANPD ou a autoridade de controlo')) }),
         text: tr('Evidência de que a empresa possui um Encarregado designado, registro estruturado das atividades de tratamento (ROPA), política de segurança da informação, registro de treinamento de colaboradores, e, se aplicável, registro do incidente de segurança em questão, incluindo as notificações já feitas.'),
       },
       {
@@ -235,7 +240,7 @@ const SECTIONS: Section[] = [
       },
       {
         heading: tr('Importante'),
-        text: tr('O sistema organiza e reúne a documentação, mas não substitui orientação jurídica formal. Em qualquer contato oficial da ANPD, especialmente durante um processo de fiscalização, recomenda-se acompanhamento de um advogado especializado antes de qualquer resposta formal.'),
+        text: tr('O sistema organiza e reúne a documentação, mas não substitui orientação jurídica formal. Em qualquer contato oficial {{autoridade}}, especialmente durante um processo de fiscalização, recomenda-se acompanhamento de um advogado especializado antes de qualquer resposta formal.', { autoridade: lr(tr('da ANPD'), tr('da autoridade de controlo'), tr('da ANPD ou da autoridade de controlo')) }),
       },
     ],
   },
@@ -249,13 +254,16 @@ const SECTIONS: Section[] = [
       },
       {
         heading: tr('Conflito de interesse do DPO'),
-        text: tr('Ao atribuir o papel de DPO a alguém cujo cargo contenha termos como TI, Marketing, RH ou Financeiro, o sistema exibe um aviso, a ANPD orienta que o Encarregado não deve acumular cargos de chefia responsáveis por decidir como os dados são tratados.'),
+        text: tr('Ao atribuir o papel de DPO a alguém cujo cargo contenha termos como TI, Marketing, RH ou Financeiro, o sistema exibe um aviso, {{fonte}} o Encarregado não deve acumular cargos de chefia responsáveis por decidir como os dados são tratados.', { fonte: lr(tr('a ANPD orienta que'), tr('pelo Art. 38, n.º 6 do RGPD,'), tr('pela ANPD e pelo Art. 38, n.º 6 do RGPD,')) }),
       },
     ],
   },
 ];
+}
 
 export function HelpPage() {
+  const { lr, lawName } = useLegalRegime()
+  const SECTIONS = buildSections(lr, lawName);
   const [activeId, setActiveId] = useState(SECTIONS[0].id);
   const active = SECTIONS.find((s) => s.id === activeId)!;
 

@@ -39,6 +39,7 @@ import { MfaSetupModal } from "../components/MfaSetupModal";
 import { fetchMfaStatus, disableMfa } from "../api/authService";
 
 import { SYSTEM_LANGUAGES, getSystemLanguage, tr } from '../i18n/tr'
+import { useLegalRegime } from '../hooks/useLegalRegime'
 import { LanguageSwitcher } from './LanguageSwitcher'
 const ROLE_LABELS: Record<string, string> = {
   ADMIN: tr('Administrador'),
@@ -64,7 +65,7 @@ interface NavGroup {
 
 const OPERATIONAL_PILARES = ["ropa", "fornecedores", "setores", "treinamento"];
 
-function buildWorkspaceNav(base: string): NavGroup[] {
+function buildWorkspaceNav(base: string, lawName: string): NavGroup[] {
   return [
     {
       items: [
@@ -99,7 +100,7 @@ function buildWorkspaceNav(base: string): NavGroup[] {
     {
       items: [
         {
-          label: tr('Guia LGPD'),
+          label: tr('Guia {{lei}}', { lei: lawName }),
           path: `${base}/pilares`,
           icon: BookOpen,
           isActive: (pathname) =>
@@ -143,6 +144,7 @@ function Shell() {
     openAssistant,
     closeAssistant,
   } = useWorkspaces();
+  const { lawName } = useLegalRegime();
   const workspaceMatch = useMatch("/workspaces/:workspaceId/*");
   const [mfaEnabled, setMfaEnabled] = useState<boolean | null>(null);
   const [showMfaModal, setShowMfaModal] = useState(false);
@@ -209,7 +211,7 @@ function Shell() {
   const activeWorkspaceId = workspaceMatch?.params.workspaceId ?? currentWorkspaceId;
   const workspaceGroups =
     tenantId !== null && activeWorkspaceId
-      ? buildWorkspaceNav(`/workspaces/${activeWorkspaceId}`)
+      ? buildWorkspaceNav(`/workspaces/${activeWorkspaceId}`, lawName)
       : [];
 
   function renderItem(item: NavItem) {
@@ -389,7 +391,7 @@ function Shell() {
                   </p>
                 )}
                 {committeeRole && (
-                  <p className="text-[11px] text-[#FFB3AD] mt-0.5 truncate">{tr('Comitê LGPD:')}{' '}{committeeRole}
+                  <p className="text-[11px] text-[#FFB3AD] mt-0.5 truncate">{tr('Comitê {{lei}}:', { lei: lawName })}{' '}{committeeRole}
                   </p>
                 )}
               </div>

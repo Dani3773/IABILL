@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactElement } from "react";
+import { useLegalRegime } from '../hooks/useLegalRegime'
 import { CheckCircle2, AlertTriangle, Circle } from "lucide-react";
 import { fetchComplianceSummary } from "../api/complianceSummaryService";
 import type { ComplianceSummary } from "../types/complianceSummary";
@@ -16,14 +17,14 @@ interface Row {
   detail: string;
 }
 
-function buildRows(s: ComplianceSummary): Row[] {
+function buildRows(s: ComplianceSummary, noDpoDetail: string): Row[] {
   const rows: Row[] = [];
   rows.push({
     label: tr('Encarregado (DPO)'),
     status: s.dpoDesignated ? "ok" : "warning",
     detail: s.dpoDesignated
       ? tr('{{a}} designado como Encarregado', { a: s.dpoName })
-      : tr('Nenhum Encarregado designado, tema de monitoramento recente da ANPD'),
+      : noDpoDetail,
   });
   rows.push({
     label: tr('Inventário / ROPA'),
@@ -117,6 +118,7 @@ const STATUS_ICON: Record<RowStatus, ReactElement> = {
 };
 
 export function ComplianceChecklist({ workspaceId }: Props) {
+  const { lr } = useLegalRegime()
   const [summary, setSummary] = useState<ComplianceSummary | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -137,7 +139,7 @@ export function ComplianceChecklist({ workspaceId }: Props) {
 
   if (!summary) return null;
 
-  const rows = buildRows(summary);
+  const rows = buildRows(summary, lr(tr('Nenhum Encarregado designado, tema de monitoramento recente da ANPD'), tr('Nenhum Encarregado designado, obrigatório em vários casos pelo Art. 37 do RGPD'), tr('Nenhum Encarregado designado, tema da ANPD e exigido em vários casos pelo Art. 37 do RGPD')));
 
   return (
     <div className="bg-white rounded-xl border border-[#0A0A0A]/10 p-5 mb-6">

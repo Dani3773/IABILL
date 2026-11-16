@@ -10,6 +10,7 @@ export function PublicConsentPage() {
   const [loading, setLoading] = useState(true);
   const [found, setFound] = useState(false);
   const [workspaceName, setWorkspaceName] = useState<string | null>(null);
+  const [regime, setRegime] = useState<'LGPD' | 'RGPD'>('LGPD');
   const [processName, setProcessName] = useState<string | null>(null);
   const [purpose, setPurpose] = useState<string | null>(null);
 
@@ -26,6 +27,7 @@ export function PublicConsentPage() {
       .then((info) => {
         setFound(info.found);
         setWorkspaceName(info.workspaceName);
+        setRegime(info.applicableRegime === 'RGPD' ? 'RGPD' : 'LGPD');
         setProcessName(info.processName);
         setPurpose(info.purpose);
       })
@@ -83,7 +85,7 @@ export function PublicConsentPage() {
   return (
     <div className="min-h-screen bg-[#FBF8F8] px-4 py-12">
       <div className="max-w-lg mx-auto">
-        <p className="text-xs tracking-widest text-[#0A0A0A] uppercase mb-2">{tr('Termo de Consentimento · Art. 8º LGPD')}</p>
+        <p className="text-xs tracking-widest text-[#0A0A0A] uppercase mb-2">{regime === 'RGPD' ? tr('Termo de Consentimento · Art. 7 RGPD') : tr('Termo de Consentimento · Art. 8º LGPD')}</p>
         <h1 className="text-[#0A0A0A] text-2xl mb-1">{workspaceName}</h1>
         <p className="text-[#0A0A0A]/55 text-sm mb-6">{processName}</p>
 

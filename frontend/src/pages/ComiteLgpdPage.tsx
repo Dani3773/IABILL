@@ -1,8 +1,10 @@
 import { useParams, Link } from "react-router-dom";
+import { useLegalRegime } from '../hooks/useLegalRegime'
 import { ArrowLeft, Users } from "lucide-react";
 
 import { tr } from '../i18n/tr'
 export function ComiteLgpdPage() {
+  const { lawName } = useLegalRegime()
   const { workspaceId } = useParams<{ workspaceId: string }>();
 
   return (
@@ -11,11 +13,11 @@ export function ComiteLgpdPage() {
         to={`/workspaces/${workspaceId}/pilares`}
         className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
       >
-        <ArrowLeft className="w-3.5 h-3.5" />{tr('Voltar ao Guia LGPD')}</Link>
+        <ArrowLeft className="w-3.5 h-3.5" />{tr('Voltar ao Guia {{lei}}', { lei: lawName })}</Link>
 
       <div className="flex items-center gap-2.5 mb-1">
         <Users className="w-5 h-5 text-[#B4201A]" />
-        <h1 className="text-xl text-[#0A0A0A]">{tr('Comitê de LGPD')}</h1>
+        <h1 className="text-xl text-[#0A0A0A]">{tr('Comitê de {{lei}}', { lei: lawName })}</h1>
       </div>
       <p className="text-sm text-[#0A0A0A]/55 mb-6">{tr('Boa prática recomendada, não é uma exigência literal da lei, mas costuma ser o primeiro passo real de qualquer empresa que leva adequação a sério.')}</p>
 
@@ -32,7 +34,7 @@ export function ComiteLgpdPage() {
 
         <div className="bg-white rounded-xl p-5 border border-[#D92B21]/20 bg-[#D92B21]/5">
           <h3 className="font-medium text-[#0A0A0A] mb-2">{tr('Como isso já funciona no sistema')}</h3>
-          <p className="text-sm text-[#0A0A0A]/70 leading-relaxed">{tr('Ao cadastrar um usuário, existe um campo opcional de "Cargo no comitê de LGPD", tipo "Membro titular", "Suplente". Isso deixa registrado, de forma consultável, quem compõe o comitê da empresa, sem precisar de planilha separada.')}</p>
+          <p className="text-sm text-[#0A0A0A]/70 leading-relaxed">{tr('Ao cadastrar um usuário, existe um campo opcional de "Cargo no comitê de {{lei}}", tipo "Membro titular", "Suplente". Isso deixa registrado, de forma consultável, quem compõe o comitê da empresa, sem precisar de planilha separada.', { lei: lawName })}</p>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLegalRegime } from '../hooks/useLegalRegime'
 import { useParams } from "react-router-dom";
 import { Inbox, Search, QrCode } from "lucide-react";
 import {
@@ -43,6 +44,7 @@ const STATUS_STYLES: Record<DataSubjectRequestStatus, string> = {
 type SortOrder = "recent" | "oldest";
 
 export function DataSubjectRequestsPage() {
+  const { lr } = useLegalRegime()
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const [requests, setRequests] = useState<DataSubjectRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -160,13 +162,13 @@ export function DataSubjectRequestsPage() {
   return (
     <div>
       <h1 className="text-xl text-[#0A0A0A] mb-1">{tr('Direitos do Titular')}</h1>
-      <p className="text-sm text-[#0A0A0A]/55 mb-2">{tr('Solicitações recebidas via portal público, conforme Art. 18 da LGPD.')}</p>
-      <div className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 mb-6 text-xs text-[#0A0A0A]/60 leading-relaxed">{tr('A LGPD garante a qualquer titular o direito de solicitar')}{" "}
+      <p className="text-sm text-[#0A0A0A]/55 mb-2">{lr(tr('Solicitações recebidas via portal público, conforme Art. 18 da LGPD.'), tr('Solicitações recebidas via portal público, conforme Arts. 15 a 22 do RGPD.'), tr('Solicitações recebidas via portal público, conforme Art. 18 da LGPD e Arts. 15 a 22 do RGPD.'))}</p>
+      <div className="bg-white rounded-xl p-4 border border-[#0A0A0A]/10 mb-6 text-xs text-[#0A0A0A]/60 leading-relaxed">{lr(tr('A LGPD garante a qualquer titular o direito de solicitar'), tr('O RGPD garante a qualquer titular o direito de solicitar'), tr('A LGPD e o RGPD garantem a qualquer titular o direito de solicitar'))}{" "}
         <span className="font-medium text-[#0A0A0A]">{tr('acesso')}</span>{' '}{tr('aos seus dados,')}{' '}<span className="font-medium text-[#0A0A0A]">{tr('correção')}</span>{' '}{tr('de dados incorretos,')}{" "}
         <span className="font-medium text-[#0A0A0A]">{tr('eliminação')}</span>{' '}{tr('quando aplicável,')}{" "}
         <span className="font-medium text-[#0A0A0A]">{tr('portabilidade')}</span>{' '}{tr('para outro fornecedor,')}{" "}
-        <span className="font-medium text-[#0A0A0A]">{tr('anonimização')}</span>{tr(', e')}{" "}
-        <span className="font-medium text-[#0A0A0A]">{tr('revogação de consentimento')}</span>{" "}{tr('a qualquer momento. Toda solicitação recebida aqui já gera automaticamente uma tarefa vinculada no Plano de Ação. Pelo Art. 19 da LGPD, a declaração completa de confirmação de existência ou de acesso aos dados deve ser fornecida em até 15 dias, e os demais direitos seguem os prazos previstos em regulamento, recomendando-se atender sem demora.')}</div>
+        <span className="font-medium text-[#0A0A0A]">{lr(tr('anonimização'), tr('oposição ao tratamento'), tr('anonimização ou oposição ao tratamento'))}</span>{tr(', e')}{" "}
+        <span className="font-medium text-[#0A0A0A]">{tr('revogação de consentimento')}</span>{" "}{tr('a qualquer momento. Toda solicitação recebida aqui já gera automaticamente uma tarefa vinculada no Plano de Ação.')}{' '}{lr(tr('Pelo Art. 19 da LGPD, a declaração completa de confirmação de existência ou de acesso aos dados deve ser fornecida em até 15 dias, e os demais direitos seguem os prazos previstos em regulamento, recomendando-se atender sem demora.'), tr('Pelo Art. 12, n.º 3 do RGPD, a resposta deve ser dada sem demora injustificada e no prazo de um mês a contar do pedido, prorrogável por mais dois meses quando o pedido for complexo, informando o titular da prorrogação.'), tr('Prazos: pela LGPD (Art. 19), até 15 dias para a declaração completa de acesso; pelo RGPD (Art. 12, n.º 3), até um mês, prorrogável por mais dois em pedidos complexos.'))}</div>
 
       {error && (
         <div className="mb-4">

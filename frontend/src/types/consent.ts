@@ -16,4 +16,5 @@ export interface PublicConsentInfo {
   workspaceName: string | null
   processName: string | null
   purpose: string | null
+  applicableRegime?: 'LGPD' | 'RGPD' | null
 }

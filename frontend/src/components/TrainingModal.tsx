@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { useLegalRegime } from '../hooks/useLegalRegime'
 import { X, GraduationCap } from "lucide-react";
 import { createTraining } from "../api/trainingService";
 import { fetchEmployees } from "../api/employeeService";
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export function TrainingModal({ workspaceId, onClose, onSaved }: Props) {
+  const { lawName } = useLegalRegime()
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -79,7 +81,7 @@ export function TrainingModal({ workspaceId, onClose, onSaved }: Props) {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className={labelClass}>{tr('Título')}</label>
-            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required placeholder={tr('Ex: Conscientização sobre LGPD - Turma 2026')} className={inputClass} />
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required placeholder={tr('Ex: Conscientização sobre {{lei}} - Turma 2026', { lei: lawName })} className={inputClass} />
           </div>
           <div>
             <label className={labelClass}>{tr('Descrição')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span></label>

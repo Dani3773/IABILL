@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLegalRegime } from '../hooks/useLegalRegime'
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { GraduationCap, Users, Sparkles, Trash2 } from "lucide-react";
 import { fetchTrainings, deleteTraining } from "../api/trainingService";
@@ -10,6 +11,7 @@ import { TRAINING_METHOD_LABELS, type Training } from "../types/training";
 
 import { getSystemLanguage, tr, trn } from '../i18n/tr'
 export function TrainingsPage() {
+  const { lr, lawName } = useLegalRegime()
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const navigate = useNavigate();
   const [trainings, setTrainings] = useState<Training[]>([]);
@@ -48,7 +50,7 @@ export function TrainingsPage() {
     navigate(`/workspaces/${workspaceId}/documents`, {
       state: {
         prefillType: "MATERIAL_TREINAMENTO",
-        prefillTitle: tr('Material de Treinamento - Conscientização LGPD'),
+        prefillTitle: tr('Material de Treinamento - Conscientização {{lei}}', { lei: lawName }),
       },
     });
   }
@@ -61,7 +63,7 @@ export function TrainingsPage() {
       <div className="flex items-center justify-between mb-2 flex-wrap gap-3">
         <div>
           <h1 className="text-xl text-[#0A0A0A]">{tr('Treinamento de Colaboradores')}</h1>
-          <p className="text-sm text-[#0A0A0A]/55 mt-0.5">{tr('Registro de conscientização sobre proteção de dados, conforme boas práticas recomendadas pela ANPD.')}</p>
+          <p className="text-sm text-[#0A0A0A]/55 mt-0.5">{lr(tr('Registro de conscientização sobre proteção de dados, conforme boas práticas recomendadas pela ANPD.'), tr('Registro de conscientização sobre proteção de dados, conforme Art. 39, n.º 1, alínea b do RGPD (sensibilização do pessoal).'), tr('Registro de conscientização sobre proteção de dados, conforme boas práticas da ANPD e Art. 39, n.º 1, alínea b do RGPD.'))}</p>
         </div>
         <div className="flex gap-2 shrink-0">
           <Link

@@ -24,8 +24,9 @@ public class ConsentService {
     @Transactional(readOnly = true)
     public PublicConsentInfoDTO getPublicInfo(UUID activityId) {
         return processingActivityRepository.findById(activityId)
-                .map(a -> new PublicConsentInfoDTO(true, a.getWorkspace().getName(), a.getProcessName(), a.getPurpose()))
-                .orElse(new PublicConsentInfoDTO(false, null, null, null));
+                .map(a -> new PublicConsentInfoDTO(true, a.getWorkspace().getName(), a.getProcessName(), a.getPurpose(),
+                        a.getApplicableRegime() == null ? null : a.getApplicableRegime().name()))
+                .orElse(new PublicConsentInfoDTO(false, null, null, null, null));
     }
 
     // Endpoint publico - sem authTenantId, o titular nunca tem conta no sistema.

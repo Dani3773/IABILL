@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { regimeModeOf, type RegimeMode } from '../hooks/useLegalRegime'
 import { useParams, Link } from "react-router-dom";
 import { lookupWorkspace, submitDataSubjectRequest } from "../api/dataSubjectRequestService";
 import { getErrorMessage } from "../api/errorUtils";
@@ -20,6 +21,7 @@ export function PublicDataSubjectRequestPage() {
   const [loadingCompany, setLoadingCompany] = useState(true);
   const [companyFound, setCompanyFound] = useState(false);
   const [companyName, setCompanyName] = useState<string | null>(null);
+  const [regimeMode, setRegimeMode] = useState<RegimeMode>('LGPD');
   const [requesterName, setRequesterName] = useState("");
   const [requesterEmail, setRequesterEmail] = useState("");
   const [requesterDocumentId, setRequesterDocumentId] = useState("");
@@ -35,6 +37,7 @@ export function PublicDataSubjectRequestPage() {
       .then((info) => {
         setCompanyFound(info.found);
         setCompanyName(info.workspaceName);
+        setRegimeMode(regimeModeOf(info.legalRegimes));
       })
       .catch(() => setCompanyFound(false))
       .finally(() => setLoadingCompany(false));
@@ -104,7 +107,7 @@ export function PublicDataSubjectRequestPage() {
   return (
     <div className="min-h-screen bg-[#FBF8F8] px-4 py-12">
       <div className="max-w-lg mx-auto">
-        <p className="text-xs tracking-widest text-[#0A0A0A] uppercase mb-2">{tr('Portal de solicitação do titular · Art. 18 LGPD')}</p>
+        <p className="text-xs tracking-widest text-[#0A0A0A] uppercase mb-2">{regimeMode === 'RGPD' ? tr('Portal de solicitação do titular · Arts. 15 a 22 RGPD') : regimeMode === 'AMBOS' ? tr('Portal de solicitação do titular · Art. 18 LGPD e Arts. 15 a 22 RGPD') : tr('Portal de solicitação do titular · Art. 18 LGPD')}</p>
         <h1 className="text-[#0A0A0A] text-2xl mb-1">{companyName}</h1>
         <p className="text-[#0A0A0A]/55 text-sm mb-8">{tr('Use este formulário para solicitar acesso, correção, eliminação, portabilidade ou anonimização dos seus dados pessoais tratados por esta empresa.')}</p>
         <form onSubmit={handleSubmit} className="space-y-4 bg-white rounded-xl p-6 border border-[#0A0A0A]/10">

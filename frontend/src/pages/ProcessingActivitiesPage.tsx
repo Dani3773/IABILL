@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLegalRegime } from '../hooks/useLegalRegime'
 import { useParams } from "react-router-dom";
 import {
   ClipboardList,
@@ -27,6 +28,7 @@ import { ConsentRecordsModal } from "../components/ConsentRecordsModal";
 
 import { getSystemLanguage, tr } from '../i18n/tr'
 export function ProcessingActivitiesPage() {
+  const { lr } = useLegalRegime()
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const [activities, setActivities] = useState<ProcessingActivity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -104,7 +106,7 @@ export function ProcessingActivitiesPage() {
       <div className="flex items-center justify-between mb-2">
         <div>
           <h1 className="text-xl text-[#0A0A0A]">{tr('Registro de Operações de Tratamento')}</h1>
-          <p className="text-sm text-[#0A0A0A]/55 mt-0.5">{tr('Inventário estruturado das atividades de tratamento de dados pessoais, no formato recomendado pela ANPD.')}</p>
+          <p className="text-sm text-[#0A0A0A]/55 mt-0.5">{lr(tr('Inventário estruturado das atividades de tratamento de dados pessoais, no formato recomendado pela ANPD.'), tr('Registro das atividades de tratamento de dados pessoais, com o conteúdo exigido pelo Art. 30 do RGPD.'), tr('Inventário estruturado das atividades de tratamento, no formato da ANPD e com o conteúdo do Art. 30 do RGPD.'))}</p>
         </div>
         <button
           onClick={() => {

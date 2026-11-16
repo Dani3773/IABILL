@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLegalRegime } from '../hooks/useLegalRegime'
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, ClipboardCheck, CheckCircle2 } from "lucide-react";
 import { createActionItem } from "../api/actionItemService";
@@ -13,68 +14,75 @@ interface Question {
   actionDescription: string;
 }
 
-const QUESTIONS: Question[] = [
+type Lr = (lgpd: string, rgpd: string, ambos?: string) => string;
+
+// As perguntas citam o artigo da lei da unidade (LGPD, RGPD ou as duas).
+function buildQuestions(lr: Lr): Question[] {
+  return [
   {
     id: "dpo",
     text: tr('Sua empresa tem um Encarregado de Dados (DPO) formalmente designado?'),
-    legalBasis: tr('Art. 41 da LGPD'),
+    legalBasis: lr(tr('Art. 41 da LGPD'), tr('Arts. 37 a 39 do RGPD')),
     actionTitle: tr('Designar um Encarregado de Dados (DPO)'),
-    actionDescription: tr('Atribua o papel de DPO a um colaborador sem conflito de interesse (evite acumular com cargos de TI, Marketing, RH ou Financeiro, conforme orientação da ANPD). Acesse a aba Usuários para atribuir o papel.'),
+    actionDescription: lr(tr('Atribua o papel de DPO a um colaborador sem conflito de interesse (evite acumular com cargos de TI, Marketing, RH ou Financeiro, conforme orientação da ANPD). Acesse a aba Usuários para atribuir o papel.'), tr('Atribua o papel de DPO a um colaborador sem conflito de interesses (evite acumular com cargos de TI, Marketing, RH ou Financeiro, conforme o Art. 38, n.º 6 do RGPD). Acesse a aba Usuários para atribuir o papel.'), tr('Atribua o papel de DPO a um colaborador sem conflito de interesse (evite acumular com cargos de TI, Marketing, RH ou Financeiro, conforme a ANPD e o Art. 38, n.º 6 do RGPD). Acesse a aba Usuários para atribuir o papel.')),
   },
   {
     id: "ropa",
     text: tr('As atividades de tratamento de dados pessoais já estão registradas (inventário/ROPA)?'),
-    legalBasis: tr('Art. 37 da LGPD, Guia ANPD'),
+    legalBasis: lr(tr('Art. 37 da LGPD, Guia ANPD'), tr('Art. 30 do RGPD')),
     actionTitle: tr('Preencher o Registro de Operações de Tratamento (ROPA)'),
     actionDescription: tr('Cadastre as atividades de tratamento de dados da empresa no menu Inventário / ROPA.'),
   },
   {
     id: "psi",
     text: tr('Existe uma Política de Segurança da Informação (PSI) documentada?'),
-    legalBasis: tr('Guia de Segurança da Informação da ANPD'),
+    legalBasis: lr(tr('Guia de Segurança da Informação da ANPD'), tr('Art. 32 do RGPD')),
     actionTitle: tr('Gerar a Política de Segurança da Informação (PSI)'),
-    actionDescription: tr('Crie um documento do tipo PSI na aba Documentos, cobrindo senhas, backup, controle de acesso e demais tópicos recomendados pela ANPD.'),
+    actionDescription: lr(tr('Crie um documento do tipo PSI na aba Documentos, cobrindo senhas, backup, controle de acesso e demais tópicos recomendados pela ANPD.'), tr('Crie um documento do tipo PSI na aba Documentos, cobrindo senhas, backup, controle de acesso e as demais medidas técnicas e organizativas do Art. 32 do RGPD.'), tr('Crie um documento do tipo PSI na aba Documentos, cobrindo senhas, backup, controle de acesso e demais medidas recomendadas pela ANPD e pelo Art. 32 do RGPD.')),
   },
   {
     id: "training",
     text: tr('Os colaboradores já passaram por treinamento/conscientização sobre proteção de dados?'),
-    legalBasis: tr('Guia de Segurança da Informação da ANPD'),
+    legalBasis: lr(tr('Guia de Segurança da Informação da ANPD'), tr('Art. 39, n.º 1, alínea b do RGPD')),
     actionTitle: tr('Registrar o primeiro treinamento de colaboradores'),
     actionDescription: tr('Cadastre os colaboradores e registre um treinamento no menu Treinamento.'),
   },
   {
     id: "dsr",
     text: tr('O processo de atendimento a solicitações de titulares de dados está sendo usado/divulgado?'),
-    legalBasis: tr('Art. 18 da LGPD'),
+    legalBasis: lr(tr('Art. 18 da LGPD'), tr('Arts. 12 a 22 do RGPD')),
     actionTitle: tr('Divulgar o Portal de Solicitação do Titular'),
     actionDescription: tr('Compartilhe o link público do Portal de Solicitação do Titular com clientes/funcionários (disponível na aba Solicitações).'),
   },
   {
     id: "incident",
     text: tr('A equipe está familiarizada com o processo de resposta a incidentes de segurança?'),
-    legalBasis: tr('Art. 48 da LGPD'),
+    legalBasis: lr(tr('Art. 48 da LGPD'), tr('Arts. 33 e 34 do RGPD')),
     actionTitle: tr('Revisar o processo de resposta a incidentes'),
     actionDescription: tr('Familiarize a equipe com o módulo de Incidentes e os passos de notificação à autoridade e aos titulares.'),
   },
   {
     id: "vendor",
     text: tr('Os fornecedores com acesso a dados pessoais têm contrato de proteção de dados (DPA) assinado?'),
-    legalBasis: tr('Art. 39 da LGPD'),
+    legalBasis: lr(tr('Art. 39 da LGPD'), tr('Art. 28 do RGPD')),
     actionTitle: tr('Confirmar DPAs assinados com fornecedores'),
     actionDescription: tr('Cadastre os fornecedores no menu Fornecedores e confirme se há DPA assinado com cada um.'),
   },
   {
     id: "mfa",
     text: tr('A verificação em duas etapas (MFA) está ativada nas contas de acesso ao sistema?'),
-    legalBasis: tr('Guia de Segurança da Informação da ANPD'),
+    legalBasis: lr(tr('Guia de Segurança da Informação da ANPD'), tr('Art. 32 do RGPD')),
     actionTitle: tr('Ativar a verificação em duas etapas (MFA)'),
     actionDescription: tr('Ative o MFA no menu de perfil, na sidebar, para reforçar a segurança de acesso.'),
   },
-];
+  ];
+}
 
 export function DiagnosticPage() {
+  const { lr, lawName } = useLegalRegime()
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const navigate = useNavigate();
+  const QUESTIONS = buildQuestions(lr);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -146,7 +154,7 @@ export function DiagnosticPage() {
         to={`/workspaces/${workspaceId}/pilares`}
         className="flex items-center gap-1.5 text-[#0A0A0A] hover:text-[#B4201A] text-sm mb-4 font-medium transition-colors w-fit"
       >
-        <ArrowLeft className="w-3.5 h-3.5" />{tr('Voltar ao Guia LGPD')}</Link>
+        <ArrowLeft className="w-3.5 h-3.5" />{tr('Voltar ao Guia {{lei}}', { lei: lawName })}</Link>
 
       <div className="flex items-center gap-2.5 mb-1">
         <ClipboardCheck className="w-5 h-5 text-[#B4201A]" />

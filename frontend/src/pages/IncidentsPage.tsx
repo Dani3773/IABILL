@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useLegalRegime } from '../hooks/useLegalRegime'
 import { useParams } from 'react-router-dom'
 import { ShieldAlert, AlertOctagon } from 'lucide-react'
 import {
@@ -95,6 +96,7 @@ const STATUS_STYLES: Record<IncidentStatus, string> = {
 const MANUAL_STATUS_OPTIONS: IncidentStatus[] = ['IDENTIFIED', 'ASSESSING', 'RESOLVED']
 
 export function IncidentsPage() {
+  const { lr } = useLegalRegime()
   const { currentWorkspace } = useWorkspaces()
   const regimes = currentWorkspace?.legalRegimes ?? []
   const rgpdOnly = regimes.includes('RGPD') && !regimes.includes('LGPD')
@@ -193,7 +195,7 @@ export function IncidentsPage() {
     <div className="max-w-3xl mx-auto">
 
       <h1 className="text-xl text-[#0A0A0A] mb-1">{tr('Incidentes de Segurança')}</h1>
-      <p className="text-sm text-[#0A0A0A]/55 mb-6">{tr('Registro de incidentes e vazamentos de dados pessoais, conforme Art. 48 da LGPD.')}</p>
+      <p className="text-sm text-[#0A0A0A]/55 mb-6">{lr(tr('Registro de incidentes e vazamentos de dados pessoais, conforme Art. 48 da LGPD.'), tr('Registro de violações de dados pessoais, conforme Arts. 33 e 34 do RGPD.'), tr('Registro de incidentes de dados pessoais, conforme Art. 48 da LGPD e Arts. 33 e 34 do RGPD.'))}</p>
 
       <div className="space-y-3 mb-4">
         {error && <Alert type="error" message={error} />}

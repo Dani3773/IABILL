@@ -34,8 +34,8 @@ public class DataSubjectRequestService {
         // mesmo bug corrigido la.
         String digitsOnly = documentId.replaceAll("\\D", "");
         return workspaceRepository.findByDocumentIdDigitsOnly(digitsOnly)
-                .map(w -> new PublicWorkspaceInfoDTO(true, w.getName()))
-                .orElse(new PublicWorkspaceInfoDTO(false, null));
+                .map(w -> new PublicWorkspaceInfoDTO(true, w.getName(), w.getLegalRegimes().stream().sorted().toList()))
+                .orElse(new PublicWorkspaceInfoDTO(false, null, List.of()));
     }
 
     // Submissao publica - sem authTenantId/authUserId, pois o titular nunca tem conta.

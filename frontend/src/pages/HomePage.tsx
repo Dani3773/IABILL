@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { useLegalRegime } from '../hooks/useLegalRegime'
 import { Link, useParams } from "react-router-dom";
 import {
   AlertTriangle,
@@ -40,6 +41,7 @@ function buildAttention(
   documents: Document[],
   actions: ActionItem[],
   canManageUsers: boolean,
+  dpoDetail: string,
 ): AttentionRow[] {
   const rows: AttentionRow[] = [];
 
@@ -72,7 +74,7 @@ function buildAttention(
       rows.push({
         tone: "warning",
         title: tr('Encarregado (DPO) não designado'),
-        detail: tr('Tema de monitoramento recente da ANPD.'),
+        detail: dpoDetail,
         to: canManageUsers ? "/users" : `${base}/pilares/quem-e-quem`,
       });
     }
@@ -188,6 +190,7 @@ function Stat({ label, value, to }: { label: string; value: string; to: string }
 }
 
 export function HomePage() {
+  const { lr } = useLegalRegime()
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { currentWorkspace, openAssistant } = useWorkspaces();
   const { role } = useAuth();
@@ -206,7 +209,8 @@ export function HomePage() {
 
   const base = `/workspaces/${workspaceId}`;
   const canManageUsers = role === "ADMIN" || role === "SUPER_ADMIN";
-  const attention = buildAttention(base, summary, documents, actions, canManageUsers);
+  const attention = buildAttention(base, summary, documents, actions, canManageUsers,
+    lr(tr('Tema de monitoramento recente da ANPD.'), tr('Obrigatório em vários casos pelo Art. 37 do RGPD.'), tr('Tema de monitoramento da ANPD e exigido em vários casos pelo Art. 37 do RGPD.')));
   const approved = documents.filter((d) => d.status === "APPROVED").length;
   const recent = [...documents]
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
