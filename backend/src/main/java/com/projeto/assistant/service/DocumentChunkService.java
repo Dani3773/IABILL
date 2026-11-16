@@ -83,13 +83,14 @@ public class DocumentChunkService {
         float[] queryEmbedding = geminiEmbeddingService.embed(query);
         String vectorLiteral = toVectorLiteral(queryEmbedding);
 
-        return documentChunkRepository.findNearestChunks(workspaceId, vectorLiteral, limit)
+        return documentChunkRepository.findNearestChunksInTenant(authTenantId, vectorLiteral, limit)
                 .stream()
                 .map(chunk -> new SemanticSearchResultDTO(
                         chunk.getDocument().getId(),
                         chunk.getDocument().getTitle(),
                         chunk.getChunkIndex(),
-                        chunk.getContent()
+                        chunk.getContent(),
+                        chunk.getDocument().getWorkspace().getName()
                 ))
                 .toList();
     }
@@ -123,7 +124,7 @@ public class DocumentChunkService {
         long retrievalLatencyMs = Duration.between(retrievalStart, Instant.now()).toMillis();
 
         String context = relevantChunks.stream()
-                .map(SemanticSearchResultDTO::content)
+                .map(SemanticSearchResultDTO::asContext)
                 .reduce("", (a, b) -> a + "\n\n---\n\n" + b);
 
         // Documentos-fonte distintos usados como contexto - base para a metrica de
@@ -138,6 +139,9 @@ public class DocumentChunkService {
         String diretrizesEspecificas = buildTypeSpecificGuidance(document.getType());
         String prompt = """
             Você é um assistente que ajuda a redigir documentos de conformidade com a LGPD/RGPD.
+            %s
+            O contexto pode vir de outras unidades da mesma empresa (matriz e filiais); cada trecho
+            indica a unidade de origem. Use-o, mas escreva o documento para a unidade atual.
             Use SOMENTE as informações de contexto abaixo para responder.
             Se a informação necessária não estiver no contexto, diga claramente que não há dados suficientes - NUNCA invente informações.
             %s
@@ -146,7 +150,8 @@ public class DocumentChunkService {
             Instrução: %s
             %s
             Redija o conteúdo solicitado de forma clara e objetiva:
-            """.formatted(diretrizesEspecificas, context, instruction, MessageCatalog.aiLanguageInstruction());
+            """.formatted(LegalRegimePrompt.describe(document.getWorkspace()), diretrizesEspecificas, context, instruction,
+                    MessageCatalog.aiLanguageInstruction());
 
         // Passo 3 (Generation): chama o Gemini, medindo latencia e capturando consumo de tokens
         Instant generationStart = Instant.now();
@@ -183,7 +188,7 @@ public class DocumentChunkService {
         if (type == DocumentType.RIPD_DPIA) {
             return """
                 Este documento é um Relatório de Impacto à Proteção de Dados (RIPD/DPIA),
-                conforme Art. 38 da LGPD (conteúdo mínimo) e Art. 35 do RGPD. Estruture o conteúdo cobrindo obrigatoriamente,
+                conforme Art. 38 da LGPD (conteúdo mínimo) e/ou Art. 35.º do RGPD, segundo o regime da unidade. Estruture o conteúdo cobrindo obrigatoriamente,
                 quando houver informação disponível no contexto, os seguintes elementos:
                 1. Descrição do tratamento de dados pessoais avaliado (finalidade, tipos de dados pessoais coletados, metodologia de coleta, garantias de segurança das informações, titulares afetados).
                 2. Avaliação de necessidade e proporcionalidade do tratamento em relação à finalidade.
@@ -195,9 +200,10 @@ public class DocumentChunkService {
         }
         if (type == DocumentType.POLITICA_SEGURANCA_INFORMACAO) {
             return """
-                Este documento é uma Política de Segurança da Informação (PSI), seguindo as
-                boas práticas recomendadas pelo Guia Orientativo sobre Segurança da Informação
-                da ANPD para Agentes de Tratamento de Pequeno Porte. Estruture o conteúdo
+                Este documento é uma Política de Segurança da Informação (PSI). Para unidades sob a
+                LGPD, siga o Guia Orientativo sobre Segurança da Informação da ANPD para Agentes de
+                Tratamento de Pequeno Porte; para unidades sob o RGPD, o Art. 32.º do RGPD
+                (segurança do tratamento). Estruture o conteúdo
                 cobrindo obrigatoriamente, quando houver informação disponível no contexto, os
                 seguintes tópicos:
                 1. Política de senhas e autenticação (complexidade exigida, troca periódica, MFA quando aplicável).

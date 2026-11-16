@@ -229,9 +229,15 @@ public class ChatService {
     }
 
     private String buildSystemContext(UUID workspaceId) {
+        Workspace workspace = workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new IllegalArgumentException("Workspace não encontrado: " + workspaceId));
         return """
             Você é o assistente virtual do IABill, um sistema de apoio à adequação à LGPD/RGPD.
             Você está conversando com um usuário sobre o workspace de ID %s.
+            %s
+            A busca de documentos cobre todas as unidades da empresa (matriz e filiais); cada trecho
+            retornado indica a unidade de origem. Ao responder, diga de qual unidade veio a informação
+            quando ela não for da unidade atual.
             Use as ferramentas disponíveis para consultar documentos, criar documentos, gerar conteúdo,
             e gerenciar o plano de ação de conformidade quando o usuário solicitar.
 
@@ -243,7 +249,7 @@ public class ChatService {
 
             Sempre confirme com clareza o que você fez, e nunca invente informações que não estejam
             nos documentos da empresa.
-            """.formatted(workspaceId);
+            """.formatted(workspaceId, LegalRegimePrompt.describe(workspace));
     }
 
     private List<Map<String, Object>> buildToolDeclarations() {

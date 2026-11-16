@@ -85,17 +85,20 @@ public class ActionItemService {
         Workspace workspace = getValidatedWorkspace(workspaceId, authTenantId);
 
         List<SemanticSearchResultDTO> relevantChunks = documentChunkService.semanticSearch(
-                workspaceId, "requisitos de conformidade LGPD adequacao de dados pessoais", 8, authTenantId);
+                workspaceId, "requisitos de conformidade " + LegalRegimePrompt.shortName(workspace)
+                        + " adequacao de dados pessoais", 8, authTenantId);
 
         String context = relevantChunks.stream()
-                .map(SemanticSearchResultDTO::content)
+                .map(SemanticSearchResultDTO::asContext)
                 .reduce("", (a, b) -> a + "\n\n---\n\n" + b);
 
         String prompt = """
             Você é um assistente especializado em conformidade com a LGPD/RGPD.
-            Com base no contexto abaixo (extraído de documentos já existentes da empresa),
-            sugira de 3 a 6 tarefas concretas e acionáveis (um "plano de ação") que a empresa
-            ainda precisa executar para avançar na adequação à LGPD.
+            %s
+            Com base no contexto abaixo (extraído de documentos já existentes da empresa, que podem
+            vir de outras unidades, matriz ou filiais), sugira de 3 a 6 tarefas concretas e acionáveis
+            (um "plano de ação") que a unidade atual ainda precisa executar para avançar na adequação
+            à lei que se aplica a ela.
 
             Se o contexto for insuficiente, sugira tarefas genéricas e essenciais de conformidade
             (ex: nomear encarregado de dados, mapear fluxos de dados, etc.), mas nunca invente
@@ -108,7 +111,7 @@ public class ActionItemService {
             antes ou depois, sem markdown, EXATAMENTE neste formato:
             [{"title": "...", "description": "..."}, {"title": "...", "description": "..."}]
             %s
-            """.formatted(context, MessageCatalog.aiLanguageInstruction());
+            """.formatted(LegalRegimePrompt.describe(workspace), context, MessageCatalog.aiLanguageInstruction());
 
         GeminiGenerationResultDTO generationResult = geminiGenerationService.generate(prompt);
         String rawResponse = generationResult.text();

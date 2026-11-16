@@ -62,6 +62,8 @@ class RagEvaluationTest extends IntegrationTestBase {
     private static UUID tenantId;
     private static UUID workspacePopuladoId;
     private static UUID workspaceVazioId;
+    private static UUID tenantVazioId;
+    private static UUID authUserVazioId;
     private static UUID authUserId;
     private static UUID documentoVazioId;
     private static final Map<String, UUID> fixtureDocIds = new HashMap<>();
@@ -98,8 +100,27 @@ class RagEvaluationTest extends IntegrationTestBase {
         workspacePopulado = workspaceRepository.save(workspacePopulado);
         workspacePopuladoId = workspacePopulado.getId();
 
+        // O workspace vazio fica numa empresa propria: a busca cobre todas as unidades
+        // da mesma empresa, entao, na mesma empresa, ele enxergaria os documentos do
+        // populado e deixaria de ser o controle "sem nenhum documento".
+        Tenant tenantVazio = new Tenant();
+        tenantVazio.setName("Empresa Fixture Avaliacao RAG (vazia)");
+        tenantVazio.setDocumentId("00000000000096");
+        tenantVazio.setCountry("BR");
+        tenantVazio = tenantRepository.save(tenantVazio);
+        tenantVazioId = tenantVazio.getId();
+
+        User userVazio = new User();
+        userVazio.setTenant(tenantVazio);
+        userVazio.setUsername("fixture.eval.vazio");
+        userVazio.setEmail("fixture-eval-vazio@iabill-test.com");
+        userVazio.setPasswordHash("nao-sera-usado-para-login");
+        userVazio.setRole(UserRole.ADMIN);
+        userVazio = userRepository.save(userVazio);
+        authUserVazioId = userVazio.getId();
+
         Workspace workspaceVazio = new Workspace();
-        workspaceVazio.setTenant(tenant);
+        workspaceVazio.setTenant(tenantVazio);
         workspaceVazio.setName("Workspace Vazio (fixture)");
         workspaceVazio.setType(WorkspaceType.FILIAL);
         workspaceVazio.setDocumentId("00000000000097");
@@ -192,8 +213,9 @@ class RagEvaluationTest extends IntegrationTestBase {
                     ? documentoVazioId
                     : fixtureDocIds.values().iterator().next(); // qualquer doc do workspace populado
 
-            DocumentGenerationResponseDTO response = documentChunkService
-                    .generateAssistedContent(documentIdParaTeste, query, tenantId, authUserId);
+            boolean vazio = workspaceAlvo.equals("vazio");
+            DocumentGenerationResponseDTO response = documentChunkService.generateAssistedContent(
+                    documentIdParaTeste, query, vazio ? tenantVazioId : tenantId, vazio ? authUserVazioId : authUserId);
 
             boolean recusouCorretamente = contemFraseDeRecusa(response.generatedContent());
 
