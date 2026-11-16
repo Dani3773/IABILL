@@ -54,7 +54,7 @@ function getNotificationDeadlineInfo(
     return { text: tr('Prazo para notificar {{a}} vencido desde {{b}}', { a: target, b: formattedDeadline }), urgent: true }
   }
   return {
-    text: tr('Notificar {{a}} até {{b}} ({{c}})', { a: target, b: formattedDeadline, c: rgpdOnly ? '72 horas' : '3 dias úteis' }),
+    text: tr('Notificar {{a}} até {{b}} ({{c}})', { a: target, b: formattedDeadline, c: rgpdOnly ? tr('72 horas') : tr('3 dias úteis') }),
     urgent: false,
   }
 }

@@ -180,7 +180,7 @@ export function buildAdequacyPath(input: PathInput): AdequacyPath {
             ? tr('{{a}} é o Encarregado.', { a: summary.dpoName })
             : regimes.includes('LGPD')
               ? tr('Atribua o papel em Usuários. Agentes de pequeno porte podem ser dispensados, mas precisam manter um canal com o titular.')
-              : tr('Na RGPD, a designação é obrigatória nos casos do art. 37.º, n.º 1. Atribua o papel em Usuários.'),
+              : tr('No RGPD, a designação é obrigatória nos casos do art. 37.º, n.º 1. Atribua o papel em Usuários.'),
           to: '/users',
           actionLabel: tr('Abrir Usuários'),
         },

@@ -1,3 +1,5 @@
+import { tr } from '../i18n/tr'
+
 export type LegalBasis =
   | 'CONSENTIMENTO'
   | 'CUMPRIMENTO_OBRIGACAO_LEGAL'
@@ -78,3 +80,25 @@ export const RGPD_LEGAL_BASIS_OPTIONS: LegalBasis[] = [
   'EXECUCAO_POLITICAS_PUBLICAS',
   'LEGITIMO_INTERESSE',
 ]
+
+// No RGPD as mesmas 6 bases têm outros nomes (Art. 6, n.º 1, alíneas a a f).
+// "Execução de políticas públicas" corresponde, no RGPD, ao interesse público ou
+// exercício de autoridade pública, que é mais amplo.
+export const RGPD_LEGAL_BASIS_LABELS: Partial<Record<LegalBasis, string>> = {
+  CONSENTIMENTO: 'Consentimento (Art. 6, n.º 1, a)',
+  EXECUCAO_CONTRATO: 'Execução de contrato (Art. 6, n.º 1, b)',
+  CUMPRIMENTO_OBRIGACAO_LEGAL: 'Obrigação jurídica (Art. 6, n.º 1, c)',
+  PROTECAO_DA_VIDA: 'Interesses vitais (Art. 6, n.º 1, d)',
+  EXECUCAO_POLITICAS_PUBLICAS: 'Interesse público ou autoridade pública (Art. 6, n.º 1, e)',
+  LEGITIMO_INTERESSE: 'Interesses legítimos (Art. 6, n.º 1, f)',
+}
+
+// Nome da base legal na lei da atividade, já traduzido para o idioma do sistema.
+export function legalBasisLabel(basis: LegalBasis, regime: 'LGPD' | 'RGPD'): string {
+  const label = regime === 'RGPD' ? RGPD_LEGAL_BASIS_LABELS[basis] ?? LEGAL_BASIS_LABELS[basis] : LEGAL_BASIS_LABELS[basis]
+  return tr(label)
+}
+
+export function legalRegimeLabel(regime: 'LGPD' | 'RGPD'): string {
+  return tr(LEGAL_REGIME_LABELS[regime])
+}

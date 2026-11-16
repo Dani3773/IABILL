@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { useLegalRegime } from '../hooks/useLegalRegime'
 import { fetchSectors } from "../api/sectorService";
 import type { Sector } from "../types/sector";
 import { X, ClipboardList } from "lucide-react";
@@ -9,6 +10,8 @@ import {
 import { getErrorMessage } from "../api/errorUtils";
 import {
   LEGAL_BASIS_LABELS,
+  legalBasisLabel,
+  legalRegimeLabel,
   LEGAL_REGIME_LABELS,
   RGPD_LEGAL_BASIS_OPTIONS,
   type LegalBasis,
@@ -29,6 +32,7 @@ export function ProcessingActivityModal({
   onClose,
   onSaved,
 }: Props) {
+  const { isRgpd: unitIsRgpd } = useLegalRegime()
   const [processName, setProcessName] = useState(editing?.processName ?? "");
   const [sectors, setSectors] = useState<Sector[]>([]);
   const [sectorId, setSectorId] = useState(editing?.sectorId ?? "");
@@ -62,7 +66,7 @@ export function ProcessingActivityModal({
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [applicableRegime, setApplicableRegime] = useState<"LGPD" | "RGPD">(
-    editing?.applicableRegime ?? "LGPD",
+    editing?.applicableRegime ?? (unitIsRgpd ? "RGPD" : "LGPD"),
   );
     const [retentionExpiresAt, setRetentionExpiresAt] = useState(
     editing?.retentionExpiresAt?.slice(0, 10) ?? "",
@@ -149,9 +153,9 @@ export function ProcessingActivityModal({
               }}
               className={inputClass}
             >
-              {Object.entries(LEGAL_REGIME_LABELS).map(([value, label]) => (
+              {(Object.keys(LEGAL_REGIME_LABELS) as ("LGPD" | "RGPD")[]).map((value) => (
                 <option key={value} value={value}>
-                  {label}
+                  {legalRegimeLabel(value)}
                 </option>
               ))}
             </select>
@@ -203,15 +207,15 @@ export function ProcessingActivityModal({
               onChange={(e) => setLegalBasis(e.target.value as LegalBasis)}
               className={inputClass}
             >
-              {Object.entries(LEGAL_BASIS_LABELS)
+              {(Object.keys(LEGAL_BASIS_LABELS) as LegalBasis[])
                 .filter(
-                  ([value]) =>
+                  (value) =>
                     applicableRegime === "LGPD" ||
-                    RGPD_LEGAL_BASIS_OPTIONS.includes(value as LegalBasis),
+                    RGPD_LEGAL_BASIS_OPTIONS.includes(value),
                 )
-                .map(([value, label]) => (
+                .map((value) => (
                   <option key={value} value={value}>
-                    {label}
+                    {legalBasisLabel(value, applicableRegime)}
                   </option>
                 ))}
             </select>
@@ -300,6 +304,9 @@ export function ProcessingActivityModal({
               onChange={(e) => setInvolvesSensitiveData(e.target.checked)}
               className="rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
             />{tr('Envolve dado pessoal sensível')}</label>
+          {involvesSensitiveData && applicableRegime === "RGPD" && (
+            <p className="text-xs text-amber-700/90 leading-relaxed -mt-2">{tr('No RGPD, categorias especiais de dados exigem, além da base do Art. 6, uma das exceções do Art. 9, n.º 2 (por exemplo, consentimento explícito ou obrigações de direito do trabalho). Indique a exceção usada nas observações.')}</p>
+          )}
 
           <div>
             <label className={labelClass}>{tr('Observações')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span>

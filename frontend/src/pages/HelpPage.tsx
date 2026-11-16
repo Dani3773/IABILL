@@ -190,7 +190,7 @@ function buildSections(lr: Lr, lawName: string): Section[] {
       },
       {
         heading: tr('Prazo de notificação'),
-        text: tr('O sistema mostra um aviso de prazo para notificar a autoridade (na LGPD, 3 dias úteis a partir da descoberta do incidente, conforme Resolução CD/ANPD nº 15/2024; na RGPD, 72 horas), que fica vermelho quando o prazo já passou.'),
+        text: tr('O sistema mostra um aviso de prazo para notificar a autoridade (na LGPD, 3 dias úteis a partir da descoberta do incidente, conforme Resolução CD/ANPD nº 15/2024; no RGPD, 72 horas), que fica vermelho quando o prazo já passou.'),
       },
     ],
   },

@@ -18,8 +18,8 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Alert } from "../components/Alert";
 import { getErrorMessage } from "../api/errorUtils";
 import {
-  LEGAL_BASIS_LABELS,
-  LEGAL_REGIME_LABELS,
+  legalBasisLabel,
+  legalRegimeLabel,
   type ProcessingActivity,
 } from "../types/processingActivity";
 import { useNavigate } from "react-router-dom";
@@ -147,10 +147,10 @@ export function ProcessingActivitiesPage() {
                       </span>
                     )}
                     <span className="text-[10px] uppercase tracking-wide bg-[#D92B21]/12 text-[#B4201A] rounded px-1.5 py-0.5">
-                      {LEGAL_REGIME_LABELS[activity.applicableRegime]}
+                      {legalRegimeLabel(activity.applicableRegime)}
                     </span>
                     <span className="text-[10px] uppercase tracking-wide bg-[#D92B21]/10 text-[#0A0A0A] rounded px-1.5 py-0.5">
-                      {LEGAL_BASIS_LABELS[activity.legalBasis]}
+                      {legalBasisLabel(activity.legalBasis, activity.applicableRegime)}
                     </span>
                     {activity.involvesSensitiveData && (
                       <span className="flex items-center gap-1 text-[10px] uppercase tracking-wide bg-amber-100 text-amber-700 rounded px-1.5 py-0.5">
