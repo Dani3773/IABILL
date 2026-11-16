@@ -5,6 +5,7 @@ import { LoadingSpinner } from '../components/LoadingSpinner'
 import { Alert } from '../components/Alert'
 import { getErrorMessage } from '../api/errorUtils'
 import type { PlatformTenantSummary } from '../types/platform'
+import { LegalRegimeBadges } from '../components/LegalRegimeBadges'
 
 import { getSystemLanguage, tr } from '../i18n/tr'
 export function SuperAdminPage() {
@@ -34,6 +35,7 @@ export function SuperAdminPage() {
           <thead>
             <tr className="text-left text-[#0A0A0A]/50 border-b border-[#0A0A0A]/10">
               <th className="py-3 px-4">{tr('Empresa')}</th>
+              <th className="py-3 px-4">{tr('Regime')}</th>
               <th className="py-3 px-4">{tr('Cadastrada em')}</th>
               <th className="py-3 px-4 text-center">{tr('Usuários')}</th>
               <th className="py-3 px-4 text-center">{tr('Unidades')}</th>
@@ -49,6 +51,9 @@ export function SuperAdminPage() {
                 className="border-b border-[#0A0A0A]/8 last:border-0 hover:bg-[#fbfaf6] cursor-pointer transition-colors"
               >
                 <td className="py-3 px-4 text-[#0A0A0A] font-medium">{t.name}</td>
+                <td className="py-3 px-4">
+                  <LegalRegimeBadges regimes={t.legalRegimes} />
+                </td>
                 <td className="py-3 px-4 text-[#0A0A0A]/60 whitespace-nowrap">
                   {new Date(t.createdAt).toLocaleDateString(getSystemLanguage())}
                 </td>

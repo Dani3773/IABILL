@@ -5,10 +5,13 @@ import com.projeto.assistant.dto.PlatformTenantUpdateRequestDTO;
 import com.projeto.assistant.model.*;
 import com.projeto.assistant.repository.TenantRepository;
 import com.projeto.assistant.repository.UserRepository;
+import com.projeto.assistant.repository.WorkspaceRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,6 +21,7 @@ class PlatformServiceIntegrationTest extends IntegrationTestBase {
     @Autowired private PlatformService platformService;
     @Autowired private TenantRepository tenantRepository;
     @Autowired private UserRepository userRepository;
+    @Autowired private WorkspaceRepository workspaceRepository;
 
     private UUID tenantId;
     private UUID superAdminUserId;
@@ -51,6 +55,32 @@ class PlatformServiceIntegrationTest extends IntegrationTestBase {
         var all = platformService.listAllTenants();
 
         assertThat(all).anyMatch(t -> t.id().equals(tenantId));
+    }
+
+    @Test
+    void listAllTenants_shouldShowLegalRegimesOfAllUnits() {
+        Tenant tenant = tenantRepository.findById(tenantId).orElseThrow();
+        Workspace matriz = new Workspace();
+        matriz.setTenant(tenant);
+        matriz.setName("Matriz Lisboa");
+        matriz.setType(WorkspaceType.MATRIZ);
+        matriz.setDocumentId(randomDocumentId());
+        matriz.setLegalRegimes(new java.util.HashSet<>(Set.of(LegalRegime.RGPD)));
+        workspaceRepository.save(matriz);
+        Workspace filial = new Workspace();
+        filial.setTenant(tenant);
+        filial.setName("Filial Sao Paulo");
+        filial.setType(WorkspaceType.FILIAL);
+        filial.setDocumentId(randomDocumentId());
+        filial.setLegalRegimes(new java.util.HashSet<>(Set.of(LegalRegime.LGPD)));
+        workspaceRepository.save(filial);
+
+        var summary = platformService.listAllTenants().stream()
+                .filter(t -> t.id().equals(tenantId)).findFirst().orElseThrow();
+        assertThat(summary.legalRegimes()).containsExactly(LegalRegime.LGPD, LegalRegime.RGPD);
+
+        var units = platformService.getTenantDetail(tenantId).workspaces();
+        assertThat(units).anyMatch(w -> w.name().equals("Matriz Lisboa") && w.legalRegimes().equals(List.of(LegalRegime.RGPD)));
     }
 
     @Test

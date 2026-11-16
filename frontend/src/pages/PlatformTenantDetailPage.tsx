@@ -11,6 +11,7 @@ import {
   fetchWorkspaceDetail,
 } from "../api/platformService";
 import { CreateWorkspaceModal } from "../components/CreateWorkspaceModal";
+import { LegalRegimeBadges } from "../components/LegalRegimeBadges";
 import type { Workspace, WorkspaceRequest } from "../types/workspace";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Alert } from "../components/Alert";
@@ -284,6 +285,7 @@ export function PlatformTenantDetailPage() {
                 <p className="text-[#0A0A0A]/45 text-xs ">{w.documentId}</p>
               </div>
               <div className="flex items-center gap-2">
+                <LegalRegimeBadges regimes={w.legalRegimes} />
                 <span className="text-xs px-2 py-1 rounded bg-[#D92B21]/12 text-[#B4201A] font-medium">
                   {w.type}
                 </span>

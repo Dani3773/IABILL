@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.security.SecureRandom;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,8 +30,16 @@ public class PlatformService {
 
     @Transactional(readOnly = true)
     public List<PlatformTenantSummaryDTO> listAllTenants() {
-
-        return tenantRepository.findAllWithStats();
+        Map<UUID, List<LegalRegime>> regimesByTenant = new HashMap<>();
+        for (Object[] row : workspaceRepository.findTenantLegalRegimes()) {
+            UUID tenantId = row[0] instanceof UUID uuid ? uuid : UUID.fromString(row[0].toString());
+            regimesByTenant.computeIfAbsent(tenantId, k -> new ArrayList<>())
+                    .add(LegalRegime.valueOf(row[1].toString()));
+        }
+        return tenantRepository.findAllWithStats().stream()
+                .map(t -> t.withLegalRegimes(regimesByTenant.getOrDefault(t.id(), List.of())
+                        .stream().sorted().toList()))
+                .toList();
     }
 
     @Transactional(readOnly = true)
@@ -42,7 +52,7 @@ public class PlatformService {
                 .toList();
 
         List<PlatformWorkspaceSummaryDTO> workspaces = workspaceRepository.findByTenantId(tenantId).stream()
-                .map(w -> new PlatformWorkspaceSummaryDTO(w.getId(), w.getName(), w.getType(), w.getDocumentId()))
+                .map(PlatformWorkspaceSummaryDTO::fromEntity)
                 .toList();
 
         return new PlatformTenantDetailDTO(
@@ -77,6 +87,7 @@ public class PlatformService {
         Workspace workspace = workspaceRepository.findById(workspaceId)
                 .orElseThrow(() -> new IllegalArgumentException("Workspace não encontrado: " + workspaceId));
         String before = workspace.getName() + " / " + workspace.getDocumentId();
+        String regimesBefore = workspace.getLegalRegimes().stream().sorted().toList().toString();
         workspace.setName(request.name());
         workspace.setType(request.type());
         workspace.setDocumentId(request.documentId());
@@ -91,8 +102,11 @@ public class PlatformService {
         workspace.setLegalRegimes(request.legalRegimes());
         workspaceRepository.save(workspace);
         auditLogService.record(workspace.getTenant().getId(), authUserId, AuditAction.UPDATE, AuditEntityType.WORKSPACE, workspaceId,
-                Map.of("before", before, "after", request.name() + " / " + request.documentId(), "changedByPlatformAdmin", true));
-        return new PlatformWorkspaceSummaryDTO(workspace.getId(), workspace.getName(), workspace.getType(), workspace.getDocumentId());
+                Map.of("before", before, "after", request.name() + " / " + request.documentId(),
+                        "legalRegimesBefore", regimesBefore,
+                        "legalRegimesAfter", request.legalRegimes().stream().sorted().toList().toString(),
+                        "changedByPlatformAdmin", true));
+        return PlatformWorkspaceSummaryDTO.fromEntity(workspace);
     }
 
     @Transactional

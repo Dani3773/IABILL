@@ -8,6 +8,7 @@ export interface PlatformTenantSummary {
   workspaceCount: number
   documentCount: number
   active : boolean
+  legalRegimes: ('LGPD' | 'RGPD')[]
 }
 
 export interface PlatformUser {
@@ -23,6 +24,7 @@ export interface PlatformWorkspace {
   name: string
   type: 'MATRIZ' | 'FILIAL'
   documentId: string
+  legalRegimes: ('LGPD' | 'RGPD')[]
 }
 
 export interface PlatformTenantDetail {

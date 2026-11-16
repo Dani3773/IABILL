@@ -21,4 +21,10 @@ public interface WorkspaceRepository extends JpaRepository<Workspace, UUID> {
     // publica que identifica workspace por CNPJ deve usar so os digitos.
     @Query(value = "SELECT * FROM workspaces WHERE regexp_replace(document_id, '[^0-9]', '', 'g') = :digitsOnly", nativeQuery = true)
     Optional<Workspace> findByDocumentIdDigitsOnly(@Param("digitsOnly") String digitsOnly);
+
+    // Pares (empresa, regime) de todas as unidades - para a visao da plataforma
+    // mostrar se cada empresa segue LGPD, RGPD ou as duas.
+    @Query(value = "SELECT DISTINCT w.tenant_id, r.legal_regime FROM workspaces w " +
+            "JOIN workspace_legal_regimes r ON r.workspace_id = w.id", nativeQuery = true)
+    List<Object[]> findTenantLegalRegimes();
 }
