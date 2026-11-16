@@ -27,6 +27,7 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
   const [street, setStreet] = useState(editing?.street ?? "");
   const [addressNumber, setAddressNumber] = useState(editing?.addressNumber ?? "");
   const [phone, setPhone] = useState(editing?.phone ?? "");
+  const [euRepresentative, setEuRepresentative] = useState(editing?.euRepresentative ?? "");
   const [legalRegimes, setLegalRegimes] = useState<("LGPD" | "RGPD")[]>(editing?.legalRegimes ?? ["LGPD"]);
   const [cepLookupLoading, setCepLookupLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -101,6 +102,7 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
         addressNumber: addressNumber || undefined,
         phone: phone || undefined,
         legalRegimes,
+        euRepresentative: legalRegimes.includes("RGPD") ? euRepresentative || undefined : undefined,
       };
       const workspace = saveOverride
         ? await saveOverride(payload)
@@ -307,6 +309,14 @@ export function CreateWorkspaceModal({ editing, onClose, onCreated, saveOverride
                 />{tr('RGPD')}</label>
             </div>
           </div>
+
+          {legalRegimes.includes("RGPD") && (
+            <div>
+              <label className={labelClass}>{tr('Representante na União Europeia')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span></label>
+              <input value={euRepresentative} onChange={(e) => setEuRepresentative(e.target.value)} maxLength={255} placeholder={tr('Nome e contato do representante')} className={inputClass} />
+              <p className="text-xs text-[#0A0A0A]/50 mt-1 leading-relaxed">{tr('Art. 27 do RGPD: só é exigido de quem trata dados de pessoas na UE sem ter estabelecimento lá. Uma unidade localizada na UE não precisa.')}</p>
+            </div>
+          )}
 
           {error && <p className="text-red-600 text-sm">{error}</p>}
 

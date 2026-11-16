@@ -61,6 +61,11 @@ public class Workspace {
     @Column
     private String phone;
 
+    // Art. 27 RGPD: representante na UE, para quem trata dados de pessoas na UE
+    // sem ter estabelecimento lá.
+    @Column(name = "eu_representative")
+    private String euRepresentative;
+
     @ElementCollection(targetClass = LegalRegime.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "workspace_legal_regimes", joinColumns = @JoinColumn(name = "workspace_id"))
     @Enumerated(EnumType.STRING)

@@ -36,6 +36,12 @@ public record ProcessingActivityRequestDTO(
         String retentionPeriod,
         java.time.LocalDate retentionExpiresAt,
         boolean involvesSensitiveData,
-        String observations
+        String observations,
+        String jointControllers,
+        boolean involvesAutomatedDecisions,
+        String automatedDecisionSafeguards,
+        boolean involvesChildrenData,
+        boolean involvesInternationalTransfer,
+        String internationalTransferDetails
 ) {
 }

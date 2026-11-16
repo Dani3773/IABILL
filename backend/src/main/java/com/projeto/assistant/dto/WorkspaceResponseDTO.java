@@ -23,6 +23,7 @@ public record WorkspaceResponseDTO(
         String addressNumber,
         String phone,
         Set<LegalRegime> legalRegimes,
+        String euRepresentative,
         Instant createdAt
 ) {
     public static WorkspaceResponseDTO fromEntity(Workspace workspace) {
@@ -41,6 +42,7 @@ public record WorkspaceResponseDTO(
                 workspace.getAddressNumber(),
                 workspace.getPhone(),
                 workspace.getLegalRegimes(),
+                workspace.getEuRepresentative(),
                 workspace.getCreatedAt()
         );
     }

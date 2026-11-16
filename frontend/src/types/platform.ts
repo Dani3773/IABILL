@@ -55,6 +55,7 @@ export interface PlatformWorkspaceUpdateRequest {
   addressNumber?: string
   phone?: string
   legalRegimes: ('LGPD' | 'RGPD')[]
+  euRepresentative?: string
 }
 
 export interface PlatformUserRoleUpdateRequest {

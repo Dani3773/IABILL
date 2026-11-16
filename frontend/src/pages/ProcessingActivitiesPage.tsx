@@ -156,6 +156,15 @@ export function ProcessingActivitiesPage() {
                       <span className="flex items-center gap-1 text-[10px] uppercase tracking-wide bg-amber-100 text-amber-700 rounded px-1.5 py-0.5">
                         <AlertTriangle className="w-3 h-3" />{tr('Dado sensível')}</span>
                     )}
+                    {activity.involvesChildrenData && (
+                      <span className="text-[10px] uppercase tracking-wide bg-amber-100 text-amber-700 rounded px-1.5 py-0.5">{tr('Crianças')}</span>
+                    )}
+                    {activity.involvesAutomatedDecisions && (
+                      <span className="text-[10px] uppercase tracking-wide bg-[#0A0A0A]/8 text-[#0A0A0A]/70 rounded px-1.5 py-0.5">{tr('Decisão automatizada')}</span>
+                    )}
+                    {activity.involvesInternationalTransfer && (
+                      <span className="text-[10px] uppercase tracking-wide bg-[#1E3A8A]/10 text-[#1E3A8A] rounded px-1.5 py-0.5">{tr('Transferência internacional')}</span>
+                    )}
                   </div>
                   <p className="text-xs text-[#0A0A0A]/60 mb-2">
                     {activity.purpose}

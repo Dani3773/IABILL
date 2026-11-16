@@ -63,6 +63,12 @@ export function ProcessingActivityModal({
     editing?.involvesSensitiveData ?? false,
   );
   const [observations, setObservations] = useState(editing?.observations ?? "");
+  const [jointControllers, setJointControllers] = useState(editing?.jointControllers ?? "");
+  const [involvesAutomatedDecisions, setInvolvesAutomatedDecisions] = useState(editing?.involvesAutomatedDecisions ?? false);
+  const [automatedDecisionSafeguards, setAutomatedDecisionSafeguards] = useState(editing?.automatedDecisionSafeguards ?? "");
+  const [involvesChildrenData, setInvolvesChildrenData] = useState(editing?.involvesChildrenData ?? false);
+  const [involvesInternationalTransfer, setInvolvesInternationalTransfer] = useState(editing?.involvesInternationalTransfer ?? false);
+  const [internationalTransferDetails, setInternationalTransferDetails] = useState(editing?.internationalTransferDetails ?? "");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [applicableRegime, setApplicableRegime] = useState<"LGPD" | "RGPD">(
@@ -92,6 +98,12 @@ export function ProcessingActivityModal({
         retentionExpiresAt: retentionExpiresAt || undefined,
         involvesSensitiveData,
         observations: observations || undefined,
+        jointControllers: jointControllers || undefined,
+        involvesAutomatedDecisions,
+        automatedDecisionSafeguards: involvesAutomatedDecisions ? automatedDecisionSafeguards || undefined : undefined,
+        involvesChildrenData,
+        involvesInternationalTransfer,
+        internationalTransferDetails: involvesInternationalTransfer ? internationalTransferDetails || undefined : undefined,
       };
       const saved = editing
         ? await updateProcessingActivity(editing.id, payload)
@@ -307,6 +319,55 @@ export function ProcessingActivityModal({
           {involvesSensitiveData && applicableRegime === "RGPD" && (
             <p className="text-xs text-amber-700/90 leading-relaxed -mt-2">{tr('No RGPD, categorias especiais de dados exigem, além da base do Art. 6, uma das exceções do Art. 9, n.º 2 (por exemplo, consentimento explícito ou obrigações de direito do trabalho). Indique a exceção usada nas observações.')}</p>
           )}
+
+          <label className="flex items-center gap-2 text-sm text-[#0A0A0A]/70 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={involvesChildrenData}
+              onChange={(e) => setInvolvesChildrenData(e.target.checked)}
+              className="rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
+            />{tr('Envolve dados de crianças ou adolescentes')}</label>
+          {involvesChildrenData && (
+            <p className="text-xs text-amber-700/90 leading-relaxed -mt-2">{applicableRegime === "RGPD"
+              ? tr('Art. 8 do RGPD: em serviços online oferecidos diretamente a crianças, o consentimento abaixo da idade fixada no país (16 anos por padrão; 13 em Portugal) precisa ser dado pelos pais, e a empresa deve fazer esforços razoáveis para verificar isso.')
+              : tr('Art. 14 da LGPD: o tratamento deve ser feito no melhor interesse da criança e do adolescente; para crianças, o consentimento específico de um dos pais ou responsável é exigido quando o consentimento for a base legal.')}</p>
+          )}
+
+          <label className="flex items-center gap-2 text-sm text-[#0A0A0A]/70 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={involvesAutomatedDecisions}
+              onChange={(e) => setInvolvesAutomatedDecisions(e.target.checked)}
+              className="rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
+            />{tr('Há decisões tomadas só por meio automatizado (inclusive perfis)')}</label>
+          {involvesAutomatedDecisions && (
+            <div className="-mt-1">
+              <p className="text-xs text-amber-700/90 leading-relaxed mb-1.5">{applicableRegime === "RGPD"
+                ? tr('Art. 22 do RGPD: o titular tem direito a não ficar sujeito a decisão só automatizada que o afete significativamente, salvo contrato, lei ou consentimento explícito; nesses casos, garanta intervenção humana e o direito de contestar.')
+                : tr('Art. 20 da LGPD: o titular pode pedir a revisão de decisões tomadas só com base em tratamento automatizado, e a empresa deve informar os critérios usados.')}</p>
+              <label className={labelClass}>{tr('Garantias adotadas')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span></label>
+              <textarea value={automatedDecisionSafeguards} onChange={(e) => setAutomatedDecisionSafeguards(e.target.value)} rows={2} placeholder={tr('Ex: revisão humana a pedido, canal para contestar a decisão')} className={inputClass} />
+            </div>
+          )}
+
+          <label className="flex items-center gap-2 text-sm text-[#0A0A0A]/70 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={involvesInternationalTransfer}
+              onChange={(e) => setInvolvesInternationalTransfer(e.target.checked)}
+              className="rounded border-[#0A0A0A]/20 text-[#B4201A] focus:ring-[#D92B21]/30"
+            />{applicableRegime === "RGPD" ? tr('Há transferência de dados para fora do Espaço Econômico Europeu') : tr('Há transferência internacional de dados (para fora do Brasil)')}</label>
+          {involvesInternationalTransfer && (
+            <div className="-mt-1">
+              <label className={labelClass}>{tr('Destino e garantia usada')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span></label>
+              <textarea value={internationalTransferDetails} onChange={(e) => setInternationalTransferDetails(e.target.value)} rows={2} placeholder={applicableRegime === "RGPD" ? tr('Ex: Estados Unidos, provedor de nuvem, cláusulas contratuais-tipo (Art. 46)') : tr('Ex: Estados Unidos, provedor de nuvem, cláusulas-padrão da Resolução CD/ANPD 19/2024')} className={inputClass} />
+            </div>
+          )}
+
+          <div>
+            <label className={labelClass}>{tr('Corresponsáveis pelo tratamento')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span></label>
+            <input value={jointControllers} onChange={(e) => setJointControllers(e.target.value)} placeholder={tr('Empresas que decidem este tratamento junto com a sua (Art. 26 do RGPD)')} className={inputClass} />
+          </div>
 
           <div>
             <label className={labelClass}>{tr('Observações')}{' '}<span className="text-[#0A0A0A]/40">{tr('(opcional)')}</span>

@@ -142,7 +142,7 @@ class TenantIsolationIntegrationTest extends IntegrationTestBase {
     @Test
     void createWorkspace_whenAdminSendsOtherTenantId_shouldCreateInOwnTenant() {
         var request = new WorkspaceRequestDTO(tenantB.getId(), "Filial", WorkspaceType.FILIAL, randomDocumentId(),
-                "BR", null, null, null, null, null, null, null, Set.of(LegalRegime.LGPD));
+                "BR", null, null, null, null, null, null, null, Set.of(LegalRegime.LGPD), null);
 
         var created = workspaceService.create(request, adminA.getId());
 

@@ -58,6 +58,28 @@ public class ProcessingActivity {
     @Column(name = "involves_sensitive_data", nullable = false)
     private boolean involvesSensitiveData = false;
 
+    // Art. 26 RGPD: corresponsáveis pelo tratamento
+    @Column(name = "joint_controllers", columnDefinition = "TEXT")
+    private String jointControllers;
+
+    // Art. 22 RGPD / Art. 20 LGPD: decisões só por meio automatizado
+    @Column(name = "involves_automated_decisions", nullable = false)
+    private boolean involvesAutomatedDecisions = false;
+
+    @Column(name = "automated_decision_safeguards", columnDefinition = "TEXT")
+    private String automatedDecisionSafeguards;
+
+    // Art. 8 RGPD / Art. 14 LGPD: dados de crianças e adolescentes
+    @Column(name = "involves_children_data", nullable = false)
+    private boolean involvesChildrenData = false;
+
+    // Art. 30, n.º 1, al. e) RGPD / Art. 33 LGPD: transferência internacional
+    @Column(name = "involves_international_transfer", nullable = false)
+    private boolean involvesInternationalTransfer = false;
+
+    @Column(name = "international_transfer_details", columnDefinition = "TEXT")
+    private String internationalTransferDetails;
+
     @Column(columnDefinition = "TEXT")
     private String observations;
 

@@ -25,6 +25,8 @@ public record PlatformWorkspaceUpdateRequestDTO(
         String addressNumber,
         String phone,
         @NotNull(message = "Ao menos um regime legal deve ser selecionado")
-        Set<LegalRegime> legalRegimes
+        Set<LegalRegime> legalRegimes,
+        @jakarta.validation.constraints.Size(max = 255)
+        String euRepresentative
 ) {
 }

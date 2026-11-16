@@ -30,6 +30,12 @@ export interface ProcessingActivity {
   involvesSensitiveData: boolean
   ripdSuggestionDismissed: boolean
   observations: string | null
+  jointControllers: string | null
+  involvesAutomatedDecisions: boolean
+  automatedDecisionSafeguards: string | null
+  involvesChildrenData: boolean
+  involvesInternationalTransfer: boolean
+  internationalTransferDetails: string | null
   createdAt: string
   updatedAt: string
 }
@@ -49,6 +55,12 @@ export interface ProcessingActivityRequest {
   retentionExpiresAt?: string
   involvesSensitiveData: boolean
   observations?: string
+  jointControllers?: string
+  involvesAutomatedDecisions: boolean
+  automatedDecisionSafeguards?: string
+  involvesChildrenData: boolean
+  involvesInternationalTransfer: boolean
+  internationalTransferDetails?: string
 }
 
 export const LEGAL_BASIS_LABELS: Record<LegalBasis, string> = {

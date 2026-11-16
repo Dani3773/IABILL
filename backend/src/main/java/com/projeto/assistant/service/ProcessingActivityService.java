@@ -63,6 +63,12 @@ public class ProcessingActivityService {
         activity.setRetentionExpiresAt(request.retentionExpiresAt());
         activity.setInvolvesSensitiveData(request.involvesSensitiveData());
         activity.setObservations(request.observations());
+        activity.setJointControllers(request.jointControllers());
+        activity.setInvolvesAutomatedDecisions(request.involvesAutomatedDecisions());
+        activity.setAutomatedDecisionSafeguards(request.involvesAutomatedDecisions() ? request.automatedDecisionSafeguards() : null);
+        activity.setInvolvesChildrenData(request.involvesChildrenData());
+        activity.setInvolvesInternationalTransfer(request.involvesInternationalTransfer());
+        activity.setInternationalTransferDetails(request.involvesInternationalTransfer() ? request.internationalTransferDetails() : null);
         activity.setCreatedBy(authUserId);
 
         ProcessingActivity saved = processingActivityRepository.save(activity);
@@ -116,6 +122,12 @@ public class ProcessingActivityService {
         activity.setRetentionExpiresAt(request.retentionExpiresAt());
         activity.setInvolvesSensitiveData(request.involvesSensitiveData());
         activity.setObservations(request.observations());
+        activity.setJointControllers(request.jointControllers());
+        activity.setInvolvesAutomatedDecisions(request.involvesAutomatedDecisions());
+        activity.setAutomatedDecisionSafeguards(request.involvesAutomatedDecisions() ? request.automatedDecisionSafeguards() : null);
+        activity.setInvolvesChildrenData(request.involvesChildrenData());
+        activity.setInvolvesInternationalTransfer(request.involvesInternationalTransfer());
+        activity.setInternationalTransferDetails(request.involvesInternationalTransfer() ? request.internationalTransferDetails() : null);
 
         ProcessingActivity saved = processingActivityRepository.save(activity);
 

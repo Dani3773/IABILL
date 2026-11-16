@@ -54,6 +54,7 @@ public class WorkspaceService {
         workspace.setStreet(request.street());
         workspace.setAddressNumber(request.addressNumber());
         workspace.setPhone(request.phone());
+        workspace.setEuRepresentative(request.euRepresentative());
         workspace.setLegalRegimes(request.legalRegimes());
 
         Workspace saved = workspaceRepository.save(workspace);
@@ -94,6 +95,7 @@ public class WorkspaceService {
         workspace.setStreet(request.street());
         workspace.setAddressNumber(request.addressNumber());
         workspace.setPhone(request.phone());
+        workspace.setEuRepresentative(request.euRepresentative());
         workspace.setLegalRegimes(request.legalRegimes());
         Workspace saved = workspaceRepository.save(workspace);
         auditLogService.record(

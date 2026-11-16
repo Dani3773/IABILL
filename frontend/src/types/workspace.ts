@@ -13,6 +13,7 @@ export interface Workspace {
   addressNumber: string | null
   phone: string | null
   legalRegimes: ('LGPD' | 'RGPD')[]
+  euRepresentative: string | null
   createdAt: string
 }
 
@@ -30,4 +31,5 @@ export interface WorkspaceRequest {
   addressNumber?: string
   phone?: string
   legalRegimes: ('LGPD' | 'RGPD')[]
+  euRepresentative?: string
 }

@@ -25,6 +25,12 @@ public record ProcessingActivityResponseDTO(
         boolean involvesSensitiveData,
         boolean ripdSuggestionDismissed,
         String observations,
+        String jointControllers,
+        boolean involvesAutomatedDecisions,
+        String automatedDecisionSafeguards,
+        boolean involvesChildrenData,
+        boolean involvesInternationalTransfer,
+        String internationalTransferDetails,
         Instant createdAt,
         Instant updatedAt
 ) {
@@ -47,6 +53,12 @@ public record ProcessingActivityResponseDTO(
                 activity.isInvolvesSensitiveData(),
                 activity.isRipdSuggestionDismissed(),
                 activity.getObservations(),
+                activity.getJointControllers(),
+                activity.isInvolvesAutomatedDecisions(),
+                activity.getAutomatedDecisionSafeguards(),
+                activity.isInvolvesChildrenData(),
+                activity.isInvolvesInternationalTransfer(),
+                activity.getInternationalTransferDetails(),
                 activity.getCreatedAt(),
                 activity.getUpdatedAt()
         );
